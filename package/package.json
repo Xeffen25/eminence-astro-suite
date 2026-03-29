@@ -1,0 +1,13 @@
+{
+  "name": "eminence-astro-suite",
+  "version": "0.0.1",
+  "type": "module",
+  "files": ["dist", "src"],
+  "exports": {
+    "./integration": "./src/integration.ts",
+    "./components": "./src/components.ts"
+  },
+  "peerDependencies": {
+    "astro": ">=6.0.0"
+  }
+}
