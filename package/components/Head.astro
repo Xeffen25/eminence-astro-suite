@@ -20,6 +20,7 @@ import clientHeadConfig from "virtual:eminence-astro-seo/config";
 import Alternate from "./Alternate.astro";
 import AppleWebApp from "./AppleWebApp.astro";
 import Base from "./Base.astro";
+import Canonical from "./Canonical.astro";
 import Charset from "./Charset.astro";
 import Description from "./Description.astro";
 import HumansTxt from "./HumansTxt.astro";
@@ -36,6 +37,7 @@ interface Props {
 	titleTemplate?: `${string}%s${string}`;
 	alternates?: ComponentProps<typeof Alternate>;
 	appleWebApp?: ComponentProps<typeof AppleWebApp>;
+	canonical?: ComponentProps<typeof Canonical> | ComponentProps<typeof Canonical>["href"] | boolean;
 	description?: string;
 	humansTxt?: ComponentProps<typeof HumansTxt> | ComponentProps<typeof HumansTxt>["href"] | boolean;
 	manifest?: ComponentProps<typeof Manifest> | boolean;
@@ -50,6 +52,7 @@ const {
 	titleTemplate: propTitleTemplate,
 	alternates,
 	appleWebApp: propAppleWebApp,
+	canonical: propCanonical,
 	description,
 	humansTxt: propHumansTxt,
 	manifest,
@@ -61,6 +64,14 @@ const viewport = propViewport !== undefined ? propViewport : clientHeadConfig.vi
 const base = propBase !== undefined ? propBase : clientHeadConfig.base;
 const titleTemplate = propTitleTemplate !== undefined ? propTitleTemplate : clientHeadConfig.titleTemplate;
 const appleWebApp = propAppleWebApp !== undefined ? propAppleWebApp : clientHeadConfig.appleWebApp;
+const canonical =
+	propCanonical === undefined || propCanonical === false
+		? undefined
+		: propCanonical === true
+			? {}
+			: typeof propCanonical === "string" || propCanonical instanceof URL
+				? { href: propCanonical }
+				: propCanonical;
 const humansTxt = propHumansTxt !== undefined ? propHumansTxt : clientHeadConfig.humansTxt;
 const humansTxtProps =
 	humansTxt === undefined || humansTxt === false
@@ -82,6 +93,7 @@ const verification = propVerification !== undefined ? propVerification : clientH
 	<slot />
 	{alternates && <Alternate {...alternates} />}
 	{appleWebApp && <AppleWebApp {...appleWebApp} />}
+	{canonical && <Canonical {...canonical} />}
 	{description && <Description content={description} />}
 	{humansTxtProps && <HumansTxt {...humansTxtProps} />}
 	{manifest && <Manifest {...(manifest === true ? {} : manifest)} />}

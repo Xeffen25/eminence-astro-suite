@@ -1,6 +1,7 @@
 import _Alternate from "./components/Alternate.astro";
 import _AppleWebApp from "./components/AppleWebApp.astro";
 import _Base from "./components/Base.astro";
+import _Canonical from "./components/Canonical.astro";
 import _Charset from "./components/Charset.astro";
 import _Description from "./components/Description.astro";
 import _Head from "./components/Head.astro";
@@ -132,6 +133,26 @@ export const Viewport = _Viewport;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base MDN base element reference}
  */
 export const Base = _Base;
+
+/**
+ * @summary Renders a `<link rel="canonical">` tag for the current page.
+ * @description
+ * Uses the provided `href` value directly when present. If omitted, it tries
+ * to generate a canonical URL from `Astro.site` and `Astro.url.pathname`.
+ * When `href` is `false`, the component renders nothing.
+ *
+ * @example
+ * <Canonical href="https://example.com/docs/page" />
+ * @example
+ * <Canonical href={new URL("https://example.com/docs/page")} />
+ * @example
+ * // Derives canonical URL from Astro.site and Astro.url.pathname
+ * <Canonical />
+ *
+ * @see {@link https://todo.dev/components/canonical Canonical Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#canonical MDN rel="canonical" reference}
+ */
+export const Canonical = _Canonical;
 
 /**
  * @summary Renders a `<link rel="author">` tag pointing to `/humans.txt`.

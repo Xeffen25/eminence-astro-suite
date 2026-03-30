@@ -77,4 +77,30 @@ describe("Component Head", () => {
 			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="manifest" href="https://example.com/manifest.webmanifest"></head>',
 		);
 	});
+
+	it("renders canonical link when configured with href", async () => {
+		const result = await container.renderToString(Head, {
+			props: {
+				title: "Home",
+				canonical: { href: "https://example.com/home" },
+			},
+		});
+
+		expect(result).toBe(
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="canonical" href="https://example.com/home"></head>',
+		);
+	});
+
+	it("renders nothing for canonical when explicitly disabled", async () => {
+		const result = await container.renderToString(Head, {
+			props: {
+				title: "Home",
+				canonical: false,
+			},
+		});
+
+		expect(result).toBe(
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title></head>',
+		);
+	});
 });
