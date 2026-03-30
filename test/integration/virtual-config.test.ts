@@ -30,6 +30,7 @@ describe("Integration - Virtual Config", () => {
 					{ url: "https://cdn.example.com/portrait.png", media: "(orientation: portrait)" },
 				],
 			},
+			appLinks: undefined,
 			humansTxt: undefined,
 			verification: undefined,
 			base: undefined,
@@ -54,12 +55,60 @@ describe("Integration - Virtual Config", () => {
 			charset: undefined,
 			viewport: undefined,
 			appleWebApp: undefined,
+			appLinks: undefined,
 			humansTxt: undefined,
 			verification: {
 				google: "google-token",
 				yandex: "yandex-token",
 				others: [{ name: "msvalidate.01", content: "bing-token" }],
 			},
+			base: undefined,
+			titleTemplate: undefined,
+		});
+	});
+
+	it("extracts appLinks defaults into client head config", () => {
+		const options: IntegrationInput = {
+			head: {
+				appLinks: {
+					ios: {
+						url: "myapp://open",
+						app_store_id: "123456789",
+					},
+					android: {
+						package: "com.example.app",
+						app_name: "Example App",
+					},
+					web: {
+						url: "https://example.com",
+						should_fallback: true,
+					},
+				},
+			},
+		};
+
+		const result = extractClientHeadConfig(options);
+
+		expect(result).toEqual({
+			charset: undefined,
+			viewport: undefined,
+			appleWebApp: undefined,
+			appLinks: {
+				ios: {
+					url: "myapp://open",
+					app_store_id: "123456789",
+				},
+				android: {
+					package: "com.example.app",
+					app_name: "Example App",
+				},
+				web: {
+					url: "https://example.com",
+					should_fallback: true,
+				},
+			},
+			humansTxt: undefined,
+			verification: undefined,
 			base: undefined,
 			titleTemplate: undefined,
 		});
@@ -99,5 +148,27 @@ describe("Integration - Virtual Config", () => {
 		const result = serializedVirtualConfigModule(options);
 
 		expect(result).toBe('export default {"verification":{"yahoo":"yahoo-token"}};');
+	});
+
+	it("serializes appLinks defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			head: {
+				appLinks: {
+					ios: {
+						url: new URL("https://ios.example.com/open"),
+					},
+					web: {
+						url: new URL("https://example.com/path"),
+						should_fallback: false,
+					},
+				},
+			},
+		};
+
+		const result = serializedVirtualConfigModule(options);
+
+		expect(result).toBe(
+			'export default {"appLinks":{"ios":{"url":"https://ios.example.com/open"},"web":{"url":"https://example.com/path","should_fallback":false}}};',
+		);
 	});
 });

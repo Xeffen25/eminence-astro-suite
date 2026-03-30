@@ -1,0 +1,52 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/app-links}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/app-links.mdx}
+ * ---
+ * @summary Renders App Links meta tags for iOS, Android, and web fallback.
+ * @description
+ * Outputs platform-specific App Links metadata so crawlers and clients can
+ * associate a web URL with native app destinations. Supports iOS app URL and
+ * App Store ID, Android package details, and web fallback controls.
+ *
+ * @example
+ * <AppLinks ios={{ url: "myapp://open", app_store_id: "123456789" }} />
+ * @example
+ * <AppLinks android={{ package: "com.example.app", app_name: "Example App" }} web={{ url: "https://example.com", should_fallback: true }} />
+ *
+ * @see {@link https://developers.facebook.com/docs/applinks/web App Links Meta Tag Reference}
+ * @see {@link https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html Apple Universal Links}
+ */
+
+import { toHref } from "../utils";
+
+interface Props {
+	ios?: {
+		url: StringOrURL;
+		app_store_id?: string;
+	};
+	android?: {
+		package: string;
+		app_name?: string;
+	};
+	web?: {
+		url: StringOrURL;
+		should_fallback?: boolean;
+	};
+}
+
+const { ios, android, web } = Astro.props;
+---
+
+{ios?.url && <meta property="al:ios:url" content={toHref(ios.url)} />}
+{ios?.app_store_id && <meta property="al:ios:app_store_id" content={ios.app_store_id} />}
+
+{android?.package && <meta property="al:android:package" content={android.package} />}
+{android?.app_name && <meta property="al:android:app_name" content={android.app_name} />}
+
+{web?.url && <meta property="al:web:url" content={toHref(web.url)} />}
+{
+	web?.should_fallback !== undefined && (
+		<meta property="al:web:should_fallback" content={web.should_fallback ? "true" : "false"} />
+	)
+}

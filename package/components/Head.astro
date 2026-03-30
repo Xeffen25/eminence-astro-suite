@@ -19,6 +19,7 @@ import clientHeadConfig from "virtual:eminence-astro-seo/config";
 
 import Alternate from "./Alternate.astro";
 import AppleWebApp from "./AppleWebApp.astro";
+import AppLinks from "./AppLinks.astro";
 import Base from "./Base.astro";
 import Canonical from "./Canonical.astro";
 import Charset from "./Charset.astro";
@@ -37,6 +38,7 @@ interface Props {
 	titleTemplate?: `${string}%s${string}`;
 	alternates?: ComponentProps<typeof Alternate>;
 	appleWebApp?: ComponentProps<typeof AppleWebApp>;
+	appLinks?: ComponentProps<typeof AppLinks>;
 	canonical?: ComponentProps<typeof Canonical> | ComponentProps<typeof Canonical>["href"] | boolean;
 	description?: string;
 	humansTxt?: ComponentProps<typeof HumansTxt> | ComponentProps<typeof HumansTxt>["href"] | boolean;
@@ -52,6 +54,7 @@ const {
 	titleTemplate: propTitleTemplate,
 	alternates,
 	appleWebApp: propAppleWebApp,
+	appLinks,
 	canonical: propCanonical,
 	description,
 	humansTxt: propHumansTxt,
@@ -93,6 +96,7 @@ const verification = propVerification !== undefined ? propVerification : clientH
 	<slot />
 	{alternates && <Alternate {...alternates} />}
 	{appleWebApp && <AppleWebApp {...appleWebApp} />}
+	{appLinks && <AppLinks {...appLinks} />}
 	{canonical && <Canonical {...canonical} />}
 	{description && <Description content={description} />}
 	{humansTxtProps && <HumansTxt {...humansTxtProps} />}

@@ -1,5 +1,6 @@
 import _Alternate from "./components/Alternate.astro";
 import _AppleWebApp from "./components/AppleWebApp.astro";
+import _AppLinks from "./components/AppLinks.astro";
 import _Base from "./components/Base.astro";
 import _Canonical from "./components/Canonical.astro";
 import _Charset from "./components/Charset.astro";
@@ -40,6 +41,23 @@ export const Alternate = _Alternate;
  * @see {@link https://developer.apple.com/documentation/webkit/promoting_apps_with_smart_app_banners Promoting apps with Smart App Banners}
  */
 export const AppleWebApp = _AppleWebApp;
+
+/**
+ * @summary Renders App Links meta tags for iOS, Android, and web fallback.
+ * @description
+ * Outputs platform-specific App Links metadata so crawlers and clients can
+ * associate a web URL with native app destinations. Supports iOS app URL and
+ * App Store ID, Android package details, and web fallback controls.
+ *
+ * @example
+ * <AppLinks ios={{ url: "myapp://open", app_store_id: "123456789" }} />
+ * @example
+ * <AppLinks android={{ package: "com.example.app", app_name: "Example App" }} web={{ url: "https://example.com", should_fallback: true }} />
+ * @see {@link https://todo.dev/components/app-links AppLinks Component Documentation}
+ * @see {@link https://developers.facebook.com/docs/applinks/web App Links Meta Tag Reference}
+ * @see {@link https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html Apple Universal Links}
+ */
+export const AppLinks = _AppLinks;
 
 /**
  * The ultimate `<head>` component for your Astro project.

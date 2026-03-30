@@ -1,5 +1,5 @@
 import type { ComponentProps } from "astro/types";
-import { AppleWebApp, Base, Charset, HumansTxt, Title, Verification, Viewport } from "../components";
+import { AppleWebApp, AppLinks, Base, Charset, HumansTxt, Title, Verification, Viewport } from "../components";
 import type { IntegrationInput } from "../integration";
 
 export const VIRTUAL_CONFIG_MODULE_ID = "virtual:eminence-astro-seo/config";
@@ -15,6 +15,7 @@ export type ClientHeadConfig = {
 	base?: ComponentProps<typeof Base>;
 	titleTemplate?: ComponentProps<typeof Title>["template"];
 	appleWebApp?: ComponentProps<typeof AppleWebApp>;
+	appLinks?: ComponentProps<typeof AppLinks>;
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
 	verification?: ComponentProps<typeof Verification>;
 };
@@ -32,6 +33,7 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		base: head?.base,
 		titleTemplate: head?.titleTemplate,
 		appleWebApp: head?.appleWebApp,
+		appLinks: head?.appLinks,
 		humansTxt: head?.humansTxt,
 		verification: head?.verification,
 	};

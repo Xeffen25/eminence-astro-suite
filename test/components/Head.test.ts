@@ -91,6 +91,22 @@ describe("Component Head", () => {
 		);
 	});
 
+	it("renders appLinks meta tags when configured", async () => {
+		const result = await container.renderToString(Head, {
+			props: {
+				title: "Home",
+				appLinks: {
+					ios: { url: "myapp://open", app_store_id: "123456789" },
+					web: { url: "https://example.com/home", should_fallback: false },
+				},
+			},
+		});
+
+		expect(result).toBe(
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"></head>',
+		);
+	});
+
 	it("renders nothing for canonical when explicitly disabled", async () => {
 		const result = await container.renderToString(Head, {
 			props: {
