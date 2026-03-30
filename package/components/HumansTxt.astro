@@ -1,0 +1,42 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/humans-txt}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/humans-txt.mdx}
+ * ---
+ * @summary Renders a `<link rel="author">` tag pointing to `/humans.txt`.
+ * @description
+ * The URL is built from the `domain` prop. If omitted, it falls back to
+ * `Astro.site` from your config. If neither is available, the component
+ * renders nothing.
+ *
+ * @example
+ * <HumansTxt domain="https://example.com" />
+ * @example
+ * <HumansTxt domain={new URL("https://example.com")} />
+ * @example
+ * // Uses Astro.site from astro.config.mjs
+ * <HumansTxt />
+ * @see {@link https://humanstxt.org/ The Humans.txt Standard}
+ */
+interface Props {
+	/**
+	 * Absolute site domain used to build the humans.txt URL.
+	 * @default Astro.site
+	 * @example "https://example.com"
+	 */
+	domain?: string | URL;
+}
+
+const { domain } = Astro.props;
+
+const baseDomain = domain ?? Astro.site;
+
+const href =
+	baseDomain === undefined
+		? undefined
+		: typeof baseDomain === "string"
+			? new URL("/humans.txt", baseDomain).toString()
+			: new URL("/humans.txt", baseDomain).toString();
+---
+
+{href && <link type="text/plain" rel="author" href={href} />}

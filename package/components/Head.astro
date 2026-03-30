@@ -1,0 +1,19 @@
+﻿---
+import type { ComponentProps } from "astro/types";
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
+import HumansTxt from "./HumansTxt.astro";
+
+interface Props {
+	humansTxt?: ComponentProps<typeof HumansTxt> | boolean;
+}
+
+const { humansTxt: propHumansTxt } = Astro.props;
+
+const humansTxt = propHumansTxt !== undefined ? propHumansTxt : clientHeadConfig.humansTxt;
+---
+
+<head>
+	<slot />
+	{humansTxt && <HumansTxt {...(humansTxt === true ? {} : humansTxt)} />}
+</head>
