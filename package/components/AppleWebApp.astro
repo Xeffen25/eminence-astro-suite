@@ -17,7 +17,7 @@
  * @see {@link https://developer.apple.com/documentation/webkit/promoting-apps-with-smart-app-banners Promoting apps with Smart App Banners}
  */
 
-export type Props = {
+interface Props {
 	itunes?: {
 		appId: string;
 		appArgument?: string;
@@ -25,7 +25,7 @@ export type Props = {
 	title?: string;
 	statusBarStyle?: "default" | "black" | "black-translucent";
 	startupImage?: StartupImage[];
-};
+}
 
 type StartupImage =
 	| string

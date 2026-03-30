@@ -16,14 +16,15 @@
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#alternate MDN link rel attribute reference}
  */
+
+interface Props {
+	languages?: Record<string, HrefValue>;
+	types?: Partial<Record<FeedType, HrefValue>>;
+}
+
 type HrefValue = string | URL;
 
 type FeedType = "application/rss+xml" | "application/atom+xml";
-
-export type Props = {
-	languages?: Record<string, HrefValue>;
-	types?: Partial<Record<FeedType, HrefValue>>;
-};
 
 const { languages, types } = Astro.props;
 

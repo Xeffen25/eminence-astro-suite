@@ -16,10 +16,6 @@
  * @see {@link https://developers.google.com/search/docs/crawling-indexing/verify-site-owner Google Search Console site verification}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta MDN meta element reference}
  */
-type VerificationEntry = {
-	name: string;
-	content: string;
-};
 
 interface Props {
 	google?: string;
@@ -27,6 +23,11 @@ interface Props {
 	yahoo?: string;
 	others?: VerificationEntry[];
 }
+
+type VerificationEntry = {
+	name: string;
+	content: string;
+};
 
 const { google, yandex, yahoo, others } = Astro.props;
 ---

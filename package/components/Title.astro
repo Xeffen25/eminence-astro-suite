@@ -17,8 +17,6 @@
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title MDN title element reference}
  */
 
-type TitleTemplate = `${string}%s${string}`;
-
 interface Props {
 	/**
 	 * The page-specific title text.
@@ -31,6 +29,8 @@ interface Props {
 	 */
 	template?: TitleTemplate;
 }
+
+type TitleTemplate = `${string}%s${string}`;
 
 const { value, template = "%s" } = Astro.props;
 ---
