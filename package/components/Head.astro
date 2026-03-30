@@ -24,6 +24,7 @@ import AppLinks from "./AppLinks.astro";
 import Archives from "./Archives.astro";
 import Assets from "./Assets.astro";
 import Base from "./Base.astro";
+import Bookmarks from "./Bookmarks.astro";
 import Canonical from "./Canonical.astro";
 import Charset from "./Charset.astro";
 import Description from "./Description.astro";
@@ -46,6 +47,7 @@ interface Props {
 	appLinks?: ComponentProps<typeof AppLinks>;
 	archives?: ComponentProps<typeof Archives>["hrefs"];
 	assets?: ComponentProps<typeof Assets>["hrefs"];
+	bookmarks?: ComponentProps<typeof Bookmarks>["hrefs"];
 	canonical?: ComponentProps<typeof Canonical>["href"] | boolean;
 	description?: ComponentProps<typeof Description>["content"];
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
@@ -64,6 +66,7 @@ const {
 	appLinks,
 	archives,
 	assets,
+	bookmarks,
 	canonical: propCanonical,
 	description,
 	humansTxt = clientHeadConfig.humansTxt,
@@ -86,8 +89,9 @@ const manifestProps = toOptionalHrefProps<ComponentProps<typeof Manifest>>(manif
 	{alternates && <Alternate {...alternates} />}
 	{appleWebApp && <AppleWebApp {...appleWebApp} />}
 	{appLinks && <AppLinks {...appLinks} />}
-	{assets && <Assets hrefs={assets} />}
 	{archives && <Archives hrefs={archives} />}
+	{assets && <Assets hrefs={assets} />}
+	{bookmarks && <Bookmarks hrefs={bookmarks} />}
 	{canonical && <Canonical {...canonical} />}
 	{description && <Description content={description} />}
 	{humansTxtProps && <HumansTxt {...humansTxtProps} />}

@@ -1,0 +1,27 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/bookmarks}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/bookmarks.mdx}
+ * ---
+ * @summary Renders one or more `<link rel="bookmarks">` tags.
+ * @description
+ * Outputs bookmark relationship links using `rel="bookmarks"`. Each entry in
+ * `hrefs` is rendered as its own `<link rel="bookmarks">` tag.
+ *
+ * @example
+ * <Bookmarks hrefs={["https://example.com/bookmarks"]} />
+ * @example
+ * <Bookmarks hrefs={[new URL("https://cdn.example.com/bookmarks"), "https://example.com/bookmarks"]} />
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel MDN rel attribute reference}
+ */
+import { toHref } from "../utils";
+
+interface Props {
+	hrefs: StringOrURL[];
+}
+
+const { hrefs } = Astro.props;
+---
+
+{hrefs.map((href) => <link rel="bookmarks" href={toHref(href)} />)}

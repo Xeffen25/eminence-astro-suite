@@ -4,6 +4,7 @@ import _AppLinks from "./components/AppLinks.astro";
 import _Archives from "./components/Archives.astro";
 import _Assets from "./components/Assets.astro";
 import _Base from "./components/Base.astro";
+import _Bookmarks from "./components/Bookmarks.astro";
 import _Canonical from "./components/Canonical.astro";
 import _Charset from "./components/Charset.astro";
 import _Description from "./components/Description.astro";
@@ -75,6 +76,21 @@ export const AppLinks = _AppLinks;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel MDN rel attribute reference}
  */
 export const Assets = _Assets;
+
+/**
+ * @summary Renders one or more `<link rel="bookmarks">` tags.
+ * @description
+ * Outputs bookmark relationship links using `rel="bookmarks"`. Each entry in
+ * `hrefs` is rendered as its own `<link rel="bookmarks">` tag.
+ *
+ * @example
+ * <Bookmarks hrefs={["https://example.com/bookmarks"]} />
+ * @example
+ * <Bookmarks hrefs={[new URL("https://cdn.example.com/bookmarks"), "https://example.com/bookmarks"]} />
+ * @see {@link https://todo.dev/components/bookmarks Bookmarks Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel MDN rel attribute reference}
+ */
+export const Bookmarks = _Bookmarks;
 
 /**
  * @summary Renders one or more `<link rel="archives">` tags.
