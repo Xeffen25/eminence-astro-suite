@@ -1,0 +1,152 @@
+[
+	{
+		"name": "bug",
+		"color": "d73a4a",
+		"description": "Something isn't working"
+	},
+	{
+		"name": "duplicate",
+		"color": "cfd3d7",
+		"description": "This issue or pull request already exists"
+	},
+	{
+		"name": "good first issue",
+		"color": "7057ff",
+		"description": "Good for newcomers"
+	},
+	{
+		"name": "help wanted",
+		"color": "008672",
+		"description": "Extra attention is needed"
+	},
+	{
+		"name": "invalid",
+		"color": "e4e669",
+		"description": "This doesn't seem right"
+	},
+	{
+		"name": "question",
+		"color": "d876e3",
+		"description": "Further information is requested"
+	},
+	{
+		"name": "wontfix",
+		"color": "ffffff",
+		"description": "This will not be worked on"
+	},
+	{
+		"name": "deps",
+		"color": "8e44ad",
+		"description": "Dependency updates (npm/pnpm packages)"
+	},
+	{
+		"name": "docs",
+		"color": "0075ca",
+		"description": "Documentation only changes"
+	},
+	{
+		"name": "feat",
+		"color": "a2eeef",
+		"description": "A new feature or improvement of an existing one"
+	},
+	{
+		"name": "fix",
+		"color": "d73a4a",
+		"description": "A fix for an issue"
+	},
+	{
+		"name": "refactor",
+		"color": "f29513",
+		"description": "Code change that improves quality without changing behavior"
+	},
+	{
+		"name": "revert",
+		"color": "6b7280",
+		"description": "Reverting a previous commit"
+	},
+	{
+		"name": "test",
+		"color": "fbca04",
+		"description": "Adding missing tests or correcting existing tests"
+	},
+	{
+		"name": "astro",
+		"color": "ff5d01",
+		"description": "Changes related to Astro components, routing, or config"
+	},
+	{
+		"name": "github",
+		"color": "6e5494",
+		"description": "Related to Github workflows, repository configuration, or issue/PR management"
+	},
+	{
+		"name": "ci",
+		"color": "1f6feb",
+		"description": "Continuous Integration and automated testing improvements"
+	},
+	{
+		"name": "cd",
+		"color": "1d76db",
+		"description": "Continuous Delivery and deployment pipeline tweaks"
+	},
+	{
+		"name": "dx",
+		"color": "0e8a16",
+		"description": "Developer Experience improvements and tooling"
+	},
+	{
+		"name": "locale",
+		"color": "5319e7",
+		"description": "Localization, internationalization, and language support"
+	},
+	{
+		"name": "seo",
+		"color": "3d9970",
+		"description": "Meta tags, sitemaps, and search engine crawlability"
+	},
+	{
+		"name": "lighthouse",
+		"color": "f1c40f",
+		"description": "Core Web Vitals and performance scoring improvements"
+	},
+	{
+		"name": "performance",
+		"color": "f39c12",
+		"description": "Runtime performance improvements and bottleneck fixes"
+	},
+	{
+		"name": "integration",
+		"color": "0ea5e9",
+		"description": "Integration points between systems, services, or modules"
+	},
+	{
+		"name": "components",
+		"color": "14b8a6",
+		"description": "UI or reusable component additions, updates, and fixes"
+	},
+	{
+		"name": "security",
+		"color": "b60205",
+		"description": "Security vulnerability or sensitive data exposure"
+	},
+	{
+		"name": "accessibility",
+		"color": "e6a700",
+		"description": "Accessibility (a11y) issues and improvements"
+	},
+	{
+		"name": "critical",
+		"color": "b31d1d",
+		"description": "Breaks or prevents pages from working"
+	},
+	{
+		"name": "blocked",
+		"color": "000000",
+		"description": "Work is blocked by external dependency or decision"
+	},
+	{
+		"name": "chore",
+		"color": "eb6420",
+		"description": "Routine maintenance, build system, or non-user-facing changes"
+	}
+]
