@@ -31,6 +31,7 @@ describe("Integration - Virtual Config", () => {
 				],
 			},
 			appLinks: undefined,
+			facebook: undefined,
 			humansTxt: undefined,
 			verification: undefined,
 			base: undefined,
@@ -56,6 +57,7 @@ describe("Integration - Virtual Config", () => {
 			viewport: undefined,
 			appleWebApp: undefined,
 			appLinks: undefined,
+			facebook: undefined,
 			humansTxt: undefined,
 			verification: {
 				google: "google-token",
@@ -106,6 +108,33 @@ describe("Integration - Virtual Config", () => {
 					url: "https://example.com",
 					should_fallback: true,
 				},
+			},
+			facebook: undefined,
+			humansTxt: undefined,
+			verification: undefined,
+			base: undefined,
+			titleTemplate: undefined,
+		});
+	});
+
+	it("extracts facebook defaults into client head config", () => {
+		const options: IntegrationInput = {
+			head: {
+				facebook: {
+					admins: ["10001", "10002"],
+				},
+			},
+		};
+
+		const result = extractClientHeadConfig(options);
+
+		expect(result).toEqual({
+			charset: undefined,
+			viewport: undefined,
+			appleWebApp: undefined,
+			appLinks: undefined,
+			facebook: {
+				admins: ["10001", "10002"],
 			},
 			humansTxt: undefined,
 			verification: undefined,
@@ -170,5 +199,19 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toBe(
 			'export default {"appLinks":{"ios":{"url":"https://ios.example.com/open"},"web":{"url":"https://example.com/path","should_fallback":false}}};',
 		);
+	});
+
+	it("serializes facebook defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			head: {
+				facebook: {
+					appId: "123456789",
+				},
+			},
+		};
+
+		const result = serializedVirtualConfigModule(options);
+
+		expect(result).toBe('export default {"facebook":{"appId":"123456789"}};');
 	});
 });

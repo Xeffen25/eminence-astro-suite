@@ -8,6 +8,7 @@ import _Bookmarks from "./components/Bookmarks.astro";
 import _Canonical from "./components/Canonical.astro";
 import _Charset from "./components/Charset.astro";
 import _Description from "./components/Description.astro";
+import _Facebook from "./components/Facebook.astro";
 import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
 import _Manifest from "./components/Manifest.astro";
@@ -168,6 +169,21 @@ export const Charset = _Charset;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#description MDN meta name attributes reference}
  */
 export const Description = _Description;
+
+/**
+ * @summary Renders Facebook Open Graph admin metadata tags.
+ * @description
+ * Outputs either a single `fb:app_id` meta tag or one or more `fb:admins`
+ * meta tags depending on which prop shape is provided.
+ *
+ * @example
+ * <Facebook appId="123456789" />
+ * @example
+ * <Facebook admins={["10001", "10002"]} />
+ * @see {@link https://todo.dev/components/facebook Facebook Component Documentation}
+ * @see {@link https://developers.facebook.com/docs/sharing/webmasters#markup Facebook Sharing metadata reference}
+ */
+export const Facebook = _Facebook;
 
 /**
  * @summary Renders a responsive viewport meta tag.
