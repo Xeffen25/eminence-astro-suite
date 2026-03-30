@@ -2,6 +2,7 @@ import _Base from "./components/Base.astro";
 import _Charset from "./components/Charset.astro";
 import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
+import _Title from "./components/Title.astro";
 import _Viewport from "./components/Viewport.astro";
 
 /**
@@ -10,12 +11,30 @@ import _Viewport from "./components/Viewport.astro";
  * Renders a `<head>` element with built-in support for common SEO and metadata tags. Following Capo.js convention as much as possible, allows you to configure site wide defaults via the `head` property in your integration options, and override them on a per-page basis by passing props to the component. With best practices baked in as defaults, you can focus on customizing the essentials and let the component handle the rest.
  *
  * @example
- * <Head head={{ charset: "iso-8859-1", viewport: false, humansTxt: false }} />
+ * <Head head={{ title: "Home" }} />
+ * @example
+ * <Head head={{ title: "Home", titleTemplate: "%s | My Site", charset: "iso-8859-1" }} />
  *
  * @see {@link https://todo.dev/components/Head Head Docs Source}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/head MDN head element reference}
  */
 export const Head = _Head;
+
+/**
+ * @summary Renders a `<title>` tag with optional template formatting.
+ * @description
+ * Outputs the document `<title>` tag using the provided `value`. An optional
+ * `template` prop containing a `%s` placeholder is replaced with `value` at
+ * render time, enabling site-wide suffix or prefix patterns.
+ *
+ * @example
+ * <Title value="Home" template="%s | My Site" />
+ * @example
+ * <Title value="Home" />
+ * @see {@link https://todo.dev/components/title Title Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title MDN title element reference}
+ */
+export const Title = _Title;
 
 /**
  * @summary Renders a `<meta charset>` tag for the document.

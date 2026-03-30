@@ -15,6 +15,7 @@ export type ClientHeadConfig = {
 		href?: string;
 		target?: string;
 	};
+	titleTemplate?: `${string}%s${string}`;
 };
 
 /**
@@ -29,6 +30,7 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		viewport: head?.viewport,
 		humansTxt: head?.humansTxt,
 		base: head?.base,
+		titleTemplate: head?.titleTemplate,
 	};
 };
 

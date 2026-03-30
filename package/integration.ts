@@ -16,6 +16,7 @@ export type IntegrationInput = {
 			href?: string;
 			target?: string;
 		};
+		titleTemplate?: `${string}%s${string}`;
 	};
 };
 
