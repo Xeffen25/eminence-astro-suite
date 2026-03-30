@@ -11,6 +11,9 @@ applyTo: "package/components/**/*.astro, package/components.ts, test/components/
 1. Create the component file at `package/components/ComponentName.astro`.
 2. Add the wrapper in `package/components.ts` by importing and exporting the same component name, including matching wrapper documentation.
 3. Add a component test at `test/components/ComponentName.test.ts` that renders and validates the component using the wrapper.
+4. Add the component to the `Head.astro` component in alphabetical order after its `<slot />`.
+
+Don't add tests in the Head component no matter what. It's rapidly changing and the tests would be a maintenance burden at the moment.
 
 ## Astro Component Docs (`package/components/**/*.astro`)
 
@@ -90,27 +93,27 @@ import { experimental_AstroContainer } from "astro/container";
 import { beforeEach, describe, expect, it } from "vitest";
 
 describe("Component ComponentName", () => {
-    let container: experimental_AstroContainer;
+	let container: experimental_AstroContainer;
 
-    beforeEach(async () => {
-        container = await experimental_AstroContainer.create();
-    });
+	beforeEach(async () => {
+		container = await experimental_AstroContainer.create();
+	});
 
-    it("renders expected output", async () => {
-        const result = await container.renderToString(ComponentName, {
-            props: { <prop>: <value> },
-        });
+	it("renders expected output", async () => {
+		const result = await container.renderToString(ComponentName, {
+			props: { exampleProp: "example-value" },
+		});
 
-        expect(result).toBe("<expected-html>");
-    });
+		expect(result).toBe("<expected-html>");
+	});
 
-    it("renders fallback output", async () => {
-        const result = await container.renderToString(ComponentName, {
-            props: {},
-        });
+	it("renders fallback output", async () => {
+		const result = await container.renderToString(ComponentName, {
+			props: {},
+		});
 
-        expect(result).toBe("");
-    });
+		expect(result).toBe("");
+	});
 });
 ```
 
