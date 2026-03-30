@@ -18,6 +18,7 @@
  * <HumansTxt />
  * @see {@link https://humanstxt.org/ The Humans.txt Standard}
  */
+import { toHref } from "../utils";
 
 interface Props {
 	/**
@@ -25,18 +26,16 @@ interface Props {
 	 * @default `${Astro.site}/humans.txt`
 	 * @example "https://example.com/humans.txt"
 	 */
-	href?: string | URL;
+	href?: StringOrURL;
 }
 
 const { href: propHref } = Astro.props;
 
 const href =
 	propHref !== undefined
-		? typeof propHref === "string"
-			? propHref
-			: propHref.toString()
+		? toHref(propHref)
 		: Astro.site !== undefined
-			? new URL("/humans.txt", Astro.site).toString()
+			? toHref(new URL("/humans.txt", Astro.site))
 			: undefined;
 
 if (href === undefined) {

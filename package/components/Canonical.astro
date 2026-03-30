@@ -19,9 +19,10 @@
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#canonical MDN rel="canonical" reference}
  */
+import { toHref } from "../utils";
 
 interface Props {
-	href?: string | URL | false;
+	href?: StringOrURL | false;
 }
 
 const { href } = Astro.props;
@@ -31,11 +32,9 @@ const canonicalHref =
 		? false
 		: href === undefined
 			? Astro.site
-				? new URL(Astro.url.pathname, Astro.site).toString()
+				? toHref(new URL(Astro.url.pathname, Astro.site))
 				: undefined
-			: typeof href === "string"
-				? href
-				: href.toString();
+			: toHref(href);
 ---
 
 {canonicalHref && <link rel="canonical" href={canonicalHref} />}

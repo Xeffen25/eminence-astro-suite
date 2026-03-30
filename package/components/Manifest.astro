@@ -20,6 +20,7 @@
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/manifest MDN rel="manifest" reference}
  */
+import { toHref } from "../utils";
 
 interface Props {
 	/**
@@ -27,18 +28,16 @@ interface Props {
 	 * @default `${Astro.site}/manifest.webmanifest`
 	 * @example "https://example.com/manifest.webmanifest"
 	 */
-	href?: string | URL;
+	href?: StringOrURL;
 }
 
 const { href: propHref } = Astro.props;
 
 const href =
 	propHref !== undefined
-		? typeof propHref === "string"
-			? propHref
-			: propHref.toString()
+		? toHref(propHref)
 		: Astro.site !== undefined
-			? new URL("/manifest.webmanifest", Astro.site).toString()
+			? toHref(new URL("/manifest.webmanifest", Astro.site))
 			: undefined;
 
 if (href === undefined) {
