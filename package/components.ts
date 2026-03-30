@@ -1,6 +1,7 @@
 import _Alternate from "./components/Alternate.astro";
 import _AppleWebApp from "./components/AppleWebApp.astro";
 import _AppLinks from "./components/AppLinks.astro";
+import _Archives from "./components/Archives.astro";
 import _Base from "./components/Base.astro";
 import _Canonical from "./components/Canonical.astro";
 import _Charset from "./components/Charset.astro";
@@ -58,6 +59,22 @@ export const AppleWebApp = _AppleWebApp;
  * @see {@link https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html Apple Universal Links}
  */
 export const AppLinks = _AppLinks;
+
+/**
+ * @summary Renders one or more `<link rel="archives">` tags.
+ * @description
+ * Outputs archive discovery links for pages such as yearly indexes, post
+ * listings, or historical snapshots. Each entry in `hrefs` is rendered as its
+ * own `<link rel="archives">` tag.
+ *
+ * @example
+ * <Archives hrefs={["https://example.com/archive/2025"]} />
+ * @example
+ * <Archives hrefs={[new URL("https://example.com/archive/2024"), "https://example.com/archive/2023"]} />
+ * @see {@link https://todo.dev/components/archives Archives Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#archives MDN rel="archives" reference}
+ */
+export const Archives = _Archives;
 
 /**
  * The ultimate `<head>` component for your Astro project.
