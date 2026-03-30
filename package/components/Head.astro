@@ -14,6 +14,7 @@
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/head MDN head element reference}
  */
+
 import type { ComponentProps } from "astro/types";
 import clientHeadConfig from "virtual:eminence-astro-seo/config";
 
@@ -30,61 +31,43 @@ import Title from "./Title.astro";
 import Verification from "./Verification.astro";
 import Viewport from "./Viewport.astro";
 
+import { toOptionalHrefProps } from "../utils";
+
 interface Props {
-	charset?: string;
-	viewport?: string;
+	charset?: ComponentProps<typeof Charset>["charset"];
+	viewport?: ComponentProps<typeof Viewport>["content"];
 	base?: ComponentProps<typeof Base>;
-	title: string;
-	titleTemplate?: `${string}%s${string}`;
+	title: ComponentProps<typeof Title>["value"];
+	titleTemplate?: ComponentProps<typeof Title>["template"];
 	alternates?: ComponentProps<typeof Alternate>;
 	appleWebApp?: ComponentProps<typeof AppleWebApp>;
 	appLinks?: ComponentProps<typeof AppLinks>;
-	canonical?: ComponentProps<typeof Canonical> | ComponentProps<typeof Canonical>["href"] | boolean;
-	description?: string;
-	humansTxt?: ComponentProps<typeof HumansTxt> | ComponentProps<typeof HumansTxt>["href"] | boolean;
-	manifest?: ComponentProps<typeof Manifest> | boolean;
+	canonical?: ComponentProps<typeof Canonical>["href"] | boolean;
+	description?: ComponentProps<typeof Description>["content"];
+	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
+	manifest?: ComponentProps<typeof Manifest>["href"] | boolean;
 	verification?: ComponentProps<typeof Verification>;
 }
 
 const {
-	charset: propCharset,
-	viewport: propViewport,
-	base: propBase,
+	charset = clientHeadConfig.charset,
+	viewport = clientHeadConfig.viewport,
+	base = clientHeadConfig.base,
 	title,
-	titleTemplate: propTitleTemplate,
+	titleTemplate = clientHeadConfig.titleTemplate,
 	alternates,
-	appleWebApp: propAppleWebApp,
+	appleWebApp = clientHeadConfig.appleWebApp,
 	appLinks,
 	canonical: propCanonical,
 	description,
-	humansTxt: propHumansTxt,
+	humansTxt = clientHeadConfig.humansTxt,
 	manifest,
-	verification: propVerification,
+	verification = clientHeadConfig.verification,
 } = Astro.props;
 
-const charset = propCharset !== undefined ? propCharset : clientHeadConfig.charset;
-const viewport = propViewport !== undefined ? propViewport : clientHeadConfig.viewport;
-const base = propBase !== undefined ? propBase : clientHeadConfig.base;
-const titleTemplate = propTitleTemplate !== undefined ? propTitleTemplate : clientHeadConfig.titleTemplate;
-const appleWebApp = propAppleWebApp !== undefined ? propAppleWebApp : clientHeadConfig.appleWebApp;
-const canonical =
-	propCanonical === undefined || propCanonical === false
-		? undefined
-		: propCanonical === true
-			? {}
-			: typeof propCanonical === "string" || propCanonical instanceof URL
-				? { href: propCanonical }
-				: propCanonical;
-const humansTxt = propHumansTxt !== undefined ? propHumansTxt : clientHeadConfig.humansTxt;
-const humansTxtProps =
-	humansTxt === undefined || humansTxt === false
-		? undefined
-		: humansTxt === true
-			? {}
-			: typeof humansTxt === "string" || humansTxt instanceof URL
-				? { href: humansTxt }
-				: humansTxt;
-const verification = propVerification !== undefined ? propVerification : clientHeadConfig.verification;
+const canonical = toOptionalHrefProps<ComponentProps<typeof Canonical>>(propCanonical);
+const humansTxtProps = toOptionalHrefProps<ComponentProps<typeof HumansTxt>>(humansTxt);
+const manifestProps = toOptionalHrefProps<ComponentProps<typeof Manifest>>(manifest);
 ---
 
 <head>
@@ -100,6 +83,6 @@ const verification = propVerification !== undefined ? propVerification : clientH
 	{canonical && <Canonical {...canonical} />}
 	{description && <Description content={description} />}
 	{humansTxtProps && <HumansTxt {...humansTxtProps} />}
-	{manifest && <Manifest {...(manifest === true ? {} : manifest)} />}
+	{manifestProps && <Manifest {...manifestProps} />}
 	{verification && <Verification {...verification} />}
 </head>
