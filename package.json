@@ -12,6 +12,7 @@
 		"format:check": "prettier . --check",
 		"test": "vitest run",
 		"test:watch": "vitest",
+		"all": "pnpm format:fix && astro check && pnpm test",
 		"prepare": "husky"
 	},
 	"lint-staged": {
@@ -23,6 +24,7 @@
 		"sharp": "^0.34.2"
 	},
 	"devDependencies": {
+		"@astrojs/check": "^0.9.8",
 		"@vitest/browser": "^4.1.2",
 		"husky": "^9.1.7",
 		"jsdom": "^29.0.1",
@@ -31,6 +33,7 @@
 		"prettier": "^3.8.1",
 		"prettier-plugin-astro": "^0.14.1",
 		"prettier-plugin-organize-imports": "^4.3.0",
+		"typescript": "^6.0.2",
 		"vitest": "^4.1.2"
 	}
 }
