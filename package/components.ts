@@ -4,6 +4,7 @@ import _Charset from "./components/Charset.astro";
 import _Description from "./components/Description.astro";
 import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
+import _Manifest from "./components/Manifest.astro";
 import _Title from "./components/Title.astro";
 import _Viewport from "./components/Viewport.astro";
 
@@ -135,3 +136,23 @@ export const Base = _Base;
  * @see {@link https://humanstxt.org/ The Humans.txt Standard}
  */
 export const HumansTxt = _HumansTxt;
+
+/**
+ * @summary Renders a `<link rel="manifest">` tag for web app metadata.
+ * @description
+ * Uses the provided `href` value directly when present. If omitted, it tries
+ * to generate a URL from `Astro.site` by appending `/manifest.webmanifest`.
+ * If neither source is available, the component renders nothing and logs an
+ * error.
+ *
+ * @example
+ * <Manifest href="https://example.com/manifest.webmanifest" />
+ * @example
+ * <Manifest href={new URL("https://example.com/manifest.webmanifest")} />
+ * @example
+ * // Derives href from Astro.site by appending /manifest.webmanifest
+ * <Manifest />
+ * @see {@link https://todo.dev/components/manifest Manifest Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/manifest MDN rel="manifest" reference}
+ */
+export const Manifest = _Manifest;

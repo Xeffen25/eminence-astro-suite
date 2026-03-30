@@ -64,4 +64,17 @@ describe("Component Head", () => {
 			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link type="text/plain" rel="author" href="https://example.com/humans.txt"></head>',
 		);
 	});
+
+	it("renders manifest link when configured", async () => {
+		const result = await container.renderToString(Head, {
+			props: {
+				title: "Home",
+				manifest: { href: "https://example.com/manifest.webmanifest" },
+			},
+		});
+
+		expect(result).toBe(
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="manifest" href="https://example.com/manifest.webmanifest"></head>',
+		);
+	});
 });

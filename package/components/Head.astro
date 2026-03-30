@@ -22,6 +22,7 @@ import Base from "./Base.astro";
 import Charset from "./Charset.astro";
 import Description from "./Description.astro";
 import HumansTxt from "./HumansTxt.astro";
+import Manifest from "./Manifest.astro";
 import Title from "./Title.astro";
 import Viewport from "./Viewport.astro";
 
@@ -32,6 +33,7 @@ interface Props {
 	viewport?: string;
 	alternates?: ComponentProps<typeof Alternate>;
 	humansTxt?: ComponentProps<typeof HumansTxt> | boolean;
+	manifest?: ComponentProps<typeof Manifest> | boolean;
 	base?: ComponentProps<typeof Base>;
 	description?: string;
 }
@@ -43,6 +45,7 @@ const {
 	viewport: propViewport,
 	alternates,
 	humansTxt: propHumansTxt,
+	manifest,
 	base: propBase,
 	description,
 } = Astro.props;
@@ -57,10 +60,12 @@ const base = propBase !== undefined ? propBase : clientHeadConfig.base;
 <head>
 	<Charset charset={charset} />
 	<Viewport content={viewport} />
-	{alternates && <Alternate {...alternates} />}
+
 	{base && <Base {...base} />}
 	<Title value={title} template={titleTemplate} />
 	<slot />
+	{alternates && <Alternate {...alternates} />}
 	{description && <Description content={description} />}
 	{humansTxt && <HumansTxt {...(humansTxt === true ? {} : humansTxt)} />}
+	{manifest && <Manifest {...(manifest === true ? {} : manifest)} />}
 </head>

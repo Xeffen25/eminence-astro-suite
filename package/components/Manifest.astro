@@ -1,0 +1,48 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/manifest}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/manifest.mdx}
+ * ---
+ * @summary Renders a `<link rel="manifest">` tag for web app metadata.
+ * @description
+ * Uses the provided `href` value directly when present. If omitted, it tries
+ * to generate a URL from `Astro.site` by appending `/manifest.webmanifest`.
+ * If neither source is available, the component renders nothing and logs an
+ * error.
+ *
+ * @example
+ * <Manifest href="https://example.com/manifest.webmanifest" />
+ * @example
+ * <Manifest href={new URL("https://example.com/manifest.webmanifest")} />
+ * @example
+ * // Derives href from Astro.site by appending /manifest.webmanifest
+ * <Manifest />
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/manifest MDN rel="manifest" reference}
+ */
+interface Props {
+	/**
+	 * Absolute manifest URL rendered directly as the link href.
+	 * @default `${Astro.site}/manifest.webmanifest`
+	 * @example "https://example.com/manifest.webmanifest"
+	 */
+	href?: string | URL;
+}
+
+const { href: propHref } = Astro.props;
+
+const href =
+	propHref !== undefined
+		? typeof propHref === "string"
+			? propHref
+			: propHref.toString()
+		: Astro.site !== undefined
+			? new URL("/manifest.webmanifest", Astro.site).toString()
+			: undefined;
+
+if (href === undefined) {
+	console.error("[Manifest] Unable to resolve href. Provide `href` or configure `site` in astro.config.*.");
+}
+---
+
+{href && <link rel="manifest" href={href} />}
