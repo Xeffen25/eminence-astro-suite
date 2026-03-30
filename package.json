@@ -12,6 +12,7 @@
 		"format:check": "prettier . --check",
 		"test": "vitest run",
 		"test:watch": "vitest",
+		"check": "pnpm format:check && astro check && pnpm test",
 		"all": "pnpm format:fix && astro check && pnpm test",
 		"prepare": "husky"
 	},
