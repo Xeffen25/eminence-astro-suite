@@ -17,6 +17,7 @@
 import type { ComponentProps } from "astro/types";
 import clientHeadConfig from "virtual:eminence-astro-seo/config";
 
+import Alternate from "./Alternate.astro";
 import Base from "./Base.astro";
 import Charset from "./Charset.astro";
 import Description from "./Description.astro";
@@ -29,8 +30,9 @@ interface Props {
 	titleTemplate?: `${string}%s${string}`;
 	charset?: string;
 	viewport?: string;
+	alternates?: ComponentProps<typeof Alternate>;
 	humansTxt?: ComponentProps<typeof HumansTxt> | boolean;
-	base?: ComponentProps<typeof Base> | false;
+	base?: ComponentProps<typeof Base>;
 	description?: string;
 }
 
@@ -39,6 +41,7 @@ const {
 	titleTemplate: propTitleTemplate,
 	charset: propCharset,
 	viewport: propViewport,
+	alternates,
 	humansTxt: propHumansTxt,
 	base: propBase,
 	description,
@@ -54,6 +57,7 @@ const base = propBase !== undefined ? propBase : clientHeadConfig.base;
 <head>
 	<Charset charset={charset} />
 	<Viewport content={viewport} />
+	{alternates && <Alternate {...alternates} />}
 	{base && <Base {...base} />}
 	<Title value={title} template={titleTemplate} />
 	<slot />

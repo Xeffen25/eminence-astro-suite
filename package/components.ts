@@ -1,3 +1,4 @@
+import _Alternate from "./components/Alternate.astro";
 import _Base from "./components/Base.astro";
 import _Charset from "./components/Charset.astro";
 import _Description from "./components/Description.astro";
@@ -5,6 +6,20 @@ import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
 import _Title from "./components/Title.astro";
 import _Viewport from "./components/Viewport.astro";
+
+/**
+ * @summary Renders `<link rel="alternate">` tags for language variants and feed types.
+ * @description
+ * Outputs alternate link tags to support language variants, regional versions, and RSS/Atom feed discovery. Accepts language variants as a record of language codes to URLs, and optional feed types for RSS and Atom discovery links.
+ *
+ * @example
+ * <Alternate languages={{ "es": "https://example.com/es", "fr": "https://example.com/fr" }} />
+ * @example
+ * <Alternate types={{ "application/rss+xml": "https://example.com/feed.rss", "application/atom+xml": "https://example.com/feed.atom" }} />
+ * @see {@link https://todo.dev/components/alternate Alternate Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#alternate MDN link rel attribute reference}
+ */
+export const Alternate = _Alternate;
 
 /**
  * The ultimate `<head>` component for your Astro project.
