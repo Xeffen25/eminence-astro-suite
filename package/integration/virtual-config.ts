@@ -1,5 +1,5 @@
 import type { ComponentProps } from "astro/types";
-import { Base, Charset, HumansTxt, Title, Verification, Viewport } from "../components";
+import { AppleWebApp, Base, Charset, HumansTxt, Title, Verification, Viewport } from "../components";
 import type { IntegrationInput } from "../integration";
 
 export const VIRTUAL_CONFIG_MODULE_ID = "virtual:eminence-astro-seo/config";
@@ -12,10 +12,11 @@ export const RESOLVED_VIRTUAL_CONFIG_MODULE_ID = `\0${VIRTUAL_CONFIG_MODULE_ID}`
 export type ClientHeadConfig = {
 	charset?: ComponentProps<typeof Charset>["charset"];
 	viewport?: ComponentProps<typeof Viewport>["content"];
-	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
-	verification?: ComponentProps<typeof Verification>;
 	base?: ComponentProps<typeof Base>;
 	titleTemplate?: ComponentProps<typeof Title>["template"];
+	appleWebApp?: ComponentProps<typeof AppleWebApp>;
+	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
+	verification?: ComponentProps<typeof Verification>;
 };
 
 /**
@@ -28,10 +29,11 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 	return {
 		charset: head?.charset,
 		viewport: head?.viewport,
-		humansTxt: head?.humansTxt,
-		verification: head?.verification,
 		base: head?.base,
 		titleTemplate: head?.titleTemplate,
+		appleWebApp: head?.appleWebApp,
+		humansTxt: head?.humansTxt,
+		verification: head?.verification,
 	};
 };
 

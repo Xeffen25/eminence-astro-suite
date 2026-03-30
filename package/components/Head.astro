@@ -18,6 +18,7 @@ import type { ComponentProps } from "astro/types";
 import clientHeadConfig from "virtual:eminence-astro-seo/config";
 
 import Alternate from "./Alternate.astro";
+import AppleWebApp from "./AppleWebApp.astro";
 import Base from "./Base.astro";
 import Charset from "./Charset.astro";
 import Description from "./Description.astro";
@@ -28,37 +29,39 @@ import Verification from "./Verification.astro";
 import Viewport from "./Viewport.astro";
 
 interface Props {
-	title: string;
-	titleTemplate?: `${string}%s${string}`;
 	charset?: string;
 	viewport?: string;
+	base?: ComponentProps<typeof Base>;
+	title: string;
+	titleTemplate?: `${string}%s${string}`;
 	alternates?: ComponentProps<typeof Alternate>;
+	appleWebApp?: ComponentProps<typeof AppleWebApp>;
+	description?: string;
 	humansTxt?: ComponentProps<typeof HumansTxt> | ComponentProps<typeof HumansTxt>["href"] | boolean;
 	manifest?: ComponentProps<typeof Manifest> | boolean;
-	base?: ComponentProps<typeof Base>;
-	description?: string;
 	verification?: ComponentProps<typeof Verification>;
 }
 
 const {
-	title,
-	titleTemplate: propTitleTemplate,
 	charset: propCharset,
 	viewport: propViewport,
+	base: propBase,
+	title,
+	titleTemplate: propTitleTemplate,
 	alternates,
+	appleWebApp: propAppleWebApp,
+	description,
 	humansTxt: propHumansTxt,
 	manifest,
-	base: propBase,
-	description,
 	verification: propVerification,
 } = Astro.props;
 
-const titleTemplate = propTitleTemplate !== undefined ? propTitleTemplate : clientHeadConfig.titleTemplate;
 const charset = propCharset !== undefined ? propCharset : clientHeadConfig.charset;
 const viewport = propViewport !== undefined ? propViewport : clientHeadConfig.viewport;
-const humansTxt = propHumansTxt !== undefined ? propHumansTxt : clientHeadConfig.humansTxt;
 const base = propBase !== undefined ? propBase : clientHeadConfig.base;
-const verification = propVerification !== undefined ? propVerification : clientHeadConfig.verification;
+const titleTemplate = propTitleTemplate !== undefined ? propTitleTemplate : clientHeadConfig.titleTemplate;
+const appleWebApp = propAppleWebApp !== undefined ? propAppleWebApp : clientHeadConfig.appleWebApp;
+const humansTxt = propHumansTxt !== undefined ? propHumansTxt : clientHeadConfig.humansTxt;
 const humansTxtProps =
 	humansTxt === undefined || humansTxt === false
 		? undefined
@@ -67,6 +70,7 @@ const humansTxtProps =
 			: typeof humansTxt === "string" || humansTxt instanceof URL
 				? { href: humansTxt }
 				: humansTxt;
+const verification = propVerification !== undefined ? propVerification : clientHeadConfig.verification;
 ---
 
 <head>
@@ -77,6 +81,7 @@ const humansTxtProps =
 	<Title value={title} template={titleTemplate} />
 	<slot />
 	{alternates && <Alternate {...alternates} />}
+	{appleWebApp && <AppleWebApp {...appleWebApp} />}
 	{description && <Description content={description} />}
 	{humansTxtProps && <HumansTxt {...humansTxtProps} />}
 	{manifest && <Manifest {...(manifest === true ? {} : manifest)} />}

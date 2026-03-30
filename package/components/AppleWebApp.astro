@@ -1,0 +1,66 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/apple-web-app}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/apple-web-app.mdx}
+ * ---
+ * @summary Renders Apple web app and Smart App Banner meta tags.
+ * @description
+ * Outputs tags used by iOS Safari for standalone web app behavior and startup
+ * images, plus an optional `apple-itunes-app` Smart App Banner tag.
+ *
+ * @example
+ * <AppleWebApp title="My App" statusBarStyle="black-translucent" />
+ * @example
+ * <AppleWebApp itunes={{ appId: "123456789", appArgument: "myapp://open" }} />
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name MDN Meta name reference}
+ * @see {@link https://developer.apple.com/documentation/webkit/promoting-apps-with-smart-app-banners Promoting apps with Smart App Banners}
+ */
+
+export type Props = {
+	itunes?: {
+		appId: string;
+		appArgument?: string;
+	};
+	title?: string;
+	statusBarStyle?: "default" | "black" | "black-translucent";
+	startupImage?: StartupImage[];
+};
+
+type StartupImage =
+	| string
+	| URL
+	| {
+			url: string | URL;
+			media?: string;
+	  };
+
+const { itunes, title, statusBarStyle, startupImage } = Astro.props;
+---
+
+{
+	itunes && (
+		<meta
+			name="apple-itunes-app"
+			content={[`app-id=${itunes.appId}`, itunes.appArgument && `app-argument=${itunes.appArgument}`]
+				.filter(Boolean)
+				.join(", ")}
+		/>
+	)
+}
+{title && <meta name="apple-mobile-web-app-title" content={title} />}
+{
+	startupImage?.map((image) => {
+		const url =
+			typeof image === "string"
+				? image
+				: image instanceof URL
+					? image.toString()
+					: image.url instanceof URL
+						? image.url.toString()
+						: image.url;
+		const media = typeof image === "string" || image instanceof URL ? undefined : image.media;
+		return <link href={url} media={media} rel="apple-touch-startup-image" />;
+	})
+}
+{statusBarStyle && <meta name="apple-mobile-web-app-status-bar-style" content={statusBarStyle} />}

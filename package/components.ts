@@ -1,4 +1,5 @@
 import _Alternate from "./components/Alternate.astro";
+import _AppleWebApp from "./components/AppleWebApp.astro";
 import _Base from "./components/Base.astro";
 import _Charset from "./components/Charset.astro";
 import _Description from "./components/Description.astro";
@@ -22,6 +23,22 @@ import _Viewport from "./components/Viewport.astro";
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#alternate MDN link rel attribute reference}
  */
 export const Alternate = _Alternate;
+
+/**
+ * @summary Renders Apple web app and Smart App Banner meta tags.
+ * @description
+ * Outputs tags used by iOS Safari for standalone web app behavior and startup
+ * images, plus an optional `apple-itunes-app` Smart App Banner tag.
+ *
+ * @example
+ * <AppleWebApp title="My App" statusBarStyle="black-translucent" />
+ * @example
+ * <AppleWebApp itunes={{ appId: "123456789", appArgument: "myapp://open" }} />
+ * @see {@link https://todo.dev/components/apple-web-app AppleWebApp Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/apple-mobile-web-app-capable MDN apple-mobile-web-app-capable reference}
+ * @see {@link https://developer.apple.com/documentation/webkit/promoting_apps_with_smart_app_banners Promoting apps with Smart App Banners}
+ */
+export const AppleWebApp = _AppleWebApp;
 
 /**
  * The ultimate `<head>` component for your Astro project.
