@@ -1,5 +1,6 @@
 import _Base from "./components/Base.astro";
 import _Charset from "./components/Charset.astro";
+import _Description from "./components/Description.astro";
 import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
 import _Title from "./components/Title.astro";
@@ -50,6 +51,21 @@ export const Title = _Title;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-meta-charset MDN meta charset reference}
  */
 export const Charset = _Charset;
+
+/**
+ * @summary Renders a `<meta name="description">` tag for SEO.
+ * @description
+ * Outputs the page meta description tag in your `<head>`. This tag is commonly
+ * used by search engines and social media platforms to display a preview of your
+ * page content. Defaults to an empty string if no content is provided.
+ *
+ * @example
+ * <Description content="Learn how to build efficient web applications" />
+ *
+ * @see {@link https://todo.dev/components/description Description Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#description MDN meta name attributes reference}
+ */
+export const Description = _Description;
 
 /**
  * @summary Renders a responsive viewport meta tag.

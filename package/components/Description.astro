@@ -1,0 +1,25 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/description}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/description.mdx}
+ * ---
+ * @summary Renders a `<meta name="description">` tag for SEO.
+ * @description
+ * Outputs the page meta description tag in your `<head>`. This tag is commonly
+ * used by search engines and social media platforms to display a preview of your
+ * page content. Defaults to an empty string if no content is provided.
+ *
+ * @example
+ * <Description content="Learn how to build efficient web applications" />
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#description MDN meta name attributes reference}
+ */
+interface Props {
+	/**
+	 * The page-specific meta description content. This should be a concise summary of the page's content, ideally between 50-160 characters.
+	 */
+	content: string;
+}
+---
+
+<meta name="description" content={Astro.props.content} />
