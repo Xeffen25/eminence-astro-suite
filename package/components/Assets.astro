@@ -1,0 +1,27 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/assets}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/assets.mdx}
+ * ---
+ * @summary Renders one or more `<link rel="assets">` tags.
+ * @description
+ * Outputs resource relationship links using `rel="assets"`. Each entry in
+ * `hrefs` is rendered as its own `<link rel="assets">` tag.
+ *
+ * @example
+ * <Assets hrefs={["https://example.com/assets"]} />
+ * @example
+ * <Assets hrefs={[new URL("https://cdn.example.com/assets"), "https://example.com/assets"]} />
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel MDN rel attribute reference}
+ */
+import { toHref } from "../utils";
+
+interface Props {
+	hrefs: StringOrURL[];
+}
+
+const { hrefs } = Astro.props;
+---
+
+{hrefs.map((href) => <link rel="assets" href={toHref(href)} />)}

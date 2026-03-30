@@ -2,6 +2,7 @@ import _Alternate from "./components/Alternate.astro";
 import _AppleWebApp from "./components/AppleWebApp.astro";
 import _AppLinks from "./components/AppLinks.astro";
 import _Archives from "./components/Archives.astro";
+import _Assets from "./components/Assets.astro";
 import _Base from "./components/Base.astro";
 import _Canonical from "./components/Canonical.astro";
 import _Charset from "./components/Charset.astro";
@@ -59,6 +60,21 @@ export const AppleWebApp = _AppleWebApp;
  * @see {@link https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html Apple Universal Links}
  */
 export const AppLinks = _AppLinks;
+
+/**
+ * @summary Renders one or more `<link rel="assets">` tags.
+ * @description
+ * Outputs resource relationship links using `rel="assets"`. Each entry in
+ * `hrefs` is rendered as its own `<link rel="assets">` tag.
+ *
+ * @example
+ * <Assets hrefs={["https://example.com/assets"]} />
+ * @example
+ * <Assets hrefs={[new URL("https://cdn.example.com/assets"), "https://example.com/assets"]} />
+ * @see {@link https://todo.dev/components/assets Assets Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel MDN rel attribute reference}
+ */
+export const Assets = _Assets;
 
 /**
  * @summary Renders one or more `<link rel="archives">` tags.
