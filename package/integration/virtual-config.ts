@@ -1,3 +1,5 @@
+import type { ComponentProps } from "astro/types";
+import Verification from "../components/Verification.astro";
 import type { IntegrationInput } from "../integration";
 
 export const VIRTUAL_CONFIG_MODULE_ID = "virtual:eminence-astro-seo/config";
@@ -11,6 +13,7 @@ export type ClientHeadConfig = {
 	charset?: string;
 	viewport?: string;
 	humansTxt?: boolean;
+	verification?: ComponentProps<typeof Verification>;
 	base?: {
 		href?: string;
 		target?: string;
@@ -29,6 +32,7 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		charset: head?.charset,
 		viewport: head?.viewport,
 		humansTxt: head?.humansTxt,
+		verification: head?.verification,
 		base: head?.base,
 		titleTemplate: head?.titleTemplate,
 	};

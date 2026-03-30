@@ -24,6 +24,7 @@ import Description from "./Description.astro";
 import HumansTxt from "./HumansTxt.astro";
 import Manifest from "./Manifest.astro";
 import Title from "./Title.astro";
+import Verification from "./Verification.astro";
 import Viewport from "./Viewport.astro";
 
 interface Props {
@@ -36,6 +37,7 @@ interface Props {
 	manifest?: ComponentProps<typeof Manifest> | boolean;
 	base?: ComponentProps<typeof Base>;
 	description?: string;
+	verification?: ComponentProps<typeof Verification>;
 }
 
 const {
@@ -48,6 +50,7 @@ const {
 	manifest,
 	base: propBase,
 	description,
+	verification: propVerification,
 } = Astro.props;
 
 const titleTemplate = propTitleTemplate !== undefined ? propTitleTemplate : clientHeadConfig.titleTemplate;
@@ -55,6 +58,7 @@ const charset = propCharset !== undefined ? propCharset : clientHeadConfig.chars
 const viewport = propViewport !== undefined ? propViewport : clientHeadConfig.viewport;
 const humansTxt = propHumansTxt !== undefined ? propHumansTxt : clientHeadConfig.humansTxt;
 const base = propBase !== undefined ? propBase : clientHeadConfig.base;
+const verification = propVerification !== undefined ? propVerification : clientHeadConfig.verification;
 ---
 
 <head>
@@ -68,4 +72,5 @@ const base = propBase !== undefined ? propBase : clientHeadConfig.base;
 	{description && <Description content={description} />}
 	{humansTxt && <HumansTxt {...(humansTxt === true ? {} : humansTxt)} />}
 	{manifest && <Manifest {...(manifest === true ? {} : manifest)} />}
+	{verification && <Verification {...verification} />}
 </head>

@@ -1,4 +1,5 @@
 ﻿import type { AstroConfig, AstroIntegration, AstroIntegrationLogger } from "astro";
+import type { ClientHeadConfig } from "./integration/virtual-config";
 
 import { validateHumansTxtInBuildOutput } from "./integration/humans-txt";
 import {
@@ -8,16 +9,7 @@ import {
 } from "./integration/virtual-config";
 
 export type IntegrationInput = {
-	head?: {
-		charset?: string;
-		viewport?: string;
-		humansTxt?: boolean;
-		base?: {
-			href?: string;
-			target?: string;
-		};
-		titleTemplate?: `${string}%s${string}`;
-	};
+	head?: ClientHeadConfig;
 };
 
 export type IntegrationRuntimeContext = {

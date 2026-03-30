@@ -6,6 +6,7 @@ import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
 import _Manifest from "./components/Manifest.astro";
 import _Title from "./components/Title.astro";
+import _Verification from "./components/Verification.astro";
 import _Viewport from "./components/Viewport.astro";
 
 /**
@@ -156,3 +157,19 @@ export const HumansTxt = _HumansTxt;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/manifest MDN rel="manifest" reference}
  */
 export const Manifest = _Manifest;
+
+/**
+ * @summary Renders site verification meta tags for search providers.
+ * @description
+ * Outputs verification `<meta>` tags for Google, Yandex, Yahoo, and custom
+ * providers through `others`. Only defined values are rendered.
+ *
+ * @example
+ * <Verification google="google-token" yandex="yandex-token" yahoo="yahoo-token" />
+ * @example
+ * <Verification others={[{ name: "msvalidate.01", content: "bing-token" }]} />
+ * @see {@link https://todo.dev/components/verification Verification Component Documentation}
+ * @see {@link https://developers.google.com/search/docs/crawling-indexing/verify-site-owner Google Search Console site verification}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta MDN meta element reference}
+ */
+export const Verification = _Verification;

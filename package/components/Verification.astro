@@ -1,0 +1,37 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/verification}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/verification.mdx}
+ * ---
+ * @summary Renders site verification meta tags for search providers.
+ * @description
+ * Outputs verification `<meta>` tags for Google, Yandex, Yahoo, and custom
+ * providers through `others`. Only defined values are rendered.
+ *
+ * @example
+ * <Verification google="google-token" yandex="yandex-token" yahoo="yahoo-token" />
+ * @example
+ * <Verification others={[{ name: "msvalidate.01", content: "bing-token" }]} />
+ *
+ * @see {@link https://developers.google.com/search/docs/crawling-indexing/verify-site-owner Google Search Console site verification}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta MDN meta element reference}
+ */
+type VerificationEntry = {
+	name: string;
+	content: string;
+};
+
+interface Props {
+	google?: string;
+	yandex?: string;
+	yahoo?: string;
+	others?: VerificationEntry[];
+}
+
+const { google, yandex, yahoo, others } = Astro.props;
+---
+
+{google && <meta name="google-site-verification" content={google} />}
+{yandex && <meta name="yandex-verification" content={yandex} />}
+{yahoo && <meta name="y_key" content={yahoo} />}
+{others?.map(({ name, content }) => <meta name={name} content={content} />)}
