@@ -33,7 +33,7 @@ interface Props {
 	charset?: string;
 	viewport?: string;
 	alternates?: ComponentProps<typeof Alternate>;
-	humansTxt?: ComponentProps<typeof HumansTxt> | boolean;
+	humansTxt?: ComponentProps<typeof HumansTxt> | ComponentProps<typeof HumansTxt>["href"] | boolean;
 	manifest?: ComponentProps<typeof Manifest> | boolean;
 	base?: ComponentProps<typeof Base>;
 	description?: string;
@@ -59,6 +59,14 @@ const viewport = propViewport !== undefined ? propViewport : clientHeadConfig.vi
 const humansTxt = propHumansTxt !== undefined ? propHumansTxt : clientHeadConfig.humansTxt;
 const base = propBase !== undefined ? propBase : clientHeadConfig.base;
 const verification = propVerification !== undefined ? propVerification : clientHeadConfig.verification;
+const humansTxtProps =
+	humansTxt === undefined || humansTxt === false
+		? undefined
+		: humansTxt === true
+			? {}
+			: typeof humansTxt === "string" || humansTxt instanceof URL
+				? { href: humansTxt }
+				: humansTxt;
 ---
 
 <head>
@@ -70,7 +78,7 @@ const verification = propVerification !== undefined ? propVerification : clientH
 	<slot />
 	{alternates && <Alternate {...alternates} />}
 	{description && <Description content={description} />}
-	{humansTxt && <HumansTxt {...(humansTxt === true ? {} : humansTxt)} />}
+	{humansTxtProps && <HumansTxt {...humansTxtProps} />}
 	{manifest && <Manifest {...(manifest === true ? {} : manifest)} />}
 	{verification && <Verification {...verification} />}
 </head>

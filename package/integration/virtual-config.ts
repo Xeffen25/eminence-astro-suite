@@ -1,5 +1,5 @@
 import type { ComponentProps } from "astro/types";
-import Verification from "../components/Verification.astro";
+import { Base, Charset, HumansTxt, Title, Verification, Viewport } from "../components";
 import type { IntegrationInput } from "../integration";
 
 export const VIRTUAL_CONFIG_MODULE_ID = "virtual:eminence-astro-seo/config";
@@ -10,15 +10,12 @@ export const RESOLVED_VIRTUAL_CONFIG_MODULE_ID = `\0${VIRTUAL_CONFIG_MODULE_ID}`
  * to the browser/frontend components in the HTML <head>.
  */
 export type ClientHeadConfig = {
-	charset?: string;
-	viewport?: string;
-	humansTxt?: boolean;
+	charset?: ComponentProps<typeof Charset>["charset"];
+	viewport?: ComponentProps<typeof Viewport>["content"];
+	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
 	verification?: ComponentProps<typeof Verification>;
-	base?: {
-		href?: string;
-		target?: string;
-	};
-	titleTemplate?: `${string}%s${string}`;
+	base?: ComponentProps<typeof Base>;
+	titleTemplate?: ComponentProps<typeof Title>["template"];
 };
 
 /**
