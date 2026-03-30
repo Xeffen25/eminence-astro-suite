@@ -32,6 +32,7 @@ describe("Integration - Virtual Config", () => {
 			},
 			appLinks: undefined,
 			facebook: undefined,
+			pinterest: undefined,
 			humansTxt: undefined,
 			verification: undefined,
 			base: undefined,
@@ -58,6 +59,7 @@ describe("Integration - Virtual Config", () => {
 			appleWebApp: undefined,
 			appLinks: undefined,
 			facebook: undefined,
+			pinterest: undefined,
 			humansTxt: undefined,
 			verification: {
 				google: "google-token",
@@ -110,6 +112,7 @@ describe("Integration - Virtual Config", () => {
 				},
 			},
 			facebook: undefined,
+			pinterest: undefined,
 			humansTxt: undefined,
 			verification: undefined,
 			base: undefined,
@@ -135,6 +138,34 @@ describe("Integration - Virtual Config", () => {
 			appLinks: undefined,
 			facebook: {
 				admins: ["10001", "10002"],
+			},
+			pinterest: undefined,
+			humansTxt: undefined,
+			verification: undefined,
+			base: undefined,
+			titleTemplate: undefined,
+		});
+	});
+
+	it("extracts pinterest defaults into client head config", () => {
+		const options: IntegrationInput = {
+			head: {
+				pinterest: {
+					richPin: false,
+				},
+			},
+		};
+
+		const result = extractClientHeadConfig(options);
+
+		expect(result).toEqual({
+			charset: undefined,
+			viewport: undefined,
+			appleWebApp: undefined,
+			appLinks: undefined,
+			facebook: undefined,
+			pinterest: {
+				richPin: false,
 			},
 			humansTxt: undefined,
 			verification: undefined,
@@ -213,5 +244,19 @@ describe("Integration - Virtual Config", () => {
 		const result = serializedVirtualConfigModule(options);
 
 		expect(result).toBe('export default {"facebook":{"appId":"123456789"}};');
+	});
+
+	it("serializes pinterest defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			head: {
+				pinterest: {
+					richPin: false,
+				},
+			},
+		};
+
+		const result = serializedVirtualConfigModule(options);
+
+		expect(result).toBe('export default {"pinterest":{"richPin":false}};');
 	});
 });

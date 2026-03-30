@@ -12,6 +12,7 @@ import _Facebook from "./components/Facebook.astro";
 import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
 import _Manifest from "./components/Manifest.astro";
+import _Pinterest from "./components/Pinterest.astro";
 import _Title from "./components/Title.astro";
 import _Verification from "./components/Verification.astro";
 import _Viewport from "./components/Viewport.astro";
@@ -184,6 +185,21 @@ export const Description = _Description;
  * @see {@link https://developers.facebook.com/docs/sharing/webmasters#markup Facebook Sharing metadata reference}
  */
 export const Facebook = _Facebook;
+
+/**
+ * @summary Renders the Pinterest rich pin opt-in meta tag.
+ * @description
+ * Outputs `<meta name="pinterest-rich-pin">` with `true` or `false` based on
+ * `richPin`. Defaults to `true` when omitted.
+ *
+ * @example
+ * <Pinterest richPin={true} />
+ * @example
+ * <Pinterest richPin={false} />
+ * @see {@link https://todo.dev/components/pinterest Pinterest Component Documentation}
+ * @see {@link https://developers.pinterest.com/docs/rich-pins/overview/ Pinterest Rich Pins documentation}
+ */
+export const Pinterest = _Pinterest;
 
 /**
  * @summary Renders a responsive viewport meta tag.

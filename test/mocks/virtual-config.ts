@@ -7,6 +7,7 @@ const clientHeadConfig = {
 	appLinks: undefined,
 	facebook: undefined,
 	humansTxt: undefined,
+	pinterest: undefined,
 	verification: undefined,
 };
 

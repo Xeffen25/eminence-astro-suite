@@ -31,6 +31,7 @@ import Description from "./Description.astro";
 import Facebook from "./Facebook.astro";
 import HumansTxt from "./HumansTxt.astro";
 import Manifest from "./Manifest.astro";
+import Pinterest from "./Pinterest.astro";
 import Title from "./Title.astro";
 import Verification from "./Verification.astro";
 import Viewport from "./Viewport.astro";
@@ -54,6 +55,7 @@ interface Props {
 	facebook?: ComponentProps<typeof Facebook>;
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
 	manifest?: ComponentProps<typeof Manifest>["href"] | boolean;
+	pinterest?: ComponentProps<typeof Pinterest>;
 	verification?: ComponentProps<typeof Verification>;
 }
 
@@ -74,6 +76,7 @@ const {
 	facebook = clientHeadConfig.facebook,
 	humansTxt = clientHeadConfig.humansTxt,
 	manifest,
+	pinterest = clientHeadConfig.pinterest,
 	verification = clientHeadConfig.verification,
 } = Astro.props;
 
@@ -100,5 +103,6 @@ const manifestProps = toOptionalHrefProps<ComponentProps<typeof Manifest>>(manif
 	{facebook && <Facebook {...facebook} />}
 	{humansTxtProps && <HumansTxt {...humansTxtProps} />}
 	{manifestProps && <Manifest {...manifestProps} />}
+	{pinterest && <Pinterest {...pinterest} />}
 	{verification && <Verification {...verification} />}
 </head>

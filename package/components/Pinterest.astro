@@ -1,0 +1,25 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/pinterest}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/pinterest.mdx}
+ * ---
+ * @summary Renders the Pinterest rich pin opt-in meta tag.
+ * @description
+ * Outputs `<meta name="pinterest-rich-pin">` with `true` or `false` based on
+ * `richPin`. Defaults to `true` when omitted.
+ *
+ * @example
+ * <Pinterest richPin={true} />
+ * @example
+ * <Pinterest richPin={false} />
+ *
+ * @see {@link https://developers.pinterest.com/docs/rich-pins/overview/ Pinterest Rich Pins documentation}
+ */
+interface Props {
+	richPin?: boolean;
+}
+
+const { richPin = true } = Astro.props;
+---
+
+<meta name="pinterest-rich-pin" content={richPin ? "true" : "false"} />

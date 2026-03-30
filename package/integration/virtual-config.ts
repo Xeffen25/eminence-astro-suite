@@ -6,6 +6,7 @@ import {
 	Charset,
 	Facebook,
 	HumansTxt,
+	Pinterest,
 	Title,
 	Verification,
 	Viewport,
@@ -27,6 +28,7 @@ export type ClientHeadConfig = {
 	appleWebApp?: ComponentProps<typeof AppleWebApp>;
 	appLinks?: ComponentProps<typeof AppLinks>;
 	facebook?: ComponentProps<typeof Facebook>;
+	pinterest?: ComponentProps<typeof Pinterest>;
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
 	verification?: ComponentProps<typeof Verification>;
 };
@@ -46,6 +48,7 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		appleWebApp: head?.appleWebApp,
 		appLinks: head?.appLinks,
 		facebook: head?.facebook,
+		pinterest: head?.pinterest,
 		humansTxt: head?.humansTxt,
 		verification: head?.verification,
 	};
