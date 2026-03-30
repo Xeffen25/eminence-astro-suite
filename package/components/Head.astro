@@ -1,19 +1,49 @@
 ﻿---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/head}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/head.mdx}
+ * ---
+ * @summary The ultimate `<head>` component for your Astro project.
+ * @description
+ * Renders a `<head>` element with built-in support for common SEO and metadata tags. Following Capo.js convention as much as possible, allows you to configure site wide defaults via the `head` property in your integration options, and override them on a per-page basis by passing props to the component. With best practices baked in as defaults, you can focus on customizing the essentials and let the component handle the rest.
+ *
+ * @example
+ * <Head head={{ charset: "iso-8859-1", viewport: false, humansTxt: false }} />
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/head MDN head element reference}
+ */
 import type { ComponentProps } from "astro/types";
 import clientHeadConfig from "virtual:eminence-astro-seo/config";
 
+import Base from "./Base.astro";
+import Charset from "./Charset.astro";
 import HumansTxt from "./HumansTxt.astro";
+import Viewport from "./Viewport.astro";
 
 interface Props {
-	humansTxt?: ComponentProps<typeof HumansTxt> | boolean;
+	head?: {
+		charset?: string | false;
+		viewport?: string | false;
+		humansTxt?: ComponentProps<typeof HumansTxt> | boolean;
+		base?: ComponentProps<typeof Base> | false;
+	};
 }
 
-const { humansTxt: propHumansTxt } = Astro.props;
+const DEFAULT_CHARSET = "utf-8";
+const DEFAULT_VIEWPORT = "width=device-width, initial-scale=1";
 
-const humansTxt = propHumansTxt !== undefined ? propHumansTxt : clientHeadConfig.humansTxt;
+const { head: propHead = {} } = Astro.props;
+
+const charset = propHead.charset !== undefined ? propHead.charset : (clientHeadConfig.charset ?? DEFAULT_CHARSET);
+const viewport = propHead.viewport !== undefined ? propHead.viewport : (clientHeadConfig.viewport ?? DEFAULT_VIEWPORT);
+const humansTxt = propHead.humansTxt !== undefined ? propHead.humansTxt : clientHeadConfig.humansTxt;
+const base = propHead.base !== undefined ? propHead.base : clientHeadConfig.base;
 ---
 
 <head>
+	{charset && <Charset charset={charset} />}
+	{viewport && <Viewport content={viewport} />}
+	{base && <Base {...base} />}
 	<slot />
 	{humansTxt && <HumansTxt {...(humansTxt === true ? {} : humansTxt)} />}
 </head>

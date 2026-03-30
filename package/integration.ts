@@ -8,7 +8,15 @@ import {
 } from "./integration/virtual-config";
 
 export type IntegrationInput = {
-	humansTxt?: boolean;
+	head?: {
+		charset?: string;
+		viewport?: string;
+		humansTxt?: boolean;
+		base?: {
+			href?: string;
+			target?: string;
+		};
+	};
 };
 
 export type IntegrationRuntimeContext = {

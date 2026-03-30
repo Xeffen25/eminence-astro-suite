@@ -21,12 +21,10 @@ describe("Integration - HumansTxt", () => {
 		await mkdir(outputDir, { recursive: true });
 	});
 
-	const createContext = (
-		humansTxt: IntegrationRuntimeContext["options"]["humansTxt"],
-	): IntegrationRuntimeContext => ({
+	const createContext = (humansTxt: boolean | undefined): IntegrationRuntimeContext => ({
 		config: {} as AstroConfig,
 		outDir: outDirUrl,
-		options: { humansTxt },
+		options: { head: { humansTxt } },
 		logger: logger as unknown as IntegrationRuntimeContext["logger"],
 	});
 

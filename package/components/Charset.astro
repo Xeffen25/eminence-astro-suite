@@ -1,0 +1,29 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/charset}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/charset.mdx}
+ * ---
+ * @summary Renders a `<meta charset>` tag for the document.
+ * @description
+ * Outputs the character encoding meta tag in your `<head>`. If no `charset`
+ * prop is provided, it defaults to `utf-8`.
+ *
+ * @example
+ * <Charset charset="iso-8859-1" />
+ * @example
+ * <Charset />
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta#charset MDN meta charset reference}
+ */
+interface Props {
+	/**
+	 * Character encoding used in the rendered meta tag.
+	 * @default "utf-8"
+	 */
+	charset?: string;
+}
+
+const { charset = "utf-8" } = Astro.props;
+---
+
+<meta charset={charset} />

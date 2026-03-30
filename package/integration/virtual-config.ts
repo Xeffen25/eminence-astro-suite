@@ -8,8 +8,13 @@ export const RESOLVED_VIRTUAL_CONFIG_MODULE_ID = `\0${VIRTUAL_CONFIG_MODULE_ID}`
  * to the browser/frontend components in the HTML <head>.
  */
 export type ClientHeadConfig = {
+	charset?: string;
+	viewport?: string;
 	humansTxt?: boolean;
-	// Future options like: site_name?: string;
+	base?: {
+		href?: string;
+		target?: string;
+	};
 };
 
 /**
@@ -17,10 +22,13 @@ export type ClientHeadConfig = {
  * This prevents leaking server-only or build-only settings into the client bundle.
  */
 export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadConfig => {
+	const { head } = options;
+
 	return {
-		// We only pick humansTxt here because the Head component needs to know
-		// whether to render the <link rel="author"> tag.
-		humansTxt: options.humansTxt,
+		charset: head?.charset,
+		viewport: head?.viewport,
+		humansTxt: head?.humansTxt,
+		base: head?.base,
 	};
 };
 
