@@ -1,0 +1,5 @@
+.husky/*
+.prettierignore
+.gitattributes
+.gitignore
+LICENSE
