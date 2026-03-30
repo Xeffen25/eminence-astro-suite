@@ -1,11 +1,12 @@
 import { getViteConfig } from "astro/config";
+import { fileURLToPath } from "node:url";
 
 export default getViteConfig({
-	test: {
-		reporters: ["default"],
-		coverage: {
-			provider: "v8",
-			reporter: ["text", "json", "html"],
+	resolve: {
+		alias: {
+			"virtual:eminence-astro-seo/config": fileURLToPath(
+				new URL("./test/mocks/virtual-config.ts", import.meta.url),
+			),
 		},
 	},
 });

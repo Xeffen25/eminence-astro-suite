@@ -70,9 +70,7 @@ import _ComponentName from "@package/components/ComponentName.astro";
  * @see {@link <reference-url-1> <reference-label-1>}
  * @see {@link <reference-url-2> <reference-label-2>}
  */
-export function ComponentName(props: ComponentProps<typeof _ComponentName>) {
-	return _ComponentName(props);
-}
+export const ComponentName = _ComponentName;
 ```
 
 ## Component Tests (`test/components/**/*.test.ts`)
@@ -87,7 +85,7 @@ export function ComponentName(props: ComponentProps<typeof _ComponentName>) {
 ### Test Template
 
 ```ts
-import ComponentName from "@package/components/ComponentName.astro";
+import { ComponentName } from "@package/components";
 import { experimental_AstroContainer } from "astro/container";
 import { beforeEach, describe, expect, it } from "vitest";
 

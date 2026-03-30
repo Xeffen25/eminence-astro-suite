@@ -1,8 +1,7 @@
 # Project Guidelines
 
-## Build And Test Commands
+## Test Commands
 
-- After any file modification, run exactly: `pnpm format:changed`.
 - Run `pnpm test` when modifying either:
     - files that already have tests, or
     - test files themselves.

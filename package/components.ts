@@ -1,11 +1,7 @@
-import type { ComponentProps } from "astro/types";
-
 import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
 
-export function Head(props: ComponentProps<typeof _Head>) {
-	return _Head(props);
-}
+export const Head = _Head;
 
 /**
  * @summary Renders a `<link rel="author">` tag pointing to `/humans.txt`.
@@ -24,6 +20,4 @@ export function Head(props: ComponentProps<typeof _Head>) {
  * @see {@link https://todo.dev/components/humans-txt HumansTxt Component Documentation}
  * @see {@link https://humanstxt.org/ The Humans.txt Standard}
  */
-export function HumansTxt(props: ComponentProps<typeof _HumansTxt>) {
-	return _HumansTxt(props);
-}
+export const HumansTxt = _HumansTxt;

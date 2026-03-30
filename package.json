@@ -9,7 +9,6 @@
 		"preview": "astro preview",
 		"astro": "astro",
 		"format:fix": "prettier . --write",
-		"format:changed": "git diff --name-only --diff-filter=d | xargs prettier --write",
 		"format:check": "prettier . --check",
 		"test": "vitest run",
 		"test:watch": "vitest",
@@ -18,7 +17,7 @@
 		"prepare": "husky"
 	},
 	"lint-staged": {
-		"*": "prettier --check"
+		"*": "prettier --write"
 	},
 	"dependencies": {
 		"@astrojs/starlight": "^0.38.2",
