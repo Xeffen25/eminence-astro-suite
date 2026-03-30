@@ -117,18 +117,19 @@ export const Base = _Base;
 /**
  * @summary Renders a `<link rel="author">` tag pointing to `/humans.txt`.
  * @description
- * The URL is built from the `domain` prop. If omitted, it falls back to
- * `Astro.site` from your config. If neither is available, the component
- * renders nothing.
+ * Uses the provided `href` value directly when present. If omitted, it tries
+ * to generate a URL from `Astro.site` by appending `/humans.txt`. If neither
+ * source is available, the component renders nothing and logs an error.
  *
  * @example
- * <HumansTxt domain="https://example.com" />
+ * <HumansTxt href="https://example.com/humans.txt" />
  * @example
- * <HumansTxt domain={new URL("https://example.com")} />
+ * <HumansTxt href={new URL("https://example.com/humans.txt")} />
  * @example
- * // Uses Astro.site from astro.config.mjs
+ * // Derives href from Astro.site by appending /humans.txt
  * <HumansTxt />
  *
+ * @see {@link https://todo.dev/components/humans-txt HumansTxt Component Documentation}
  * @see {@link https://todo.dev/components/humans-txt.mdx HumansTxt Docs Source}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#attr-link-rel-author MDN link rel="author" reference}
  * @see {@link https://humanstxt.org/ The Humans.txt Standard}

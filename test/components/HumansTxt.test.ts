@@ -1,6 +1,6 @@
 import { HumansTxt } from "@package/components";
 import { experimental_AstroContainer } from "astro/container";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("Component HumansTxt", () => {
 	let container: experimental_AstroContainer;
@@ -9,35 +9,34 @@ describe("Component HumansTxt", () => {
 		container = await experimental_AstroContainer.create();
 	});
 
-	it("renders link tag with correct href from string domain", async () => {
+	it("renders provided href string as-is", async () => {
 		const result = await container.renderToString(HumansTxt, {
-			props: { domain: "https://example.com" },
+			props: { href: "https://cdn.example.com/custom-humans.txt" },
+		});
+
+		expect(result).toBe('<link type="text/plain" rel="author" href="https://cdn.example.com/custom-humans.txt">');
+	});
+
+	it("renders provided href URL instance", async () => {
+		const result = await container.renderToString(HumansTxt, {
+			props: { href: new URL("https://example.com/humans.txt") },
 		});
 
 		expect(result).toBe('<link type="text/plain" rel="author" href="https://example.com/humans.txt">');
 	});
 
-	it("renders link tag with correct href from URL instance", async () => {
-		const result = await container.renderToString(HumansTxt, {
-			props: { domain: new URL("https://example.com") },
-		});
+	it("renders nothing and logs an error when href and Astro.site are unavailable", async () => {
+		const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-		expect(result).toBe('<link type="text/plain" rel="author" href="https://example.com/humans.txt">');
-	});
-
-	it("renders nothing when no domain and no Astro.site", async () => {
 		const result = await container.renderToString(HumansTxt, {
 			props: {},
 		});
 
 		expect(result).toBe("");
-	});
+		expect(errorSpy).toHaveBeenCalledWith(
+			"[HumansTxt] Unable to resolve href. Provide `href` or configure `site` in astro.config.*.",
+		);
 
-	it("uses /humans.txt at root regardless of domain sub-path", async () => {
-		const result = await container.renderToString(HumansTxt, {
-			props: { domain: "https://example.com/blog" },
-		});
-
-		expect(result).toBe('<link type="text/plain" rel="author" href="https://example.com/humans.txt">');
+		errorSpy.mockRestore();
 	});
 });

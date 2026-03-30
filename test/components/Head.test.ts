@@ -56,7 +56,7 @@ describe("Component Head", () => {
 		const result = await container.renderToString(Head, {
 			props: {
 				title: "Home",
-				humansTxt: { domain: "https://example.com" },
+				humansTxt: { href: "https://example.com/humans.txt" },
 			},
 		});
 

@@ -5,38 +5,42 @@
  * ---
  * @summary Renders a `<link rel="author">` tag pointing to `/humans.txt`.
  * @description
- * The URL is built from the `domain` prop. If omitted, it falls back to
- * `Astro.site` from your config. If neither is available, the component
- * renders nothing.
+ * Uses the provided `href` value directly when present. If omitted, it tries
+ * to generate a URL from `Astro.site` by appending `/humans.txt`. If neither
+ * source is available, the component renders nothing and logs an error.
  *
  * @example
- * <HumansTxt domain="https://example.com" />
+ * <HumansTxt href="https://example.com/humans.txt" />
  * @example
- * <HumansTxt domain={new URL("https://example.com")} />
+ * <HumansTxt href={new URL("https://example.com/humans.txt")} />
  * @example
- * // Uses Astro.site from astro.config.mjs
+ * // Derives href from Astro.site by appending /humans.txt
  * <HumansTxt />
  * @see {@link https://humanstxt.org/ The Humans.txt Standard}
  */
 interface Props {
 	/**
-	 * Absolute site domain used to build the humans.txt URL.
-	 * @default Astro.site
-	 * @example "https://example.com"
+	 * Absolute humans.txt URL rendered directly as the link href.
+	 * @default `${Astro.site}/humans.txt`
+	 * @example "https://example.com/humans.txt"
 	 */
-	domain?: string | URL;
+	href?: string | URL;
 }
 
-const { domain } = Astro.props;
-
-const baseDomain = domain ?? Astro.site;
+const { href: propHref } = Astro.props;
 
 const href =
-	baseDomain === undefined
-		? undefined
-		: typeof baseDomain === "string"
-			? new URL("/humans.txt", baseDomain).toString()
-			: new URL("/humans.txt", baseDomain).toString();
+	propHref !== undefined
+		? typeof propHref === "string"
+			? propHref
+			: propHref.toString()
+		: Astro.site !== undefined
+			? new URL("/humans.txt", Astro.site).toString()
+			: undefined;
+
+if (href === undefined) {
+	console.error("[HumansTxt] Unable to resolve href. Provide `href` or configure `site` in astro.config.*.");
+}
 ---
 
 {href && <link type="text/plain" rel="author" href={href} />}
