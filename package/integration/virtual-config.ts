@@ -8,6 +8,7 @@ import {
 	Facebook,
 	HumansTxt,
 	Pinterest,
+	Robots,
 	ThemeColor,
 	Title,
 	Verification,
@@ -32,6 +33,7 @@ export type ClientHeadConfig = {
 	appLinks?: ComponentProps<typeof AppLinks>;
 	facebook?: ComponentProps<typeof Facebook>;
 	pinterest?: ComponentProps<typeof Pinterest>;
+	robots?: ComponentProps<typeof Robots>;
 	themeColor?: ComponentProps<typeof ThemeColor>;
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
 	verification?: ComponentProps<typeof Verification>;
@@ -54,6 +56,7 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		appLinks: head?.appLinks,
 		facebook: head?.facebook,
 		pinterest: head?.pinterest,
+		robots: head?.robots,
 		themeColor: head?.themeColor,
 		humansTxt: head?.humansTxt,
 		verification: head?.verification,

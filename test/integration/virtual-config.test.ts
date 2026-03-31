@@ -22,7 +22,7 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toEqual({
 			charset: undefined,
 			viewport: undefined,
-			color: undefined,
+			colorScheme: undefined,
 			appleWebApp: {
 				title: "My App",
 				statusBarStyle: "black-translucent",
@@ -34,6 +34,7 @@ describe("Integration - Virtual Config", () => {
 			appLinks: undefined,
 			facebook: undefined,
 			pinterest: undefined,
+			robots: undefined,
 			themeColor: undefined,
 			humansTxt: undefined,
 			verification: undefined,
@@ -58,11 +59,12 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toEqual({
 			charset: undefined,
 			viewport: undefined,
-			color: undefined,
+			colorScheme: undefined,
 			appleWebApp: undefined,
 			appLinks: undefined,
 			facebook: undefined,
 			pinterest: undefined,
+			robots: undefined,
 			themeColor: undefined,
 			humansTxt: undefined,
 			verification: {
@@ -118,6 +120,7 @@ describe("Integration - Virtual Config", () => {
 			},
 			facebook: undefined,
 			pinterest: undefined,
+			robots: undefined,
 			themeColor: undefined,
 			humansTxt: undefined,
 			verification: undefined,
@@ -147,6 +150,7 @@ describe("Integration - Virtual Config", () => {
 				admins: ["10001", "10002"],
 			},
 			pinterest: undefined,
+			robots: undefined,
 			themeColor: undefined,
 			humansTxt: undefined,
 			verification: undefined,
@@ -176,6 +180,7 @@ describe("Integration - Virtual Config", () => {
 			pinterest: {
 				richPin: false,
 			},
+			robots: undefined,
 			themeColor: undefined,
 			humansTxt: undefined,
 			verification: undefined,
@@ -204,6 +209,7 @@ describe("Integration - Virtual Config", () => {
 			appLinks: undefined,
 			facebook: undefined,
 			pinterest: undefined,
+			robots: undefined,
 			themeColor: {
 				light: "#ffffff",
 				dark: "#111111",
@@ -232,6 +238,69 @@ describe("Integration - Virtual Config", () => {
 			appLinks: undefined,
 			facebook: undefined,
 			pinterest: undefined,
+			robots: undefined,
+			themeColor: undefined,
+			humansTxt: undefined,
+			verification: undefined,
+			base: undefined,
+			titleTemplate: undefined,
+		});
+	});
+
+	it("extracts robots defaults into client head config", () => {
+		const options: IntegrationInput = {
+			head: {
+				robots: {
+					noindex: true,
+					"max-snippet": 50,
+				},
+			},
+		};
+
+		const result = extractClientHeadConfig(options);
+
+		expect(result).toEqual({
+			charset: undefined,
+			viewport: undefined,
+			colorScheme: undefined,
+			appleWebApp: undefined,
+			appLinks: undefined,
+			facebook: undefined,
+			pinterest: undefined,
+			robots: {
+				noindex: true,
+				"max-snippet": 50,
+			},
+			themeColor: undefined,
+			humansTxt: undefined,
+			verification: undefined,
+			base: undefined,
+			titleTemplate: undefined,
+		});
+	});
+
+	it("extracts robots content defaults into client head config", () => {
+		const options: IntegrationInput = {
+			head: {
+				robots: {
+					content: "noindex, nofollow",
+				},
+			},
+		};
+
+		const result = extractClientHeadConfig(options);
+
+		expect(result).toEqual({
+			charset: undefined,
+			viewport: undefined,
+			colorScheme: undefined,
+			appleWebApp: undefined,
+			appLinks: undefined,
+			facebook: undefined,
+			pinterest: undefined,
+			robots: {
+				content: "noindex, nofollow",
+			},
 			themeColor: undefined,
 			humansTxt: undefined,
 			verification: undefined,
@@ -350,5 +419,34 @@ describe("Integration - Virtual Config", () => {
 		const result = serializedVirtualConfigModule(options);
 
 		expect(result).toBe('export default {"themeColor":{"content":"#ffffff"}};');
+	});
+
+	it("serializes robots defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			head: {
+				robots: {
+					nofollow: true,
+					"max-video-preview": -1,
+				},
+			},
+		};
+
+		const result = serializedVirtualConfigModule(options);
+
+		expect(result).toBe('export default {"robots":{"nofollow":true,"max-video-preview":-1}};');
+	});
+
+	it("serializes robots content defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			head: {
+				robots: {
+					content: "noindex, nofollow",
+				},
+			},
+		};
+
+		const result = serializedVirtualConfigModule(options);
+
+		expect(result).toBe('export default {"robots":{"content":"noindex, nofollow"}};');
 	});
 });

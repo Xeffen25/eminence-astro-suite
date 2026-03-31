@@ -14,6 +14,7 @@ import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
 import _Manifest from "./components/Manifest.astro";
 import _Pinterest from "./components/Pinterest.astro";
+import _Robots from "./components/Robots.astro";
 import _ThemeColor from "./components/ThemeColor.astro";
 import _Title from "./components/Title.astro";
 import _Verification from "./components/Verification.astro";
@@ -217,6 +218,27 @@ export const Facebook = _Facebook;
  * @see {@link https://developers.pinterest.com/docs/rich-pins/overview/ Pinterest Rich Pins documentation}
  */
 export const Pinterest = _Pinterest;
+
+/**
+ * @summary Renders a robots directives meta tag.
+ * @description
+ * Supports two mutually exclusive modes: pass a raw `content` string directly,
+ * or pass directive props that are serialized into a single
+ * `<meta name="robots">` content string. In directive mode, undefined and
+ * `false` values are omitted, `true` values render as bare directives, and
+ * numeric/string values render as `directive:value`.
+ *
+ * @example
+ * <Robots content="noindex, nofollow" />
+ *
+ * @example
+ * <Robots noindex nofollow />
+ * @example
+ * <Robots noindex unavailable_after="25 Jun 2026 15:00:00 PST" max-snippet={50} />
+ * @see {@link https://todo.dev/components/robots Robots Component Documentation}
+ * @see {@link https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag Google robots meta tag reference}
+ */
+export const Robots = _Robots;
 
 /**
  * @summary Renders theme color meta tags for browser UI theming.

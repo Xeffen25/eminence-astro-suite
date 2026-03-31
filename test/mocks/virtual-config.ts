@@ -11,6 +11,7 @@ const clientHeadConfig: ClientHeadConfig = {
 	facebook: undefined,
 	humansTxt: undefined,
 	pinterest: undefined,
+	robots: undefined,
 	themeColor: undefined,
 	verification: undefined,
 };

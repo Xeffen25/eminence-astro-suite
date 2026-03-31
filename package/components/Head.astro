@@ -33,6 +33,7 @@ import Facebook from "./Facebook.astro";
 import HumansTxt from "./HumansTxt.astro";
 import Manifest from "./Manifest.astro";
 import Pinterest from "./Pinterest.astro";
+import Robots from "./Robots.astro";
 import ThemeColor from "./ThemeColor.astro";
 import Title from "./Title.astro";
 import Verification from "./Verification.astro";
@@ -59,6 +60,7 @@ interface Props {
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
 	manifest?: ComponentProps<typeof Manifest>["href"] | boolean;
 	pinterest?: ComponentProps<typeof Pinterest>;
+	robots?: ComponentProps<typeof Robots>;
 	themeColor?: ComponentProps<typeof ThemeColor>;
 	verification?: ComponentProps<typeof Verification>;
 }
@@ -82,6 +84,7 @@ const {
 	humansTxt = clientHeadConfig.humansTxt,
 	manifest,
 	pinterest = clientHeadConfig.pinterest,
+	robots = clientHeadConfig.robots,
 	themeColor = clientHeadConfig.themeColor,
 	verification = clientHeadConfig.verification,
 } = Astro.props;
@@ -111,6 +114,7 @@ const manifestProps = toOptionalHrefProps<ComponentProps<typeof Manifest>>(manif
 	{humansTxtProps && <HumansTxt {...humansTxtProps} />}
 	{manifestProps && <Manifest {...manifestProps} />}
 	{pinterest && <Pinterest {...pinterest} />}
+	{robots && <Robots {...robots} />}
 	{themeColor && <ThemeColor {...themeColor} />}
 	{verification && <Verification {...verification} />}
 </head>
