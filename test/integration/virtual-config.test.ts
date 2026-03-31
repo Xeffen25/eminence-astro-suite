@@ -33,6 +33,7 @@ describe("Integration - Virtual Config", () => {
 			appLinks: undefined,
 			facebook: undefined,
 			pinterest: undefined,
+			themeColor: undefined,
 			humansTxt: undefined,
 			verification: undefined,
 			base: undefined,
@@ -60,6 +61,7 @@ describe("Integration - Virtual Config", () => {
 			appLinks: undefined,
 			facebook: undefined,
 			pinterest: undefined,
+			themeColor: undefined,
 			humansTxt: undefined,
 			verification: {
 				google: "google-token",
@@ -113,6 +115,7 @@ describe("Integration - Virtual Config", () => {
 			},
 			facebook: undefined,
 			pinterest: undefined,
+			themeColor: undefined,
 			humansTxt: undefined,
 			verification: undefined,
 			base: undefined,
@@ -140,6 +143,7 @@ describe("Integration - Virtual Config", () => {
 				admins: ["10001", "10002"],
 			},
 			pinterest: undefined,
+			themeColor: undefined,
 			humansTxt: undefined,
 			verification: undefined,
 			base: undefined,
@@ -166,6 +170,37 @@ describe("Integration - Virtual Config", () => {
 			facebook: undefined,
 			pinterest: {
 				richPin: false,
+			},
+			themeColor: undefined,
+			humansTxt: undefined,
+			verification: undefined,
+			base: undefined,
+			titleTemplate: undefined,
+		});
+	});
+
+	it("extracts themeColor defaults into client head config", () => {
+		const options: IntegrationInput = {
+			head: {
+				themeColor: {
+					light: "#ffffff",
+					dark: "#111111",
+				},
+			},
+		};
+
+		const result = extractClientHeadConfig(options);
+
+		expect(result).toEqual({
+			charset: undefined,
+			viewport: undefined,
+			appleWebApp: undefined,
+			appLinks: undefined,
+			facebook: undefined,
+			pinterest: undefined,
+			themeColor: {
+				light: "#ffffff",
+				dark: "#111111",
 			},
 			humansTxt: undefined,
 			verification: undefined,
@@ -258,5 +293,19 @@ describe("Integration - Virtual Config", () => {
 		const result = serializedVirtualConfigModule(options);
 
 		expect(result).toBe('export default {"pinterest":{"richPin":false}};');
+	});
+
+	it("serializes themeColor defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			head: {
+				themeColor: {
+					content: "#ffffff",
+				},
+			},
+		};
+
+		const result = serializedVirtualConfigModule(options);
+
+		expect(result).toBe('export default {"themeColor":{"content":"#ffffff"}};');
 	});
 });

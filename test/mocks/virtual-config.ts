@@ -8,6 +8,7 @@ const clientHeadConfig = {
 	facebook: undefined,
 	humansTxt: undefined,
 	pinterest: undefined,
+	themeColor: undefined,
 	verification: undefined,
 };
 

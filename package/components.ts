@@ -13,6 +13,7 @@ import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
 import _Manifest from "./components/Manifest.astro";
 import _Pinterest from "./components/Pinterest.astro";
+import _ThemeColor from "./components/ThemeColor.astro";
 import _Title from "./components/Title.astro";
 import _Verification from "./components/Verification.astro";
 import _Viewport from "./components/Viewport.astro";
@@ -200,6 +201,22 @@ export const Facebook = _Facebook;
  * @see {@link https://developers.pinterest.com/docs/rich-pins/overview/ Pinterest Rich Pins documentation}
  */
 export const Pinterest = _Pinterest;
+
+/**
+ * @summary Renders theme color meta tags for browser UI theming.
+ * @description
+ * Supports either a single `content` value for all color schemes, or a pair of
+ * `light` and `dark` values for scheme-specific theming. The two modes are
+ * mutually exclusive.
+ *
+ * @example
+ * <ThemeColor content="#ffffff" />
+ * @example
+ * <ThemeColor light="#ffffff" dark="#111111" />
+ * @see {@link https://todo.dev/components/theme-color ThemeColor Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/theme-color MDN theme-color reference}
+ */
+export const ThemeColor = _ThemeColor;
 
 /**
  * @summary Renders a responsive viewport meta tag.
