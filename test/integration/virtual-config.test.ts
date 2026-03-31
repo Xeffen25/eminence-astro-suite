@@ -22,6 +22,7 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toEqual({
 			charset: undefined,
 			viewport: undefined,
+			color: undefined,
 			appleWebApp: {
 				title: "My App",
 				statusBarStyle: "black-translucent",
@@ -57,6 +58,7 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toEqual({
 			charset: undefined,
 			viewport: undefined,
+			color: undefined,
 			appleWebApp: undefined,
 			appLinks: undefined,
 			facebook: undefined,
@@ -98,6 +100,7 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toEqual({
 			charset: undefined,
 			viewport: undefined,
+			colorScheme: undefined,
 			appleWebApp: undefined,
 			appLinks: {
 				ios: {
@@ -137,6 +140,7 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toEqual({
 			charset: undefined,
 			viewport: undefined,
+			colorScheme: undefined,
 			appleWebApp: undefined,
 			appLinks: undefined,
 			facebook: {
@@ -165,6 +169,7 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toEqual({
 			charset: undefined,
 			viewport: undefined,
+			colorScheme: undefined,
 			appleWebApp: undefined,
 			appLinks: undefined,
 			facebook: undefined,
@@ -194,6 +199,7 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toEqual({
 			charset: undefined,
 			viewport: undefined,
+			colorScheme: undefined,
 			appleWebApp: undefined,
 			appLinks: undefined,
 			facebook: undefined,
@@ -202,6 +208,31 @@ describe("Integration - Virtual Config", () => {
 				light: "#ffffff",
 				dark: "#111111",
 			},
+			humansTxt: undefined,
+			verification: undefined,
+			base: undefined,
+			titleTemplate: undefined,
+		});
+	});
+
+	it("extracts colorScheme defaults into client head config", () => {
+		const options: IntegrationInput = {
+			head: {
+				colorScheme: "light dark",
+			},
+		};
+
+		const result = extractClientHeadConfig(options);
+
+		expect(result).toEqual({
+			charset: undefined,
+			viewport: undefined,
+			colorScheme: "light dark",
+			appleWebApp: undefined,
+			appLinks: undefined,
+			facebook: undefined,
+			pinterest: undefined,
+			themeColor: undefined,
 			humansTxt: undefined,
 			verification: undefined,
 			base: undefined,
@@ -229,6 +260,18 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toBe(
 			'export default {"appleWebApp":{"startupImage":["https://cdn.example.com/default.png",{"url":"https://cdn.example.com/landscape.png","media":"(orientation: landscape)"}]}};',
 		);
+	});
+
+	it("serializes colorScheme defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			head: {
+				colorScheme: "dark",
+			},
+		};
+
+		const result = serializedVirtualConfigModule(options);
+
+		expect(result).toBe('export default {"colorScheme":"dark"};');
 	});
 
 	it("serializes verification defaults in virtual config module", () => {

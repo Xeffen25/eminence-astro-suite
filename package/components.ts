@@ -7,6 +7,7 @@ import _Base from "./components/Base.astro";
 import _Bookmarks from "./components/Bookmarks.astro";
 import _Canonical from "./components/Canonical.astro";
 import _Charset from "./components/Charset.astro";
+import _ColorScheme from "./components/ColorScheme.astro";
 import _Description from "./components/Description.astro";
 import _Facebook from "./components/Facebook.astro";
 import _Head from "./components/Head.astro";
@@ -156,6 +157,21 @@ export const Title = _Title;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-meta-charset MDN meta charset reference}
  */
 export const Charset = _Charset;
+
+/**
+ * @summary Renders a color scheme preference meta tag.
+ * @description
+ * Outputs `<meta name="color-scheme">` to declare supported page color
+ * schemes for UA rendering behavior.
+ *
+ * @example
+ * <Color content="light dark" />
+ * @example
+ * <Color content="dark" />
+ * @see {@link https://todo.dev/components/color Color Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/color-scheme MDN color-scheme reference}
+ */
+export const ColorScheme = _ColorScheme;
 
 /**
  * @summary Renders a `<meta name="description">` tag for SEO.

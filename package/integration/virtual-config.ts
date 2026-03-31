@@ -4,6 +4,7 @@ import {
 	AppLinks,
 	Base,
 	Charset,
+	ColorScheme,
 	Facebook,
 	HumansTxt,
 	Pinterest,
@@ -25,6 +26,7 @@ export type ClientHeadConfig = {
 	charset?: ComponentProps<typeof Charset>["charset"];
 	viewport?: ComponentProps<typeof Viewport>["content"];
 	base?: ComponentProps<typeof Base>;
+	colorScheme?: ComponentProps<typeof ColorScheme>["content"];
 	titleTemplate?: ComponentProps<typeof Title>["template"];
 	appleWebApp?: ComponentProps<typeof AppleWebApp>;
 	appLinks?: ComponentProps<typeof AppLinks>;
@@ -46,6 +48,7 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		charset: head?.charset,
 		viewport: head?.viewport,
 		base: head?.base,
+		colorScheme: head?.colorScheme,
 		titleTemplate: head?.titleTemplate,
 		appleWebApp: head?.appleWebApp,
 		appLinks: head?.appLinks,

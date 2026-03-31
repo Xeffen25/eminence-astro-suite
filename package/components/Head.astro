@@ -27,6 +27,7 @@ import Base from "./Base.astro";
 import Bookmarks from "./Bookmarks.astro";
 import Canonical from "./Canonical.astro";
 import Charset from "./Charset.astro";
+import ColorScheme from "./ColorScheme.astro";
 import Description from "./Description.astro";
 import Facebook from "./Facebook.astro";
 import HumansTxt from "./HumansTxt.astro";
@@ -52,6 +53,7 @@ interface Props {
 	assets?: ComponentProps<typeof Assets>["hrefs"];
 	bookmarks?: ComponentProps<typeof Bookmarks>["hrefs"];
 	canonical?: ComponentProps<typeof Canonical>["href"] | boolean;
+	colorScheme?: ComponentProps<typeof ColorScheme>["content"];
 	description?: ComponentProps<typeof Description>["content"];
 	facebook?: ComponentProps<typeof Facebook>;
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
@@ -74,6 +76,7 @@ const {
 	assets,
 	bookmarks,
 	canonical: propCanonical,
+	colorScheme = clientHeadConfig.colorScheme,
 	description,
 	facebook = clientHeadConfig.facebook,
 	humansTxt = clientHeadConfig.humansTxt,
@@ -102,6 +105,7 @@ const manifestProps = toOptionalHrefProps<ComponentProps<typeof Manifest>>(manif
 	{assets && <Assets hrefs={assets} />}
 	{bookmarks && <Bookmarks hrefs={bookmarks} />}
 	{canonical && <Canonical {...canonical} />}
+	{colorScheme && <ColorScheme content={colorScheme} />}
 	{description && <Description content={description} />}
 	{facebook && <Facebook {...facebook} />}
 	{humansTxtProps && <HumansTxt {...humansTxtProps} />}
