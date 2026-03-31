@@ -11,7 +11,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 describe("Integration - HumansTxt", () => {
 	let outputDir: string;
 	let outDirUrl: URL;
-	let logger: { error: ReturnType<typeof vi.fn>; warn: ReturnType<typeof vi.fn>; info: ReturnType<typeof vi.fn> };
+	let logger: TestLogger;
 
 	beforeEach(async () => {
 		outputDir = join(tmpdir(), `eminence-astro-suite-${randomUUID()}`);

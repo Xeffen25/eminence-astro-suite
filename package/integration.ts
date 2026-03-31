@@ -2,6 +2,8 @@
 import type { ClientHeadConfig } from "./integration/virtual-config";
 
 import { validateHumansTxtInBuildOutput } from "./integration/humans-txt";
+import type { RobotsTxtOptions } from "./integration/robots-txt";
+import { generateRobotsTxt } from "./integration/robots-txt";
 import type { SecurityTxtOptions } from "./integration/security-txt";
 import { generateSecurityTxt } from "./integration/security-txt";
 import {
@@ -12,6 +14,7 @@ import {
 
 export type IntegrationInput = {
 	head?: ClientHeadConfig;
+	robotsTxt?: RobotsTxtOptions | false;
 	securityTxt?: SecurityTxtOptions | false;
 };
 
@@ -61,6 +64,7 @@ export default function createIntegration(options: IntegrationInput = {}): Astro
 					return;
 				}
 
+				await generateRobotsTxt({ config, outDir: dir, options, logger });
 				await generateSecurityTxt({ config, outDir: dir, options, logger });
 				await validateHumansTxtInBuildOutput({ config, outDir: dir, options, logger });
 			},
