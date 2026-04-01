@@ -16,7 +16,6 @@
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#archives MDN rel="archives" reference}
  */
-import { toHref } from "../utils";
 
 interface Props {
 	hrefs: StringOrURL[];
@@ -25,4 +24,4 @@ interface Props {
 const { hrefs } = Astro.props;
 ---
 
-{hrefs.map((href) => <link rel="archives" href={toHref(href)} />)}
+{hrefs.map((href) => <link rel="archives" href={href} />)}

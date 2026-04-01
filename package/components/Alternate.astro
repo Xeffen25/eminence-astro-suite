@@ -16,7 +16,6 @@
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#alternate MDN link rel attribute reference}
  */
-import { toHref } from "../utils";
 
 interface Props {
 	languages?: Record<string, StringOrURL>;
@@ -28,10 +27,6 @@ type FeedType = "application/rss+xml" | "application/atom+xml";
 const { languages, types } = Astro.props;
 ---
 
-{
-	Object.entries(languages ?? {}).map(([hreflang, href]) => (
-		<link rel="alternate" hreflang={hreflang} href={toHref(href)} />
-	))
-}
+{Object.entries(languages ?? {}).map(([hreflang, href]) => <link rel="alternate" hreflang={hreflang} href={href} />)}
 
-{Object.entries(types ?? {}).map(([type, href]) => <link rel="alternate" type={type} href={toHref(href)} />)}
+{Object.entries(types ?? {}).map(([type, href]) => <link rel="alternate" type={type} href={href} />)}

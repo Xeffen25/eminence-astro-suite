@@ -16,7 +16,6 @@
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name MDN Meta name reference}
  * @see {@link https://developer.apple.com/documentation/webkit/promoting-apps-with-smart-app-banners Promoting apps with Smart App Banners}
  */
-import { toHref } from "../utils";
 
 interface Props {
 	itunes?: {
@@ -51,7 +50,7 @@ const { itunes, title, statusBarStyle, startupImage } = Astro.props;
 {title && <meta name="apple-mobile-web-app-title" content={title} />}
 {
 	startupImage?.map((image) => {
-		const url = typeof image === "string" || image instanceof URL ? toHref(image) : toHref(image.url);
+		const url = typeof image === "string" || image instanceof URL ? image : image.url;
 		const media = typeof image === "string" || image instanceof URL ? undefined : image.media;
 		return <link href={url} media={media} rel="apple-touch-startup-image" />;
 	})

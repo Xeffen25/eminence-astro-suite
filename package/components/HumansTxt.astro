@@ -18,7 +18,6 @@
  * <HumansTxt />
  * @see {@link https://humanstxt.org/ The Humans.txt Standard}
  */
-import { toHref } from "../utils";
 
 interface Props {
 	/**
@@ -32,11 +31,7 @@ interface Props {
 const { href: propHref } = Astro.props;
 
 const href =
-	propHref !== undefined
-		? toHref(propHref)
-		: Astro.site !== undefined
-			? toHref(new URL("/humans.txt", Astro.site))
-			: undefined;
+	propHref !== undefined ? propHref : Astro.site !== undefined ? new URL("/humans.txt", Astro.site) : undefined;
 
 if (href === undefined) {
 	console.error("[HumansTxt] Unable to resolve href. Provide `href` or configure `site` in astro.config.*.");

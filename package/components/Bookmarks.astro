@@ -15,7 +15,6 @@
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel MDN rel attribute reference}
  */
-import { toHref } from "../utils";
 
 interface Props {
 	hrefs: StringOrURL[];
@@ -24,4 +23,4 @@ interface Props {
 const { hrefs } = Astro.props;
 ---
 
-{hrefs.map((href) => <link rel="bookmarks" href={toHref(href)} />)}
+{hrefs.map((href) => <link rel="bookmarks" href={href} />)}
