@@ -16,6 +16,7 @@ import _Facebook from "./components/Facebook.astro";
 import _Generator from "./components/Generator.astro";
 import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
+import _JsonLd from "./components/JsonLd.astro";
 import _Manifest from "./components/Manifest.astro";
 import _OpenGraph from "./components/OpenGraph.astro";
 import _Pinterest from "./components/Pinterest.astro";
@@ -322,6 +323,24 @@ export const Publisher = _Publisher;
  * @see {@link https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag Google robots meta tag reference}
  */
 export const Robots = _Robots;
+
+/**
+ * @summary Renders a single JSON-LD script tag from a pre-serialized string.
+ * @description
+ * Outputs a `<script type="application/ld+json">` element in your `<head>`.
+ * The `jsonLd` prop expects a JSON string, so schema objects can be built and
+ * typed in app code (for example with `schema-dts`) before
+ * `JSON.stringify(...)` is passed to this component.
+ *
+ * @example
+ * <JsonLd jsonLd='{"@context":"https://schema.org","@type":"WebPage","name":"Home"}' />
+ * @example
+ * <JsonLd jsonLd={JSON.stringify(websiteSchema)} />
+ * @see {@link https://todo.dev/components/json-ld JsonLd Component Documentation}
+ * @see {@link https://json-ld.org/ JSON-LD specification}
+ * @see {@link https://schema.org/docs/gs.html Schema.org getting started}
+ */
+export const JsonLd = _JsonLd;
 
 /**
  * @summary Renders theme color meta tags for browser UI theming.
