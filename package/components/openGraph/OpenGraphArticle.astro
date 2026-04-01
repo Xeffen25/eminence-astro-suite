@@ -38,23 +38,17 @@ interface Props {
 	 */
 	expirationTime?: string;
 	/**
-	 * Accepts one URL or many; each value renders one `article:author` tag.
+	 * Each value renders one `article:author` tag.
 	 */
-	authors?: string | string[];
+	authors?: string[];
 	section?: string;
 	/**
-	 * Accepts one tag or many; each value renders one `article:tag` tag.
+	 * Each value renders one `article:tag` tag.
 	 */
-	tags?: string | string[];
+	tags?: string[];
 }
 
-const { publishedTime, modifiedTime, expirationTime, section } = Astro.props;
-const authors = Astro.props.authors
-	? Array.isArray(Astro.props.authors)
-		? Astro.props.authors
-		: [Astro.props.authors]
-	: [];
-const tags = Astro.props.tags ? (Array.isArray(Astro.props.tags) ? Astro.props.tags : [Astro.props.tags]) : [];
+const { publishedTime, modifiedTime, expirationTime, authors = [], section, tags = [] } = Astro.props;
 ---
 
 {publishedTime && <meta property="article:published_time" content={publishedTime} />}

@@ -12,9 +12,9 @@
  * the parent `OpenGraph` component.
  *
  * @example
- * <OpenGraphMusic subtype="song" duration={214} musician="https://example.com/artist" />
+ * <OpenGraphMusic subtype="song" duration={214} musicians={["https://example.com/artist"]} />
  * @example
- * <OpenGraphMusic subtype="album" musician={["https://example.com/artist"]} releaseDate="2026-01-01" />
+ * <OpenGraphMusic subtype="album" musicians={["https://example.com/artist"]} releaseDate="2026-01-01" />
  *
  * @see {@link https://ogp.me/#type_music Open Graph music type}
  */
@@ -29,15 +29,15 @@ interface Props {
 	albumDisc?: number;
 	albumTrack?: number;
 	/**
-	 * Accepts one song URL or many; each value renders one `music:song` tag.
+	 * Each value renders one `music:song` tag.
 	 */
-	song?: string | string[];
+	songs?: string[];
 	songDisc?: number;
 	songTrack?: number;
 	/**
-	 * Accepts one musician URL or many; each value renders one `music:musician` tag.
+	 * Each value renders one `music:musician` tag.
 	 */
-	musician?: string | string[];
+	musicians?: string[];
 	/**
 	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
 	 * @example 2026-04-01
@@ -50,13 +50,19 @@ interface Props {
 	creator?: string;
 }
 
-const { subtype, duration, album, albumDisc, albumTrack, songDisc, songTrack, releaseDate, creator } = Astro.props;
-const musicians = Astro.props.musician
-	? Array.isArray(Astro.props.musician)
-		? Astro.props.musician
-		: [Astro.props.musician]
-	: [];
-const songs = Astro.props.song ? (Array.isArray(Astro.props.song) ? Astro.props.song : [Astro.props.song]) : [];
+const {
+	subtype,
+	duration,
+	album,
+	albumDisc,
+	albumTrack,
+	songs = [],
+	songDisc,
+	songTrack,
+	musicians = [],
+	releaseDate,
+	creator,
+} = Astro.props;
 ---
 
 {duration !== undefined && <meta property="music:duration" content={String(duration)} />}

@@ -217,8 +217,8 @@ describe("Component OpenGraph", () => {
 				book: {
 					isbn: "978-3-16-148410-0",
 					releaseDate: "2026-01-01T00:00:00Z",
-					authors: "https://example.com/author",
-					tags: "fiction",
+					authors: ["https://example.com/author"],
+					tags: ["fiction"],
 				},
 			},
 		});
@@ -255,7 +255,7 @@ describe("Component OpenGraph", () => {
 				music: {
 					subtype: "song",
 					duration: 214,
-					musician: "https://example.com/artist",
+					musicians: ["https://example.com/artist"],
 				},
 			},
 		});
@@ -270,7 +270,7 @@ describe("Component OpenGraph", () => {
 			props: {
 				music: {
 					subtype: "album",
-					musician: ["https://example.com/artist1", "https://example.com/artist2"],
+					musicians: ["https://example.com/artist1", "https://example.com/artist2"],
 					releaseDate: "2026-01-01",
 				},
 			},
@@ -286,7 +286,7 @@ describe("Component OpenGraph", () => {
 			props: {
 				music: {
 					subtype: "playlist",
-					song: "https://example.com/song",
+					songs: ["https://example.com/song"],
 					creator: "https://example.com/user",
 				},
 			},

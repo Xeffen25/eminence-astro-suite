@@ -31,8 +31,17 @@ interface Actor {
 }
 
 interface BaseProps {
+	/**
+	 * Each value renders one `video:actor` tag.
+	 */
 	actors?: Actor[];
+	/**
+	 * Each value renders one `video:director` tag.
+	 */
 	directors?: string[];
+	/**
+	 * Each value renders one `video:writer` tag.
+	 */
 	writers?: string[];
 	duration?: number;
 	/**
@@ -41,6 +50,9 @@ interface BaseProps {
 	 * @example 2026-04-01T00:00:00Z
 	 */
 	releaseDate?: string;
+	/**
+	 * Each value renders one `video:tag` tag.
+	 */
 	tags?: string[];
 }
 
