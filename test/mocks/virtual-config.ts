@@ -9,6 +9,7 @@ const clientHeadConfig: ClientHeadConfig = {
 	appleWebApp: undefined,
 	appLinks: undefined,
 	facebook: undefined,
+	openGraphSiteName: undefined,
 	humansTxt: undefined,
 	pinterest: undefined,
 	robots: undefined,

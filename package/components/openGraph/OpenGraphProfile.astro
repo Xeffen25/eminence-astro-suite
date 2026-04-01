@@ -1,0 +1,33 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-profile}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-profile.mdx}
+ * ---
+ * @summary Renders Open Graph profile namespace meta tags.
+ * @description
+ * Outputs `profile:*` meta tags for pages of type `og:type="profile"`.
+ * Inferred automatically when a `profile` object is passed to the parent
+ * `OpenGraph` component. Supports first name, last name, username, and gender.
+ *
+ * @example
+ * <OpenGraphProfile firstName="Jane" lastName="Doe" username="janedoe" />
+ * @example
+ * <OpenGraphProfile username="janedoe" gender="female" />
+ *
+ * @see {@link https://ogp.me/#type_profile Open Graph profile type}
+ */
+
+interface Props {
+	firstName?: string;
+	lastName?: string;
+	username?: string;
+	gender?: string;
+}
+
+const { firstName, lastName, username, gender } = Astro.props;
+---
+
+{firstName && <meta property="profile:first_name" content={firstName} />}
+{lastName && <meta property="profile:last_name" content={lastName} />}
+{username && <meta property="profile:username" content={username} />}
+{gender && <meta property="profile:gender" content={gender} />}

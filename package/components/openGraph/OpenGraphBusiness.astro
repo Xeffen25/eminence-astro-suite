@@ -1,0 +1,62 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-business}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-business.mdx}
+ * ---
+ * @summary Renders Open Graph business namespace meta tags.
+ * @description
+ * Outputs `business:*` meta tags for business pages. Since `og:type="business"`
+ * is not a canonical Open Graph type, pages using this object fall back to
+ * `og:type="website"` while still emitting business-specific contact data and
+ * opening hours tags. Inferred automatically when a `business` object is passed
+ * to the parent `OpenGraph` component.
+ *
+ * @example
+ * <OpenGraphBusiness contactData={{ streetAddress: "1 Hacker Way", locality: "Menlo Park", countryName: "US" }} />
+ * @example
+ * <OpenGraphBusiness hours={[{ day: "Monday", start: "09:00", end: "17:00" }]} />
+ *
+ * @see {@link https://ogp.me/ Open Graph protocol}
+ */
+
+interface ContactData {
+	streetAddress?: string;
+	locality?: string;
+	region?: string;
+	postalCode?: string;
+	countryName?: string;
+}
+
+interface BusinessHours {
+	day: string;
+	start: string;
+	end: string;
+}
+
+interface Props {
+	contactData?: ContactData;
+	hours?: BusinessHours[];
+}
+
+const { contactData, hours } = Astro.props;
+---
+
+{
+	contactData?.streetAddress && (
+		<meta property="business:contact_data:street_address" content={contactData.streetAddress} />
+	)
+}
+{contactData?.locality && <meta property="business:contact_data:locality" content={contactData.locality} />}
+{contactData?.region && <meta property="business:contact_data:region" content={contactData.region} />}
+{contactData?.postalCode && <meta property="business:contact_data:postal_code" content={contactData.postalCode} />}
+{contactData?.countryName && <meta property="business:contact_data:country_name" content={contactData.countryName} />}
+{
+	hours &&
+		hours.map((h) => (
+			<>
+				<meta property="business:hours:day" content={h.day} />
+				<meta property="business:hours:start" content={h.start} />
+				<meta property="business:hours:end" content={h.end} />
+			</>
+		))
+}

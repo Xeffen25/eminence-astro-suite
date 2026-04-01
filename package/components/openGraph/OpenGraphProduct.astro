@@ -1,0 +1,50 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-product}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-product.mdx}
+ * ---
+ * @summary Renders Open Graph product namespace meta tags.
+ * @description
+ * Outputs `product:*` meta tags for product pages. Since `og:type="product"`
+ * is not a canonical Open Graph type, pages using this object fall back to
+ * `og:type="website"` while still emitting product pricing and availability
+ * tags. Inferred automatically when a `product` object is passed to the parent
+ * `OpenGraph` component.
+ *
+ * @example
+ * <OpenGraphProduct originalPrice={{ amount: 29.99, currency: "USD" }} condition="new" />
+ * @example
+ * <OpenGraphProduct salePrice={{ amount: 19.99, currency: "USD" }} availability="instock" />
+ *
+ * @see {@link https://ogp.me/ Open Graph protocol}
+ */
+
+interface PriceInfo {
+	amount: number;
+	currency: string;
+}
+
+interface Props {
+	originalPrice?: PriceInfo;
+	salePrice?: PriceInfo;
+	salePriceDates?: {
+		start?: string;
+		end?: string;
+	};
+	condition?: "new" | "refurbished" | "used";
+	availability?: "instock" | "oos" | "pending";
+	retailerCategory?: string;
+}
+
+const { originalPrice, salePrice, salePriceDates, condition, availability, retailerCategory } = Astro.props;
+---
+
+{originalPrice && <meta property="product:original_price:amount" content={String(originalPrice.amount)} />}
+{originalPrice && <meta property="product:original_price:currency" content={originalPrice.currency} />}
+{salePrice && <meta property="product:sale_price:amount" content={String(salePrice.amount)} />}
+{salePrice && <meta property="product:sale_price:currency" content={salePrice.currency} />}
+{salePriceDates?.start && <meta property="product:sale_price_dates:start" content={salePriceDates.start} />}
+{salePriceDates?.end && <meta property="product:sale_price_dates:end" content={salePriceDates.end} />}
+{condition && <meta property="product:condition" content={condition} />}
+{availability && <meta property="product:availability" content={availability} />}
+{retailerCategory && <meta property="product:retailer_category" content={retailerCategory} />}
