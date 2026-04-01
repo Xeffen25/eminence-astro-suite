@@ -357,10 +357,11 @@ export const Manifest = _Manifest;
  * Outputs `og:*` meta tags following the Open Graph protocol. The `og:type` is
  * inferred from the type-driving object provided: `article` → `"article"`,
  * `book` → `"book"`, `profile` → `"profile"`, `music` → `"music.<subtype>"`,
- * and `video` with a `subtype` → `"video.<subtype>"`. Objects without a
- * canonical OG type (`business`, `place`, `product`) fall back to `"website"`
- * while still outputting their namespace-specific tags. When no type-driving
- * object is provided, `og:type` defaults to `"website"`.
+ * and `videoType` → `"video.<subtype>"`. The separate `video` prop only emits
+ * `og:video` structured media tags and does not affect `og:type`. Objects
+ * without a canonical OG type (`business`, `place`, `product`) fall back to
+ * `"website"` while still outputting their namespace-specific tags. When no
+ * type-driving object is provided, `og:type` defaults to `"website"`.
  *
  * The `locale` defaults to `Astro.currentLocale` when not explicitly provided.
  * The `siteName` can be set globally via the integration `head.openGraph.siteName`
@@ -370,6 +371,8 @@ export const Manifest = _Manifest;
  * <OpenGraph title="Home" url="https://example.com/" siteName="Example" />
  * @example
  * <OpenGraph title="My Article" url="https://example.com/posts/1" image={{ src: "/og.png", width: 1200, height: 630, alt: "Banner" }} article={{ publishedTime: "2026-01-01T00:00:00Z" }} />
+ * @example
+ * <OpenGraph title="Feature Film" video={{ src: "https://cdn.example.com/trailer.mp4", width: 1280, height: 720 }} videoType={{ subtype: "movie", directors: ["https://example.com/director"] }} />
  * @see {@link https://todo.dev/components/open-graph OpenGraph Component Documentation}
  * @see {@link https://ogp.me/ Open Graph protocol}
  * @see {@link https://developers.facebook.com/docs/sharing/webmasters Open Graph markup guide}

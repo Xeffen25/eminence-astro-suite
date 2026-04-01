@@ -62,9 +62,9 @@ describe("Component OpenGraph", () => {
 		);
 	});
 
-	it("renders a single og:locale:alternate when a string is provided", async () => {
+	it("renders a single og:locale:alternate when one locale is provided in the array", async () => {
 		const result = await container.renderToString(OpenGraph, {
-			props: { localeAlternate: "fr_FR" },
+			props: { localeAlternate: ["fr_FR"] },
 		});
 
 		expect(result).toBe(
@@ -309,11 +309,11 @@ describe("Component OpenGraph", () => {
 	it("infers og:type=video.movie and renders video type tags", async () => {
 		const result = await container.renderToString(OpenGraph, {
 			props: {
-				video: {
+				videoType: {
 					subtype: "movie",
-					director: "https://example.com/director",
+					directors: ["https://example.com/director"],
 					duration: 6900,
-					tag: ["action", "drama"],
+					tags: ["action", "drama"],
 				},
 			},
 		});
@@ -326,7 +326,7 @@ describe("Component OpenGraph", () => {
 	it("infers og:type=video.episode and renders series tag", async () => {
 		const result = await container.renderToString(OpenGraph, {
 			props: {
-				video: {
+				videoType: {
 					subtype: "episode",
 					series: "https://example.com/show",
 				},
@@ -338,21 +338,23 @@ describe("Component OpenGraph", () => {
 		);
 	});
 
-	it("renders og:video media tags alongside video type tags", async () => {
+	it("renders og:video media tags alongside video page type tags", async () => {
 		const result = await container.renderToString(OpenGraph, {
 			props: {
 				video: {
-					subtype: "movie",
 					src: "https://example.com/movie.mp4",
 					width: 1280,
 					height: 720,
-					actor: "https://example.com/actor",
+				},
+				videoType: {
+					subtype: "movie",
+					actors: [{ name: "https://example.com/actor", role: "Lead" }],
 				},
 			},
 		});
 
 		expect(result).toBe(
-			'<meta property="og:type" content="video.movie"><meta property="og:video" content="https://example.com/movie.mp4"><meta property="og:video:type" content="video/mp4"><meta property="og:video:width" content="1280"><meta property="og:video:height" content="720"><meta property="video:actor" content="https://example.com/actor">',
+			'<meta property="og:type" content="video.movie"><meta property="og:video" content="https://example.com/movie.mp4"><meta property="og:video:type" content="video/mp4"><meta property="og:video:width" content="1280"><meta property="og:video:height" content="720"><meta property="video:actor" content="https://example.com/actor"><meta property="video:actor:role" content="Lead">',
 		);
 	});
 

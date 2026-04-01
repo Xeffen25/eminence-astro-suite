@@ -8,10 +8,12 @@
  * Outputs `og:*` meta tags following the Open Graph protocol. The `og:type` is
  * inferred from the type-driving object you provide: `article` → `"article"`,
  * `book` → `"book"`, `profile` → `"profile"`, `music` → `"music.<subtype>"`,
- * and `video` with a `subtype` → `"video.<subtype>"`. Objects without a
- * canonical OG type (`business`, `place`, `product`) fall back to `"website"`
- * while still outputting their namespace-specific tags. When no type-driving
- * object is provided, `og:type` defaults to `"website"`.
+ * and `videoType` → `"video.<subtype>"`. The separate `video` object only
+ * emits `og:video` structured media tags, so attaching a video does not make
+ * the page itself a video object. Objects without a canonical OG type
+ * (`business`, `place`, `product`) fall back to `"website"` while still
+ * outputting their namespace-specific tags. When no type-driving object is
+ * provided, `og:type` defaults to `"website"`.
  *
  * The `locale` defaults to `Astro.currentLocale` (with BCP 47 hyphens
  * normalized to underscores) when not explicitly provided. The `siteName` can
@@ -22,6 +24,8 @@
  * <OpenGraph title="Home" url="https://example.com/" siteName="Example" />
  * @example
  * <OpenGraph title="My Article" url="https://example.com/posts/1" image={{ src: "/og.png", width: 1200, height: 630, alt: "Banner" }} article={{ publishedTime: "2026-01-01T00:00:00Z", authors: ["https://example.com/author"] }} />
+ * @example
+ * <OpenGraph title="Feature Film" video={{ src: "https://cdn.example.com/trailer.mp4", width: 1280, height: 720 }} videoType={{ subtype: "movie", directors: ["https://example.com/director"] }} />
  *
  * @see {@link https://ogp.me/ Open Graph protocol}
  * @see {@link https://developers.facebook.com/docs/sharing/webmasters Open Graph markup guide}
@@ -40,6 +44,8 @@ import OpenGraphPlace from "./openGraph/OpenGraphPlace.astro";
 import OpenGraphProduct from "./openGraph/OpenGraphProduct.astro";
 import OpenGraphProfile from "./openGraph/OpenGraphProfile.astro";
 import OpenGraphVideo from "./openGraph/OpenGraphVideo.astro";
+import OpenGraphVideoType from "./openGraph/OpenGraphVideoType.astro";
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
 
 type BaseProps = {
 	title: string;
@@ -47,7 +53,7 @@ type BaseProps = {
 	description?: string;
 	siteName?: string;
 	locale?: string;
-	localeAlternate?: string | string[];
+	localeAlternate?: string[];
 	image: ComponentProps<typeof OpenGraphImage>;
 	audio?: ComponentProps<typeof OpenGraphAudio>;
 	video?: ComponentProps<typeof OpenGraphVideo>;
@@ -62,6 +68,7 @@ type TypedVariant =
 			place?: never;
 			product?: never;
 			profile?: never;
+			videoType?: never;
 	  }
 	| {
 			article?: never;
@@ -71,6 +78,7 @@ type TypedVariant =
 			place?: never;
 			product?: never;
 			profile?: never;
+			videoType?: never;
 	  }
 	| {
 			article?: never;
@@ -80,6 +88,7 @@ type TypedVariant =
 			place?: never;
 			product?: never;
 			profile?: never;
+			videoType?: never;
 	  }
 	| {
 			article?: never;
@@ -89,6 +98,7 @@ type TypedVariant =
 			place?: never;
 			product?: never;
 			profile?: never;
+			videoType?: never;
 	  }
 	| {
 			article?: never;
@@ -98,6 +108,7 @@ type TypedVariant =
 			place: ComponentProps<typeof OpenGraphPlace>;
 			product?: never;
 			profile?: never;
+			videoType?: never;
 	  }
 	| {
 			article?: never;
@@ -107,6 +118,7 @@ type TypedVariant =
 			place?: never;
 			product: ComponentProps<typeof OpenGraphProduct>;
 			profile?: never;
+			videoType?: never;
 	  }
 	| {
 			article?: never;
@@ -116,6 +128,7 @@ type TypedVariant =
 			place?: never;
 			product?: never;
 			profile: ComponentProps<typeof OpenGraphProfile>;
+			videoType?: never;
 	  }
 	| {
 			article?: never;
@@ -125,20 +138,30 @@ type TypedVariant =
 			place?: never;
 			product?: never;
 			profile?: never;
+			videoType?: ComponentProps<typeof OpenGraphVideoType>;
+	  }
+	| {
+			article?: never;
+			book?: never;
+			business?: never;
+			music?: never;
+			place?: never;
+			product?: never;
+			profile?: never;
+			videoType?: never;
 	  };
-
 type Props = BaseProps & TypedVariant;
 
 const {
 	title,
 	url,
 	description,
-	siteName,
+	siteName = clientHeadConfig.openGraphSiteName,
 	image,
 	audio,
 	video,
 	locale,
-	localeAlternate,
+	localeAlternate = [],
 	article,
 	book,
 	business,
@@ -146,17 +169,17 @@ const {
 	place,
 	product,
 	profile,
+	videoType,
 } = Astro.props;
 
 const resolvedUrl = url ? toHref(url) : undefined;
-const localeAlternates = typeof localeAlternate === "string" ? [localeAlternate] : (localeAlternate ?? []);
 
 const ogType = (() => {
 	if (article) return "article";
 	if (book) return "book";
 	if (profile) return "profile";
 	if (music) return `music.${music.subtype}`;
-	if (video?.subtype) return `video.${video.subtype}`;
+	if (videoType) return `video.${videoType.subtype}`;
 	return "website";
 })();
 ---
@@ -167,7 +190,7 @@ const ogType = (() => {
 {description && <meta property="og:description" content={description} />}
 {siteName && <meta property="og:site_name" content={siteName} />}
 {locale && <meta property="og:locale" content={locale} />}
-{localeAlternates.map((locale) => <meta property="og:locale:alternate" content={locale} />)}
+{localeAlternate.map((locale) => <meta property="og:locale:alternate" content={locale} />)}
 {image && <OpenGraphImage {...image} />}
 {audio && <OpenGraphAudio {...audio} />}
 {video && <OpenGraphVideo {...video} />}
@@ -178,3 +201,4 @@ const ogType = (() => {
 {place && <OpenGraphPlace {...place} />}
 {product && <OpenGraphProduct {...product} />}
 {profile && <OpenGraphProfile {...profile} />}
+{videoType && <OpenGraphVideoType {...videoType} />}
