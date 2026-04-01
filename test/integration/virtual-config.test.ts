@@ -333,6 +333,22 @@ describe("Integration - Virtual Config", () => {
 		});
 	});
 
+	it("extracts creator and publisher defaults into client head config", () => {
+		const options: IntegrationInput = {
+			head: {
+				creator: ["Acme University", "Research Lab"],
+				publisher: "Acme Publishing",
+			},
+		};
+
+		const result = extractClientHeadConfig(options);
+
+		expect(result).toMatchObject({
+			creator: ["Acme University", "Research Lab"],
+			publisher: "Acme Publishing",
+		});
+	});
+
 	it("extracts generator false into client head config", () => {
 		const options: IntegrationInput = {
 			head: {
@@ -527,5 +543,29 @@ describe("Integration - Virtual Config", () => {
 		const result = serializedVirtualConfigModule(options);
 
 		expect(result).toBe('export default {"generator":false};');
+	});
+
+	it("serializes creator defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			head: {
+				creator: ["Acme University", "Research Lab"],
+			},
+		};
+
+		const result = serializedVirtualConfigModule(options);
+
+		expect(result).toBe('export default {"creator":["Acme University","Research Lab"]};');
+	});
+
+	it("serializes publisher defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			head: {
+				publisher: "Acme Publishing",
+			},
+		};
+
+		const result = serializedVirtualConfigModule(options);
+
+		expect(result).toBe('export default {"publisher":"Acme Publishing"};');
 	});
 });

@@ -30,6 +30,7 @@ import Bookmarks from "./Bookmarks.astro";
 import Canonical from "./Canonical.astro";
 import Charset from "./Charset.astro";
 import ColorScheme from "./ColorScheme.astro";
+import Creator from "./Creator.astro";
 import Description from "./Description.astro";
 import Facebook from "./Facebook.astro";
 import Generator from "./Generator.astro";
@@ -37,6 +38,7 @@ import HumansTxt from "./HumansTxt.astro";
 import Manifest from "./Manifest.astro";
 import OpenGraph from "./OpenGraph.astro";
 import Pinterest from "./Pinterest.astro";
+import Publisher from "./Publisher.astro";
 import Robots from "./Robots.astro";
 import ThemeColor from "./ThemeColor.astro";
 import Title from "./Title.astro";
@@ -61,6 +63,7 @@ interface Props {
 	bookmarks?: ComponentProps<typeof Bookmarks>["hrefs"];
 	canonical?: ComponentProps<typeof Canonical>["href"] | boolean;
 	colorScheme?: ComponentProps<typeof ColorScheme>["content"];
+	creator?: ComponentProps<typeof Creator>["content"];
 	description?: ComponentProps<typeof Description>["content"];
 	facebook?: ComponentProps<typeof Facebook>;
 	generator?: ComponentProps<typeof Generator>["generate"];
@@ -68,6 +71,7 @@ interface Props {
 	manifest?: ComponentProps<typeof Manifest>["href"] | boolean;
 	openGraph?: ComponentProps<typeof OpenGraph>;
 	pinterest?: ComponentProps<typeof Pinterest>;
+	publisher?: ComponentProps<typeof Publisher>["content"];
 	robots?: ComponentProps<typeof Robots>;
 	themeColor?: ComponentProps<typeof ThemeColor>;
 	verification?: ComponentProps<typeof Verification>;
@@ -89,6 +93,7 @@ const {
 	bookmarks,
 	canonical: propCanonical,
 	colorScheme = clientHeadConfig.colorScheme,
+	creator = clientHeadConfig.creator,
 	description,
 	facebook = clientHeadConfig.facebook,
 	generator = clientHeadConfig.generator,
@@ -96,6 +101,7 @@ const {
 	manifest,
 	openGraph,
 	pinterest = clientHeadConfig.pinterest,
+	publisher = clientHeadConfig.publisher,
 	robots = clientHeadConfig.robots,
 	themeColor = clientHeadConfig.themeColor,
 	verification = clientHeadConfig.verification,
@@ -123,6 +129,7 @@ const manifestProps = toOptionalHrefProps<ComponentProps<typeof Manifest>>(manif
 	{bookmarks && <Bookmarks hrefs={bookmarks} />}
 	{canonical && <Canonical {...canonical} />}
 	{colorScheme && <ColorScheme content={colorScheme} />}
+	{creator && <Creator content={creator} />}
 	{description && <Description content={description} />}
 	{facebook && <Facebook {...facebook} />}
 	{generator !== undefined && <Generator generate={generator} />}
@@ -130,6 +137,7 @@ const manifestProps = toOptionalHrefProps<ComponentProps<typeof Manifest>>(manif
 	{manifestProps && <Manifest {...manifestProps} />}
 	{openGraph && <OpenGraph {...openGraph} />}
 	{pinterest && <Pinterest {...pinterest} />}
+	{publisher && <Publisher content={publisher} />}
 	{robots && <Robots {...robots} />}
 	{themeColor && <ThemeColor {...themeColor} />}
 	{verification && <Verification {...verification} />}

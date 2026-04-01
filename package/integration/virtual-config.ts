@@ -7,11 +7,13 @@ import {
 	Base,
 	Charset,
 	ColorScheme,
+	Creator,
 	Facebook,
 	Generator,
 	HumansTxt,
 	OpenGraph,
 	Pinterest,
+	Publisher,
 	Robots,
 	ThemeColor,
 	Title,
@@ -37,10 +39,12 @@ export type ClientHeadConfig = {
 	appLinks?: ComponentProps<typeof AppLinks>;
 	applicationName?: ComponentProps<typeof ApplicationName>["content"];
 	author?: ComponentProps<typeof Author>["content"];
+	creator?: ComponentProps<typeof Creator>["content"];
 	facebook?: ComponentProps<typeof Facebook>;
 	generator?: ComponentProps<typeof Generator>["generate"];
 	openGraphSiteName?: ComponentProps<typeof OpenGraph>["siteName"];
 	pinterest?: ComponentProps<typeof Pinterest>;
+	publisher?: ComponentProps<typeof Publisher>["content"];
 	robots?: ComponentProps<typeof Robots>;
 	themeColor?: ComponentProps<typeof ThemeColor>;
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
@@ -64,10 +68,12 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		appLinks: head?.appLinks,
 		applicationName: head?.applicationName,
 		author: head?.author,
+		creator: head?.creator,
 		facebook: head?.facebook,
 		generator: head?.generator,
 		openGraphSiteName: head?.openGraphSiteName,
 		pinterest: head?.pinterest,
+		publisher: head?.publisher,
 		robots: head?.robots,
 		themeColor: head?.themeColor,
 		humansTxt: head?.humansTxt,

@@ -1,0 +1,30 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/creator}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/creator.mdx}
+ * ---
+ * @summary Renders one or more `<meta name="creator">` tags.
+ * @description
+ * Supports a single creator value or multiple creators. When an array is
+ * provided, each entry is rendered as its own `<meta name="creator">` tag.
+ *
+ * @example
+ * <Creator content="Acme University" />
+ * @example
+ * <Creator content={["Acme University", "Research Lab"]} />
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#creator MDN meta creator reference}
+ */
+
+interface Props {
+	/**
+	 * One or more creator values for the document metadata.
+	 */
+	content?: string | string[];
+}
+
+const { content } = Astro.props;
+---
+
+{typeof content === "string" && <meta name="creator" content={content} />}
+{Array.isArray(content) && content.map((value) => <meta name="creator" content={value} />)}

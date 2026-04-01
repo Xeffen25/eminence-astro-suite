@@ -1,0 +1,29 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/publisher}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/publisher.mdx}
+ * ---
+ * @summary Renders a `<meta name="publisher">` tag.
+ * @description
+ * Outputs publisher metadata for the current document. When `content` is
+ * omitted, the component renders nothing.
+ *
+ * @example
+ * <Publisher content="Acme Publishing" />
+ * @example
+ * <Publisher />
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#publisher MDN meta publisher reference}
+ */
+
+interface Props {
+	/**
+	 * Publisher value for the document metadata.
+	 */
+	content?: string;
+}
+
+const { content } = Astro.props;
+---
+
+{content && <meta name="publisher" content={content} />}

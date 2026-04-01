@@ -10,6 +10,7 @@ import _Bookmarks from "./components/Bookmarks.astro";
 import _Canonical from "./components/Canonical.astro";
 import _Charset from "./components/Charset.astro";
 import _ColorScheme from "./components/ColorScheme.astro";
+import _Creator from "./components/Creator.astro";
 import _Description from "./components/Description.astro";
 import _Facebook from "./components/Facebook.astro";
 import _Generator from "./components/Generator.astro";
@@ -18,6 +19,7 @@ import _HumansTxt from "./components/HumansTxt.astro";
 import _Manifest from "./components/Manifest.astro";
 import _OpenGraph from "./components/OpenGraph.astro";
 import _Pinterest from "./components/Pinterest.astro";
+import _Publisher from "./components/Publisher.astro";
 import _Robots from "./components/Robots.astro";
 import _ThemeColor from "./components/ThemeColor.astro";
 import _Title from "./components/Title.astro";
@@ -210,6 +212,21 @@ export const Charset = _Charset;
 export const ColorScheme = _ColorScheme;
 
 /**
+ * @summary Renders one or more `<meta name="creator">` tags.
+ * @description
+ * Supports a single creator value or multiple creators. When an array is
+ * provided, each entry is rendered as its own `<meta name="creator">` tag.
+ *
+ * @example
+ * <Creator content="Acme University" />
+ * @example
+ * <Creator content={["Acme University", "Research Lab"]} />
+ * @see {@link https://todo.dev/components/creator Creator Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#creator MDN meta creator reference}
+ */
+export const Creator = _Creator;
+
+/**
  * @summary Renders a `<meta name="description">` tag for SEO.
  * @description
  * Outputs the page meta description tag in your `<head>`. This tag is commonly
@@ -269,6 +286,21 @@ export const Generator = _Generator;
  * @see {@link https://developers.pinterest.com/docs/rich-pins/overview/ Pinterest Rich Pins documentation}
  */
 export const Pinterest = _Pinterest;
+
+/**
+ * @summary Renders a `<meta name="publisher">` tag.
+ * @description
+ * Outputs publisher metadata for the current document. When `content` is
+ * omitted, the component renders nothing.
+ *
+ * @example
+ * <Publisher content="Acme Publishing" />
+ * @example
+ * <Publisher />
+ * @see {@link https://todo.dev/components/publisher Publisher Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#publisher MDN meta publisher reference}
+ */
+export const Publisher = _Publisher;
 
 /**
  * @summary Renders a robots directives meta tag.
