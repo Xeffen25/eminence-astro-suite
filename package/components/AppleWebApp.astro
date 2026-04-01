@@ -17,6 +17,10 @@
  * @see {@link https://developer.apple.com/documentation/webkit/promoting-apps-with-smart-app-banners Promoting apps with Smart App Banners}
  */
 
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
+import { hasAnyProp } from "../utils";
+
 interface Props {
 	itunes?: {
 		appId: string;
@@ -34,7 +38,9 @@ type StartupImage =
 			media?: string;
 	  };
 
-const { itunes, title, statusBarStyle, startupImage } = Astro.props;
+const { itunes, title, statusBarStyle, startupImage } = (
+	hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.appleWebApp ?? {})
+) as Props;
 ---
 
 {

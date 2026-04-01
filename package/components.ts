@@ -214,11 +214,11 @@ export const ColorScheme = _ColorScheme;
 /**
  * @summary Renders one or more `<meta name="creator">` tags.
  * @description
- * Supports a single creator value or multiple creators. When an array is
- * provided, each entry is rendered as its own `<meta name="creator">` tag.
+ * Accepts an ordered list of creator values. Each entry is rendered as its
+ * own `<meta name="creator">` tag.
  *
  * @example
- * <Creator content="Acme University" />
+ * <Creator content={["Acme University"]} />
  * @example
  * <Creator content={["Acme University", "Research Lab"]} />
  * @see {@link https://todo.dev/components/creator Creator Component Documentation}

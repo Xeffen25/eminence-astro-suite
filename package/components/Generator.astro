@@ -17,6 +17,8 @@
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/generator MDN generator reference}
  */
 
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
 interface Props {
 	/**
 	 * Enables generator meta tag rendering.
@@ -25,7 +27,7 @@ interface Props {
 	generate?: boolean;
 }
 
-const { generate = true } = Astro.props;
+const generate = Astro.props.generate ?? clientHeadConfig.generator ?? true;
 ---
 
 {generate && <meta name="generator" content={Astro.generator} />}

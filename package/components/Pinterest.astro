@@ -15,11 +15,13 @@
  *
  * @see {@link https://developers.pinterest.com/docs/rich-pins/overview/ Pinterest Rich Pins documentation}
  */
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
 interface Props {
 	richPin?: boolean;
 }
 
-const { richPin = true } = Astro.props;
+const { richPin = clientHeadConfig.pinterest ?? true } = Astro.props;
 ---
 
 <meta name="pinterest-rich-pin" content={richPin ? "true" : "false"} />

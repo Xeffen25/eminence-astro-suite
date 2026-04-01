@@ -5,26 +5,27 @@
  * ---
  * @summary Renders one or more `<meta name="creator">` tags.
  * @description
- * Supports a single creator value or multiple creators. When an array is
- * provided, each entry is rendered as its own `<meta name="creator">` tag.
+ * Accepts an ordered list of creator values. Each entry is rendered as its
+ * own `<meta name="creator">` tag.
  *
  * @example
- * <Creator content="Acme University" />
+ * <Creator content={["Acme University"]} />
  * @example
  * <Creator content={["Acme University", "Research Lab"]} />
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#creator MDN meta creator reference}
  */
 
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
 interface Props {
 	/**
-	 * One or more creator values for the document metadata.
+	 * Ordered creator values for the document metadata.
 	 */
-	content?: string | string[];
+	content?: string[];
 }
 
-const { content } = Astro.props;
+const { content = clientHeadConfig.creator } = Astro.props;
 ---
 
-{typeof content === "string" && <meta name="creator" content={content} />}
 {Array.isArray(content) && content.map((value) => <meta name="creator" content={value} />)}

@@ -15,6 +15,10 @@
  *
  * @see {@link https://developers.facebook.com/docs/sharing/webmasters#markup Facebook Sharing metadata reference}
  */
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
+import { hasAnyProp } from "../utils";
+
 type WithAppId = {
 	appId: string;
 	admins?: never;
@@ -25,9 +29,15 @@ type WithAdmins = {
 	appId?: never;
 };
 
-type Props = WithAppId | WithAdmins;
+type Props =
+	| WithAppId
+	| WithAdmins
+	| {
+			appId?: never;
+			admins?: never;
+	  };
 
-const { appId, admins } = Astro.props;
+const { appId, admins } = (hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.facebook ?? {})) as Props;
 ---
 
 {appId && <meta property="fb:app_id" content={appId} />}

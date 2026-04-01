@@ -15,6 +15,10 @@
  * @see {@link https://developer.mozilla.org/es/docs/Web/HTML/Reference/Elements/base MDN base element reference}
  */
 
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
+import { hasAnyProp } from "../utils";
+
 interface Props {
 	/**
 	 * Base URL used for all relative URLs in the document.
@@ -26,7 +30,7 @@ interface Props {
 	target?: string;
 }
 
-const { href, target } = Astro.props;
+const { href, target } = (hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.base ?? {})) as Props;
 ---
 
 {(href !== undefined || target !== undefined) && <base href={href} target={target} />}

@@ -17,6 +17,8 @@
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title MDN title element reference}
  */
 
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
 interface Props {
 	/**
 	 * The page-specific title text.
@@ -32,7 +34,7 @@ interface Props {
 
 type TitleTemplate = `${string}%s${string}`;
 
-const { value, template = "%s" } = Astro.props;
+const { value, template = clientHeadConfig.titleTemplate ?? "%s" } = Astro.props;
 ---
 
 <title>{template.replace("%s", value)}</title>

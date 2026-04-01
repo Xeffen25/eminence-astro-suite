@@ -1,6 +1,6 @@
 import { Manifest } from "@package/components";
 import { experimental_AstroContainer } from "astro/container";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
 describe("Component Manifest", () => {
 	let container: experimental_AstroContainer;
@@ -25,18 +25,19 @@ describe("Component Manifest", () => {
 		expect(result).toBe('<link rel="manifest" href="https://cdn.example.com/manifest.webmanifest">');
 	});
 
-	it("renders nothing and logs an error when href and Astro.site are unavailable", async () => {
-		const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+	it("renders nothing when explicitly disabled", async () => {
+		const result = await container.renderToString(Manifest, {
+			props: { href: false },
+		});
 
+		expect(result).toBe("");
+	});
+
+	it("renders nothing when href and Astro.site are unavailable", async () => {
 		const result = await container.renderToString(Manifest, {
 			props: {},
 		});
 
 		expect(result).toBe("");
-		expect(errorSpy).toHaveBeenCalledWith(
-			"[Manifest] Unable to resolve href. Provide `href` or configure `site` in astro.config.*.",
-		);
-
-		errorSpy.mockRestore();
 	});
 });

@@ -9,9 +9,9 @@ describe("Component Creator", () => {
 		container = await experimental_AstroContainer.create();
 	});
 
-	it("renders single creator meta tag from string content", async () => {
+	it("renders single creator meta tag from array content", async () => {
 		const result = await container.renderToString(Creator, {
-			props: { content: "Acme University" },
+			props: { content: ["Acme University"] },
 		});
 
 		expect(result).toBe('<meta name="creator" content="Acme University">');

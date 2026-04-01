@@ -1,21 +1,47 @@
 import { Head } from "@package/components";
 import { experimental_AstroContainer } from "astro/container";
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
 import { beforeEach, describe, expect, it } from "vitest";
+
+const resetClientHeadConfig = () => {
+	Object.assign(clientHeadConfig, {
+		charset: undefined,
+		viewport: undefined,
+		base: undefined,
+		colorScheme: undefined,
+		titleTemplate: undefined,
+		appleWebApp: undefined,
+		appLinks: undefined,
+		applicationName: undefined,
+		author: undefined,
+		creator: undefined,
+		facebook: undefined,
+		generator: undefined,
+		openGraphSiteName: undefined,
+		humansTxt: undefined,
+		pinterest: undefined,
+		publisher: undefined,
+		robots: undefined,
+		themeColor: undefined,
+		verification: undefined,
+	});
+};
 
 describe("Component Head", () => {
 	let container: experimental_AstroContainer;
 
 	beforeEach(async () => {
+		resetClientHeadConfig();
 		container = await experimental_AstroContainer.create();
 	});
 
-	it("renders charset, viewport, and title with defaults", async () => {
+	it("renders charset, viewport, title, generator, and pinterest defaults", async () => {
 		const result = await container.renderToString(Head, {
 			props: { title: "Home" },
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title></head>',
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
 		);
 	});
 
@@ -25,7 +51,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | My Site</title></head>',
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | My Site</title><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
 		);
 	});
 
@@ -35,7 +61,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title></head>',
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
 		);
 	});
 
@@ -48,7 +74,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="https://example.com" target="_blank"><title>Home</title></head>',
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="https://example.com" target="_blank"><title>Home</title><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
 		);
 	});
 
@@ -56,12 +82,12 @@ describe("Component Head", () => {
 		const result = await container.renderToString(Head, {
 			props: {
 				title: "Home",
-				humansTxt: { href: "https://example.com/humans.txt" },
+				humansTxt: "https://example.com/humans.txt",
 			},
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link type="text/plain" rel="author" href="https://example.com/humans.txt"></head>',
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1"><link type="text/plain" rel="author" href="https://example.com/humans.txt"><meta name="pinterest-rich-pin" content="true"></head>',
 		);
 	});
 
@@ -69,12 +95,12 @@ describe("Component Head", () => {
 		const result = await container.renderToString(Head, {
 			props: {
 				title: "Home",
-				manifest: { href: "https://example.com/manifest.webmanifest" },
+				manifest: "https://example.com/manifest.webmanifest",
 			},
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="manifest" href="https://example.com/manifest.webmanifest"></head>',
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1"><link rel="manifest" href="https://example.com/manifest.webmanifest"><meta name="pinterest-rich-pin" content="true"></head>',
 		);
 	});
 
@@ -82,12 +108,12 @@ describe("Component Head", () => {
 		const result = await container.renderToString(Head, {
 			props: {
 				title: "Home",
-				canonical: { href: "https://example.com/home" },
+				canonical: "https://example.com/home",
 			},
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="canonical" href="https://example.com/home"></head>',
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="canonical" href="https://example.com/home"><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
 		);
 	});
 
@@ -103,7 +129,24 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"></head>',
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
+		);
+	});
+
+	it("uses child component config fallbacks", async () => {
+		Object.assign(clientHeadConfig, {
+			titleTemplate: "%s | Example",
+			author: "Jane Doe",
+			generator: false,
+			pinterest: false,
+		});
+
+		const result = await container.renderToString(Head, {
+			props: { title: "Home" },
+		});
+
+		expect(result).toBe(
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | Example</title><meta name="author" content="Jane Doe"><meta name="pinterest-rich-pin" content="false"></head>',
 		);
 	});
 
@@ -116,7 +159,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title></head>',
+			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
 		);
 	});
 });

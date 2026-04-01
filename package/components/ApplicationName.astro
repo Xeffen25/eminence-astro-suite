@@ -17,6 +17,8 @@
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/application-name MDN application-name reference}
  */
 
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
 export type ApplicationNameEntry = {
 	name: string;
 	lang?: string;
@@ -29,7 +31,7 @@ interface Props {
 	content?: string | ApplicationNameEntry[];
 }
 
-const { content } = Astro.props;
+const { content = clientHeadConfig.applicationName } = Astro.props;
 ---
 
 {typeof content === "string" && <meta name="application-name" content={content} />}

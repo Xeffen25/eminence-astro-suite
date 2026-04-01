@@ -16,7 +16,6 @@
  */
 
 import type { ComponentProps } from "astro/types";
-import clientHeadConfig from "virtual:eminence-astro-seo/config";
 
 import Alternate from "./Alternate.astro";
 import AppleWebApp from "./AppleWebApp.astro";
@@ -45,100 +44,95 @@ import Title from "./Title.astro";
 import Verification from "./Verification.astro";
 import Viewport from "./Viewport.astro";
 
-import { toOptionalHrefProps } from "../utils";
+type HrefProp = { href?: StringOrURL | boolean } | StringOrURL | boolean | undefined;
 
 interface Props {
-	charset?: ComponentProps<typeof Charset>["charset"];
-	viewport?: ComponentProps<typeof Viewport>["content"];
+	charset?: ComponentProps<typeof Charset>["charset"] | false;
+	viewport?: ComponentProps<typeof Viewport>["content"] | false;
 	base?: ComponentProps<typeof Base>;
 	title: ComponentProps<typeof Title>["value"];
 	titleTemplate?: ComponentProps<typeof Title>["template"];
 	alternates?: ComponentProps<typeof Alternate>;
-	appleWebApp?: ComponentProps<typeof AppleWebApp>;
-	appLinks?: ComponentProps<typeof AppLinks>;
-	applicationName?: ComponentProps<typeof ApplicationName>["content"];
+	appleWebApp?: ComponentProps<typeof AppleWebApp> | false;
+	appLinks?: ComponentProps<typeof AppLinks> | false;
+	applicationName?: ComponentProps<typeof ApplicationName>["content"] | false;
 	archives?: ComponentProps<typeof Archives>["hrefs"];
 	assets?: ComponentProps<typeof Assets>["hrefs"];
-	author?: ComponentProps<typeof Author>["content"];
+	author?: ComponentProps<typeof Author>["content"] | false;
 	bookmarks?: ComponentProps<typeof Bookmarks>["hrefs"];
-	canonical?: ComponentProps<typeof Canonical>["href"] | boolean;
-	colorScheme?: ComponentProps<typeof ColorScheme>["content"];
-	creator?: ComponentProps<typeof Creator>["content"];
+	canonical?: ComponentProps<typeof Canonical>["href"] | false;
+	colorScheme?: ComponentProps<typeof ColorScheme>["content"] | false;
+	creator?: ComponentProps<typeof Creator>["content"] | false;
 	description?: ComponentProps<typeof Description>["content"];
-	facebook?: ComponentProps<typeof Facebook>;
+	facebook?: ComponentProps<typeof Facebook> | false;
 	generator?: ComponentProps<typeof Generator>["generate"];
-	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
-	manifest?: ComponentProps<typeof Manifest>["href"] | boolean;
+	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | false;
+	manifest?: ComponentProps<typeof Manifest>["href"] | false;
 	openGraph?: ComponentProps<typeof OpenGraph>;
-	pinterest?: ComponentProps<typeof Pinterest>;
-	publisher?: ComponentProps<typeof Publisher>["content"];
+	pinterest?: ComponentProps<typeof Pinterest>["richPin"] | false;
+	publisher?: ComponentProps<typeof Publisher>["content"] | false;
 	robots?: ComponentProps<typeof Robots>;
-	themeColor?: ComponentProps<typeof ThemeColor>;
-	verification?: ComponentProps<typeof Verification>;
+	themeColor?: ComponentProps<typeof ThemeColor> | false;
+	verification?: ComponentProps<typeof Verification> | false;
 }
 
 const {
-	charset = clientHeadConfig.charset,
-	viewport = clientHeadConfig.viewport,
-	base = clientHeadConfig.base,
+	charset,
+	viewport,
+	base,
 	title,
-	titleTemplate = clientHeadConfig.titleTemplate,
+	titleTemplate,
 	alternates,
-	appleWebApp = clientHeadConfig.appleWebApp,
+	appleWebApp,
 	appLinks,
-	applicationName = clientHeadConfig.applicationName,
+	applicationName,
 	archives,
 	assets,
-	author = clientHeadConfig.author,
+	author,
 	bookmarks,
-	canonical: propCanonical,
-	colorScheme = clientHeadConfig.colorScheme,
-	creator = clientHeadConfig.creator,
+	canonical,
+	colorScheme,
+	creator,
 	description,
-	facebook = clientHeadConfig.facebook,
-	generator = clientHeadConfig.generator,
-	humansTxt = clientHeadConfig.humansTxt,
+	facebook,
+	generator,
+	humansTxt,
 	manifest,
 	openGraph,
-	pinterest = clientHeadConfig.pinterest,
-	publisher = clientHeadConfig.publisher,
-	robots = clientHeadConfig.robots,
-	themeColor = clientHeadConfig.themeColor,
-	verification = clientHeadConfig.verification,
+	pinterest,
+	publisher,
+	robots,
+	themeColor,
+	verification,
 } = Astro.props;
-
-const canonical = toOptionalHrefProps<ComponentProps<typeof Canonical>>(propCanonical);
-const humansTxtProps = toOptionalHrefProps<ComponentProps<typeof HumansTxt>>(humansTxt);
-const manifestProps = toOptionalHrefProps<ComponentProps<typeof Manifest>>(manifest);
 ---
 
 <head>
-	<Charset charset={charset} />
-	<Viewport content={viewport} />
-
-	{base && <Base {...base} />}
+	{charset !== false && <Charset charset={charset} />}
+	{viewport !== false && <Viewport content={viewport} />}
+	<Base {...base ?? {}} />
 	<Title value={title} template={titleTemplate} />
 	<slot />
 	{alternates && <Alternate {...alternates} />}
-	{appleWebApp && <AppleWebApp {...appleWebApp} />}
+	{appleWebApp !== false && <AppleWebApp {...(appleWebApp ?? {})} />}
 	{appLinks && <AppLinks {...appLinks} />}
-	{applicationName && <ApplicationName content={applicationName} />}
+	{applicationName !== false && <ApplicationName content={applicationName} />}
 	{archives && <Archives hrefs={archives} />}
 	{assets && <Assets hrefs={assets} />}
-	{author && <Author content={author} />}
+	{author !== false && <Author content={author} />}
 	{bookmarks && <Bookmarks hrefs={bookmarks} />}
-	{canonical && <Canonical {...canonical} />}
-	{colorScheme && <ColorScheme content={colorScheme} />}
-	{creator && <Creator content={creator} />}
+	{canonical !== false && <Canonical href={canonical} />}
+	{colorScheme !== false && <ColorScheme content={colorScheme} />}
+	{creator !== false && <Creator content={creator} />}
 	{description && <Description content={description} />}
-	{facebook && <Facebook {...facebook} />}
-	{generator !== undefined && <Generator generate={generator} />}
-	{humansTxtProps && <HumansTxt {...humansTxtProps} />}
-	{manifestProps && <Manifest {...manifestProps} />}
+	{facebook !== false && <Facebook {...(facebook ?? {})} />}
+	{generator !== false && <Generator generate={generator} />}
+	{humansTxt !== false && <HumansTxt href={humansTxt} />}
+	{manifest !== false && <Manifest href={manifest} />}
 	{openGraph && <OpenGraph {...openGraph} />}
-	{pinterest && <Pinterest {...pinterest} />}
-	{publisher && <Publisher content={publisher} />}
-	{robots && <Robots {...robots} />}
-	{themeColor && <ThemeColor {...themeColor} />}
-	{verification && <Verification {...verification} />}
+	{pinterest !== false && <Pinterest richPin={pinterest} />}
+	{publisher !== false && <Publisher content={publisher} />}
+	<Robots {...robots ?? {}} />
+	{themeColor !== false && <ThemeColor {...themeColor} />}
+	{verification !== false && <Verification {...verification} />}
 </head>

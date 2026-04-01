@@ -7,8 +7,7 @@
  * @description
  * Uses the provided `href` value directly when present. If omitted, it tries
  * to generate a URL from `Astro.site` by appending `/manifest.webmanifest`.
- * If neither source is available, the component renders nothing and logs an
- * error.
+ * If neither source is available, the component renders nothing.
  *
  * @example
  * <Manifest href="https://example.com/manifest.webmanifest" />
@@ -27,21 +26,19 @@ interface Props {
 	 * @default `${Astro.site}/manifest.webmanifest`
 	 * @example "https://example.com/manifest.webmanifest"
 	 */
-	href?: StringOrURL;
+	href?: StringOrURL | boolean;
 }
 
 const { href: propHref } = Astro.props;
 
 const href =
-	propHref !== undefined
-		? propHref
-		: Astro.site !== undefined
-			? new URL("/manifest.webmanifest", Astro.site)
-			: undefined;
-
-if (href === undefined) {
-	console.error("[Manifest] Unable to resolve href. Provide `href` or configure `site` in astro.config.*.");
-}
+	propHref === false
+		? undefined
+		: propHref === undefined || propHref === true
+			? Astro.site !== undefined
+				? new URL("/manifest.webmanifest", Astro.site)
+				: undefined
+			: propHref;
 ---
 
 {href && <link rel="manifest" href={href} />}

@@ -21,14 +21,14 @@
  */
 
 interface Props {
-	href?: StringOrURL | false;
+	href?: StringOrURL;
 }
 
 const { href } = Astro.props;
 
 const defaultCanonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
 
-const canonicalHref = href === false ? false : href === undefined ? defaultCanonical : href;
+const canonicalHref = href === undefined ? defaultCanonical : href;
 ---
 
 {canonicalHref && <link rel="canonical" href={canonicalHref} />}

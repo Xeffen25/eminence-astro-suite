@@ -15,11 +15,13 @@
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/color-scheme MDN color-scheme reference}
  */
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
 interface Props {
-	content: "normal" | "light" | "dark" | "light dark" | "dark light" | "only light";
+	content?: "normal" | "light" | "dark" | "light dark" | "dark light" | "only light";
 }
 
-const { content } = Astro.props;
+const { content = clientHeadConfig.colorScheme } = Astro.props;
 ---
 
-<meta name="color-scheme" content={content} />
+{content && <meta name="color-scheme" content={content} />}

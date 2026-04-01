@@ -16,6 +16,10 @@
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/theme-color MDN theme-color reference}
  */
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
+import { hasAnyProp } from "../utils";
+
 type Props =
 	| {
 			content: string;
@@ -26,18 +30,23 @@ type Props =
 			content?: never;
 			light: string;
 			dark: string;
+	  }
+	| {
+			content?: never;
+			light?: never;
+			dark?: never;
 	  };
 
-const { content, light, dark } = Astro.props;
+const { content, light, dark } = (hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.themeColor ?? {})) as Props;
 ---
 
 {
 	content !== undefined ? (
 		<meta name="theme-color" content={content} />
-	) : (
+	) : light !== undefined && dark !== undefined ? (
 		<>
 			<meta name="theme-color" media="(prefers-color-scheme: light)" content={light} />
 			<meta name="theme-color" media="(prefers-color-scheme: dark)" content={dark} />
 		</>
-	)
+	) : null
 }

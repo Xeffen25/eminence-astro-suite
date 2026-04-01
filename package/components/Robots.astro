@@ -20,6 +20,10 @@
  *
  * @see {@link https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag Google robots meta tag reference}
  */
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
+import { hasAnyProp } from "../utils";
+
 interface DirectiveProps {
 	noindex?: boolean;
 	nofollow?: boolean;
@@ -56,7 +60,9 @@ const directivesToContent = (directives: DirectiveProps): string => {
 		.join(", ");
 };
 
-const { content, ...directiveProps } = Astro.props as Props;
+const { content, ...directiveProps } = (
+	hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.robots ?? {})
+) as Props;
 const robotsContent = content ?? directivesToContent(directiveProps as DirectiveProps);
 ---
 

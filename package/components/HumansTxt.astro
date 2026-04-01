@@ -7,7 +7,7 @@
  * @description
  * Uses the provided `href` value directly when present. If omitted, it tries
  * to generate a URL from `Astro.site` by appending `/humans.txt`. If neither
- * source is available, the component renders nothing and logs an error.
+ * source is available, the component renders nothing.
  *
  * @example
  * <HumansTxt href="https://example.com/humans.txt" />
@@ -19,23 +19,29 @@
  * @see {@link https://humanstxt.org/ The Humans.txt Standard}
  */
 
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
 interface Props {
 	/**
 	 * Absolute humans.txt URL rendered directly as the link href.
 	 * @default `${Astro.site}/humans.txt`
 	 * @example "https://example.com/humans.txt"
 	 */
-	href?: StringOrURL;
+	href?: StringOrURL | boolean;
 }
 
 const { href: propHref } = Astro.props;
+const configHref = clientHeadConfig.humansTxt;
+const hrefValue = propHref !== undefined ? propHref : configHref;
 
 const href =
-	propHref !== undefined ? propHref : Astro.site !== undefined ? new URL("/humans.txt", Astro.site) : undefined;
-
-if (href === undefined) {
-	console.error("[HumansTxt] Unable to resolve href. Provide `href` or configure `site` in astro.config.*.");
-}
+	hrefValue === false
+		? undefined
+		: hrefValue === undefined || hrefValue === true
+			? Astro.site !== undefined
+				? new URL("/humans.txt", Astro.site)
+				: undefined
+			: hrefValue;
 ---
 
 {href && <link type="text/plain" rel="author" href={href} />}

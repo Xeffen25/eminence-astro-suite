@@ -16,6 +16,8 @@
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#author MDN meta author reference}
  */
 
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
 interface Props {
 	/**
 	 * Author value for the document metadata.
@@ -23,7 +25,7 @@ interface Props {
 	content?: string;
 }
 
-const { content } = Astro.props;
+const { content = clientHeadConfig.author } = Astro.props;
 ---
 
 {content && <meta name="author" content={content} />}
