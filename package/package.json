@@ -7,6 +7,12 @@
 		"./components": "./components.ts"
 	},
 	"peerDependencies": {
-		"astro": ">=6.0.0"
+		"astro": ">=6.0.0",
+		"@astrojs/sitemap": ">=3.0.0"
+	},
+	"peerDependenciesMeta": {
+		"@astrojs/sitemap": {
+			"optional": true
+		}
 	}
 }

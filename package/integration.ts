@@ -6,6 +6,8 @@ import type { RobotsTxtOptions } from "./integration/robots-txt";
 import { generateRobotsTxt } from "./integration/robots-txt";
 import type { SecurityTxtOptions } from "./integration/security-txt";
 import { generateSecurityTxt } from "./integration/security-txt";
+import type { SitemapOptions } from "./integration/sitemap";
+import { createSitemapIntegration } from "./integration/sitemap";
 import {
 	RESOLVED_VIRTUAL_CONFIG_MODULE_ID,
 	serializedVirtualConfigModule,
@@ -16,6 +18,7 @@ export type IntegrationInput = {
 	head?: ClientHeadConfig;
 	robotsTxt?: RobotsTxtOptions | false;
 	securityTxt?: SecurityTxtOptions | false;
+	sitemap?: SitemapOptions | false;
 };
 
 export type IntegrationRuntimeContext = {
@@ -31,7 +34,12 @@ export default function createIntegration(options: IntegrationInput = {}): Astro
 	return {
 		name: "eminence-astro-seo",
 		hooks: {
-			"astro:config:setup": ({ updateConfig }) => {
+			"astro:config:setup": async ({ updateConfig }) => {
+				if (options.sitemap !== false) {
+					const sitemapIntegration = await createSitemapIntegration(options.sitemap ?? {});
+					updateConfig({ integrations: [sitemapIntegration] });
+				}
+
 				updateConfig({
 					vite: {
 						plugins: [
