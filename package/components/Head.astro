@@ -32,6 +32,7 @@ import Description from "./Description.astro";
 import Facebook from "./Facebook.astro";
 import HumansTxt from "./HumansTxt.astro";
 import Manifest from "./Manifest.astro";
+import OpenGraph from "./OpenGraph.astro";
 import Pinterest from "./Pinterest.astro";
 import Robots from "./Robots.astro";
 import ThemeColor from "./ThemeColor.astro";
@@ -59,6 +60,7 @@ interface Props {
 	facebook?: ComponentProps<typeof Facebook>;
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
 	manifest?: ComponentProps<typeof Manifest>["href"] | boolean;
+	openGraph?: ComponentProps<typeof OpenGraph>;
 	pinterest?: ComponentProps<typeof Pinterest>;
 	robots?: ComponentProps<typeof Robots>;
 	themeColor?: ComponentProps<typeof ThemeColor>;
@@ -83,6 +85,7 @@ const {
 	facebook = clientHeadConfig.facebook,
 	humansTxt = clientHeadConfig.humansTxt,
 	manifest,
+	openGraph,
 	pinterest = clientHeadConfig.pinterest,
 	robots = clientHeadConfig.robots,
 	themeColor = clientHeadConfig.themeColor,
@@ -113,6 +116,7 @@ const manifestProps = toOptionalHrefProps<ComponentProps<typeof Manifest>>(manif
 	{facebook && <Facebook {...facebook} />}
 	{humansTxtProps && <HumansTxt {...humansTxtProps} />}
 	{manifestProps && <Manifest {...manifestProps} />}
+	{openGraph && <OpenGraph {...openGraph} />}
 	{pinterest && <Pinterest {...pinterest} />}
 	{robots && <Robots {...robots} />}
 	{themeColor && <ThemeColor {...themeColor} />}

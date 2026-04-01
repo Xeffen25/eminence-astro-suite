@@ -1,0 +1,69 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-video}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-video.mdx}
+ * ---
+ * @summary Renders Open Graph video structured property meta tags.
+ * @description
+ * Outputs `og:video` and related structured property tags for attaching a
+ * video file to the object preview. This is separate from making the page
+ * itself a video object with `og:type="video.*"`, which is handled by the
+ * dedicated `OpenGraphVideoType` component. The MIME type for
+ * `og:video:type` is inferred from the file extension when not explicitly
+ * provided.
+ *
+ * @example
+ * <OpenGraphVideo src="https://example.com/video.mp4" width={1280} height={720} />
+ * @example
+ * <OpenGraphVideo src="https://example.com/video.webm" secureUrl="https://cdn.example.com/video.webm" />
+ *
+ * @see {@link https://ogp.me/#structured Open Graph structured properties}
+ */
+
+import { toHref } from "../../utils";
+
+const VIDEO_MIME_MAP: Record<string, string> = {
+	mp4: "video/mp4",
+	webm: "video/webm",
+	ogg: "video/ogg",
+	m4v: "video/mp4",
+	mov: "video/quicktime",
+	avi: "video/x-msvideo",
+};
+
+function inferVideoMimeType(src: string): string | undefined {
+	const key = src.split(".").pop()?.split("?")[0]?.toLowerCase() ?? "";
+	return VIDEO_MIME_MAP[key];
+}
+
+interface Props {
+	/**
+	 * Required video URL. Relative paths are emitted as provided.
+	 */
+	src: StringOrURL;
+	/**
+	 * HTTPS variant of `src`, emitted as `og:video:secure_url`.
+	 */
+	secureUrl?: StringOrURL;
+	/**
+	 * Overrides extension-based MIME inference for `og:video:type`.
+	 */
+	type?: string;
+	width?: number;
+	height?: number;
+}
+
+const { src, secureUrl, type } = Astro.props;
+
+const resolvedSrc = toHref(src);
+const resolvedType = type ?? inferVideoMimeType(resolvedSrc);
+const resolvedSecureUrl = secureUrl ? toHref(secureUrl) : undefined;
+const resolvedWidth = Astro.props.width;
+const resolvedHeight = Astro.props.height;
+---
+
+<meta property="og:video" content={resolvedSrc} />
+{resolvedSecureUrl && <meta property="og:video:secure_url" content={resolvedSecureUrl} />}
+{resolvedType && <meta property="og:video:type" content={resolvedType} />}
+{resolvedWidth !== undefined && <meta property="og:video:width" content={String(resolvedWidth)} />}
+{resolvedHeight !== undefined && <meta property="og:video:height" content={String(resolvedHeight)} />}

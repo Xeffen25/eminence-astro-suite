@@ -1,0 +1,88 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-video-type}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-video-type.mdx}
+ * ---
+ * @summary Renders Open Graph video namespace meta tags for video pages.
+ * @description
+ * Outputs `video:*` meta tags for pages whose `og:type` is one of the Open
+ * Graph video variants: `video.movie`, `video.episode`, `video.tv_show`, or
+ * `video.other`. Use this when the page itself is a video object. For attached
+ * video media on any page type, use the separate `OpenGraphVideo` structured
+ * property component.
+ *
+ * @example
+ * <OpenGraphVideoType subtype="movie" directors={["https://example.com/director"]} duration={6900} />
+ * @example
+ * <OpenGraphVideoType subtype="episode" actors={[{ name: "https://example.com/actor", role: "Lead" }]} series="https://example.com/show" />
+ *
+ * @see {@link https://ogp.me/#type_video Open Graph video type}
+ */
+
+interface Actor {
+	/**
+	 * Actor profile URL emitted as `video:actor`.
+	 */
+	name: string;
+	/**
+	 * Character or role label for `video:actor:role`.
+	 */
+	role?: string;
+}
+
+interface BaseProps {
+	/**
+	 * Each value renders one `video:actor` tag.
+	 */
+	actors?: Actor[];
+	/**
+	 * Each value renders one `video:director` tag.
+	 */
+	directors?: string[];
+	/**
+	 * Each value renders one `video:writer` tag.
+	 */
+	writers?: string[];
+	duration?: number;
+	/**
+	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+	 * @example 2026-04-01
+	 * @example 2026-04-01T00:00:00Z
+	 */
+	releaseDate?: string;
+	/**
+	 * Each value renders one `video:tag` tag.
+	 */
+	tags?: string[];
+}
+
+type Props =
+	| (BaseProps & {
+			subtype: "episode";
+			/**
+			 * Only valid for `video.episode` objects.
+			 */
+			series?: string;
+	  })
+	| (BaseProps & {
+			subtype: "movie" | "tv_show" | "other";
+			series?: never;
+	  });
+
+const { subtype, actors = [], directors = [], writers = [], duration, releaseDate, tags = [], series } = Astro.props;
+---
+
+{
+	actors.map(({ name, role }) => (
+		<>
+			<meta property="video:actor" content={name} />
+			{role && <meta property="video:actor:role" content={role} />}
+		</>
+	))
+}
+{directors.map((value) => <meta property="video:director" content={value} />)}
+{writers.map((value) => <meta property="video:writer" content={value} />)}
+{duration !== undefined && <meta property="video:duration" content={String(duration)} />}
+{releaseDate && <meta property="video:release_date" content={releaseDate} />}
+{tags.map((value) => <meta property="video:tag" content={value} />)}
+{series && <meta property="video:series" content={series} />}

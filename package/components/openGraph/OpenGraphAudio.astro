@@ -1,0 +1,62 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-audio}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-audio.mdx}
+ * ---
+ * @summary Renders Open Graph audio structured property meta tags.
+ * @description
+ * Outputs `og:audio` and related structured property tags for attaching an
+ * audio file to the object. The MIME type is inferred from the file extension
+ * when not explicitly provided.
+ *
+ * @example
+ * <OpenGraphAudio src="https://example.com/sound.mp3" />
+ * @example
+ * <OpenGraphAudio src="https://example.com/sound.ogg" type="audio/ogg" />
+ *
+ * @see {@link https://ogp.me/#structured Open Graph structured properties}
+ */
+
+import { toHref } from "../../utils";
+
+const AUDIO_MIME_MAP: Record<string, string> = {
+	mp3: "audio/mpeg",
+	ogg: "audio/ogg",
+	aac: "audio/aac",
+	wav: "audio/wav",
+	flac: "audio/flac",
+	m4a: "audio/mp4",
+	opus: "audio/opus",
+	webm: "audio/webm",
+};
+
+function inferAudioMimeType(src: string): string | undefined {
+	const key = src.split(".").pop()?.split("?")[0]?.toLowerCase() ?? "";
+	return AUDIO_MIME_MAP[key];
+}
+
+interface Props {
+	/**
+	 * Required audio URL. Relative paths are emitted as provided.
+	 */
+	src: StringOrURL;
+	/**
+	 * HTTPS variant of `src`, emitted as `og:audio:secure_url`.
+	 */
+	secureUrl?: StringOrURL;
+	/**
+	 * Overrides extension-based MIME inference for `og:audio:type`.
+	 */
+	type?: string;
+}
+
+const { src, secureUrl, type } = Astro.props;
+
+const resolvedSrc = toHref(src);
+const resolvedType = type ?? inferAudioMimeType(resolvedSrc);
+const resolvedSecureUrl = secureUrl ? toHref(secureUrl) : undefined;
+---
+
+<meta property="og:audio" content={resolvedSrc} />
+{resolvedSecureUrl && <meta property="og:audio:secure_url" content={resolvedSecureUrl} />}
+{resolvedType && <meta property="og:audio:type" content={resolvedType} />}

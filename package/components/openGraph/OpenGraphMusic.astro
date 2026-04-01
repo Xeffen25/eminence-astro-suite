@@ -1,0 +1,81 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-music}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-music.mdx}
+ * ---
+ * @summary Renders Open Graph music namespace meta tags.
+ * @description
+ * Outputs `music:*` meta tags for music pages. The `subtype` determines
+ * `og:type` in the parent: `music.song`, `music.album`, `music.playlist`, or
+ * `music.radio_station`. Each subtype supports a relevant subset of music
+ * metadata fields. Inferred automatically when a `music` object is passed to
+ * the parent `OpenGraph` component.
+ *
+ * @example
+ * <OpenGraphMusic subtype="song" duration={214} musicians={["https://example.com/artist"]} />
+ * @example
+ * <OpenGraphMusic subtype="album" musicians={["https://example.com/artist"]} releaseDate="2026-01-01" />
+ *
+ * @see {@link https://ogp.me/#type_music Open Graph music type}
+ */
+
+interface Props {
+	/**
+	 * Controls parent `og:type` as `music.<subtype>`.
+	 */
+	subtype: "song" | "album" | "playlist" | "radio_station";
+	duration?: number;
+	album?: string;
+	albumDisc?: number;
+	albumTrack?: number;
+	/**
+	 * Each value renders one `music:song` tag.
+	 */
+	songs?: string[];
+	songDisc?: number;
+	songTrack?: number;
+	/**
+	 * Each value renders one `music:musician` tag.
+	 */
+	musicians?: string[];
+	/**
+	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+	 * @example 2026-04-01
+	 * @example 2026-04-01T00:00:00Z
+	 */
+	releaseDate?: string;
+	/**
+	 * Only emitted for `playlist` and `radio_station` subtypes.
+	 */
+	creator?: string;
+}
+
+const {
+	subtype,
+	duration,
+	album,
+	albumDisc,
+	albumTrack,
+	songs = [],
+	songDisc,
+	songTrack,
+	musicians = [],
+	releaseDate,
+	creator,
+} = Astro.props;
+---
+
+{duration !== undefined && <meta property="music:duration" content={String(duration)} />}
+{album && <meta property="music:album" content={album} />}
+{albumDisc !== undefined && <meta property="music:album:disc" content={String(albumDisc)} />}
+{albumTrack !== undefined && <meta property="music:album:track" content={String(albumTrack)} />}
+{songs.map((s) => <meta property="music:song" content={s} />)}
+{songDisc !== undefined && <meta property="music:song:disc" content={String(songDisc)} />}
+{songTrack !== undefined && <meta property="music:song:track" content={String(songTrack)} />}
+{musicians.map((m) => <meta property="music:musician" content={m} />)}
+{releaseDate && <meta property="music:release_date" content={releaseDate} />}
+{
+	(subtype === "playlist" || subtype === "radio_station") && creator && (
+		<meta property="music:creator" content={creator} />
+	)
+}

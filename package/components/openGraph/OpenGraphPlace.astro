@@ -1,0 +1,42 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-place}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-place.mdx}
+ * ---
+ * @summary Renders Open Graph place namespace meta tags.
+ * @description
+ * Outputs `place:*` meta tags for location pages. Since `og:type="place"`
+ * is not a canonical Open Graph type, pages using this object fall back to
+ * `og:type="website"` while still emitting geographic coordinate tags.
+ * Inferred automatically when a `place` object is passed to the parent
+ * `OpenGraph` component.
+ *
+ * @example
+ * <OpenGraphPlace latitude={37.416343} longitude={-122.153013} />
+ * @example
+ * <OpenGraphPlace latitude={48.8566} longitude={2.3522} altitude={35} />
+ *
+ * @see {@link https://ogp.me/ Open Graph protocol}
+ */
+
+interface Props {
+	/**
+	 * Decimal latitude rendered to `place:location:latitude`.
+	 */
+	latitude?: number;
+	/**
+	 * Decimal longitude rendered to `place:location:longitude`.
+	 */
+	longitude?: number;
+	/**
+	 * Optional elevation rendered to `place:location:altitude`.
+	 */
+	altitude?: number;
+}
+
+const { latitude, longitude, altitude } = Astro.props;
+---
+
+{latitude !== undefined && <meta property="place:location:latitude" content={String(latitude)} />}
+{longitude !== undefined && <meta property="place:location:longitude" content={String(longitude)} />}
+{altitude !== undefined && <meta property="place:location:altitude" content={String(altitude)} />}

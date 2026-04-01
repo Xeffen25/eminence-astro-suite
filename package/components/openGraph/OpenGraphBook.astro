@@ -1,0 +1,45 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-book}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-book.mdx}
+ * ---
+ * @summary Renders Open Graph book namespace meta tags.
+ * @description
+ * Outputs `book:*` meta tags for pages of type `og:type="book"`. Inferred
+ * automatically when a `book` object is passed to the parent `OpenGraph`
+ * component. Supports one or more author profile URLs, an ISBN, a release
+ * date, and one or more tags.
+ *
+ * @example
+ * <OpenGraphBook isbn="978-3-16-148410-0" releaseDate="2026-01-01T00:00:00Z" />
+ * @example
+ * <OpenGraphBook authors={["https://example.com/author"]} tags={["fiction"]} />
+ *
+ * @see {@link https://ogp.me/#type_book Open Graph book type}
+ */
+
+interface Props {
+	/**
+	 * Each value renders one `book:author` tag.
+	 */
+	authors?: string[];
+	isbn?: string;
+	/**
+	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+	 * @example 2026-04-01
+	 * @example 2026-04-01T00:00:00Z
+	 */
+	releaseDate?: string;
+	/**
+	 * Each value renders one `book:tag` tag.
+	 */
+	tags?: string[];
+}
+
+const { authors = [], isbn, releaseDate, tags = [] } = Astro.props;
+---
+
+{authors.map((a) => <meta property="book:author" content={a} />)}
+{isbn && <meta property="book:isbn" content={isbn} />}
+{releaseDate && <meta property="book:release_date" content={releaseDate} />}
+{tags.map((t) => <meta property="book:tag" content={t} />)}

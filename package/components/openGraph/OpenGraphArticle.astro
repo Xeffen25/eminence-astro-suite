@@ -1,0 +1,59 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-article}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-article.mdx}
+ * ---
+ * @summary Renders Open Graph article namespace meta tags.
+ * @description
+ * Outputs `article:*` meta tags for pages of type `og:type="article"`. Inferred
+ * automatically when an `article` object is passed to the parent `OpenGraph`
+ * component. Supports published time, modification time, expiration time, one or
+ * more author profile URLs, a section label, and one or more tags.
+ *
+ * @example
+ * <OpenGraphArticle publishedTime="2026-01-01T00:00:00Z" authors={["https://example.com/author"]} />
+ * @example
+ * <OpenGraphArticle section="Technology" tags={["astro", "seo"]} />
+ *
+ * @see {@link https://ogp.me/#type_article Open Graph article type}
+ */
+
+interface Props {
+	/**
+	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+	 * @example 2026-04-01
+	 * @example 2026-04-01T00:00:00Z
+	 */
+	publishedTime?: string;
+	/**
+	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+	 * @example 2026-04-01
+	 * @example 2026-04-01T00:00:00Z
+	 */
+	modifiedTime?: string;
+	/**
+	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+	 * @example 2026-04-01
+	 * @example 2026-04-01T00:00:00Z
+	 */
+	expirationTime?: string;
+	/**
+	 * Each value renders one `article:author` tag.
+	 */
+	authors?: string[];
+	section?: string;
+	/**
+	 * Each value renders one `article:tag` tag.
+	 */
+	tags?: string[];
+}
+
+const { publishedTime, modifiedTime, expirationTime, authors = [], section, tags = [] } = Astro.props;
+---
+
+{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+{expirationTime && <meta property="article:expiration_time" content={expirationTime} />}
+{authors.map((a) => <meta property="article:author" content={a} />)}
+{section && <meta property="article:section" content={section} />}
+{tags.map((t) => <meta property="article:tag" content={t} />)}

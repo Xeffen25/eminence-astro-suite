@@ -7,6 +7,7 @@ import {
 	ColorScheme,
 	Facebook,
 	HumansTxt,
+	OpenGraph,
 	Pinterest,
 	Robots,
 	ThemeColor,
@@ -32,6 +33,7 @@ export type ClientHeadConfig = {
 	appleWebApp?: ComponentProps<typeof AppleWebApp>;
 	appLinks?: ComponentProps<typeof AppLinks>;
 	facebook?: ComponentProps<typeof Facebook>;
+	openGraphSiteName?: ComponentProps<typeof OpenGraph>["siteName"];
 	pinterest?: ComponentProps<typeof Pinterest>;
 	robots?: ComponentProps<typeof Robots>;
 	themeColor?: ComponentProps<typeof ThemeColor>;
@@ -55,6 +57,7 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		appleWebApp: head?.appleWebApp,
 		appLinks: head?.appLinks,
 		facebook: head?.facebook,
+		openGraphSiteName: head?.openGraphSiteName,
 		pinterest: head?.pinterest,
 		robots: head?.robots,
 		themeColor: head?.themeColor,
