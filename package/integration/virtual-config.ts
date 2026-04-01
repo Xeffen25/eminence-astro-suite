@@ -1,11 +1,14 @@
 import type { ComponentProps } from "astro/types";
 import {
 	AppleWebApp,
+	ApplicationName,
 	AppLinks,
+	Author,
 	Base,
 	Charset,
 	ColorScheme,
 	Facebook,
+	Generator,
 	HumansTxt,
 	OpenGraph,
 	Pinterest,
@@ -32,7 +35,10 @@ export type ClientHeadConfig = {
 	titleTemplate?: ComponentProps<typeof Title>["template"];
 	appleWebApp?: ComponentProps<typeof AppleWebApp>;
 	appLinks?: ComponentProps<typeof AppLinks>;
+	applicationName?: ComponentProps<typeof ApplicationName>["content"];
+	author?: ComponentProps<typeof Author>["content"];
 	facebook?: ComponentProps<typeof Facebook>;
+	generator?: ComponentProps<typeof Generator>["generate"];
 	openGraphSiteName?: ComponentProps<typeof OpenGraph>["siteName"];
 	pinterest?: ComponentProps<typeof Pinterest>;
 	robots?: ComponentProps<typeof Robots>;
@@ -56,7 +62,10 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		titleTemplate: head?.titleTemplate,
 		appleWebApp: head?.appleWebApp,
 		appLinks: head?.appLinks,
+		applicationName: head?.applicationName,
+		author: head?.author,
 		facebook: head?.facebook,
+		generator: head?.generator,
 		openGraphSiteName: head?.openGraphSiteName,
 		pinterest: head?.pinterest,
 		robots: head?.robots,

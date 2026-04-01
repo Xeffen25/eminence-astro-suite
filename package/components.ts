@@ -1,8 +1,10 @@
 import _Alternate from "./components/Alternate.astro";
 import _AppleWebApp from "./components/AppleWebApp.astro";
+import _ApplicationName from "./components/ApplicationName.astro";
 import _AppLinks from "./components/AppLinks.astro";
 import _Archives from "./components/Archives.astro";
 import _Assets from "./components/Assets.astro";
+import _Author from "./components/Author.astro";
 import _Base from "./components/Base.astro";
 import _Bookmarks from "./components/Bookmarks.astro";
 import _Canonical from "./components/Canonical.astro";
@@ -10,6 +12,7 @@ import _Charset from "./components/Charset.astro";
 import _ColorScheme from "./components/ColorScheme.astro";
 import _Description from "./components/Description.astro";
 import _Facebook from "./components/Facebook.astro";
+import _Generator from "./components/Generator.astro";
 import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
 import _Manifest from "./components/Manifest.astro";
@@ -69,6 +72,22 @@ export const AppleWebApp = _AppleWebApp;
 export const AppLinks = _AppLinks;
 
 /**
+ * @summary Renders one or more `<meta name="application-name">` tags.
+ * @description
+ * Supports a single string value or an ordered list of language-specific
+ * values. When an array is provided, entries are rendered in the same order
+ * they are defined.
+ *
+ * @example
+ * <ApplicationName content="Eminence" />
+ * @example
+ * <ApplicationName content={[{ name: "Eminence", lang: "en" }, { name: "Eminencia", lang: "es" }]} />
+ * @see {@link https://todo.dev/components/application-name ApplicationName Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/application-name MDN application-name reference}
+ */
+export const ApplicationName = _ApplicationName;
+
+/**
  * @summary Renders one or more `<link rel="assets">` tags.
  * @description
  * Outputs resource relationship links using `rel="assets"`. Each entry in
@@ -82,6 +101,21 @@ export const AppLinks = _AppLinks;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel MDN rel attribute reference}
  */
 export const Assets = _Assets;
+
+/**
+ * @summary Renders a `<meta name="author">` tag.
+ * @description
+ * Outputs author metadata for the current document. When `content` is
+ * omitted, the component renders nothing.
+ *
+ * @example
+ * <Author content="Jane Doe" />
+ * @example
+ * <Author />
+ * @see {@link https://todo.dev/components/author Author Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#author MDN meta author reference}
+ */
+export const Author = _Author;
 
 /**
  * @summary Renders one or more `<link rel="bookmarks">` tags.
@@ -204,6 +238,22 @@ export const Description = _Description;
  * @see {@link https://developers.facebook.com/docs/sharing/webmasters#markup Facebook Sharing metadata reference}
  */
 export const Facebook = _Facebook;
+
+/**
+ * @summary Renders a `<meta name="generator">` tag from `Astro.generator`.
+ * @description
+ * Uses Astro's built-in generator value when `generate` is enabled. Set
+ * `generate` to `false` to disable output.
+ *
+ * @example
+ * <Generator />
+ * @example
+ * <Generator generate={false} />
+ * @see {@link https://todo.dev/components/generator Generator Component Documentation}
+ * @see {@link https://docs.astro.build/en/reference/api-reference/#astrogenerator Astro.generator reference}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/generator MDN generator reference}
+ */
+export const Generator = _Generator;
 
 /**
  * @summary Renders the Pinterest rich pin opt-in meta tag.

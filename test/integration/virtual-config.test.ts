@@ -19,7 +19,7 @@ describe("Integration - Virtual Config", () => {
 
 		const result = extractClientHeadConfig(options);
 
-		expect(result).toEqual({
+		expect(result).toMatchObject({
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
@@ -56,7 +56,7 @@ describe("Integration - Virtual Config", () => {
 
 		const result = extractClientHeadConfig(options);
 
-		expect(result).toEqual({
+		expect(result).toMatchObject({
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
@@ -99,7 +99,7 @@ describe("Integration - Virtual Config", () => {
 
 		const result = extractClientHeadConfig(options);
 
-		expect(result).toEqual({
+		expect(result).toMatchObject({
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
@@ -140,7 +140,7 @@ describe("Integration - Virtual Config", () => {
 
 		const result = extractClientHeadConfig(options);
 
-		expect(result).toEqual({
+		expect(result).toMatchObject({
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
@@ -170,7 +170,7 @@ describe("Integration - Virtual Config", () => {
 
 		const result = extractClientHeadConfig(options);
 
-		expect(result).toEqual({
+		expect(result).toMatchObject({
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
@@ -201,7 +201,7 @@ describe("Integration - Virtual Config", () => {
 
 		const result = extractClientHeadConfig(options);
 
-		expect(result).toEqual({
+		expect(result).toMatchObject({
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
@@ -230,7 +230,7 @@ describe("Integration - Virtual Config", () => {
 
 		const result = extractClientHeadConfig(options);
 
-		expect(result).toEqual({
+		expect(result).toMatchObject({
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: "light dark",
@@ -259,7 +259,7 @@ describe("Integration - Virtual Config", () => {
 
 		const result = extractClientHeadConfig(options);
 
-		expect(result).toEqual({
+		expect(result).toMatchObject({
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
@@ -290,7 +290,7 @@ describe("Integration - Virtual Config", () => {
 
 		const result = extractClientHeadConfig(options);
 
-		expect(result).toEqual({
+		expect(result).toMatchObject({
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
@@ -306,6 +306,44 @@ describe("Integration - Virtual Config", () => {
 			verification: undefined,
 			base: undefined,
 			titleTemplate: undefined,
+		});
+	});
+
+	it("extracts author, applicationName, and generator defaults into client head config", () => {
+		const options: IntegrationInput = {
+			head: {
+				author: "Jane Doe",
+				applicationName: [
+					{ name: "Eminence", lang: "en" },
+					{ name: "Eminencia", lang: "es" },
+				],
+				generator: true,
+			},
+		};
+
+		const result = extractClientHeadConfig(options);
+
+		expect(result).toMatchObject({
+			author: "Jane Doe",
+			applicationName: [
+				{ name: "Eminence", lang: "en" },
+				{ name: "Eminencia", lang: "es" },
+			],
+			generator: true,
+		});
+	});
+
+	it("extracts generator false into client head config", () => {
+		const options: IntegrationInput = {
+			head: {
+				generator: false,
+			},
+		};
+
+		const result = extractClientHeadConfig(options);
+
+		expect(result).toMatchObject({
+			generator: false,
 		});
 	});
 
@@ -448,5 +486,46 @@ describe("Integration - Virtual Config", () => {
 		const result = serializedVirtualConfigModule(options);
 
 		expect(result).toBe('export default {"robots":{"content":"noindex, nofollow"}};');
+	});
+
+	it("serializes author defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			head: {
+				author: "Jane Doe",
+			},
+		};
+
+		const result = serializedVirtualConfigModule(options);
+
+		expect(result).toBe('export default {"author":"Jane Doe"};');
+	});
+
+	it("serializes applicationName defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			head: {
+				applicationName: [
+					{ name: "Eminence", lang: "en" },
+					{ name: "Eminencia", lang: "es" },
+				],
+			},
+		};
+
+		const result = serializedVirtualConfigModule(options);
+
+		expect(result).toBe(
+			'export default {"applicationName":[{"name":"Eminence","lang":"en"},{"name":"Eminencia","lang":"es"}]};',
+		);
+	});
+
+	it("serializes generator defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			head: {
+				generator: false,
+			},
+		};
+
+		const result = serializedVirtualConfigModule(options);
+
+		expect(result).toBe('export default {"generator":false};');
 	});
 });

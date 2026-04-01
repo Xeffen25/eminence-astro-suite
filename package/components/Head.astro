@@ -21,8 +21,10 @@ import clientHeadConfig from "virtual:eminence-astro-seo/config";
 import Alternate from "./Alternate.astro";
 import AppleWebApp from "./AppleWebApp.astro";
 import AppLinks from "./AppLinks.astro";
+import ApplicationName from "./ApplicationName.astro";
 import Archives from "./Archives.astro";
 import Assets from "./Assets.astro";
+import Author from "./Author.astro";
 import Base from "./Base.astro";
 import Bookmarks from "./Bookmarks.astro";
 import Canonical from "./Canonical.astro";
@@ -30,6 +32,7 @@ import Charset from "./Charset.astro";
 import ColorScheme from "./ColorScheme.astro";
 import Description from "./Description.astro";
 import Facebook from "./Facebook.astro";
+import Generator from "./Generator.astro";
 import HumansTxt from "./HumansTxt.astro";
 import Manifest from "./Manifest.astro";
 import OpenGraph from "./OpenGraph.astro";
@@ -51,13 +54,16 @@ interface Props {
 	alternates?: ComponentProps<typeof Alternate>;
 	appleWebApp?: ComponentProps<typeof AppleWebApp>;
 	appLinks?: ComponentProps<typeof AppLinks>;
+	applicationName?: ComponentProps<typeof ApplicationName>["content"];
 	archives?: ComponentProps<typeof Archives>["hrefs"];
 	assets?: ComponentProps<typeof Assets>["hrefs"];
+	author?: ComponentProps<typeof Author>["content"];
 	bookmarks?: ComponentProps<typeof Bookmarks>["hrefs"];
 	canonical?: ComponentProps<typeof Canonical>["href"] | boolean;
 	colorScheme?: ComponentProps<typeof ColorScheme>["content"];
 	description?: ComponentProps<typeof Description>["content"];
 	facebook?: ComponentProps<typeof Facebook>;
+	generator?: ComponentProps<typeof Generator>["generate"];
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
 	manifest?: ComponentProps<typeof Manifest>["href"] | boolean;
 	openGraph?: ComponentProps<typeof OpenGraph>;
@@ -76,13 +82,16 @@ const {
 	alternates,
 	appleWebApp = clientHeadConfig.appleWebApp,
 	appLinks,
+	applicationName = clientHeadConfig.applicationName,
 	archives,
 	assets,
+	author = clientHeadConfig.author,
 	bookmarks,
 	canonical: propCanonical,
 	colorScheme = clientHeadConfig.colorScheme,
 	description,
 	facebook = clientHeadConfig.facebook,
+	generator = clientHeadConfig.generator,
 	humansTxt = clientHeadConfig.humansTxt,
 	manifest,
 	openGraph,
@@ -107,13 +116,16 @@ const manifestProps = toOptionalHrefProps<ComponentProps<typeof Manifest>>(manif
 	{alternates && <Alternate {...alternates} />}
 	{appleWebApp && <AppleWebApp {...appleWebApp} />}
 	{appLinks && <AppLinks {...appLinks} />}
+	{applicationName && <ApplicationName content={applicationName} />}
 	{archives && <Archives hrefs={archives} />}
 	{assets && <Assets hrefs={assets} />}
+	{author && <Author content={author} />}
 	{bookmarks && <Bookmarks hrefs={bookmarks} />}
 	{canonical && <Canonical {...canonical} />}
 	{colorScheme && <ColorScheme content={colorScheme} />}
 	{description && <Description content={description} />}
 	{facebook && <Facebook {...facebook} />}
+	{generator !== undefined && <Generator generate={generator} />}
 	{humansTxtProps && <HumansTxt {...humansTxtProps} />}
 	{manifestProps && <Manifest {...manifestProps} />}
 	{openGraph && <OpenGraph {...openGraph} />}
