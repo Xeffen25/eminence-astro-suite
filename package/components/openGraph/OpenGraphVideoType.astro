@@ -20,7 +20,13 @@
  */
 
 interface Actor {
+	/**
+	 * Actor profile URL emitted as `video:actor`.
+	 */
 	name: string;
+	/**
+	 * Character or role label for `video:actor:role`.
+	 */
 	role?: string;
 }
 
@@ -29,6 +35,11 @@ interface BaseProps {
 	directors?: string[];
 	writers?: string[];
 	duration?: number;
+	/**
+	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+	 * @example 2026-04-01
+	 * @example 2026-04-01T00:00:00Z
+	 */
 	releaseDate?: string;
 	tags?: string[];
 }
@@ -36,6 +47,9 @@ interface BaseProps {
 type Props =
 	| (BaseProps & {
 			subtype: "episode";
+			/**
+			 * Only valid for `video.episode` objects.
+			 */
 			series?: string;
 	  })
 	| (BaseProps & {

@@ -20,16 +20,33 @@
  */
 
 interface Props {
+	/**
+	 * Controls parent `og:type` as `music.<subtype>`.
+	 */
 	subtype: "song" | "album" | "playlist" | "radio_station";
 	duration?: number;
 	album?: string;
 	albumDisc?: number;
 	albumTrack?: number;
+	/**
+	 * Accepts one song URL or many; each value renders one `music:song` tag.
+	 */
 	song?: string | string[];
 	songDisc?: number;
 	songTrack?: number;
+	/**
+	 * Accepts one musician URL or many; each value renders one `music:musician` tag.
+	 */
 	musician?: string | string[];
+	/**
+	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+	 * @example 2026-04-01
+	 * @example 2026-04-01T00:00:00Z
+	 */
 	releaseDate?: string;
+	/**
+	 * Only emitted for `playlist` and `radio_station` subtypes.
+	 */
 	creator?: string;
 }
 

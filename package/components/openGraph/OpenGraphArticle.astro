@@ -19,11 +19,32 @@
  */
 
 interface Props {
+	/**
+	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+	 * @example 2026-04-01
+	 * @example 2026-04-01T00:00:00Z
+	 */
 	publishedTime?: string;
+	/**
+	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+	 * @example 2026-04-01
+	 * @example 2026-04-01T00:00:00Z
+	 */
 	modifiedTime?: string;
+	/**
+	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+	 * @example 2026-04-01
+	 * @example 2026-04-01T00:00:00Z
+	 */
 	expirationTime?: string;
+	/**
+	 * Accepts one URL or many; each value renders one `article:author` tag.
+	 */
 	authors?: string | string[];
 	section?: string;
+	/**
+	 * Accepts one tag or many; each value renders one `article:tag` tag.
+	 */
 	tags?: string | string[];
 }
 

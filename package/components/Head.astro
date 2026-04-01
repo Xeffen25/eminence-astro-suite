@@ -95,9 +95,6 @@ const {
 const canonical = toOptionalHrefProps<ComponentProps<typeof Canonical>>(propCanonical);
 const humansTxtProps = toOptionalHrefProps<ComponentProps<typeof HumansTxt>>(humansTxt);
 const manifestProps = toOptionalHrefProps<ComponentProps<typeof Manifest>>(manifest);
-if (openGraph && !openGraph.siteName && clientHeadConfig.openGraphSiteName) {
-	openGraph.siteName = clientHeadConfig.openGraphSiteName;
-}
 ---
 
 <head>

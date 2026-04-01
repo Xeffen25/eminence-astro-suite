@@ -17,6 +17,14 @@ describe("Component OpenGraph", () => {
 		expect(result).toBe('<meta property="og:type" content="website">');
 	});
 
+	it("keeps og:url omitted when url is not provided and no site context is available", async () => {
+		const result = await container.renderToString(OpenGraph, {
+			props: { title: "Home" },
+		});
+
+		expect(result).toBe('<meta property="og:type" content="website"><meta property="og:title" content="Home">');
+	});
+
 	it("renders core tags when title, url, description, and siteName are provided", async () => {
 		const result = await container.renderToString(OpenGraph, {
 			props: {
@@ -301,6 +309,62 @@ describe("Component OpenGraph", () => {
 
 		expect(result).toBe(
 			'<meta property="og:type" content="music.radio_station"><meta property="music:creator" content="https://example.com/station">',
+		);
+	});
+
+	// ── og:type = website with non-canonical namespaces ──────────────────────
+
+	it("keeps og:type=website and renders business tags", async () => {
+		const result = await container.renderToString(OpenGraph, {
+			props: {
+				business: {
+					contactData: {
+						streetAddress: "1 Hacker Way",
+						locality: "Menlo Park",
+						countryName: "US",
+					},
+					hours: [{ day: "Monday", start: "09:00", end: "17:00" }],
+				},
+			},
+		});
+
+		expect(result).toBe(
+			'<meta property="og:type" content="website"><meta property="business:contact_data:street_address" content="1 Hacker Way"><meta property="business:contact_data:locality" content="Menlo Park"><meta property="business:contact_data:country_name" content="US"><meta property="business:hours:day" content="Monday"><meta property="business:hours:start" content="09:00"><meta property="business:hours:end" content="17:00">',
+		);
+	});
+
+	it("keeps og:type=website and renders place tags", async () => {
+		const result = await container.renderToString(OpenGraph, {
+			props: {
+				place: {
+					latitude: 37.416343,
+					longitude: -122.153013,
+					altitude: 35,
+				},
+			},
+		});
+
+		expect(result).toBe(
+			'<meta property="og:type" content="website"><meta property="place:location:latitude" content="37.416343"><meta property="place:location:longitude" content="-122.153013"><meta property="place:location:altitude" content="35">',
+		);
+	});
+
+	it("keeps og:type=website and renders product tags", async () => {
+		const result = await container.renderToString(OpenGraph, {
+			props: {
+				product: {
+					originalPrice: { amount: 29.99, currency: "USD" },
+					salePrice: { amount: 19.99, currency: "USD" },
+					salePriceDates: { start: "2026-01-01", end: "2026-02-01" },
+					condition: "new",
+					availability: "instock",
+					retailerCategory: "Software",
+				},
+			},
+		});
+
+		expect(result).toBe(
+			'<meta property="og:type" content="website"><meta property="product:original_price:amount" content="29.99"><meta property="product:original_price:currency" content="USD"><meta property="product:sale_price:amount" content="19.99"><meta property="product:sale_price:currency" content="USD"><meta property="product:sale_price_dates:start" content="2026-01-01"><meta property="product:sale_price_dates:end" content="2026-02-01"><meta property="product:condition" content="new"><meta property="product:availability" content="instock"><meta property="product:retailer_category" content="Software">',
 		);
 	});
 

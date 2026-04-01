@@ -15,10 +15,12 @@
  * outputting their namespace-specific tags. When no type-driving object is
  * provided, `og:type` defaults to `"website"`.
  *
- * The `locale` defaults to `Astro.currentLocale` (with BCP 47 hyphens
- * normalized to underscores) when not explicitly provided. The `siteName` can
- * be set globally via the integration `head.openGraph.siteName` option; the
- * integration infers it from the configured Astro site hostname when absent.
+ * The `url` prop is optional and is inferred from `Astro.site` and the current
+ * request path when omitted. The `locale` is passed through as-is, so provide
+ * Open Graph locale format values like `en_US` instead of BCP 47 hyphenated
+ * values. The `siteName` can be set globally via the integration
+ * `head.openGraph.siteName` option; the integration infers it from the
+ * configured Astro site hostname when absent.
  *
  * @example
  * <OpenGraph title="Home" url="https://example.com/" siteName="Example" />
@@ -49,12 +51,27 @@ import clientHeadConfig from "virtual:eminence-astro-seo/config";
 
 type BaseProps = {
 	title: string;
+	/**
+	 * Defaults to the current page URL when `Astro.site` is configured.
+	 */
 	url?: StringOrURL;
 	description?: string;
+	/**
+	 * Defaults to the integration-level `head.openGraph.siteName` value.
+	 */
 	siteName?: string;
+	/**
+	 * Passed through as provided; use Open Graph format values like `en_US`.
+	 */
 	locale?: string;
+	/**
+	 * Each entry emits an `og:locale:alternate` tag in Open Graph format.
+	 */
 	localeAlternate?: string[];
-	image: ComponentProps<typeof OpenGraphImage>;
+	/**
+	 * Optional rich preview image metadata for social cards.
+	 */
+	image?: ComponentProps<typeof OpenGraphImage>;
 	audio?: ComponentProps<typeof OpenGraphAudio>;
 	video?: ComponentProps<typeof OpenGraphVideo>;
 };
@@ -172,9 +189,13 @@ const {
 	videoType,
 } = Astro.props;
 
-const resolvedUrl = url ? toHref(url) : undefined;
+const inferredUrl = Astro.site
+	? new URL(Astro.url.pathname + Astro.url.search + Astro.url.hash, Astro.site).href
+	: undefined;
+const resolvedUrl = url ? toHref(url) : inferredUrl;
 
 const ogType = (() => {
+	// Canonical OG types take precedence; non-canonical namespaces keep website.
 	if (article) return "article";
 	if (book) return "book";
 	if (profile) return "profile";

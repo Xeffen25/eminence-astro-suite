@@ -36,8 +36,17 @@ function inferAudioMimeType(src: string): string | undefined {
 }
 
 interface Props {
+	/**
+	 * Required audio URL. Relative paths are emitted as provided.
+	 */
 	src: StringOrURL;
+	/**
+	 * HTTPS variant of `src`, emitted as `og:audio:secure_url`.
+	 */
 	secureUrl?: StringOrURL;
+	/**
+	 * Overrides extension-based MIME inference for `og:audio:type`.
+	 */
 	type?: string;
 }
 

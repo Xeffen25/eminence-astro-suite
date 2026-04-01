@@ -28,13 +28,28 @@ interface ContactData {
 }
 
 interface BusinessHours {
+	/**
+	 * Free-form day label emitted to `business:hours:day` (for example, Monday).
+	 */
 	day: string;
+	/**
+	 * Opening time string emitted as-is (for example, `09:00`).
+	 */
 	start: string;
+	/**
+	 * Closing time string emitted as-is (for example, `17:00`).
+	 */
 	end: string;
 }
 
 interface Props {
+	/**
+	 * Business address fields for `business:contact_data:*` tags.
+	 */
 	contactData?: ContactData;
+	/**
+	 * Repeated time ranges; each item emits day/start/end tag trio.
+	 */
 	hours?: BusinessHours[];
 }
 

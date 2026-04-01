@@ -363,7 +363,9 @@ export const Manifest = _Manifest;
  * `"website"` while still outputting their namespace-specific tags. When no
  * type-driving object is provided, `og:type` defaults to `"website"`.
  *
- * The `locale` defaults to `Astro.currentLocale` when not explicitly provided.
+ * The `url` prop is optional and is inferred from `Astro.site` and the current
+ * request path when omitted. The `locale` value is emitted as-is, so provide
+ * Open Graph formatted locale values such as `en_US`.
  * The `siteName` can be set globally via the integration `head.openGraph.siteName`
  * option; the integration infers it from the Astro site hostname when absent.
  *

@@ -20,7 +20,13 @@
 interface Props {
 	firstName?: string;
 	lastName?: string;
+	/**
+	 * Public profile handle emitted as `profile:username`.
+	 */
 	username?: string;
+	/**
+	 * Free-form gender value emitted as-is.
+	 */
 	gender?: string;
 }
 

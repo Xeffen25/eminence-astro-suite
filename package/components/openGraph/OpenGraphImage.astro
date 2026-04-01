@@ -44,11 +44,26 @@ function inferImageMimeType(src: string, format?: string): string | undefined {
 }
 
 interface Props {
+	/**
+	 * Supports imported Astro `ImageMetadata` or a URL/path-like value.
+	 */
 	src: ImageSource;
+	/**
+	 * HTTPS variant of `src`, emitted as `og:image:secure_url`.
+	 */
 	secureUrl?: StringOrURL;
+	/**
+	 * Overrides imported metadata width when both are provided.
+	 */
 	width?: number;
+	/**
+	 * Overrides imported metadata height when both are provided.
+	 */
 	height?: number;
 	alt?: string;
+	/**
+	 * Overrides extension/metadata-based MIME inference.
+	 */
 	type?: string;
 }
 

@@ -27,11 +27,30 @@ interface PriceInfo {
 interface Props {
 	originalPrice?: PriceInfo;
 	salePrice?: PriceInfo;
+	/**
+	 * Optional sale window rendered as start/end sale date tags.
+	 */
 	salePriceDates?: {
+		/**
+		 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+		 * @example 2026-04-01
+		 * @example 2026-04-01T00:00:00Z
+		 */
 		start?: string;
+		/**
+		 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+		 * @example 2026-04-01
+		 * @example 2026-04-01T00:00:00Z
+		 */
 		end?: string;
 	};
+	/**
+	 * Open Graph product condition token.
+	 */
 	condition?: "new" | "refurbished" | "used";
+	/**
+	 * Open Graph availability token.
+	 */
 	availability?: "instock" | "oos" | "pending";
 	retailerCategory?: string;
 }
