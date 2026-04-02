@@ -8,10 +8,18 @@
 	},
 	"peerDependencies": {
 		"astro": ">=6.0.0",
-		"@astrojs/sitemap": ">=3.0.0"
+		"@astrojs/sitemap": ">=3.0.0",
+		"sharp": ">=0.34.0",
+		"sharp-ico": ">=0.1.5"
 	},
 	"peerDependenciesMeta": {
 		"@astrojs/sitemap": {
+			"optional": true
+		},
+		"sharp": {
+			"optional": true
+		},
+		"sharp-ico": {
 			"optional": true
 		}
 	}
