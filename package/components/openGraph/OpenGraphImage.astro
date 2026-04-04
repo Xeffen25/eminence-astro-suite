@@ -20,27 +20,12 @@
 
 import type { ImageMetadata } from "astro";
 
-import { toHref } from "../../utils";
+import { inferImageMimeType, toHref } from "../../utils";
 
 type ImageSource = ImageMetadata | StringOrURL;
 
 function isMetadata(src: ImageSource): src is ImageMetadata {
 	return typeof src === "object" && !(src instanceof URL) && "format" in src;
-}
-
-const IMAGE_MIME_MAP: Record<string, string> = {
-	png: "image/png",
-	jpg: "image/jpeg",
-	jpeg: "image/jpeg",
-	gif: "image/gif",
-	webp: "image/webp",
-	avif: "image/avif",
-	svg: "image/svg+xml",
-};
-
-function inferImageMimeType(src: string, format?: string): string | undefined {
-	const key = (format ?? src.split(".").pop()?.split("?")[0] ?? "").toLowerCase();
-	return IMAGE_MIME_MAP[key];
 }
 
 interface Props {

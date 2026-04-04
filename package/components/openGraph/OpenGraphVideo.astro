@@ -20,21 +20,7 @@
  * @see {@link https://ogp.me/#structured Open Graph structured properties}
  */
 
-import { toHref } from "../../utils";
-
-const VIDEO_MIME_MAP: Record<string, string> = {
-	mp4: "video/mp4",
-	webm: "video/webm",
-	ogg: "video/ogg",
-	m4v: "video/mp4",
-	mov: "video/quicktime",
-	avi: "video/x-msvideo",
-};
-
-function inferVideoMimeType(src: string): string | undefined {
-	const key = src.split(".").pop()?.split("?")[0]?.toLowerCase() ?? "";
-	return VIDEO_MIME_MAP[key];
-}
+import { inferVideoMimeType, toHref } from "../../utils";
 
 interface Props {
 	/**
