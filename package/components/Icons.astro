@@ -1,0 +1,144 @@
+---
+/**
+ * [ 🌐 Website ] {@link https://todo.dev/components/icons}
+ * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/icons.mdx}
+ * ---
+ * @summary Renders `<link>` tags for favicons, mobile icons, and custom web assets.
+ * @description
+ * Generates and renders favicon, mobile icon, and PWA asset `<link>` tags with intelligent override handling.
+ * Supports automatic asset generation during build and runtime tag injection.
+ * Handles media queries for light/dark theme variants and smart SVG detection to prevent tag duplication.
+ *
+ * @example
+ * <Icons source="/public/icon.png" />
+ * @example
+ * <Icons source="/public/icon.svg" customTags={[{ rel: "alternate icon", href: "/favicon.ico" }]} />
+ * @example
+ * <Icons source="/public/icon.png" overrides={{ png192: false, appleTouchIcon: "/custom-apple-icon.png" }} />
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types MDN link rel documentation}
+ * @see {@link https://web.dev/icons-and-browser-colors Web.dev icon guide}
+ * @see {@link https://developer.apple.com/design/human-interface-guidelines/ Apple HIG}
+ */
+
+import type { GeneratedIconTag, IconTag } from "../integration/generate-icons";
+import { inferImageMimeType, isSvg } from "../utils";
+import clientHeadConfig from "virtual:eminence-astro-seo/config";
+
+const icons = clientHeadConfig.icons !== false ? (clientHeadConfig.icons ?? {}) : undefined;
+const overrides = icons?.overrides;
+
+interface Props {
+	svg?: string | false;
+	ico?: string | false;
+	png32?: string | false;
+	png48?: string | false;
+	appleTouchIcon?: string | false;
+	png192?: string | false;
+	png512?: string | false;
+	customGeneration?: GeneratedIconTag[];
+	customTags?: IconTag[];
+}
+
+const {
+	svg = overrides?.svg ?? "/favicon.svg",
+	png32 = overrides?.png32 ?? "/favicon.png",
+	png48 = overrides?.png48 ?? "/favicon-48x48.png",
+	appleTouchIcon = overrides?.appleTouchIcon ?? "/apple-touch-icon.png",
+	png192 = overrides?.png192 ?? "/icon-192x192.png",
+	png512 = overrides?.png512 ?? "/icon.png",
+	ico = overrides?.ico ?? "/favicon.ico",
+	customGeneration = icons?.customGeneration ?? [],
+	customTags = icons?.customTags ?? [],
+} = Astro.props;
+
+const allIconTags: IconTag[] = [...customTags];
+
+const sourceIsSvg = icons?.source ? isSvg(icons?.source) : false;
+if (svg && sourceIsSvg)
+	allIconTags.push({
+		rel: "icon",
+		href: svg,
+		sizes: "any",
+		type: inferImageMimeType(svg),
+	});
+
+if (ico)
+	allIconTags.push({
+		rel: "icon",
+		href: ico,
+		type: inferImageMimeType(ico),
+	});
+
+if (png32)
+	allIconTags.push({
+		rel: "icon",
+		href: png32,
+		sizes: "32x32",
+		type: inferImageMimeType(png32),
+	});
+
+if (png48)
+	allIconTags.push({
+		rel: "icon",
+		href: png48,
+		sizes: "48x48",
+		type: inferImageMimeType(png48),
+	});
+
+if (appleTouchIcon)
+	allIconTags.push({
+		rel: "apple-touch-icon",
+		href: appleTouchIcon,
+		sizes: "180x180",
+		type: inferImageMimeType(appleTouchIcon),
+	});
+
+if (png192)
+	allIconTags.push({
+		rel: "icon",
+		href: png192,
+		sizes: "192x192",
+		type: inferImageMimeType(png192),
+	});
+
+if (png512)
+	allIconTags.push({
+		rel: "icon",
+		href: png512,
+		sizes: "512x512",
+		type: inferImageMimeType(png512),
+	});
+
+for (const icon of customGeneration) {
+	allIconTags.push({
+		rel: icon.rel,
+		href: icon.fileName.startsWith("/") ? icon.fileName : `/${icon.fileName}`,
+		sizes: icon.sizes,
+		type: icon.type ?? inferImageMimeType(icon.fileName, icon.format),
+		media: icon.media,
+	});
+}
+
+const uniqueIconTags = new Map<string, IconTag>();
+
+for (const icon of allIconTags) {
+	if (!icon.href) continue;
+	const normalizedType = icon.type ?? inferImageMimeType(icon.href);
+	const dedupeKey = [icon.rel, icon.href, icon.sizes ?? "", normalizedType ?? "", icon.media ?? ""].join("|");
+
+	if (uniqueIconTags.has(dedupeKey)) continue;
+	uniqueIconTags.set(dedupeKey, {
+		...icon,
+		type: normalizedType,
+	});
+}
+
+const iconTagsToRender = Array.from(uniqueIconTags.values());
+---
+
+{
+	iconTagsToRender.map(({ rel, href, sizes, type, media }) => (
+		<link rel={rel} href={href} sizes={sizes} type={type} media={media && `(prefers-color-scheme: ${media})`} />
+	))
+}

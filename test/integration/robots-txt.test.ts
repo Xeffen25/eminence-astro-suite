@@ -29,8 +29,7 @@ describe("Integration - RobotsTxt", () => {
 		robotsTxt: IntegrationRuntimeContext["options"]["robotsTxt"],
 		site: URL | string | undefined = new URL("https://example.com/"),
 	): IntegrationRuntimeContext => ({
-		config: { site } as unknown as AstroConfig,
-		outDir: outDirUrl,
+		config: { site, outDir: outDirUrl } as unknown as AstroConfig,
 		options: { robotsTxt },
 		logger: logger as unknown as IntegrationRuntimeContext["logger"],
 	});

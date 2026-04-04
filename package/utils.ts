@@ -28,11 +28,16 @@ const IMAGE_MIME_MAP: Record<string, string> = {
 	webp: "image/webp",
 	avif: "image/avif",
 	svg: "image/svg+xml",
+	ico: "image/x-icon",
 };
 
 export const inferImageMimeType = (src: string, format?: string): string | undefined => {
 	const key = (format ?? src.split(".").pop()?.split("?")[0] ?? "").toLowerCase();
 	return IMAGE_MIME_MAP[key];
+};
+
+export const isSvg = (input: string): boolean => {
+	return inferImageMimeType(input) === "image/svg+xml";
 };
 
 // Video MIME type inference
