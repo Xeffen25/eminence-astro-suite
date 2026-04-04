@@ -34,6 +34,7 @@ import Description from "./Description.astro";
 import Facebook from "./Facebook.astro";
 import Generator from "./Generator.astro";
 import HumansTxt from "./HumansTxt.astro";
+import Icons from "./Icons.astro";
 import JsonLd from "./JsonLd.astro";
 import Manifest from "./Manifest.astro";
 import OpenGraph from "./OpenGraph.astro";
@@ -68,6 +69,7 @@ interface Props {
 	facebook?: ComponentProps<typeof Facebook> | false;
 	generator?: ComponentProps<typeof Generator>["generate"];
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | false;
+	icons?: ComponentProps<typeof Icons> | false;
 	jsonLd?: ComponentProps<typeof JsonLd>["jsonLd"];
 	manifest?: ComponentProps<typeof Manifest>["href"] | false;
 	openGraph?: ComponentProps<typeof OpenGraph>;
@@ -99,6 +101,7 @@ const {
 	facebook,
 	generator,
 	humansTxt,
+	icons,
 	jsonLd,
 	manifest,
 	openGraph,
@@ -131,6 +134,7 @@ const {
 	{facebook !== false && <Facebook {...(facebook ?? {})} />}
 	{generator !== false && <Generator generate={generator} />}
 	{humansTxt !== false && <HumansTxt href={humansTxt} />}
+	{icons !== false && <Icons {...(icons ?? {})} />}
 	{jsonLd && <JsonLd jsonLd={jsonLd} />}
 	{manifest !== false && <Manifest href={manifest} />}
 	{openGraph && <OpenGraph {...openGraph} />}

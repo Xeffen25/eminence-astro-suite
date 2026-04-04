@@ -151,7 +151,7 @@ export async function generateIcons({ config, options, logger }: IntegrationRunt
 
 	if (isSvg && icons.overrides?.svg !== false && typeof icons.overrides?.svg !== "string") {
 		const outputPath = join(fileURLToPath(config.outDir), "favicon.svg");
-		await mkdir(dirname(outputPath));
+		await mkdir(dirname(outputPath), { recursive: true });
 		await writeFile(outputPath, await readFile(resolvedSource));
 	}
 
