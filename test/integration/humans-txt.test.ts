@@ -22,8 +22,7 @@ describe("Integration - HumansTxt", () => {
 	});
 
 	const createContext = (humansTxt: boolean | undefined): IntegrationRuntimeContext => ({
-		config: {} as AstroConfig,
-		outDir: outDirUrl,
+		config: { outDir: outDirUrl } as AstroConfig,
 		options: { head: { humansTxt } },
 		logger: logger as unknown as IntegrationRuntimeContext["logger"],
 	});

@@ -46,8 +46,6 @@ import Title from "./Title.astro";
 import Verification from "./Verification.astro";
 import Viewport from "./Viewport.astro";
 
-type HrefProp = { href?: StringOrURL | boolean } | StringOrURL | boolean | undefined;
-
 interface Props {
 	charset?: ComponentProps<typeof Charset>["charset"] | false;
 	viewport?: ComponentProps<typeof Viewport>["content"] | false;

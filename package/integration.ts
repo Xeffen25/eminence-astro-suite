@@ -69,7 +69,7 @@ export default function createIntegration(options: IntegrationInput = {}): Astro
 			"astro:config:done": ({ config: cfg }) => {
 				config = cfg;
 			},
-			"astro:build:done": async ({ dir, logger }) => {
+			"astro:build:done": async ({ logger }) => {
 				try {
 					if (options.icons !== false) await generateIcons({ config, options, logger });
 
