@@ -32,8 +32,7 @@ describe("Integration - SecurityTxt", () => {
 	const createContext = (
 		securityTxt: IntegrationRuntimeContext["options"]["securityTxt"],
 	): IntegrationRuntimeContext => ({
-		config: {} as AstroConfig,
-		outDir: outDirUrl,
+		config: { outDir: outDirUrl } as unknown as AstroConfig,
 		options: { securityTxt },
 		logger: logger as unknown as IntegrationRuntimeContext["logger"],
 	});

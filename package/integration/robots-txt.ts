@@ -187,9 +187,9 @@ const buildRobotsTxt = (options: RobotsTxtOptions, site: IntegrationRuntimeConte
 	return `${outputLines.join("\n")}\n`;
 };
 
-export async function generateRobotsTxt({ config, outDir, options, logger }: IntegrationRuntimeContext): Promise<void> {
+export async function generateRobotsTxt({ config, options, logger }: IntegrationRuntimeContext): Promise<void> {
 	const input = options.robotsTxt;
-	const outputPath = join(fileURLToPath(outDir), "robots.txt");
+	const outputPath = join(fileURLToPath(config.outDir), "robots.txt");
 	const outputExists = await exists(outputPath);
 
 	if (input === false) {

@@ -21,6 +21,7 @@ import {
 	Viewport,
 } from "../components";
 import type { IntegrationInput } from "../integration";
+import type { IconsOptions } from "./generate-icons";
 
 export const VIRTUAL_CONFIG_MODULE_ID = "virtual:eminence-astro-seo/config";
 export const RESOLVED_VIRTUAL_CONFIG_MODULE_ID = `\0${VIRTUAL_CONFIG_MODULE_ID}`;
@@ -42,6 +43,7 @@ export type ClientHeadConfig = {
 	creator?: ComponentProps<typeof Creator>["content"];
 	facebook?: ComponentProps<typeof Facebook>;
 	generator?: ComponentProps<typeof Generator>["generate"];
+	icons?: IconsOptions | false;
 	openGraphSiteName?: ComponentProps<typeof OpenGraph>["siteName"];
 	pinterest?: ComponentProps<typeof Pinterest>;
 	publisher?: ComponentProps<typeof Publisher>["content"];
@@ -56,7 +58,7 @@ export type ClientHeadConfig = {
  * This prevents leaking server-only or build-only settings into the client bundle.
  */
 export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadConfig => {
-	const { head } = options;
+	const { head, icons } = options;
 
 	return {
 		charset: head?.charset,
@@ -71,6 +73,7 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		creator: head?.creator,
 		facebook: head?.facebook,
 		generator: head?.generator,
+		icons,
 		openGraphSiteName: head?.openGraphSiteName,
 		pinterest: head?.pinterest,
 		publisher: head?.publisher,

@@ -3,6 +3,9 @@ import { experimental_AstroContainer } from "astro/container";
 import clientHeadConfig from "virtual:eminence-astro-seo/config";
 import { beforeEach, describe, expect, it } from "vitest";
 
+const DEFAULT_ICONS_HTML =
+	'<link rel="icon" href="/favicon.ico" type="image/x-icon"><link rel="icon" href="/favicon.png" sizes="32x32" type="image/png"><link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png"><link rel="icon" href="/icon-192x192.png" sizes="192x192" type="image/png"><link rel="icon" href="/icon.png" sizes="512x512" type="image/png">';
+
 const resetClientHeadConfig = () => {
 	Object.assign(clientHeadConfig, {
 		charset: undefined,
@@ -17,6 +20,7 @@ const resetClientHeadConfig = () => {
 		creator: undefined,
 		facebook: undefined,
 		generator: undefined,
+		icons: undefined,
 		openGraphSiteName: undefined,
 		humansTxt: undefined,
 		pinterest: undefined,
@@ -41,7 +45,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}<meta name="pinterest-rich-pin" content="true"></head>`,
 		);
 	});
 
@@ -51,7 +55,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | My Site</title><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | My Site</title><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}<meta name="pinterest-rich-pin" content="true"></head>`,
 		);
 	});
 
@@ -61,7 +65,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}<meta name="pinterest-rich-pin" content="true"></head>`,
 		);
 	});
 
@@ -74,7 +78,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="https://example.com" target="_blank"><title>Home</title><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="https://example.com" target="_blank"><title>Home</title><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}<meta name="pinterest-rich-pin" content="true"></head>`,
 		);
 	});
 
@@ -87,7 +91,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1"><link type="text/plain" rel="author" href="https://example.com/humans.txt"><meta name="pinterest-rich-pin" content="true"></head>',
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1"><link type="text/plain" rel="author" href="https://example.com/humans.txt">${DEFAULT_ICONS_HTML}<meta name="pinterest-rich-pin" content="true"></head>`,
 		);
 	});
 
@@ -100,7 +104,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1"><link rel="manifest" href="https://example.com/manifest.webmanifest"><meta name="pinterest-rich-pin" content="true"></head>',
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}<link rel="manifest" href="https://example.com/manifest.webmanifest"><meta name="pinterest-rich-pin" content="true"></head>`,
 		);
 	});
 
@@ -113,7 +117,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="canonical" href="https://example.com/home"><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="canonical" href="https://example.com/home"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}<meta name="pinterest-rich-pin" content="true"></head>`,
 		);
 	});
 
@@ -129,7 +133,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}<meta name="pinterest-rich-pin" content="true"></head>`,
 		);
 	});
 
@@ -146,7 +150,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | Example</title><meta name="author" content="Jane Doe"><meta name="pinterest-rich-pin" content="false"></head>',
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | Example</title><meta name="author" content="Jane Doe">${DEFAULT_ICONS_HTML}<meta name="pinterest-rich-pin" content="false"></head>`,
 		);
 	});
 
@@ -159,7 +163,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			'<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1"><meta name="pinterest-rich-pin" content="true"></head>',
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}<meta name="pinterest-rich-pin" content="true"></head>`,
 		);
 	});
 });

@@ -16,6 +16,7 @@ import _Facebook from "./components/Facebook.astro";
 import _Generator from "./components/Generator.astro";
 import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
+import _Icons from "./components/Icons.astro";
 import _JsonLd from "./components/JsonLd.astro";
 import _Manifest from "./components/Manifest.astro";
 import _OpenGraph from "./components/OpenGraph.astro";
@@ -431,6 +432,25 @@ export const Canonical = _Canonical;
  * @see {@link https://humanstxt.org/ The Humans.txt Standard}
  */
 export const HumansTxt = _HumansTxt;
+
+/**
+ * @summary Renders `<link>` tags for favicons, mobile icons, and custom web assets.
+ * @description
+ * Generates and renders favicon, mobile icon, and PWA asset `<link>` tags with intelligent override handling.
+ * Supports automatic asset generation during build and runtime tag injection.
+ * Handles media queries for light/dark theme variants and smart SVG detection to prevent tag duplication.
+ *
+ * @example
+ * <Icons source="/public/icon.png" />
+ * @example
+ * <Icons source="/public/icon.svg" customTags={[{ rel: "alternate icon", href: "/favicon.ico" }]} />
+ * @example
+ * <Icons source="/public/icon.png" overrides={{ png192: false, appleTouchIcon: "/custom-apple-icon.png" }} />
+ * @see {@link https://todo.dev/components/icons Icons Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types MDN link rel documentation}
+ * @see {@link https://web.dev/icons-and-browser-colors Web.dev icon guide}
+ */
+export const Icons = _Icons;
 
 /**
  * @summary Renders a `<link rel="manifest">` tag for web app metadata.

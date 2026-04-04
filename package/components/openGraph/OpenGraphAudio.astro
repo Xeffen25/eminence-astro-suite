@@ -17,23 +17,7 @@
  * @see {@link https://ogp.me/#structured Open Graph structured properties}
  */
 
-import { toHref } from "../../utils";
-
-const AUDIO_MIME_MAP: Record<string, string> = {
-	mp3: "audio/mpeg",
-	ogg: "audio/ogg",
-	aac: "audio/aac",
-	wav: "audio/wav",
-	flac: "audio/flac",
-	m4a: "audio/mp4",
-	opus: "audio/opus",
-	webm: "audio/webm",
-};
-
-function inferAudioMimeType(src: string): string | undefined {
-	const key = src.split(".").pop()?.split("?")[0]?.toLowerCase() ?? "";
-	return AUDIO_MIME_MAP[key];
-}
+import { inferAudioMimeType, toHref } from "../../utils";
 
 interface Props {
 	/**

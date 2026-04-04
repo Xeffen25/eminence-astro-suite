@@ -13,6 +13,7 @@ const clientHeadConfig: ClientHeadConfig = {
 	creator: undefined,
 	facebook: undefined,
 	generator: undefined,
+	icons: undefined,
 	openGraphSiteName: undefined,
 	humansTxt: undefined,
 	pinterest: undefined,
