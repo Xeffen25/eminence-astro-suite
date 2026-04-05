@@ -118,8 +118,8 @@ async function writeFaviconIco(outputDir: string, sourceFile: string): Promise<v
 	});
 }
 
-export async function generateIcons({ config, options, logger }: IntegrationRuntimeContext): Promise<void> {
-	const outputDir = fileURLToPath(config.outDir);
+export async function generateIcons({ dir, options, logger }: IntegrationRuntimeContext): Promise<void> {
+	const outputDir = fileURLToPath(dir);
 	const icons = options.icons;
 	if (icons === false) return;
 
@@ -150,7 +150,7 @@ export async function generateIcons({ config, options, logger }: IntegrationRunt
 	}
 
 	if (isSvg && icons.overrides?.svg !== false && typeof icons.overrides?.svg !== "string") {
-		const outputPath = join(fileURLToPath(config.outDir), "favicon.svg");
+		const outputPath = join(fileURLToPath(dir), "favicon.svg");
 		await mkdir(dirname(outputPath), { recursive: true });
 		await writeFile(outputPath, await readFile(resolvedSource));
 	}

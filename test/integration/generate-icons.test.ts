@@ -31,6 +31,7 @@ describe("Integration - Generate Icons", () => {
 
 	const createContext = (options: IntegrationRuntimeContext["options"]): IntegrationRuntimeContext => ({
 		config: { outDir: pathToFileURL(`${outputDir}/`) } as AstroConfig,
+		dir: pathToFileURL(`${outputDir}/`),
 		options,
 		logger: logger as unknown as IntegrationRuntimeContext["logger"],
 	});

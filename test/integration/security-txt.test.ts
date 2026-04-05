@@ -33,6 +33,7 @@ describe("Integration - SecurityTxt", () => {
 		securityTxt: IntegrationRuntimeContext["options"]["securityTxt"],
 	): IntegrationRuntimeContext => ({
 		config: { outDir: outDirUrl } as unknown as AstroConfig,
+		dir: outDirUrl,
 		options: { securityTxt },
 		logger: logger as unknown as IntegrationRuntimeContext["logger"],
 	});

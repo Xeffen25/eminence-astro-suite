@@ -24,7 +24,7 @@ const doesPathExist = async (targetPath: string): Promise<boolean> => {
 };
 
 export async function validateHumansTxtInBuildOutput({
-	config,
+	dir,
 	options,
 	logger,
 }: IntegrationRuntimeContext): Promise<void> {
@@ -39,7 +39,7 @@ export async function validateHumansTxtInBuildOutput({
 		return;
 	}
 
-	const humansTxtBuildOutputPath = join(fileURLToPath(config.outDir), HUMANS_TXT_BUILD_OUTPUT_FILENAME);
+	const humansTxtBuildOutputPath = join(fileURLToPath(dir), HUMANS_TXT_BUILD_OUTPUT_FILENAME);
 	const humansTxtFileExistsInBuildOutput = await doesPathExist(humansTxtBuildOutputPath);
 
 	if (!humansTxtFileExistsInBuildOutput) {

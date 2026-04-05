@@ -177,9 +177,9 @@ const exists = async (path: string): Promise<boolean> => {
 	}
 };
 
-export async function generateSecurityTxt({ config, options, logger }: IntegrationRuntimeContext): Promise<void> {
+export async function generateSecurityTxt({ dir, options, logger }: IntegrationRuntimeContext): Promise<void> {
 	const input = options.securityTxt;
-	const outputPath = join(fileURLToPath(config.outDir), ".well-known", "security.txt");
+	const outputPath = join(fileURLToPath(dir), ".well-known", "security.txt");
 	const outputExists = await exists(outputPath);
 
 	if (input === false) {
