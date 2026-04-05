@@ -23,7 +23,7 @@ import {
 import type { IntegrationInput } from "../integration";
 import type { IconsOptions } from "./generate-icons";
 
-export const VIRTUAL_CONFIG_MODULE_ID = "virtual:eminence-astro-seo/config";
+export const VIRTUAL_CONFIG_MODULE_ID = "virtual:eminence-astro-suite/config";
 export const RESOLVED_VIRTUAL_CONFIG_MODULE_ID = `\0${VIRTUAL_CONFIG_MODULE_ID}`;
 
 /**

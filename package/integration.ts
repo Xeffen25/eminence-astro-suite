@@ -35,7 +35,7 @@ export default function createIntegration(options: IntegrationInput = {}): Astro
 	let config: AstroConfig;
 
 	return {
-		name: "eminence-astro-seo",
+		name: "eminence-astro-suite",
 		hooks: {
 			"astro:config:setup": async ({ updateConfig }) => {
 				if (options.sitemap !== false) {
@@ -47,7 +47,7 @@ export default function createIntegration(options: IntegrationInput = {}): Astro
 					vite: {
 						plugins: [
 							{
-								name: "eminence-astro-seo-virtual-config",
+								name: "eminence-astro-suite-virtual-config",
 								resolveId(id) {
 									if (id === VIRTUAL_CONFIG_MODULE_ID) {
 										return RESOLVED_VIRTUAL_CONFIG_MODULE_ID;

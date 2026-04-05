@@ -1,4 +1,4 @@
-declare module "virtual:eminence-astro-seo/config" {
+declare module "virtual:eminence-astro-suite/config" {
 	type ClientHeadConfig = import("./integration/virtual-config").ClientHeadConfig;
 
 	const config: ClientHeadConfig;

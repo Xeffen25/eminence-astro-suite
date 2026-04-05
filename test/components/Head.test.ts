@@ -1,6 +1,6 @@
 import { Head } from "@package/components";
 import { experimental_AstroContainer } from "astro/container";
-import clientHeadConfig from "virtual:eminence-astro-seo/config";
+import clientHeadConfig from "virtual:eminence-astro-suite/config";
 import { beforeEach, describe, expect, it } from "vitest";
 
 const DEFAULT_ICONS_HTML =
