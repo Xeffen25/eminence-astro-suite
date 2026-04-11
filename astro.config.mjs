@@ -8,7 +8,6 @@ import cloudflare from "@astrojs/cloudflare";
 export default defineConfig({
 	site: "https://eminence-astro-suite.xeffen25.com",
 	adapter: cloudflare(),
-	output: "server",
 	integrations: [
 		starlight({
 			title: "My Docs",
