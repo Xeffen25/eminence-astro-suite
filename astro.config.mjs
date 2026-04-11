@@ -2,8 +2,13 @@
 import starlight from "@astrojs/starlight";
 import { defineConfig } from "astro/config";
 
+import cloudflare from "@astrojs/cloudflare";
+
 // https://astro.build/config
 export default defineConfig({
+	site: "https://eminence-astro-suite.xeffen25.com",
+	adapter: cloudflare(),
+	output: "server",
 	integrations: [
 		starlight({
 			title: "My Docs",
