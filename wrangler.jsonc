@@ -16,7 +16,7 @@
 		"enabled": true,
 	},
 	"route": {
-		"pattern": "eminence-astro-suite.xeffen25.com/*",
+		"pattern": "eminence-astro-suite.xeffen25.com",
 		"custom_domain": true,
 	},
 	"workers_dev": false,
