@@ -7,7 +7,9 @@ import cloudflare from "@astrojs/cloudflare";
 // https://astro.build/config
 export default defineConfig({
 	site: "https://eminence-astro-suite.xeffen25.com",
-	adapter: cloudflare(),
+	adapter: cloudflare({
+		prerenderEnvironment: "node",
+	}),
 	integrations: [
 		starlight({
 			title: "My Docs",
