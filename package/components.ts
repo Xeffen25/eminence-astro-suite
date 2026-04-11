@@ -1,4 +1,3 @@
-import _Alternate from "./components/Alternate.astro";
 import _AppleWebApp from "./components/AppleWebApp.astro";
 import _ApplicationName from "./components/ApplicationName.astro";
 import _AppLinks from "./components/AppLinks.astro";
@@ -18,6 +17,7 @@ import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
 import _Icons from "./components/Icons.astro";
 import _JsonLd from "./components/JsonLd.astro";
+import _LanguageAlternates from "./components/LanguageAlternates.astro";
 import _Manifest from "./components/Manifest.astro";
 import _OpenGraph from "./components/OpenGraph.astro";
 import _Pinterest from "./components/Pinterest.astro";
@@ -27,20 +27,6 @@ import _ThemeColor from "./components/ThemeColor.astro";
 import _Title from "./components/Title.astro";
 import _Verification from "./components/Verification.astro";
 import _Viewport from "./components/Viewport.astro";
-
-/**
- * @summary Renders `<link rel="alternate">` tags for language variants and feed types.
- * @description
- * Outputs alternate link tags to support language variants, regional versions, and RSS/Atom feed discovery. Accepts language variants as a record of language codes to URLs, and optional feed types for RSS and Atom discovery links.
- *
- * @example
- * <Alternate languages={{ "es": "https://example.com/es", "fr": "https://example.com/fr" }} />
- * @example
- * <Alternate types={{ "application/rss+xml": "https://example.com/feed.rss", "application/atom+xml": "https://example.com/feed.atom" }} />
- * @see {@link https://todo.dev/components/alternate Alternate Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#alternate MDN link rel attribute reference}
- */
-export const Alternate = _Alternate;
 
 /**
  * @summary Renders Apple web app and Smart App Banner meta tags.
@@ -342,6 +328,18 @@ export const Robots = _Robots;
  * @see {@link https://schema.org/docs/gs.html Schema.org getting started}
  */
 export const JsonLd = _JsonLd;
+
+/**
+ * @summary Renders `<link rel="alternate">` tags for language variants.
+ * @description
+ * Outputs alternate link tags to support language variants and regional versions. Accepts language variants as a record of language codes to URLs.
+ *
+ * @example
+ * <LanguageAlternates languages={{ es: "https://example.com/es", fr: "https://example.com/fr", "x-default": "https://example.com" }} />
+ *
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/language-alternates LanguageAlternates Component Documentation}
+ */
+export const LanguageAlternates = _LanguageAlternates;
 
 /**
  * @summary Renders theme color meta tags for browser UI theming.

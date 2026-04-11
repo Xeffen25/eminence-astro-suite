@@ -17,7 +17,7 @@
 
 import type { ComponentProps } from "astro/types";
 
-import Alternate from "./Alternate.astro";
+import LanguageAlternates from "./LanguageAlternates.astro";
 import AppleWebApp from "./AppleWebApp.astro";
 import AppLinks from "./AppLinks.astro";
 import ApplicationName from "./ApplicationName.astro";
@@ -52,7 +52,6 @@ interface Props {
 	base?: ComponentProps<typeof Base>;
 	title: ComponentProps<typeof Title>["value"];
 	titleTemplate?: ComponentProps<typeof Title>["template"];
-	alternates?: ComponentProps<typeof Alternate>;
 	appleWebApp?: ComponentProps<typeof AppleWebApp> | false;
 	appLinks?: ComponentProps<typeof AppLinks> | false;
 	applicationName?: ComponentProps<typeof ApplicationName>["content"] | false;
@@ -69,6 +68,7 @@ interface Props {
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | false;
 	icons?: ComponentProps<typeof Icons> | false;
 	jsonLd?: ComponentProps<typeof JsonLd>["jsonLd"];
+	languageAlternates?: ComponentProps<typeof LanguageAlternates>["languages"];
 	manifest?: ComponentProps<typeof Manifest>["href"] | false;
 	openGraph?: ComponentProps<typeof OpenGraph>;
 	pinterest?: ComponentProps<typeof Pinterest>["richPin"] | false;
@@ -84,7 +84,6 @@ const {
 	base,
 	title,
 	titleTemplate,
-	alternates,
 	appleWebApp,
 	appLinks,
 	applicationName,
@@ -101,6 +100,7 @@ const {
 	humansTxt,
 	icons,
 	jsonLd,
+	languageAlternates,
 	manifest,
 	openGraph,
 	pinterest,
@@ -117,7 +117,6 @@ const {
 	<Base {...base ?? {}} />
 	<Title value={title} template={titleTemplate} />
 	<slot />
-	{alternates && <Alternate {...alternates} />}
 	{appleWebApp !== false && <AppleWebApp {...(appleWebApp ?? {})} />}
 	{appLinks && <AppLinks {...appLinks} />}
 	{applicationName !== false && <ApplicationName content={applicationName} />}
@@ -134,6 +133,7 @@ const {
 	{humansTxt !== false && <HumansTxt href={humansTxt} />}
 	{icons !== false && <Icons {...(icons ?? {})} />}
 	{jsonLd && <JsonLd jsonLd={jsonLd} />}
+	{languageAlternates && <LanguageAlternates languages={languageAlternates} />}
 	{manifest !== false && <Manifest href={manifest} />}
 	{openGraph && <OpenGraph {...openGraph} />}
 	{pinterest !== false && <Pinterest richPin={pinterest} />}
