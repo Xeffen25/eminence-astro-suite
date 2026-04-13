@@ -18,7 +18,7 @@
 import type { ComponentProps } from "astro/types";
 
 import LanguageAlternates from "./LanguageAlternates.astro";
-import AppleWebApp from "./AppleWebApp.astro";
+import AppleItunesApp from "./AppleItunesApp.astro";
 import AppLinks from "./AppLinks.astro";
 import ApplicationName from "./ApplicationName.astro";
 import Archives from "./Archives.astro";
@@ -52,7 +52,7 @@ interface Props {
 	base?: ComponentProps<typeof Base>;
 	title: ComponentProps<typeof Title>["value"];
 	titleTemplate?: ComponentProps<typeof Title>["template"];
-	appleWebApp?: ComponentProps<typeof AppleWebApp> | false;
+	appleItunesApp?: ComponentProps<typeof AppleItunesApp> | false;
 	appLinks?: ComponentProps<typeof AppLinks> | false;
 	applicationName?: ComponentProps<typeof ApplicationName>["content"] | false;
 	archives?: ComponentProps<typeof Archives>["hrefs"];
@@ -84,7 +84,7 @@ const {
 	base,
 	title,
 	titleTemplate,
-	appleWebApp,
+	appleItunesApp,
 	appLinks,
 	applicationName,
 	archives,
@@ -117,7 +117,7 @@ const {
 	<Base {...base ?? {}} />
 	<Title value={title} template={titleTemplate} />
 	<slot />
-	{appleWebApp !== false && <AppleWebApp {...(appleWebApp ?? {})} />}
+	{appleItunesApp !== false && <AppleItunesApp {...(appleItunesApp ?? {})} />}
 	{appLinks && <AppLinks {...appLinks} />}
 	{applicationName !== false && <ApplicationName content={applicationName} />}
 	{archives && <Archives hrefs={archives} />}

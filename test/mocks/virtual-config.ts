@@ -6,7 +6,7 @@ const clientHeadConfig: ClientHeadConfig = {
 	base: undefined,
 	colorScheme: undefined,
 	titleTemplate: undefined,
-	appleWebApp: undefined,
+	appleItunesApp: undefined,
 	appLinks: undefined,
 	applicationName: undefined,
 	author: undefined,

@@ -2,6 +2,8 @@
 dist/
 # generated types
 .astro/
+worker-configuration.d.ts
+.wrangler/
 
 # dependencies
 node_modules/

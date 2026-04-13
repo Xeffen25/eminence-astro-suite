@@ -1,0 +1,85 @@
+---
+title: AppleItunesApp - Component
+description: Documentation for AppleItunesApp, focused on rendering the Apple iTunes Smart App Banner meta tag. It outputs the `apple-itunes-app` meta tag used by iOS Safari to promote App Store applications.
+---
+
+import { Code } from "@astrojs/starlight/components";
+import AppleItunesAppSource from "@package/components/AppleItunesApp.astro?raw";
+
+AppleItunesApp renders the `<meta name="apple-itunes-app">` tag that iOS Safari uses to display a Smart App Banner at the top of the browser, linking visitors to an App Store application.
+
+## Props
+
+| prop       | type     | default | required | description                                                              |
+| ---------- | -------- | ------- | -------- | ------------------------------------------------------------------------ |
+| `id`       | `string` | -       | No       | The App Store application ID. No tag is rendered when omitted.           |
+| `argument` | `string` | -       | No       | A URL or deep-link argument passed to the app when the banner is tapped. |
+
+## Usage & Examples
+
+**Basic usage**
+
+Input:
+
+```astro
+<AppleItunesApp id="123456789" />
+```
+
+Output:
+
+```html
+<meta name="apple-itunes-app" content="app-id=123456789" />
+```
+
+**Auto mode**
+
+Uses the info in the integration configuration to render the tag without props.
+
+Input:
+
+```astro
+<AppleItunesApp />
+```
+
+Output:
+
+```html
+<meta name="apple-itunes-app" content="app-id=123456789, app-argument=myapp://open" />
+```
+
+**Complete usage**
+
+Input:
+
+```astro
+<AppleItunesApp id="123456789" argument="myapp://open" />
+```
+
+Output:
+
+```html
+<meta name="apple-itunes-app" content="app-id=123456789, app-argument=myapp://open" />
+```
+
+## Decisions Made
+
+### Only the itunes tag is rendered
+
+This component is scoped exclusively to the `apple-itunes-app` Smart App Banner. Other Apple-specific tags (standalone mode, status bar style, startup images) are not implemented at all. Instead of using: apple-mobile-web-app-title, apple-touch-startup-image, apple-mobile-web-app-capable, apple-mobile-web-app-status-bar-style, etc., you should use the (manifest)[/integration/manifest] integration configuratoion.
+
+### The argument is appended only when provided
+
+The `app-argument` field is omitted from the `content` attribute when no `argument` prop is given. This avoids outputting a malformed or vacuous `app-argument=` entry that could confuse parsers.
+
+### No tag rendered without an id
+
+If `id` is not provided, the component outputs nothing. There is no useful `apple-itunes-app` tag without an App Store application ID.
+
+## Source code
+
+<Code code={AppleItunesAppSource} lang="astro" />
+
+## Reference
+
+- [MDN: meta name attribute reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name)
+- [Apple: Promoting apps with Smart App Banners](https://developer.apple.com/documentation/webkit/promoting-apps-with-smart-app-banners)

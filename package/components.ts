@@ -1,4 +1,4 @@
-import _AppleWebApp from "./components/AppleWebApp.astro";
+import _AppleItunesApp from "./components/AppleItunesApp.astro";
 import _ApplicationName from "./components/ApplicationName.astro";
 import _AppLinks from "./components/AppLinks.astro";
 import _Archives from "./components/Archives.astro";
@@ -29,20 +29,20 @@ import _Verification from "./components/Verification.astro";
 import _Viewport from "./components/Viewport.astro";
 
 /**
- * @summary Renders Apple web app and Smart App Banner meta tags.
+ * @summary Renders an Apple iTunes Smart App Banner meta tag.
  * @description
- * Outputs tags used by iOS Safari for standalone web app behavior and startup
- * images, plus an optional `apple-itunes-app` Smart App Banner tag.
+ * Outputs an `apple-itunes-app` meta tag used by iOS Safari to display a
+ * Smart App Banner linking to an App Store application.
  *
  * @example
- * <AppleWebApp title="My App" statusBarStyle="black-translucent" />
+ * <AppleItunesApp id="123456789" />
  * @example
- * <AppleWebApp itunes={{ appId: "123456789", appArgument: "myapp://open" }} />
- * @see {@link https://todo.dev/components/apple-web-app AppleWebApp Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/apple-mobile-web-app-capable MDN apple-mobile-web-app-capable reference}
- * @see {@link https://developer.apple.com/documentation/webkit/promoting_apps_with_smart_app_banners Promoting apps with Smart App Banners}
+ * <AppleItunesApp id="123456789" argument="myapp://open" />
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/apple-itunes-app AppleItunesApp Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name MDN Meta name reference}
+ * @see {@link https://developer.apple.com/documentation/webkit/promoting-apps-with-smart-app-banners Promoting apps with Smart App Banners}
  */
-export const AppleWebApp = _AppleWebApp;
+export const AppleItunesApp = _AppleItunesApp;
 
 /**
  * @summary Renders App Links meta tags for iOS, Android, and web fallback.

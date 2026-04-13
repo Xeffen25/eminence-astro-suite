@@ -3,16 +3,12 @@ import { extractClientHeadConfig, serializedVirtualConfigModule } from "@package
 import { describe, expect, it } from "vitest";
 
 describe("Integration - Virtual Config", () => {
-	it("extracts appleWebApp defaults into client head config", () => {
+	it("extracts appleItunesApp defaults into client head config", () => {
 		const options: IntegrationInput = {
 			head: {
-				appleWebApp: {
-					title: "My App",
-					statusBarStyle: "black-translucent",
-					startupImage: [
-						"/startup/default.png",
-						{ url: "https://cdn.example.com/portrait.png", media: "(orientation: portrait)" },
-					],
+				appleItunesApp: {
+					id: "123456789",
+					argument: "myapp://open",
 				},
 			},
 		};
@@ -23,13 +19,9 @@ describe("Integration - Virtual Config", () => {
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
-			appleWebApp: {
-				title: "My App",
-				statusBarStyle: "black-translucent",
-				startupImage: [
-					"/startup/default.png",
-					{ url: "https://cdn.example.com/portrait.png", media: "(orientation: portrait)" },
-				],
+			appleItunesApp: {
+				id: "123456789",
+				argument: "myapp://open",
 			},
 			appLinks: undefined,
 			facebook: undefined,
@@ -60,7 +52,7 @@ describe("Integration - Virtual Config", () => {
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
-			appleWebApp: undefined,
+			appleItunesApp: undefined,
 			appLinks: undefined,
 			facebook: undefined,
 			pinterest: undefined,
@@ -103,7 +95,7 @@ describe("Integration - Virtual Config", () => {
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
-			appleWebApp: undefined,
+			appleItunesApp: undefined,
 			appLinks: {
 				ios: {
 					url: "myapp://open",
@@ -144,7 +136,7 @@ describe("Integration - Virtual Config", () => {
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
-			appleWebApp: undefined,
+			appleItunesApp: undefined,
 			appLinks: undefined,
 			facebook: {
 				admins: ["10001", "10002"],
@@ -174,7 +166,7 @@ describe("Integration - Virtual Config", () => {
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
-			appleWebApp: undefined,
+			appleItunesApp: undefined,
 			appLinks: undefined,
 			facebook: undefined,
 			pinterest: {
@@ -205,7 +197,7 @@ describe("Integration - Virtual Config", () => {
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
-			appleWebApp: undefined,
+			appleItunesApp: undefined,
 			appLinks: undefined,
 			facebook: undefined,
 			pinterest: undefined,
@@ -234,7 +226,7 @@ describe("Integration - Virtual Config", () => {
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: "light dark",
-			appleWebApp: undefined,
+			appleItunesApp: undefined,
 			appLinks: undefined,
 			facebook: undefined,
 			pinterest: undefined,
@@ -263,7 +255,7 @@ describe("Integration - Virtual Config", () => {
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
-			appleWebApp: undefined,
+			appleItunesApp: undefined,
 			appLinks: undefined,
 			facebook: undefined,
 			pinterest: undefined,
@@ -294,7 +286,7 @@ describe("Integration - Virtual Config", () => {
 			charset: undefined,
 			viewport: undefined,
 			colorScheme: undefined,
-			appleWebApp: undefined,
+			appleItunesApp: undefined,
 			appLinks: undefined,
 			facebook: undefined,
 			pinterest: undefined,
@@ -363,26 +355,19 @@ describe("Integration - Virtual Config", () => {
 		});
 	});
 
-	it("serializes appleWebApp defaults in virtual config module", () => {
+	it("serializes appleItunesApp defaults in virtual config module", () => {
 		const options: IntegrationInput = {
 			head: {
-				appleWebApp: {
-					startupImage: [
-						new URL("https://cdn.example.com/default.png"),
-						{
-							url: new URL("https://cdn.example.com/landscape.png"),
-							media: "(orientation: landscape)",
-						},
-					],
+				appleItunesApp: {
+					id: "123456789",
+					argument: "myapp://open",
 				},
 			},
 		};
 
 		const result = serializedVirtualConfigModule(options);
 
-		expect(result).toBe(
-			'export default {"appleWebApp":{"startupImage":["https://cdn.example.com/default.png",{"url":"https://cdn.example.com/landscape.png","media":"(orientation: landscape)"}]}};',
-		);
+		expect(result).toBe('export default {"appleItunesApp":{"id":"123456789","argument":"myapp://open"}};');
 	});
 
 	it("serializes colorScheme defaults in virtual config module", () => {
