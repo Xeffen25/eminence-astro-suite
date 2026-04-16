@@ -301,14 +301,10 @@ describe("Integration - Virtual Config", () => {
 		});
 	});
 
-	it("extracts author, applicationName, and generator defaults into client head config", () => {
+	it("extracts author and generator defaults into client head config", () => {
 		const options: IntegrationInput = {
 			head: {
 				author: "Jane Doe",
-				applicationName: [
-					{ name: "Eminence", lang: "en" },
-					{ name: "Eminencia", lang: "es" },
-				],
 				generator: true,
 			},
 		};
@@ -317,10 +313,6 @@ describe("Integration - Virtual Config", () => {
 
 		expect(result).toMatchObject({
 			author: "Jane Doe",
-			applicationName: [
-				{ name: "Eminence", lang: "en" },
-				{ name: "Eminencia", lang: "es" },
-			],
 			generator: true,
 		});
 	});
@@ -499,23 +491,6 @@ describe("Integration - Virtual Config", () => {
 		const result = serializedVirtualConfigModule(options);
 
 		expect(result).toBe('export default {"author":"Jane Doe"};');
-	});
-
-	it("serializes applicationName defaults in virtual config module", () => {
-		const options: IntegrationInput = {
-			head: {
-				applicationName: [
-					{ name: "Eminence", lang: "en" },
-					{ name: "Eminencia", lang: "es" },
-				],
-			},
-		};
-
-		const result = serializedVirtualConfigModule(options);
-
-		expect(result).toBe(
-			'export default {"applicationName":[{"name":"Eminence","lang":"en"},{"name":"Eminencia","lang":"es"}]};',
-		);
 	});
 
 	it("serializes generator defaults in virtual config module", () => {

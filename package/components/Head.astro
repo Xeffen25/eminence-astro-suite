@@ -20,7 +20,6 @@ import type { ComponentProps } from "astro/types";
 import LanguageAlternates from "./LanguageAlternates.astro";
 import AppleItunesApp from "./AppleItunesApp.astro";
 import AppLinks from "./AppLinks.astro";
-import ApplicationName from "./ApplicationName.astro";
 import Archives from "./Archives.astro";
 import Assets from "./Assets.astro";
 import Author from "./Author.astro";
@@ -54,7 +53,6 @@ interface Props {
 	titleTemplate?: ComponentProps<typeof Title>["template"];
 	appleItunesApp?: ComponentProps<typeof AppleItunesApp> | false;
 	appLinks?: ComponentProps<typeof AppLinks> | false;
-	applicationName?: ComponentProps<typeof ApplicationName>["content"] | false;
 	archives?: ComponentProps<typeof Archives>["hrefs"];
 	assets?: ComponentProps<typeof Assets>["hrefs"];
 	author?: ComponentProps<typeof Author>["content"] | false;
@@ -86,7 +84,6 @@ const {
 	titleTemplate,
 	appleItunesApp,
 	appLinks,
-	applicationName,
 	archives,
 	assets,
 	author,
@@ -119,7 +116,6 @@ const {
 	<slot />
 	{appleItunesApp !== false && <AppleItunesApp {...(appleItunesApp ?? {})} />}
 	{appLinks && <AppLinks {...appLinks} />}
-	{applicationName !== false && <ApplicationName content={applicationName} />}
 	{archives && <Archives hrefs={archives} />}
 	{assets && <Assets hrefs={assets} />}
 	{author !== false && <Author content={author} />}

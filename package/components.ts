@@ -1,5 +1,4 @@
 import _AppleItunesApp from "./components/AppleItunesApp.astro";
-import _ApplicationName from "./components/ApplicationName.astro";
 import _AppLinks from "./components/AppLinks.astro";
 import _Archives from "./components/Archives.astro";
 import _Assets from "./components/Assets.astro";
@@ -60,22 +59,6 @@ export const AppleItunesApp = _AppleItunesApp;
  * @see {@link https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html Apple Universal Links}
  */
 export const AppLinks = _AppLinks;
-
-/**
- * @summary Renders one or more `<meta name="application-name">` tags.
- * @description
- * Supports a single string value or an ordered list of language-specific
- * values. When an array is provided, entries are rendered in the same order
- * they are defined.
- *
- * @example
- * <ApplicationName content="Eminence" />
- * @example
- * <ApplicationName content={[{ name: "Eminence", lang: "en" }, { name: "Eminencia", lang: "es" }]} />
- * @see {@link https://todo.dev/components/application-name ApplicationName Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/application-name MDN application-name reference}
- */
-export const ApplicationName = _ApplicationName;
 
 /**
  * @summary Renders one or more `<link rel="assets">` tags.

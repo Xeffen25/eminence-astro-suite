@@ -1,7 +1,6 @@
 import type { ComponentProps } from "astro/types";
 import {
 	AppleItunesApp,
-	ApplicationName,
 	AppLinks,
 	Author,
 	Base,
@@ -38,7 +37,6 @@ export type ClientHeadConfig = {
 	titleTemplate?: ComponentProps<typeof Title>["template"];
 	appleItunesApp?: ComponentProps<typeof AppleItunesApp>;
 	appLinks?: ComponentProps<typeof AppLinks>;
-	applicationName?: ComponentProps<typeof ApplicationName>["content"];
 	author?: ComponentProps<typeof Author>["content"];
 	creator?: ComponentProps<typeof Creator>["content"];
 	facebook?: ComponentProps<typeof Facebook>;
@@ -68,7 +66,6 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		titleTemplate: head?.titleTemplate,
 		appleItunesApp: head?.appleItunesApp,
 		appLinks: head?.appLinks,
-		applicationName: head?.applicationName,
 		author: head?.author,
 		creator: head?.creator,
 		facebook: head?.facebook,

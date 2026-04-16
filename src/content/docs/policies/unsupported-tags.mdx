@@ -36,6 +36,27 @@ Use standards-based web app metadata through the integration:
 - [MDN: Web App Manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest)
 - [Apple: Configuring Web Applications](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html)
 
+## Web App Tags
+
+Included tags:
+
+- `meta name="application-name"`
+
+### Reason
+
+This tag is excluded because modern browsers and platforms rely on the Web App Manifest for installable app metadata. The `name` and `short_name` fields in `manifest.webmanifest` supersede the need for `meta name="application-name"`.
+
+### Recommended Alternative
+
+Use standards-based app naming metadata through your web app manifest:
+
+- [Web app manifest](/integration/manifest)
+
+### References
+
+- [MDN: application-name](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/application-name)
+- [MDN: Web App Manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest)
+
 ## Feed Discovery Alternates
 
 Link tags used for auto-discovery of RSS or Atom feeds: `<link rel="alternate" type="application/rss+xml">`.
