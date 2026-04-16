@@ -1,39 +1,94 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
+title: Eminence Astro Suite
+description: Comprehensive metadata and file-output tooling for Astro through a Head component library plus integration-powered automation.
 hero:
-    tagline: Congrats on setting up a new Starlight project!
+    tagline: Complete, consistent, and automated SEO metadata for Astro.
     image:
         file: ../../assets/houston.webp
     actions:
-        - text: Example Guide
-          link: /guides/example/
+        - text: Component Docs
+          link: /components/apple-itunes-app
           icon: right-arrow
-        - text: Read the Starlight docs
-          link: https://starlight.astro.build
-          icon: external
+        - text: Unsupported Tags
+          link: /policies/unsupported-tags
+          icon: open-book
           variant: minimal
 ---
 
-import { Card, CardGrid } from "@astrojs/starlight/components";
+import { Card, CardGrid, Steps } from "@astrojs/starlight/components";
 
-## Next steps
+Eminence Astro Suite is both:
+
+- a component library for metadata generation, and
+- an Astro integration that powers those components through a Vite virtual module and automates important output files.
+
+For most components, the integration must be configured in `astro.config.mjs` so runtime defaults and derived metadata are available, and project outputs like `sitemap.xml`, `security.txt`, and `robots.txt` can be generated consistently.
+
+## How to use it
+
+<Steps>
+
+1. Add the integration in your Astro config.
+
+    ```ts title="astro.config.mjs"
+    import { defineConfig } from "astro/config";
+    import eminence from "eminence-astro-suite";
+
+    export default defineConfig({
+    	integrations: [
+    		eminence({
+    			// Your project defaults for metadata and generated files.
+    		}),
+    	],
+    });
+    ```
+
+2. Use only the `Head` component in pages/layouts.
+
+3. Start with minimal props (`title`, `description`) and scale up with advanced props like JSON-LD, Open Graph, and other metadata surfaces as needed.
+
+</Steps>
+
+## Why this design
+
+The intended workflow is simple and opinionated:
+
+- Configure integration once.
+- Use one entry point (`Head`) everywhere.
+- Move from basic SEO to advanced metadata without changing architecture.
+
+This keeps metadata consistent across pages, improves DX, and helps prevent mistakes caused by manual and fragmented tag composition.
+
+## Integration-powered outputs
+
+Beyond metadata tags, the integration can automate related outputs:
+
+- icon generation (favicons and manifest-oriented icon sets)
+- `security.txt`
+- `robots.txt`
+- `sitemap.xml` (using `@astrojs/sitemap` under the hood)
+
+## Scope and relevance
+
+Eminence targets relevant, modern SEO/metadata concerns and intentionally avoids obsolete surfaces.
+
+- Unsupported file outputs are documented in [Unsupported Files](/policies/unsupported-files).
+- Unsupported tags are documented in [Unsupported Tags](/policies/unsupported-tags).
 
 <CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
+	<Card title="Use Head As The Main API" icon="star">
+		The `Head` component is the canonical entry point, from essential tags to advanced metadata.
 	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a sidebar on this page.
+	<Card title="Integration Is Required" icon="setting">
+		Most metadata components depend on integration-provided virtual config to stay consistent and automatic.
 	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
+	<Card title="Automated File Outputs" icon="open-book">
+		Generate icon sets, `security.txt`, `robots.txt`, and `sitemap.xml` from integration configuration.
 	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
+	<Card title="Strict Modern Scope" icon="warning">
+		Legacy outputs like `browserconfig.xml` and unsupported legacy tags are intentionally excluded.
 	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
+	<Card title="Read The Policies" icon="book">
+		See [Unsupported Files](/policies/unsupported-files) and [Unsupported Tags](/policies/unsupported-tags).
 	</Card>
 </CardGrid>

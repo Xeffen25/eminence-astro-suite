@@ -1,0 +1,53 @@
+---
+title: Unsupported Tags
+description: Reference of metadata tags intentionally not supported by Eminence Astro Suite and why they are excluded.
+---
+
+This page documents metadata tags that Eminence Astro Suite does not support by design. The project prioritizes modern, standards-oriented metadata and does not plan to support legacy or insecure platform behaviors. This keeps the integration smaller, easier to maintain, and aligned with current browser capabilities.
+
+Modern alternatives to these tags are already implemented in the integration or available via standard components and should be used instead.
+
+The tags listed here are considered outdated, legacy conventions, or fall outside the specific scope of their respective components.
+
+## Apple Web App Tags
+
+Commonly referred to as "standalone mode" tags, these were used by early versions of iOS to manage how a website behaves when added to the home screen.
+
+Included tags:
+
+- `meta name="apple-mobile-web-app-title"`
+- `meta name="apple-touch-startup-image"`
+- `meta name="apple-mobile-web-app-capable"`
+- `meta name="apple-mobile-web-app-status-bar-style"`
+
+### Reason
+
+These are legacy Apple-specific tags that have been superseded by the Web App Manifest standard. The package intentionally avoids mixing unrelated Apple web app concerns with specific components like [AppleItunesApp](/components/apple-itunes-app).
+
+### Recommended Alternative
+
+Use standards-based web app metadata through the integration:
+
+- [Web app manifest](/integration/manifest)
+- [Modern icon metadata](/integration/icons)
+
+### References
+
+- [MDN: Web App Manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest)
+- [Apple: Configuring Web Applications](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html)
+
+## Feed Discovery Alternates
+
+Link tags used for auto-discovery of RSS or Atom feeds: `<link rel="alternate" type="application/rss+xml">`.
+
+### Reason
+
+The [LanguageAlternates](/components/language-alternates) component is deliberately scoped to `hreflang` alternates for localization only. Adding feed discovery would broaden the component's responsibility beyond its primary purpose.
+
+### Recommended Alternative
+
+Emit feed alternates manually or use dedicated feed generation tooling.
+
+### References
+
+- [MDN: Link types - alternate](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#alternate)
