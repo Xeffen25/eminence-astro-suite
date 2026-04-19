@@ -1,24 +1,7 @@
 ---
-/**
- * [ 🌐 Website ] {@link https://todo.dev/components/app-links}
- * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/app-links.mdx}
- * ---
- * @summary Renders App Links meta tags for iOS, Android, and web fallback.
- * @description
- * Outputs platform-specific App Links metadata so crawlers and clients can
- * associate a web URL with native app destinations. Supports iOS app URL and
- * App Store ID, Android package details, and web fallback controls.
- *
- * @example
- * <AppLinks ios={{ url: "myapp://open", app_store_id: "123456789" }} />
- * @example
- * <AppLinks android={{ package: "com.example.app", app_name: "Example App" }} web={{ url: "https://example.com", should_fallback: true }} />
- *
- * @see {@link https://developers.facebook.com/docs/applinks/web App Links Meta Tag Reference}
- * @see {@link https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html Apple Universal Links}
- */
+import clientHeadConfig from "virtual:eminence-astro-suite/config";
 
-import { toHref } from "../utils";
+import { hasAnyProp, toHref } from "../utils";
 
 interface Props {
 	ios?: {
@@ -35,7 +18,7 @@ interface Props {
 	};
 }
 
-const { ios, android, web } = Astro.props;
+const { ios, android, web } = (hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.appLinks ?? {})) as Props;
 ---
 
 {ios?.url && <meta property="al:ios:url" content={toHref(ios.url)} />}

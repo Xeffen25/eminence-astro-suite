@@ -54,9 +54,8 @@ export const AppleItunesApp = _AppleItunesApp;
  * <AppLinks ios={{ url: "myapp://open", app_store_id: "123456789" }} />
  * @example
  * <AppLinks android={{ package: "com.example.app", app_name: "Example App" }} web={{ url: "https://example.com", should_fallback: true }} />
- * @see {@link https://todo.dev/components/app-links AppLinks Component Documentation}
- * @see {@link https://developers.facebook.com/docs/applinks/web App Links Meta Tag Reference}
- * @see {@link https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html Apple Universal Links}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/app-links AppLinks Component Documentation}
+ * @see {@link https://developers.facebook.com/docs/applinks/metadata-reference/ App Links Meta Tag Reference}
  */
 export const AppLinks = _AppLinks;
 

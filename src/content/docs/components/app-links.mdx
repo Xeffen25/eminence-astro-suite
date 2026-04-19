@@ -1,0 +1,93 @@
+---
+title: AppLinks - Component
+description: Documentation for AppLinks, focused on rendering platform-specific App Links meta tags. It handles iOS, Android, and web fallback metadata for native deep-link association.
+---
+
+AppLinks renders App Links metadata tags for iOS, Android, and web fallback behavior. It is scoped to emitting `al:*` meta tags only and does not perform app-store validation, package verification, or URL rewriting beyond serializing URL values.
+
+## Props
+
+| prop      | type                                                | default | required | description                                                                                        |
+| --------- | --------------------------------------------------- | ------- | -------- | -------------------------------------------------------------------------------------------------- |
+| `ios`     | `{ url: string \| URL; app_store_id?: string }`     | -       | No       | iOS App Links values. Renders `al:ios:url` and optionally `al:ios:app_store_id`.                   |
+| `android` | `{ package: string; app_name?: string }`            | -       | No       | Android App Links values. Renders `al:android:package` and optionally `al:android:app_name`.       |
+| `web`     | `{ url: string \| URL; should_fallback?: boolean }` | -       | No       | Web fallback values. Renders `al:web:url` and, when explicitly provided, `al:web:should_fallback`. |
+
+## Usage & Examples
+
+**Basic usage**
+
+Input:
+
+```astro
+<AppLinks ios={{ url: "myapp://open", app_store_id: "123456789" }} />
+```
+
+Output:
+
+```html
+<meta property="al:ios:url" content="myapp://open" /> <meta property="al:ios:app_store_id" content="123456789" />
+```
+
+**Auto usage**
+
+Uses the integration `head.appLinks` defaults when no props are provided.
+
+Input:
+
+```astro
+<AppLinks />
+```
+
+Output:
+
+```html
+<meta property="al:ios:url" content="myapp://open" />
+<meta property="al:ios:app_store_id" content="123456789" />
+<meta property="al:android:package" content="com.example.app" />
+<meta property="al:android:app_name" content="Example App" />
+<meta property="al:web:url" content="https://example.com" />
+<meta property="al:web:should_fallback" content="true" />
+```
+
+**Complete usage**
+
+Input:
+
+```astro
+<AppLinks
+	ios={{ url: "myapp://open", app_store_id: "123456789" }}
+	android={{ package: "com.example.app", app_name: "Example App" }}
+	web={{ url: "https://example.com", should_fallback: true }}
+/>
+```
+
+Output:
+
+```html
+<meta property="al:ios:url" content="myapp://open" />
+<meta property="al:ios:app_store_id" content="123456789" />
+<meta property="al:android:package" content="com.example.app" />
+<meta property="al:android:app_name" content="Example App" />
+<meta property="al:web:url" content="https://example.com" />
+<meta property="al:web:should_fallback" content="true" />
+```
+
+## Decisions Made
+
+### Tags render only when source values exist
+
+The component emits each meta tag conditionally from its corresponding prop field. This keeps output minimal and prevents empty or misleading App Links metadata.
+
+### Web fallback is opt-in by explicit boolean
+
+`al:web:should_fallback` is rendered only when `should_fallback` is explicitly provided. This preserves the distinction between intentionally setting `true` or `false` and leaving fallback behavior unspecified.
+
+### URL-like values accept both string and URL
+
+The component accepts `string` and `URL` values for iOS and web URLs. Values are normalized to href strings to support ergonomic authoring while producing valid HTML attributes.
+
+## Reference
+
+- [MDN: `<meta>` element reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta)
+- [Facebook Developers: App Links meta tags](https://developers.facebook.com/docs/applinks/metadata-reference/)

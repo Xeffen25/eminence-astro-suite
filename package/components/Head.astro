@@ -115,7 +115,7 @@ const {
 	<Title value={title} template={titleTemplate} />
 	<slot />
 	{appleItunesApp !== false && <AppleItunesApp {...(appleItunesApp ?? {})} />}
-	{appLinks && <AppLinks {...appLinks} />}
+	{appLinks !== false && <AppLinks {...(appLinks ?? {})} />}
 	{archives && <Archives hrefs={archives} />}
 	{assets && <Assets hrefs={assets} />}
 	{author !== false && <Author content={author} />}
