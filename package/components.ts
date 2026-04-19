@@ -1,6 +1,5 @@
 import _AppleItunesApp from "./components/AppleItunesApp.astro";
 import _AppLinks from "./components/AppLinks.astro";
-import _Assets from "./components/Assets.astro";
 import _Author from "./components/Author.astro";
 import _Base from "./components/Base.astro";
 import _Bookmarks from "./components/Bookmarks.astro";
@@ -57,21 +56,6 @@ export const AppleItunesApp = _AppleItunesApp;
  * @see {@link https://developers.facebook.com/docs/applinks/metadata-reference/ App Links Meta Tag Reference}
  */
 export const AppLinks = _AppLinks;
-
-/**
- * @summary Renders one or more `<link rel="assets">` tags.
- * @description
- * Outputs resource relationship links using `rel="assets"`. Each entry in
- * `hrefs` is rendered as its own `<link rel="assets">` tag.
- *
- * @example
- * <Assets hrefs={["https://example.com/assets"]} />
- * @example
- * <Assets hrefs={[new URL("https://cdn.example.com/assets"), "https://example.com/assets"]} />
- * @see {@link https://todo.dev/components/assets Assets Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel MDN rel attribute reference}
- */
-export const Assets = _Assets;
 
 /**
  * @summary Renders a `<meta name="author">` tag.

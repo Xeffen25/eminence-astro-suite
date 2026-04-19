@@ -100,3 +100,33 @@ Use modern, explicit structure signals instead:
 - [MDN: Link types reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel)
 - [Google Search Central: Sitemaps overview](https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview)
 - [WAI-ARIA Authoring Practices: Landmark regions](https://www.w3.org/WAI/ARIA/apg/practices/landmark-regions/)
+
+## Assets Link Relation
+
+Included tags:
+
+- `<link rel="assets" href="...">`
+
+### Reason
+
+`rel="assets"` is not part of the HTML standard and has never been a recognized relation type in W3C or WHATWG specifications.
+
+In practice, when this relation appears in codebases, it is usually for private tooling conventions (for example custom framework hooks, build scripts, or niche asset discovery pipelines), not for interoperable browser behavior. Browsers do not provide built-in support for this relation, and search engines do not use it as a meaningful ranking or discovery signal.
+
+Because this tag is non-standard and provides no meaningful browser or SEO benefit, this package does not include an `Assets` component.
+
+### Recommended Alternative
+
+Use standard mechanisms that have real browser and crawler behavior:
+
+- `rel="preload"` or `rel="prefetch"` for asset loading priority
+- `rel="manifest"` for progressive web app metadata and icons
+- standard script and stylesheet loading with integrity attributes where applicable
+
+### References
+
+- [WHATWG HTML: Link types](https://html.spec.whatwg.org/multipage/links.html#linkTypes)
+- [MDN: rel="preload"](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/preload)
+- [MDN: rel="prefetch"](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/prefetch)
+- [MDN: rel="manifest"](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/manifest)
+- [MDN: Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)
