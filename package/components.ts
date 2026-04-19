@@ -1,6 +1,5 @@
 import _AppleItunesApp from "./components/AppleItunesApp.astro";
 import _AppLinks from "./components/AppLinks.astro";
-import _Archives from "./components/Archives.astro";
 import _Assets from "./components/Assets.astro";
 import _Author from "./components/Author.astro";
 import _Base from "./components/Base.astro";
@@ -103,22 +102,6 @@ export const Author = _Author;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel MDN rel attribute reference}
  */
 export const Bookmarks = _Bookmarks;
-
-/**
- * @summary Renders one or more `<link rel="archives">` tags.
- * @description
- * Outputs archive discovery links for pages such as yearly indexes, post
- * listings, or historical snapshots. Each entry in `hrefs` is rendered as its
- * own `<link rel="archives">` tag.
- *
- * @example
- * <Archives hrefs={["https://example.com/archive/2025"]} />
- * @example
- * <Archives hrefs={[new URL("https://example.com/archive/2024"), "https://example.com/archive/2023"]} />
- * @see {@link https://todo.dev/components/archives Archives Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#archives MDN rel="archives" reference}
- */
-export const Archives = _Archives;
 
 /**
  * The ultimate `<head>` component for your Astro project.

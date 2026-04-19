@@ -72,3 +72,31 @@ Emit feed alternates manually or use dedicated feed generation tooling.
 ### References
 
 - [MDN: Link types - alternate](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#alternate)
+
+## Archive Link Relation
+
+Included tags:
+
+- `<link rel="archives" href="...">`
+
+### Reason
+
+While this tag is still technically valid HTML, it has effectively become a ghost tag in modern browsers and search ecosystems.
+
+Current browsers do not provide special handling for `rel="archives"`: no navigation affordance, no dedicated UI, and no prioritization behavior. Search engines also rely on internal links and sitemaps for archive discovery, so this relation contributes negligible SEO value.
+
+Because it does not provide meaningful browser or crawler behavior in current practice, this package does not include an `Archives` component.
+
+### Recommended Alternative
+
+Use modern, explicit structure signals instead:
+
+- `nav` landmarks with standard links to archive pages
+- structured data such as JSON-LD where hierarchy context is needed
+- `sitemap.xml` entries for archive URLs
+
+### References
+
+- [MDN: Link types reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel)
+- [Google Search Central: Sitemaps overview](https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview)
+- [WAI-ARIA Authoring Practices: Landmark regions](https://www.w3.org/WAI/ARIA/apg/practices/landmark-regions/)
