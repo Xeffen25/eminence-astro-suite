@@ -24,7 +24,6 @@ import Base from "./Base.astro";
 import Canonical from "./Canonical.astro";
 import Charset from "./Charset.astro";
 import ColorScheme from "./ColorScheme.astro";
-import Creator from "./Creator.astro";
 import Description from "./Description.astro";
 import Facebook from "./Facebook.astro";
 import Generator from "./Generator.astro";
@@ -51,7 +50,6 @@ interface Props {
 	appLinks?: ComponentProps<typeof AppLinks> | false;
 	canonical?: ComponentProps<typeof Canonical>["href"] | false;
 	colorScheme?: ComponentProps<typeof ColorScheme>["content"] | false;
-	creator?: ComponentProps<typeof Creator>["content"] | false;
 	description?: ComponentProps<typeof Description>["content"];
 	facebook?: ComponentProps<typeof Facebook> | false;
 	generator?: ComponentProps<typeof Generator>["generate"];
@@ -78,7 +76,6 @@ const {
 	appLinks,
 	canonical,
 	colorScheme,
-	creator,
 	description,
 	facebook,
 	generator,
@@ -106,7 +103,6 @@ const {
 	{appLinks !== false && <AppLinks {...(appLinks ?? {})} />}
 	{canonical !== false && <Canonical href={canonical} />}
 	{colorScheme !== false && <ColorScheme content={colorScheme} />}
-	{creator !== false && <Creator content={creator} />}
 	{description && <Description content={description} />}
 	{facebook !== false && <Facebook {...(facebook ?? {})} />}
 	{generator !== false && <Generator generate={generator} />}

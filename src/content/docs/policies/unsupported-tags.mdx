@@ -187,3 +187,31 @@ If you need to help users discover important pages or sections:
 
 - [WHATWG HTML: Link types](https://html.spec.whatwg.org/multipage/links.html#linkTypes)
 - [MDN: Link types - bookmarks](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#bookmarks)
+
+## Administrative Creator Metadata
+
+Included tags:
+
+- `meta name="creator"`
+
+### Reason
+
+The `creator` meta tag is administrative metadata with little to no practical effect in modern browsers, search engines, or social platforms.
+
+Current crawlers and ranking systems do not rely on hidden `meta name="creator"` values for trust, authorship, or discoverability. When creator identity matters, stronger signals such as visible credits, organization pages, structured data, and platform-specific metadata are more explicit and interoperable.
+
+Because `meta name="creator"` does not materially affect browser behavior or modern metadata consumption, this package does not include a `Creator` component.
+
+### Recommended Alternative
+
+Use stronger creator and ownership signals instead:
+
+- visible credit lines or organization attribution in page content
+- Schema.org JSON-LD for `Organization`, `Person`, `CreativeWork`, `Article`, or related content types
+- Open Graph metadata where creator or publisher context is relevant
+
+### References
+
+- [Schema.org: CreativeWork](https://schema.org/CreativeWork)
+- [Schema.org: creator](https://schema.org/creator)
+- [MDN: meta name values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name)

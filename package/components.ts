@@ -4,7 +4,6 @@ import _Base from "./components/Base.astro";
 import _Canonical from "./components/Canonical.astro";
 import _Charset from "./components/Charset.astro";
 import _ColorScheme from "./components/ColorScheme.astro";
-import _Creator from "./components/Creator.astro";
 import _Description from "./components/Description.astro";
 import _Facebook from "./components/Facebook.astro";
 import _Generator from "./components/Generator.astro";
@@ -115,21 +114,6 @@ export const Charset = _Charset;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/color-scheme MDN color-scheme reference}
  */
 export const ColorScheme = _ColorScheme;
-
-/**
- * @summary Renders one or more `<meta name="creator">` tags.
- * @description
- * Accepts an ordered list of creator values. Each entry is rendered as its
- * own `<meta name="creator">` tag.
- *
- * @example
- * <Creator content={["Acme University"]} />
- * @example
- * <Creator content={["Acme University", "Research Lab"]} />
- * @see {@link https://todo.dev/components/creator Creator Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#creator MDN meta creator reference}
- */
-export const Creator = _Creator;
 
 /**
  * @summary Renders a `<meta name="description">` tag for SEO.

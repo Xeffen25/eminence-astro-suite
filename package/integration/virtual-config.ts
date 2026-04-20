@@ -5,7 +5,6 @@ import {
 	Base,
 	Charset,
 	ColorScheme,
-	Creator,
 	Facebook,
 	Generator,
 	HumansTxt,
@@ -36,7 +35,6 @@ export type ClientHeadConfig = {
 	titleTemplate?: ComponentProps<typeof Title>["template"];
 	appleItunesApp?: ComponentProps<typeof AppleItunesApp>;
 	appLinks?: ComponentProps<typeof AppLinks>;
-	creator?: ComponentProps<typeof Creator>["content"];
 	facebook?: ComponentProps<typeof Facebook>;
 	generator?: ComponentProps<typeof Generator>["generate"];
 	icons?: IconsOptions | false;
@@ -64,7 +62,6 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		titleTemplate: head?.titleTemplate,
 		appleItunesApp: head?.appleItunesApp,
 		appLinks: head?.appLinks,
-		creator: head?.creator,
 		facebook: head?.facebook,
 		generator: head?.generator,
 		icons,
