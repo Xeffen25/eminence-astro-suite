@@ -1,0 +1,82 @@
+---
+title: HumansTxt - Component
+description: Documentation for HumansTxt, focused on rendering the link rel="author" tag pointing to the humans.txt file. It handles explicit href values, automatic site-based derivation, and explicit opt-out.
+---
+
+HumansTxt renders a `<link rel="author" type="text/plain">` tag that points to the project's `/humans.txt` file. It is scoped to resolving and outputting the href for that tag only and does not generate or validate the humans.txt file itself.
+
+## Props
+
+| prop   | type                     | default                   | required | description                                                                                                                                                |
+| ------ | ------------------------ | ------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `href` | `string \| URL \| false` | derived from `Astro.site` | No       | Absolute URL for the humans.txt file. Pass `false` to suppress output. When omitted, falls back to integration config, then to `Astro.site + /humans.txt`. |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<HumansTxt href="https://example.com/humans.txt" />
+```
+
+Output:
+
+```html
+<link type="text/plain" rel="author" href="https://example.com/humans.txt" />
+```
+
+### Auto usage
+
+Derives the href from `Astro.site` by appending `/humans.txt`.
+
+Input:
+
+```astro
+<HumansTxt />
+```
+
+Output (assuming `Astro.site` is `https://example.com`):
+
+```html
+<link type="text/plain" rel="author" href="https://example.com/humans.txt" />
+```
+
+### Complete usage
+
+Input:
+
+```astro
+<HumansTxt href={new URL("https://example.com/humans.txt")} />
+```
+
+Output:
+
+```html
+<link type="text/plain" rel="author" href="https://example.com/humans.txt" />
+```
+
+## Decisions Made
+
+### Accepts string, URL, or false
+
+The `href` prop accepts a string, a URL object, or the literal `false`. Passing `false` is the explicit opt-out, suppressing the tag even when a site config or integration default exists.
+
+### Automatic derivation from Astro.site
+
+When no explicit `href` is given and the integration config does not supply a value, HumansTxt builds the URL by joining `/humans.txt` with `Astro.site`. This avoids boilerplate for projects following the conventional path.
+
+### Renders nothing when no valid href can be resolved
+
+If `href` is `false`, or if no explicit value or derivable site is available, the component produces no output. This prevents a broken or empty link tag from appearing in the document.
+
+### Integration config is checked before Astro.site
+
+The resolution order is: explicit prop → integration config → Astro.site derivation. This lets a project override the auto-derived URL at the integration level without touching every page.
+
+## Reference
+
+- [Humans.txt Standard](https://humanstxt.org/)
+- [MDN: link element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link)
+- [MDN: link rel="author"](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#author)

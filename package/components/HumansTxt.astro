@@ -1,24 +1,4 @@
 ---
-/**
- * [ 🌐 Website ] {@link https://todo.dev/components/humans-txt}
- * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/humans-txt.mdx}
- * ---
- * @summary Renders a `<link rel="author">` tag pointing to `/humans.txt`.
- * @description
- * Uses the provided `href` value directly when present. If omitted, it tries
- * to generate a URL from `Astro.site` by appending `/humans.txt`. If neither
- * source is available, the component renders nothing.
- *
- * @example
- * <HumansTxt href="https://example.com/humans.txt" />
- * @example
- * <HumansTxt href={new URL("https://example.com/humans.txt")} />
- * @example
- * // Derives href from Astro.site by appending /humans.txt
- * <HumansTxt />
- * @see {@link https://humanstxt.org/ The Humans.txt Standard}
- */
-
 import clientHeadConfig from "virtual:eminence-astro-suite/config";
 
 interface Props {

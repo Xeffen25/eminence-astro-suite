@@ -309,7 +309,7 @@ export const Canonical = _Canonical;
  * @description
  * Uses the provided `href` value directly when present. If omitted, it tries
  * to generate a URL from `Astro.site` by appending `/humans.txt`. If neither
- * source is available, the component renders nothing and logs an error.
+ * source is available, the component renders nothing.
  *
  * @example
  * <HumansTxt href="https://example.com/humans.txt" />
@@ -318,10 +318,8 @@ export const Canonical = _Canonical;
  * @example
  * // Derives href from Astro.site by appending /humans.txt
  * <HumansTxt />
- *
- * @see {@link https://todo.dev/components/humans-txt HumansTxt Component Documentation}
- * @see {@link https://todo.dev/components/humans-txt.mdx HumansTxt Docs Source}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#attr-link-rel-author MDN link rel="author" reference}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/humans-txt HumansTxt Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link MDN link element reference}
  * @see {@link https://humanstxt.org/ The Humans.txt Standard}
  */
 export const HumansTxt = _HumansTxt;
