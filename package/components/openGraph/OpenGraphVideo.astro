@@ -26,11 +26,11 @@ interface Props {
 	/**
 	 * Required video URL. Relative paths are emitted as provided.
 	 */
-	src: StringOrURL;
+	src: string | URL;
 	/**
 	 * HTTPS variant of `src`, emitted as `og:video:secure_url`.
 	 */
-	secureUrl?: StringOrURL;
+	secureUrl?: string | URL;
 	/**
 	 * Overrides extension-based MIME inference for `og:video:type`.
 	 */

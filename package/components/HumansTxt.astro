@@ -27,7 +27,7 @@ interface Props {
 	 * @default `${Astro.site}/humans.txt`
 	 * @example "https://example.com/humans.txt"
 	 */
-	href?: StringOrURL | boolean;
+	href?: string | URL | false;
 }
 
 const { href: propHref } = Astro.props;

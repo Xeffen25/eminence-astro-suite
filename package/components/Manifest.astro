@@ -26,7 +26,7 @@ interface Props {
 	 * @default `${Astro.site}/manifest.webmanifest`
 	 * @example "https://example.com/manifest.webmanifest"
 	 */
-	href?: StringOrURL | boolean;
+	href?: string | URL | boolean;
 }
 
 const { href: propHref } = Astro.props;

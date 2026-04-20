@@ -5,7 +5,7 @@ import { hasAnyProp, toHref } from "../utils";
 
 interface Props {
 	ios?: {
-		url: StringOrURL;
+		url: string | URL;
 		app_store_id?: string;
 	};
 	android?: {
@@ -13,7 +13,7 @@ interface Props {
 		app_name?: string;
 	};
 	web?: {
-		url: StringOrURL;
+		url: string | URL;
 		should_fallback?: boolean;
 	};
 }

@@ -22,7 +22,7 @@ import type { ImageMetadata } from "astro";
 
 import { inferImageMimeType, toHref } from "../../utils";
 
-type ImageSource = ImageMetadata | StringOrURL;
+type ImageSource = ImageMetadata | string | URL;
 
 function isMetadata(src: ImageSource): src is ImageMetadata {
 	return typeof src === "object" && !(src instanceof URL) && "format" in src;
@@ -36,7 +36,7 @@ interface Props {
 	/**
 	 * HTTPS variant of `src`, emitted as `og:image:secure_url`.
 	 */
-	secureUrl?: StringOrURL;
+	secureUrl?: string | URL;
 	/**
 	 * Overrides imported metadata width when both are provided.
 	 */
@@ -55,7 +55,7 @@ interface Props {
 const { src, secureUrl, alt, type } = Astro.props;
 
 const metadata = isMetadata(src) ? src : undefined;
-const resolvedSrc = metadata ? metadata.src : toHref(src as StringOrURL);
+const resolvedSrc = metadata ? metadata.src : toHref(src as string | URL);
 const resolvedWidth = Astro.props.width ?? metadata?.width;
 const resolvedHeight = Astro.props.height ?? metadata?.height;
 const resolvedType = type ?? inferImageMimeType(resolvedSrc, metadata?.format);
