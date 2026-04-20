@@ -348,8 +348,7 @@ export const Icons = _Icons;
  * @description
  * Uses the provided `href` value directly when present. If omitted, it tries
  * to generate a URL from `Astro.site` by appending `/manifest.webmanifest`.
- * If neither source is available, the component renders nothing and logs an
- * error.
+ * If neither source is available, the component renders nothing.
  *
  * @example
  * <Manifest href="https://example.com/manifest.webmanifest" />
@@ -358,7 +357,7 @@ export const Icons = _Icons;
  * @example
  * // Derives href from Astro.site by appending /manifest.webmanifest
  * <Manifest />
- * @see {@link https://todo.dev/components/manifest Manifest Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/manifest Manifest Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/manifest MDN rel="manifest" reference}
  */
 export const Manifest = _Manifest;

@@ -1,0 +1,78 @@
+---
+title: Manifest - Component
+description: Documentation for Manifest, focused on rendering the web app manifest link tag. It handles explicit URLs, automatic site-based derivation, and explicit opt-out behavior.
+---
+
+Manifest renders a `<link rel="manifest">` tag that points browsers to your web app manifest file. It is scoped to resolving and outputting the manifest URL and does not generate the manifest file itself.
+
+## Props
+
+| prop   | type                       | default                                | required | description                                                                                                                                 |
+| ------ | -------------------------- | -------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `href` | `string \| URL \| boolean` | derived from `Astro.site` when omitted | No       | Absolute manifest URL. Pass `false` to suppress output. Pass `true` (or omit the prop) to derive `/manifest.webmanifest` from `Astro.site`. |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<Manifest href="https://example.com/manifest.webmanifest" />
+```
+
+Output:
+
+```html
+<link rel="manifest" href="https://example.com/manifest.webmanifest" />
+```
+
+### Auto usage
+
+Derives the href from `Astro.site` by appending `/manifest.webmanifest`.
+
+Input:
+
+```astro
+<Manifest />
+```
+
+Output (assuming `Astro.site` is `https://example.com`):
+
+```html
+<link rel="manifest" href="https://example.com/manifest.webmanifest" />
+```
+
+### Complete usage
+
+Input:
+
+```astro
+<Manifest href={new URL("https://cdn.example.com/app.webmanifest")} />
+```
+
+Output:
+
+```html
+<link rel="manifest" href="https://cdn.example.com/app.webmanifest" />
+```
+
+## Decisions Made
+
+### Supports explicit opt-out with boolean false
+
+The `href` prop accepts `false` to explicitly disable output. This allows per-page suppression even when a default site URL could be derived.
+
+### Uses Astro.site for automatic fallback
+
+When `href` is omitted or `true`, the component attempts to build the URL from `Astro.site` and `/manifest.webmanifest`. This keeps common setups zero-config.
+
+### Renders nothing when no URL can be resolved
+
+If `href` is disabled or `Astro.site` is unavailable for derivation, the component emits no tag. This avoids invalid or broken manifest links in output.
+
+## Reference
+
+- [MDN: rel="manifest"](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/manifest)
+- [W3C Web App Manifest Specification](https://www.w3.org/TR/appmanifest/)
+- [Google Web Fundamentals: Add a Web App Manifest](https://web.dev/add-manifest/)
