@@ -1,0 +1,78 @@
+---
+title: Description - Component
+description: Documentation for Description, focused on rendering the meta description tag. It handles explicit page description content for search and social previews.
+---
+
+Description renders a `<meta name="description">` tag in the document head. It is responsible for serializing the provided description text and does not generate, truncate, or validate SEO copy.
+
+## Props
+
+| prop      | type     | default | required | description                                                                             |
+| --------- | -------- | ------- | -------- | --------------------------------------------------------------------------------------- |
+| `content` | `string` | -       | Yes      | Page-specific meta description content, ideally concise for search and social previews. |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<Description content="Learn how to build efficient web applications" />
+```
+
+Output:
+
+```html
+<meta name="description" content="Learn how to build efficient web applications" />
+```
+
+### Auto usage
+
+Not supported. Description requires explicit `content`.
+
+Input:
+
+```astro
+<Description />
+```
+
+Output:
+
+```html
+<!-- No valid output: missing required content prop -->
+```
+
+### Complete usage
+
+Input:
+
+```astro
+<Description content="A concise summary of the page content for users and crawlers." />
+```
+
+Output:
+
+```html
+<meta name="description" content="A concise summary of the page content for users and crawlers." />
+```
+
+## Decisions Made
+
+### Content is required
+
+Description requires the `content` prop to avoid emitting empty or meaningless metadata. This makes intent explicit and keeps page metadata quality under consumer control.
+
+### No automatic fallback
+
+The component does not read from integration config or page defaults. Requiring a direct value ensures each page can define a deliberate summary rather than inheriting potentially inaccurate text.
+
+### Output is a direct value mapping
+
+Description forwards `content` directly to the `meta` tag without transformations. Trimming, length control, and SEO wording decisions are intentionally left to the caller.
+
+## Reference
+
+- [MDN: meta name="description"](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#description)
+- [Google Search Central: Control your snippets](https://developers.google.com/search/docs/appearance/snippet)
+- [WHATWG HTML Standard: meta element](https://html.spec.whatwg.org/multipage/semantics.html#the-meta-element)

@@ -120,12 +120,12 @@ export const ColorScheme = _ColorScheme;
  * @description
  * Outputs the page meta description tag in your `<head>`. This tag is commonly
  * used by search engines and social media platforms to display a preview of your
- * page content. Defaults to an empty string if no content is provided.
+ * page content.
  *
  * @example
  * <Description content="Learn how to build efficient web applications" />
  *
- * @see {@link https://todo.dev/components/description Description Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/description Description Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#description MDN meta name attributes reference}
  */
 export const Description = _Description;
