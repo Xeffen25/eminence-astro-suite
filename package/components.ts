@@ -139,7 +139,7 @@ export const Description = _Description;
  * <Generator />
  * @example
  * <Generator generate={false} />
- * @see {@link https://todo.dev/components/generator Generator Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/generator Generator Component Documentation}
  * @see {@link https://docs.astro.build/en/reference/api-reference/#astrogenerator Astro.generator reference}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/generator MDN generator reference}
  */

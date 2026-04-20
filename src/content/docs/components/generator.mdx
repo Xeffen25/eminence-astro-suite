@@ -1,0 +1,78 @@
+---
+title: Generator - Component
+description: Documentation for Generator, focused on rendering the generator meta tag from Astro. It handles conditional output through the generate flag and integration fallback.
+---
+
+Generator renders a `<meta name="generator">` tag using Astro's built-in `Astro.generator` value. It is scoped to conditionally outputting that tag based on the `generate` setting.
+
+## Props
+
+| prop       | type      | default | required | description                                                                                             |
+| ---------- | --------- | ------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `generate` | `boolean` | `true`  | No       | Enables or disables rendering of the generator meta tag. Falls back to integration config when omitted. |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<Generator />
+```
+
+Output:
+
+```html
+<meta name="generator" content="Astro vX.Y.Z" />
+```
+
+### Auto usage
+
+Uses integration `head.generator` when `generate` prop is not provided.
+
+Input:
+
+```astro
+<Generator />
+```
+
+Output (when integration config has `head.generator: false`):
+
+```html
+
+```
+
+### Complete usage
+
+Input:
+
+```astro
+<Generator generate={false} />
+```
+
+Output:
+
+```html
+
+```
+
+## Decisions Made
+
+### Rendering is feature-flag controlled
+
+Generator output is controlled by a boolean `generate` flag. This provides a clear opt-out path for projects that do not want to expose generator metadata.
+
+### Component uses Astro.generator as the source of truth
+
+When enabled, Generator uses `Astro.generator` directly rather than constructing a custom value. This keeps output aligned with Astro runtime behavior.
+
+### Integration config can define global behavior
+
+When `generate` is omitted, the component falls back to `clientHeadConfig.generator` and then `true`. This allows site-wide defaults while preserving per-page override capability.
+
+## Reference
+
+- [Astro API: Astro.generator](https://docs.astro.build/en/reference/api-reference/#astrogenerator)
+- [MDN: meta name="generator"](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/generator)
+- [WHATWG HTML Standard: meta generator](https://html.spec.whatwg.org/multipage/semantics.html#meta-generator)
