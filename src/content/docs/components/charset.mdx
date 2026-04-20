@@ -1,0 +1,75 @@
+---
+title: Charset - Component
+description: Documentation for Charset, focused on rendering the document character encoding meta tag. It handles explicit charset values and defaults to utf-8 when omitted.
+---
+
+Charset renders a `<meta charset>` tag for the current document. It is responsible only for serializing the configured character encoding and defaults to `utf-8` when no prop is provided.
+
+## Props
+
+| prop      | type     | default   | required | description                                       |
+| --------- | -------- | --------- | -------- | ------------------------------------------------- |
+| `charset` | `string` | `"utf-8"` | No       | Character encoding used in the rendered meta tag. |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<Charset charset="iso-8859-1" />
+```
+
+Output:
+
+```html
+<meta charset="iso-8859-1" />
+```
+
+### Auto usage
+
+Input:
+
+```astro
+<Charset />
+```
+
+Output:
+
+```html
+<meta charset="utf-8" />
+```
+
+### Complete usage
+
+Input:
+
+```astro
+<Charset charset="utf-8" />
+```
+
+Output:
+
+```html
+<meta charset="utf-8" />
+```
+
+## Decisions Made
+
+### Utf-8 is the default
+
+Charset defaults to `utf-8` when no prop is provided. This matches the standard encoding used by modern HTML documents and reduces the need for boilerplate in the common case.
+
+### The component always renders
+
+The component always renders a `<meta charset>` tag because it has a built-in default value. This avoids conditional behavior and guarantees that a document charset is emitted whenever the component is used.
+
+### Charset stays as a plain string prop
+
+The `charset` prop is typed as a simple string because the component only needs to serialize the supplied encoding value. Validation of whether a given charset is appropriate is left to the consumer and the browser.
+
+## Reference
+
+- [MDN: meta charset](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-meta-charset)
+- [WHATWG HTML Standard: character encoding declaration](https://html.spec.whatwg.org/multipage/semantics.html#attr-meta-charset)
