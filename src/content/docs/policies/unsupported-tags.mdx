@@ -215,3 +215,32 @@ Use stronger creator and ownership signals instead:
 - [Schema.org: CreativeWork](https://schema.org/CreativeWork)
 - [Schema.org: creator](https://schema.org/creator)
 - [MDN: meta name values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name)
+
+## Facebook Admin Metadata
+
+Included tags:
+
+- `meta property="fb:app_id"`
+- `meta property="fb:admins"`
+
+### Reason
+
+These Facebook-specific admin tags are platform-scoped metadata and do not provide general SEO value or meaningful browser behavior.
+
+They are only relevant to narrow Facebook ownership/admin workflows and are not part of broader, standards-based metadata ecosystems used across modern crawlers and clients.
+
+Because they are proprietary and outside this package's standards-first scope, this package does not include a `Facebook` component.
+
+### Recommended Alternative
+
+Use broadly interoperable metadata instead:
+
+- Open Graph core metadata through the `OpenGraph` component
+- standards-based structured data such as Schema.org JSON-LD where ownership or organization context is needed
+- platform-specific setup in the platform's dashboard when available
+
+### References
+
+- [Facebook Sharing Debugger and metadata docs](https://developers.facebook.com/docs/sharing/webmasters)
+- [Open Graph protocol](https://ogp.me/)
+- [Schema.org: Organization](https://schema.org/Organization)

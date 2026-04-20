@@ -15,7 +15,6 @@ const resetClientHeadConfig = () => {
 		titleTemplate: undefined,
 		appleWebApp: undefined,
 		appLinks: undefined,
-		facebook: undefined,
 		generator: undefined,
 		icons: undefined,
 		openGraphSiteName: undefined,

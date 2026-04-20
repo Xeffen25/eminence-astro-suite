@@ -25,7 +25,6 @@ import Canonical from "./Canonical.astro";
 import Charset from "./Charset.astro";
 import ColorScheme from "./ColorScheme.astro";
 import Description from "./Description.astro";
-import Facebook from "./Facebook.astro";
 import Generator from "./Generator.astro";
 import HumansTxt from "./HumansTxt.astro";
 import Icons from "./Icons.astro";
@@ -51,7 +50,6 @@ interface Props {
 	canonical?: ComponentProps<typeof Canonical>["href"] | false;
 	colorScheme?: ComponentProps<typeof ColorScheme>["content"] | false;
 	description?: ComponentProps<typeof Description>["content"];
-	facebook?: ComponentProps<typeof Facebook> | false;
 	generator?: ComponentProps<typeof Generator>["generate"];
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | false;
 	icons?: ComponentProps<typeof Icons> | false;
@@ -77,7 +75,6 @@ const {
 	canonical,
 	colorScheme,
 	description,
-	facebook,
 	generator,
 	humansTxt,
 	icons,
@@ -104,7 +101,6 @@ const {
 	{canonical !== false && <Canonical href={canonical} />}
 	{colorScheme !== false && <ColorScheme content={colorScheme} />}
 	{description && <Description content={description} />}
-	{facebook !== false && <Facebook {...(facebook ?? {})} />}
 	{generator !== false && <Generator generate={generator} />}
 	{humansTxt !== false && <HumansTxt href={humansTxt} />}
 	{icons !== false && <Icons {...(icons ?? {})} />}

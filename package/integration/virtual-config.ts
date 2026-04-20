@@ -5,7 +5,6 @@ import {
 	Base,
 	Charset,
 	ColorScheme,
-	Facebook,
 	Generator,
 	HumansTxt,
 	OpenGraph,
@@ -35,7 +34,6 @@ export type ClientHeadConfig = {
 	titleTemplate?: ComponentProps<typeof Title>["template"];
 	appleItunesApp?: ComponentProps<typeof AppleItunesApp>;
 	appLinks?: ComponentProps<typeof AppLinks>;
-	facebook?: ComponentProps<typeof Facebook>;
 	generator?: ComponentProps<typeof Generator>["generate"];
 	icons?: IconsOptions | false;
 	openGraphSiteName?: ComponentProps<typeof OpenGraph>["siteName"];
@@ -62,7 +60,6 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		titleTemplate: head?.titleTemplate,
 		appleItunesApp: head?.appleItunesApp,
 		appLinks: head?.appLinks,
-		facebook: head?.facebook,
 		generator: head?.generator,
 		icons,
 		openGraphSiteName: head?.openGraphSiteName,
