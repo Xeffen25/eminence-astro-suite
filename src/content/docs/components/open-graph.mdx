@@ -1,0 +1,134 @@
+---
+title: OpenGraph - Component
+description: Documentation for OpenGraph, focused on rendering Open Graph metadata tags for social sharing. It handles og:type inference, media metadata, locale tags, and typed OG namespace outputs.
+---
+
+OpenGraph renders a complete set of Open Graph meta tags with a type-safe API. It infers the primary `og:type` from a single type-driving object, supports common core fields, and outputs media and namespace tags based on the props you provide.
+
+## Props
+
+| prop              | type                                        | default                                               | required | description                                                            |
+| ----------------- | ------------------------------------------- | ----------------------------------------------------- | -------- | ---------------------------------------------------------------------- |
+| `title`           | `string`                                    | -                                                     | Yes      | Main Open Graph title rendered as `og:title`.                          |
+| `url`             | `string \| URL`                             | derived from current request when `Astro.site` exists | No       | Canonical page URL rendered as `og:url`.                               |
+| `description`     | `string`                                    | -                                                     | No       | Description rendered as `og:description`.                              |
+| `siteName`        | `string`                                    | integration `head.openGraph.siteName`                 | No       | Site label rendered as `og:site_name`.                                 |
+| `locale`          | `string`                                    | -                                                     | No       | Open Graph locale value rendered as `og:locale` (for example `en_US`). |
+| `localeAlternate` | `string[]`                                  | `[]`                                                  | No       | Alternate locale values, each rendered as `og:locale:alternate`.       |
+| `image`           | `ComponentProps<typeof OpenGraphImage>`     | -                                                     | No       | Structured image metadata rendered as `og:image` tags.                 |
+| `audio`           | `ComponentProps<typeof OpenGraphAudio>`     | -                                                     | No       | Structured audio metadata rendered as `og:audio` tags.                 |
+| `video`           | `ComponentProps<typeof OpenGraphVideo>`     | -                                                     | No       | Structured video metadata rendered as `og:video` tags.                 |
+| `article`         | `ComponentProps<typeof OpenGraphArticle>`   | -                                                     | No       | Type-driving article object; sets `og:type=article`.                   |
+| `book`            | `ComponentProps<typeof OpenGraphBook>`      | -                                                     | No       | Type-driving book object; sets `og:type=book`.                         |
+| `business`        | `ComponentProps<typeof OpenGraphBusiness>`  | -                                                     | No       | Business namespace tags; keeps `og:type=website`.                      |
+| `music`           | `ComponentProps<typeof OpenGraphMusic>`     | -                                                     | No       | Type-driving music object; sets `og:type=music.<subtype>`.             |
+| `place`           | `ComponentProps<typeof OpenGraphPlace>`     | -                                                     | No       | Place namespace tags; keeps `og:type=website`.                         |
+| `product`         | `ComponentProps<typeof OpenGraphProduct>`   | -                                                     | No       | Product namespace tags; keeps `og:type=website`.                       |
+| `profile`         | `ComponentProps<typeof OpenGraphProfile>`   | -                                                     | No       | Type-driving profile object; sets `og:type=profile`.                   |
+| `videoType`       | `ComponentProps<typeof OpenGraphVideoType>` | -                                                     | No       | Type-driving video object; sets `og:type=video.<subtype>`.             |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<OpenGraph title="Home" url="https://example.com/" siteName="Example" />
+```
+
+Output:
+
+```html
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Home" />
+<meta property="og:url" content="https://example.com/" />
+<meta property="og:site_name" content="Example" />
+```
+
+### Auto usage
+
+Automatically derives `og:url` from the current request when `Astro.site` is configured.
+
+Input:
+
+```astro
+<OpenGraph title="Home" />
+```
+
+Output (when site context is available):
+
+```html
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Home" />
+<meta property="og:url" content="https://example.com/current/path" />
+```
+
+### Complete usage
+
+Input:
+
+```astro
+<OpenGraph
+	title="My Article"
+	url="https://example.com/posts/1"
+	description="Open Graph overview"
+	siteName="Example"
+	locale="en_US"
+	localeAlternate={["es_ES", "fr_FR"]}
+	image={{ src: "https://example.com/og.png", width: 1200, height: 630, alt: "Banner" }}
+	article={{
+		publishedTime: "2026-01-01T00:00:00Z",
+		authors: ["https://example.com/author"],
+		section: "Tech",
+		tags: ["astro", "seo"],
+	}}
+/>
+```
+
+Output:
+
+```html
+<meta property="og:type" content="article" />
+<meta property="og:title" content="My Article" />
+<meta property="og:url" content="https://example.com/posts/1" />
+<meta property="og:description" content="Open Graph overview" />
+<meta property="og:site_name" content="Example" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_ES" />
+<meta property="og:locale:alternate" content="fr_FR" />
+<meta property="og:image" content="https://example.com/og.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Banner" />
+<meta property="article:published_time" content="2026-01-01T00:00:00Z" />
+<meta property="article:author" content="https://example.com/author" />
+<meta property="article:section" content="Tech" />
+<meta property="article:tag" content="astro" />
+<meta property="article:tag" content="seo" />
+```
+
+## Decisions Made
+
+### og:type inference is deterministic
+
+The component picks `og:type` from the type-driving object in this canonical order: article, book, profile, music, videoType, and then website fallback. This keeps output predictable and avoids ambiguous type combinations.
+
+### Non-canonical namespaces keep website as og:type
+
+Business, place, and product render their namespace-specific tags while `og:type` remains `website`. This follows the component's explicit behavior for OG namespaces that do not map to a canonical top-level `og:type` value.
+
+### URL can be inferred from request context
+
+When `url` is omitted, the component builds it from the current path, query, and hash using `Astro.site` as the base. This removes repetitive per-page URL wiring in common setups.
+
+### Locale values are passed through as provided
+
+The component does not normalize locale formats. You should provide Open Graph locale values such as `en_US` and `es_ES` directly.
+
+## Reference
+
+- [Open Graph protocol](https://ogp.me/)
+- [Meta Tags for sharing on Facebook](https://developers.facebook.com/docs/sharing/webmasters)
+- [MDN: meta element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta)

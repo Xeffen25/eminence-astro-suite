@@ -386,7 +386,7 @@ export const Manifest = _Manifest;
  * <OpenGraph title="My Article" url="https://example.com/posts/1" image={{ src: "/og.png", width: 1200, height: 630, alt: "Banner" }} article={{ publishedTime: "2026-01-01T00:00:00Z" }} />
  * @example
  * <OpenGraph title="Feature Film" video={{ src: "https://cdn.example.com/trailer.mp4", width: 1280, height: 720 }} videoType={{ subtype: "movie", directors: ["https://example.com/director"] }} />
- * @see {@link https://todo.dev/components/open-graph OpenGraph Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/open-graph OpenGraph Component Documentation}
  * @see {@link https://ogp.me/ Open Graph protocol}
  * @see {@link https://developers.facebook.com/docs/sharing/webmasters Open Graph markup guide}
  */
