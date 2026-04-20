@@ -57,6 +57,35 @@ Use standards-based app naming metadata through your web app manifest:
 - [MDN: application-name](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/application-name)
 - [MDN: Web App Manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest)
 
+## Administrative Author Metadata
+
+Included tags:
+
+- `meta name="author"`
+
+### Reason
+
+The `author` meta tag is largely administrative metadata and is not used by major search engines as a ranking signal.
+
+Modern search and trust systems rely on stronger signals than a hidden head tag. Visible bylines, dedicated author profile pages, structured data such as Schema.org JSON-LD, and social metadata like Open Graph author properties provide much clearer and more machine-readable authorship context.
+
+Because `meta name="author"` does not meaningfully affect browser behavior, ranking, or modern metadata interoperability, this package does not include an `Author` component.
+
+### Recommended Alternative
+
+Use stronger authorship signals instead:
+
+- visible bylines and linked author profile pages
+- Schema.org JSON-LD for `Article`, `NewsArticle`, or related content types
+- Open Graph article or book author properties where applicable
+
+### References
+
+- [Google Search Central: Creating helpful, reliable, people-first content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)
+- [Schema.org: Article](https://schema.org/Article)
+- [Schema.org: author](https://schema.org/author)
+- [MDN: meta name="author"](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#author)
+
 ## Feed Discovery Alternates
 
 Link tags used for auto-discovery of RSS or Atom feeds: `<link rel="alternate" type="application/rss+xml">`.

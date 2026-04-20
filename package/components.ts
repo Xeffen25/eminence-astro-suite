@@ -1,6 +1,5 @@
 import _AppleItunesApp from "./components/AppleItunesApp.astro";
 import _AppLinks from "./components/AppLinks.astro";
-import _Author from "./components/Author.astro";
 import _Base from "./components/Base.astro";
 import _Bookmarks from "./components/Bookmarks.astro";
 import _Canonical from "./components/Canonical.astro";
@@ -56,21 +55,6 @@ export const AppleItunesApp = _AppleItunesApp;
  * @see {@link https://developers.facebook.com/docs/applinks/metadata-reference/ App Links Meta Tag Reference}
  */
 export const AppLinks = _AppLinks;
-
-/**
- * @summary Renders a `<meta name="author">` tag.
- * @description
- * Outputs author metadata for the current document. When `content` is
- * omitted, the component renders nothing.
- *
- * @example
- * <Author content="Jane Doe" />
- * @example
- * <Author />
- * @see {@link https://todo.dev/components/author Author Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#author MDN meta author reference}
- */
-export const Author = _Author;
 
 /**
  * @summary Renders one or more `<link rel="bookmarks">` tags.

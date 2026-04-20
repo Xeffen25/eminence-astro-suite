@@ -301,10 +301,9 @@ describe("Integration - Virtual Config", () => {
 		});
 	});
 
-	it("extracts author and generator defaults into client head config", () => {
+	it("extracts generator defaults into client head config", () => {
 		const options: IntegrationInput = {
 			head: {
-				author: "Jane Doe",
 				generator: true,
 			},
 		};
@@ -312,7 +311,6 @@ describe("Integration - Virtual Config", () => {
 		const result = extractClientHeadConfig(options);
 
 		expect(result).toMatchObject({
-			author: "Jane Doe",
 			generator: true,
 		});
 	});
@@ -479,18 +477,6 @@ describe("Integration - Virtual Config", () => {
 		const result = serializedVirtualConfigModule(options);
 
 		expect(result).toBe('export default {"robots":{"content":"noindex, nofollow"}};');
-	});
-
-	it("serializes author defaults in virtual config module", () => {
-		const options: IntegrationInput = {
-			head: {
-				author: "Jane Doe",
-			},
-		};
-
-		const result = serializedVirtualConfigModule(options);
-
-		expect(result).toBe('export default {"author":"Jane Doe"};');
 	});
 
 	it("serializes generator defaults in virtual config module", () => {

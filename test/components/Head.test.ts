@@ -15,7 +15,6 @@ const resetClientHeadConfig = () => {
 		titleTemplate: undefined,
 		appleWebApp: undefined,
 		appLinks: undefined,
-		author: undefined,
 		creator: undefined,
 		facebook: undefined,
 		generator: undefined,
@@ -158,7 +157,6 @@ describe("Component Head", () => {
 	it("uses child component config fallbacks", async () => {
 		Object.assign(clientHeadConfig, {
 			titleTemplate: "%s | Example",
-			author: "Jane Doe",
 			generator: false,
 			pinterest: false,
 		});
@@ -168,7 +166,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | Example</title><meta name="author" content="Jane Doe">${DEFAULT_ICONS_HTML}<meta name="pinterest-rich-pin" content="false"></head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | Example</title>${DEFAULT_ICONS_HTML}<meta name="pinterest-rich-pin" content="false"></head>`,
 		);
 	});
 

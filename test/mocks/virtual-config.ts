@@ -8,7 +8,6 @@ const clientHeadConfig: ClientHeadConfig = {
 	titleTemplate: undefined,
 	appleItunesApp: undefined,
 	appLinks: undefined,
-	author: undefined,
 	creator: undefined,
 	facebook: undefined,
 	generator: undefined,
