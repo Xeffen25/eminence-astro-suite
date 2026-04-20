@@ -1,26 +1,9 @@
 ---
-/**
- * [ 🌐 Website ] {@link https://todo.dev/components/canonical}
- * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/canonical.mdx}
- * ---
- * @summary Renders a `<link rel="canonical">` tag for the current page.
- * @description
- * Uses the provided `href` value directly when present. If omitted, it tries
- * to generate a canonical URL from `Astro.site` and `Astro.url.pathname`.
- * When `href` is `false`, the component renders nothing.
- *
- * @example
- * <Canonical href="https://example.com/docs/page" />
- * @example
- * <Canonical href={new URL("https://example.com/docs/page")} />
- * @example
- * // Derives canonical URL from Astro.site and Astro.url.pathname
- * <Canonical />
- *
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#canonical MDN rel="canonical" reference}
- */
-
 interface Props {
+	/**
+	 * Canonical URL for the page. Can be a string or URL object.
+	 * If omitted, derives from Astro.site and current pathname.
+	 */
 	href?: string | URL;
 }
 

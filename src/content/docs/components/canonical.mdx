@@ -1,0 +1,78 @@
+---
+title: Canonical - Component
+description: Documentation for Canonical, focused on rendering a canonical link tag. It handles explicit href values and automatic derivation from site and pathname.
+---
+
+Canonical renders a `<link rel="canonical">` tag that identifies the primary URL for the current page. This helps search engines understand page versions and consolidate ranking signals. It is scoped to emitting the canonical link only and does not perform URL validation or canonicalization.
+
+## Props
+
+| prop   | type            | default | required | description                                                                                                          |
+| ------ | --------------- | ------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
+| `href` | `string \| URL` | -       | No       | Explicit canonical URL. When omitted, derives from `Astro.site` and current pathname. When `false`, renders nothing. |
+
+## Usage & Examples
+
+**Basic usage with explicit href**
+
+Input:
+
+```astro
+<Canonical href="https://example.com/docs/page" />
+```
+
+Output:
+
+```html
+<link rel="canonical" href="https://example.com/docs/page" />
+```
+
+**Basic usage with URL object**
+
+Input:
+
+```astro
+<Canonical href={new URL("https://example.com/docs/page")} />
+```
+
+Output:
+
+```html
+<link rel="canonical" href="https://example.com/docs/page" />
+```
+
+**Auto usage**
+
+Derives canonical URL from `Astro.site` and the current page pathname.
+
+Input:
+
+```astro
+<Canonical />
+```
+
+Output (assuming `Astro.site` is `https://example.com` and current pathname is `/docs/page`):
+
+```html
+<link rel="canonical" href="https://example.com/docs/page" />
+```
+
+## Decisions Made
+
+### Href can be a string or URL object
+
+Canonical accepts both string and URL object formats for the `href` prop. This provides flexibility for consumers who may have canonical URLs in different formats within their application.
+
+### Auto-derivation from Astro.site and pathname
+
+When no `href` is provided, Canonical automatically constructs a canonical URL by combining `Astro.site` and the current page's pathname. This reduces boilerplate for most use cases where the canonical URL matches the site URL plus the current route.
+
+### No rendering when href is undefined and site is unavailable
+
+If both an explicit `href` is not provided and `Astro.site` is not configured, Canonical renders nothing. This prevents invalid or incomplete canonical tags from being emitted.
+
+## Reference
+
+- {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#canonical MDN: rel="canonical"}
+- {@link https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls Google Search: Consolidate duplicate URLs}
+- {@link https://html.spec.whatwg.org/multipage/links.html#rel-canonical WHATWG: link rel=canonical}

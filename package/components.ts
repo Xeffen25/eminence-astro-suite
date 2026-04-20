@@ -323,13 +323,15 @@ export const Base = _Base;
  *
  * @example
  * <Canonical href="https://example.com/docs/page" />
+ *
  * @example
- * <Canonical href={new URL("https://example.com/docs/page")} />
- * @example
- * // Derives canonical URL from Astro.site and Astro.url.pathname
+ * Derives canonical URL from Astro.site and Astro.url.pathname
  * <Canonical />
  *
- * @see {@link https://todo.dev/components/canonical Canonical Component Documentation}
+ * @example
+ * <Canonical href={new URL("https://example.com/docs/page")} />
+ *
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/canonical Canonical Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#canonical MDN rel="canonical" reference}
  */
 export const Canonical = _Canonical;
