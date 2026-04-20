@@ -1,23 +1,11 @@
 ---
-/**
- * [ 🌐 Website ] {@link https://todo.dev/components/color}
- * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/color.mdx}
- * ---
- * @summary Renders a color scheme preference meta tag.
- * @description
- * Outputs `<meta name="color-scheme">` to declare supported page color
- * schemes for UA rendering behavior.
- *
- * @example
- * <Color content="light dark" />
- * @example
- * <Color content="dark" />
- *
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/color-scheme MDN color-scheme reference}
- */
 import clientHeadConfig from "virtual:eminence-astro-suite/config";
 
 interface Props {
+	/**
+	 * Supported page color schemes advertised to the user agent.
+	 * When omitted, the value falls back to the integration config.
+	 */
 	content?: "normal" | "light" | "dark" | "light dark" | "dark light" | "only light";
 }
 

@@ -67,6 +67,8 @@ Keep this exact high-level section order:
     1. Basic usage (essential props)
     2. Auto usage (no props, if supported)
     3. Complete usage (all relevant props)
+- Render each example title as its own `###` heading under `## Usage & Examples`.
+- Use the literal headings `### Basic usage`, `### Auto usage`, and `### Complete usage`.
 - For each example, include:
     - Input (`.astro`)
     - Output (`.html`)

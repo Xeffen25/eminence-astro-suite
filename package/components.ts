@@ -108,10 +108,10 @@ export const Charset = _Charset;
  * schemes for UA rendering behavior.
  *
  * @example
- * <Color content="light dark" />
+ * <ColorScheme content="light dark" />
  * @example
- * <Color content="dark" />
- * @see {@link https://todo.dev/components/color Color Component Documentation}
+ * <ColorScheme content="dark" />
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/color-scheme ColorScheme Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/color-scheme MDN color-scheme reference}
  */
 export const ColorScheme = _ColorScheme;
