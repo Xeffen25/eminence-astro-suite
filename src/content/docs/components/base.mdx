@@ -1,0 +1,74 @@
+---
+title: Base - Component
+description: Documentation for Base, focused on rendering a base tag for relative URL resolution. It handles href and target attributes for document-wide URL defaults.
+---
+
+Base renders a `<base>` tag that sets the default base URL and browsing context for relative links and form submissions within the document. It is scoped to emitting the `<base>` tag only and does not perform URL validation or resolution.
+
+## Props
+
+| prop     | type     | default | required | description                                                    |
+| -------- | -------- | ------- | -------- | -------------------------------------------------------------- |
+| `href`   | `string` | -       | No       | Base URL used for resolving all relative URLs in the document. |
+| `target` | `string` | -       | No       | Default browsing context for links and forms in the document.  |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<Base href="https://example.com" />
+```
+
+Output:
+
+```html
+<base href="https://example.com" />
+```
+
+### Auto usage
+
+Uses the integration `head.base` defaults when no props are provided.
+
+Input:
+
+```astro
+<Base />
+```
+
+Output:
+
+```html
+<base href="https://example.com" />
+```
+
+### Complete usage
+
+Input:
+
+```astro
+<Base href="https://example.com" target="_blank" />
+```
+
+Output:
+
+```html
+<base href="https://example.com" target="_blank" />
+```
+
+## Decisions Made
+
+### Props are optional with fallback to integration config
+
+The `href` and `target` props are both optional. When either or both are not provided, Base attempts to use values from the integration's `head.base` configuration. This design allows global defaults to be set at the integration level while still permitting per-page overrides.
+
+### Component only renders when a value is available
+
+Base only renders the `<base>` tag if at least one of `href` or `target` has a value. An empty `<base>` tag provides no value to the document, so rendering is conditioned on the presence of meaningful content.
+
+## Reference
+
+- (MDN: base element)[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base ]
+- (WHATWG HTML Standard: base element)[https://html.spec.whatwg.org/multipage/semantics.html#the-base-element]

@@ -45,7 +45,7 @@ import Viewport from "./Viewport.astro";
 interface Props {
 	charset?: ComponentProps<typeof Charset>["charset"] | false;
 	viewport?: ComponentProps<typeof Viewport>["content"] | false;
-	base?: ComponentProps<typeof Base>;
+	base?: ComponentProps<typeof Base> | false;
 	title: ComponentProps<typeof Title>["value"];
 	titleTemplate?: ComponentProps<typeof Title>["template"];
 	appleItunesApp?: ComponentProps<typeof AppleItunesApp> | false;
@@ -102,7 +102,7 @@ const {
 <head>
 	{charset !== false && <Charset charset={charset} />}
 	{viewport !== false && <Viewport content={viewport} />}
-	<Base {...base ?? {}} />
+	{base !== false && <Base {...(base ?? {})} />}
 	<Title value={title} template={titleTemplate} />
 	<slot />
 	{appleItunesApp !== false && <AppleItunesApp {...(appleItunesApp ?? {})} />}

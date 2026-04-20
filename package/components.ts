@@ -309,15 +309,23 @@ export const Viewport = _Viewport;
 /**
  * @summary Renders a `<base>` tag for relative URL resolution.
  * @description
- * Outputs a `<base>` tag when `href` is provided. The optional `target`
- * prop sets the default browsing context for links and forms.
+ * Outputs a `<base>` tag when either or both `href` or `target` are provided.
+ * The `href` prop sets the base URL for relative URLs, and `target` sets the
+ * default browsing context for links and forms.
  *
  * @example
  * <Base href="https://example.com" />
+ *
+ * @example
+ * <Base target="_blank" />
+ *
+ * @example
+ * <Base />
+ * When no props are provided, the component uses the integration configuration if available. If no configuration is set, it renders nothing.
+ *
  * @example
  * <Base href="https://example.com" target="_blank" />
- *
- * @see {@link https://todo.dev/components/Base Base Docs Source}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/base Base Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base MDN base element reference}
  */
 export const Base = _Base;
