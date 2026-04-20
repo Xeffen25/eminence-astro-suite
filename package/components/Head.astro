@@ -21,7 +21,6 @@ import LanguageAlternates from "./LanguageAlternates.astro";
 import AppleItunesApp from "./AppleItunesApp.astro";
 import AppLinks from "./AppLinks.astro";
 import Base from "./Base.astro";
-import Bookmarks from "./Bookmarks.astro";
 import Canonical from "./Canonical.astro";
 import Charset from "./Charset.astro";
 import ColorScheme from "./ColorScheme.astro";
@@ -50,7 +49,6 @@ interface Props {
 	titleTemplate?: ComponentProps<typeof Title>["template"];
 	appleItunesApp?: ComponentProps<typeof AppleItunesApp> | false;
 	appLinks?: ComponentProps<typeof AppLinks> | false;
-	bookmarks?: ComponentProps<typeof Bookmarks>["hrefs"];
 	canonical?: ComponentProps<typeof Canonical>["href"] | false;
 	colorScheme?: ComponentProps<typeof ColorScheme>["content"] | false;
 	creator?: ComponentProps<typeof Creator>["content"] | false;
@@ -78,7 +76,6 @@ const {
 	titleTemplate,
 	appleItunesApp,
 	appLinks,
-	bookmarks,
 	canonical,
 	colorScheme,
 	creator,
@@ -107,7 +104,6 @@ const {
 	<slot />
 	{appleItunesApp !== false && <AppleItunesApp {...(appleItunesApp ?? {})} />}
 	{appLinks !== false && <AppLinks {...(appLinks ?? {})} />}
-	{bookmarks && <Bookmarks hrefs={bookmarks} />}
 	{canonical !== false && <Canonical href={canonical} />}
 	{colorScheme !== false && <ColorScheme content={colorScheme} />}
 	{creator !== false && <Creator content={creator} />}

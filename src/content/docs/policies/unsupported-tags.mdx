@@ -159,3 +159,31 @@ Use standard mechanisms that have real browser and crawler behavior:
 - [MDN: rel="prefetch"](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/prefetch)
 - [MDN: rel="manifest"](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/manifest)
 - [MDN: Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)
+
+## Bookmarks Link Relation
+
+Included tags:
+
+- `<link rel="bookmarks" href="...">`
+
+### Reason
+
+While `rel="bookmarks"` appears in historical HTML specifications as a registered link relation, modern browsers do not provide special handling for this relation type.
+
+No browser renders a UI affordance for bookmarks relations, and crawler behavior treats it like any other link. Users rely on their browser bookmarks managers and content discovery systems, not on website-provided bookmarks relations. Search engines do not use this relation as a ranking or discovery signal.
+
+Because it lacks meaningful browser behavior and does not improve user experience or SEO, this package does not include a `Bookmarks` component.
+
+### Recommended Alternative
+
+If you need to help users discover important pages or sections:
+
+- Use clear navigation landmarks with semantic `nav` elements and standard links
+- Provide a dedicated bookmarks or favorites page with descriptive, linked content
+- Use schema.org structured data to mark important content sections or collections
+- Consider a sitemap or topic index page for comprehensive navigation
+
+### References
+
+- [WHATWG HTML: Link types](https://html.spec.whatwg.org/multipage/links.html#linkTypes)
+- [MDN: Link types - bookmarks](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#bookmarks)
