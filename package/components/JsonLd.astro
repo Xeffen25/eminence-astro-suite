@@ -1,21 +1,4 @@
 ---
-/**
- * [ 🌐 Website ] {@link https://todo.dev/components/json-ld}
- * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/json-ld.mdx}
- * ---
- * @summary Renders a single JSON-LD script tag from a pre-serialized string.
- * @description
- * Outputs a `<script type="application/ld+json">` element in your `<head>`. The `jsonLd` prop expects a JSON string, so you can build and type your schema object in application code (for example with `schema-dts`) and pass `JSON.stringify(typedSchema)` to this component.
- *
- * @example
- * <JsonLd jsonLd='{"@context":"https://schema.org","@type":"WebPage","name":"Home"}' />
- * @example
- * <JsonLd jsonLd={JSON.stringify(websiteSchema)} />
- *
- * @see {@link https://json-ld.org/ JSON-LD specification}
- * @see {@link https://schema.org/docs/gs.html Schema.org getting started}
- */
-
 interface Props {
 	jsonLd: string;
 }

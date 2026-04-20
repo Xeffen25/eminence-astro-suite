@@ -1,0 +1,91 @@
+---
+title: JsonLd - Component
+description: Documentation for JsonLd, focused on rendering a JSON-LD script tag from pre-serialized schema data. It handles safe inline output by escaping HTML-sensitive characters.
+---
+
+JsonLd renders a `<script type="application/ld+json">` tag in the document head from a pre-serialized JSON string. It is responsible for safely writing the JSON payload inline and does not validate schema structure.
+
+## Props
+
+| prop     | type     | default | required | description                                                                                     |
+| -------- | -------- | ------- | -------- | ----------------------------------------------------------------------------------------------- |
+| `jsonLd` | `string` | -       | Yes      | Pre-serialized JSON-LD payload, typically produced by `JSON.stringify(...)` on a schema object. |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<JsonLd jsonLd='{"@context":"https://schema.org","@type":"WebPage","name":"Home"}' />
+```
+
+Output:
+
+```html
+<script type="application/ld+json">
+	{ "@context": "https://schema.org", "@type": "WebPage", "name": "Home" }
+</script>
+```
+
+### Auto usage
+
+Not supported. JsonLd requires an explicit serialized JSON string.
+
+Input:
+
+```astro
+<JsonLd />
+```
+
+Output:
+
+```html
+<!-- No valid output: missing required jsonLd prop -->
+```
+
+### Complete usage
+
+Input:
+
+```astro
+---
+const websiteSchema = {
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	name: "Example Site",
+	url: "https://example.com",
+};
+---
+
+<JsonLd jsonLd={JSON.stringify(websiteSchema)} />
+```
+
+Output:
+
+```html
+<script type="application/ld+json">
+	{ "@context": "https://schema.org", "@type": "WebSite", "name": "Example Site", "url": "https://example.com" }
+</script>
+```
+
+## Decisions Made
+
+### Accepts pre-serialized JSON only
+
+JsonLd expects a string instead of an object. This keeps the component transport-focused and lets application code fully control schema composition and typing.
+
+### Escapes HTML-sensitive characters before injection
+
+Before writing the script content, the component escapes `<`, `>`, and `&` into unicode escapes. This reduces the risk of script-breakout behavior when inline JSON contains those characters.
+
+### Emits a single inline script tag
+
+The component always renders one `application/ld+json` script when valid input is provided. It does not split, merge, or reorder schema blocks.
+
+## Reference
+
+- [JSON-LD](https://json-ld.org/)
+- [Schema.org: Getting started](https://schema.org/docs/gs.html)
+- [Google Search Central: Structured data](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data)

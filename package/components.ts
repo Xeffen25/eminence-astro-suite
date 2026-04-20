@@ -208,7 +208,7 @@ export const Robots = _Robots;
  * <JsonLd jsonLd='{"@context":"https://schema.org","@type":"WebPage","name":"Home"}' />
  * @example
  * <JsonLd jsonLd={JSON.stringify(websiteSchema)} />
- * @see {@link https://todo.dev/components/json-ld JsonLd Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/json-ld JsonLd Component Documentation}
  * @see {@link https://json-ld.org/ JSON-LD specification}
  * @see {@link https://schema.org/docs/gs.html Schema.org getting started}
  */
