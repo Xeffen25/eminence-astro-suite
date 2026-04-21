@@ -11,6 +11,7 @@ import _HumansTxt from "./components/HumansTxt.astro";
 import _Icons from "./components/Icons.astro";
 import _JsonLd from "./components/JsonLd.astro";
 import _LanguageAlternates from "./components/LanguageAlternates.astro";
+import _Layout from "./components/Layout.astro";
 import _Manifest from "./components/Manifest.astro";
 import _OpenGraph from "./components/OpenGraph.astro";
 import _Robots from "./components/Robots.astro";
@@ -61,10 +62,29 @@ export const AppLinks = _AppLinks;
  * @example
  * <Head head={{ title: "Home", titleTemplate: "%s | My Site", charset: "iso-8859-1" }} />
  *
- * @see {@link https://todo.dev/components/Head Head Docs Source}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/head Head Docs Source}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/head MDN head element reference}
  */
 export const Head = _Head;
+
+/**
+ * @summary Renders a full-page HTML layout that wraps the Head component.
+ * @description
+ * Outputs `<html>`, `<head>`, and `<body>` with four slot regions:
+ * `head`, `body-start`, default body content, and `body-end`.
+ *
+ * @example
+ * <Layout head={{ title: "Home" }}>
+ *   <Fragment slot="head"><meta name="description" content="Welcome"></Fragment>
+ *   <Fragment slot="body-start"><div id="top-banner"></div></Fragment>
+ *   <main>Page content</main>
+ *   <Fragment slot="body-end"><script src="/app.js"></script></Fragment>
+ * </Layout>
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/layout Layout Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/html MDN html element reference}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body MDN body element reference}
+ */
+export const Layout = _Layout;
 
 /**
  * @summary Renders a `<title>` tag with optional template formatting.
@@ -305,7 +325,7 @@ export const HumansTxt = _HumansTxt;
  * <Icons source="/public/icon.svg" customTags={[{ rel: "alternate icon", href: "/favicon.ico" }]} />
  * @example
  * <Icons source="/public/icon.png" overrides={{ png192: false, appleTouchIcon: "/custom-apple-icon.png" }} />
- * @see {@link https://todo.dev/components/icons Icons Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/icons Icons Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types MDN link rel documentation}
  * @see {@link https://web.dev/icons-and-browser-colors Web.dev icon guide}
  */
