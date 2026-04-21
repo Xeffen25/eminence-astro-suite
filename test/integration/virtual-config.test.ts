@@ -24,7 +24,6 @@ describe("Integration - Virtual Config", () => {
 				argument: "myapp://open",
 			},
 			appLinks: undefined,
-			pinterest: undefined,
 			robots: undefined,
 			themeColor: undefined,
 			humansTxt: undefined,
@@ -53,7 +52,6 @@ describe("Integration - Virtual Config", () => {
 			colorScheme: undefined,
 			appleItunesApp: undefined,
 			appLinks: undefined,
-			pinterest: undefined,
 			robots: undefined,
 			themeColor: undefined,
 			humansTxt: undefined,
@@ -108,36 +106,6 @@ describe("Integration - Virtual Config", () => {
 					should_fallback: true,
 				},
 			},
-			pinterest: undefined,
-			robots: undefined,
-			themeColor: undefined,
-			humansTxt: undefined,
-			verification: undefined,
-			base: undefined,
-			titleTemplate: undefined,
-		});
-	});
-
-	it("extracts pinterest defaults into client head config", () => {
-		const options: IntegrationInput = {
-			head: {
-				pinterest: {
-					richPin: false,
-				},
-			},
-		};
-
-		const result = extractClientHeadConfig(options);
-
-		expect(result).toMatchObject({
-			charset: undefined,
-			viewport: undefined,
-			colorScheme: undefined,
-			appleItunesApp: undefined,
-			appLinks: undefined,
-			pinterest: {
-				richPin: false,
-			},
 			robots: undefined,
 			themeColor: undefined,
 			humansTxt: undefined,
@@ -165,7 +133,6 @@ describe("Integration - Virtual Config", () => {
 			colorScheme: undefined,
 			appleItunesApp: undefined,
 			appLinks: undefined,
-			pinterest: undefined,
 			robots: undefined,
 			themeColor: {
 				light: "#ffffff",
@@ -193,7 +160,6 @@ describe("Integration - Virtual Config", () => {
 			colorScheme: "light dark",
 			appleItunesApp: undefined,
 			appLinks: undefined,
-			pinterest: undefined,
 			robots: undefined,
 			themeColor: undefined,
 			humansTxt: undefined,
@@ -221,7 +187,6 @@ describe("Integration - Virtual Config", () => {
 			colorScheme: undefined,
 			appleItunesApp: undefined,
 			appLinks: undefined,
-			pinterest: undefined,
 			robots: {
 				noindex: true,
 				"max-snippet": 50,
@@ -251,7 +216,6 @@ describe("Integration - Virtual Config", () => {
 			colorScheme: undefined,
 			appleItunesApp: undefined,
 			appLinks: undefined,
-			pinterest: undefined,
 			robots: {
 				content: "noindex, nofollow",
 			},
@@ -366,20 +330,6 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toBe(
 			'export default {"appLinks":{"ios":{"url":"https://ios.example.com/open"},"web":{"url":"https://example.com/path","should_fallback":false}}};',
 		);
-	});
-
-	it("serializes pinterest defaults in virtual config module", () => {
-		const options: IntegrationInput = {
-			head: {
-				pinterest: {
-					richPin: false,
-				},
-			},
-		};
-
-		const result = serializedVirtualConfigModule(options);
-
-		expect(result).toBe('export default {"pinterest":{"richPin":false}};');
 	});
 
 	it("serializes themeColor defaults in virtual config module", () => {

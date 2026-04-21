@@ -13,7 +13,6 @@ import _JsonLd from "./components/JsonLd.astro";
 import _LanguageAlternates from "./components/LanguageAlternates.astro";
 import _Manifest from "./components/Manifest.astro";
 import _OpenGraph from "./components/OpenGraph.astro";
-import _Pinterest from "./components/Pinterest.astro";
 import _Publisher from "./components/Publisher.astro";
 import _Robots from "./components/Robots.astro";
 import _ThemeColor from "./components/ThemeColor.astro";
@@ -144,21 +143,6 @@ export const Description = _Description;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/generator MDN generator reference}
  */
 export const Generator = _Generator;
-
-/**
- * @summary Renders the Pinterest rich pin opt-in meta tag.
- * @description
- * Outputs `<meta name="pinterest-rich-pin">` with `true` or `false` based on
- * `richPin`. Defaults to `true` when omitted.
- *
- * @example
- * <Pinterest richPin={true} />
- * @example
- * <Pinterest richPin={false} />
- * @see {@link https://todo.dev/components/pinterest Pinterest Component Documentation}
- * @see {@link https://developers.pinterest.com/docs/rich-pins/overview/ Pinterest Rich Pins documentation}
- */
-export const Pinterest = _Pinterest;
 
 /**
  * @summary Renders a `<meta name="publisher">` tag.

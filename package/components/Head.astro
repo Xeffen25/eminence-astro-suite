@@ -31,7 +31,6 @@ import Icons from "./Icons.astro";
 import JsonLd from "./JsonLd.astro";
 import Manifest from "./Manifest.astro";
 import OpenGraph from "./OpenGraph.astro";
-import Pinterest from "./Pinterest.astro";
 import Publisher from "./Publisher.astro";
 import Robots from "./Robots.astro";
 import ThemeColor from "./ThemeColor.astro";
@@ -57,7 +56,6 @@ interface Props {
 	languageAlternates?: ComponentProps<typeof LanguageAlternates>["languages"];
 	manifest?: ComponentProps<typeof Manifest>["href"] | false;
 	openGraph?: ComponentProps<typeof OpenGraph>;
-	pinterest?: ComponentProps<typeof Pinterest>["richPin"] | false;
 	publisher?: ComponentProps<typeof Publisher>["content"] | false;
 	robots?: ComponentProps<typeof Robots>;
 	themeColor?: ComponentProps<typeof ThemeColor> | false;
@@ -82,7 +80,6 @@ const {
 	languageAlternates,
 	manifest,
 	openGraph,
-	pinterest,
 	publisher,
 	robots,
 	themeColor,
@@ -108,7 +105,6 @@ const {
 	{languageAlternates && <LanguageAlternates languages={languageAlternates} />}
 	{manifest !== false && <Manifest href={manifest} />}
 	{openGraph && <OpenGraph {...openGraph} />}
-	{pinterest !== false && <Pinterest richPin={pinterest} />}
 	{publisher !== false && <Publisher content={publisher} />}
 	<Robots {...robots ?? {}} />
 	{themeColor !== false && <ThemeColor {...themeColor} />}

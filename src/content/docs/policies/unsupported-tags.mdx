@@ -244,3 +244,29 @@ Use broadly interoperable metadata instead:
 - [Facebook Sharing Debugger and metadata docs](https://developers.facebook.com/docs/sharing/webmasters)
 - [Open Graph protocol](https://ogp.me/)
 - [Schema.org: Organization](https://schema.org/Organization)
+
+## Pinterest Rich Pin Opt-Out Metadata
+
+Included tags:
+
+- `meta name="pinterest-rich-pin" content="false"`
+
+### Reason
+
+This tag is still technically relevant in 2026, but only as a niche Pinterest-specific kill switch to disable Rich Pins.
+
+Most sites benefit from Rich Pins because they can improve metadata consistency and content visibility on Pinterest. In this package, the default approach is to focus on broadly useful, standards-oriented metadata rather than platform-specific opt-out flags.
+
+Because this behavior is both niche and easy to add manually when needed, this package does not include a `Pinterest` component.
+
+### Recommended Alternative
+
+If you need to disable Rich Pins for a specific project, add the tag manually in your page `<head>`:
+
+- `<meta name="pinterest-rich-pin" content="false" />`
+
+### References
+
+- [Pinterest Rich Pins overview](https://developers.pinterest.com/docs/rich-pins/overview/)
+- [Open Graph protocol](https://ogp.me/)
+- [Schema.org](https://schema.org/)

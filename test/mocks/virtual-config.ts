@@ -12,7 +12,6 @@ const clientHeadConfig: ClientHeadConfig = {
 	icons: undefined,
 	openGraphSiteName: undefined,
 	humansTxt: undefined,
-	pinterest: undefined,
 	publisher: undefined,
 	robots: undefined,
 	themeColor: undefined,

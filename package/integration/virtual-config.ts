@@ -8,7 +8,6 @@ import {
 	Generator,
 	HumansTxt,
 	OpenGraph,
-	Pinterest,
 	Publisher,
 	Robots,
 	ThemeColor,
@@ -37,7 +36,6 @@ export type ClientHeadConfig = {
 	generator?: ComponentProps<typeof Generator>["generate"];
 	icons?: IconsOptions | false;
 	openGraphSiteName?: ComponentProps<typeof OpenGraph>["siteName"];
-	pinterest?: ComponentProps<typeof Pinterest>;
 	publisher?: ComponentProps<typeof Publisher>["content"];
 	robots?: ComponentProps<typeof Robots>;
 	themeColor?: ComponentProps<typeof ThemeColor>;
@@ -63,7 +61,6 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		generator: head?.generator,
 		icons,
 		openGraphSiteName: head?.openGraphSiteName,
-		pinterest: head?.pinterest,
 		publisher: head?.publisher,
 		robots: head?.robots,
 		themeColor: head?.themeColor,
