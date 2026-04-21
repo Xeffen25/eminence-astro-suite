@@ -1,0 +1,78 @@
+---
+title: Viewport - Component
+description: Documentation for Viewport, focused on rendering the viewport meta tag for responsive layout control. It handles the default responsive value and custom content overrides.
+---
+
+Viewport renders the `<meta name="viewport">` tag in your document head. It always emits a tag, defaulting to the standard responsive value when no `content` prop is provided.
+
+## Props
+
+| prop      | type     | default                                 | required | description                              |
+| --------- | -------- | --------------------------------------- | -------- | ---------------------------------------- |
+| `content` | `string` | `"width=device-width, initial-scale=1"` | No       | Content value for the viewport meta tag. |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<Viewport content="width=device-width, initial-scale=1" />
+```
+
+Output:
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+```
+
+### Auto usage
+
+Uses the default responsive value when no `content` prop is provided.
+
+Input:
+
+```astro
+<Viewport />
+```
+
+Output:
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+```
+
+### Complete usage
+
+Input:
+
+```astro
+<Viewport content="width=device-width, initial-scale=1, maximum-scale=5" />
+```
+
+Output:
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+```
+
+## Decisions Made
+
+### Always renders a tag
+
+Unlike most other head components, Viewport always emits a tag. A missing viewport tag causes mobile browsers to render pages at desktop width, so the absence of a value is treated as an error rather than an opt-out condition.
+
+### Default is the standard responsive value
+
+The default `width=device-width, initial-scale=1` is the de-facto responsive baseline recommended by browser vendors and the HTML standard. It works correctly for the majority of sites without adjustment.
+
+### Does not use integration config fallback
+
+The integration config exposes `head.viewport` to let the `Head` component pass a custom value. Viewport itself only reads from its own prop. This keeps the component self-contained and easy to use standalone.
+
+## Reference
+
+- [MDN: Viewport meta tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag)
+- [MDN: meta element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta)
+- [W3C: CSS Device Adaptation](https://www.w3.org/TR/css-device-adapt-1/)

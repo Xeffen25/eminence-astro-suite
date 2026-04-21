@@ -221,7 +221,7 @@ export const ThemeColor = _ThemeColor;
  * @example
  * <Viewport />
  *
- * @see {@link https://todo.dev/components/Viewport Viewport Docs Source}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/viewport Viewport Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-meta-viewport MDN viewport meta tag reference}
  */
 export const Viewport = _Viewport;
