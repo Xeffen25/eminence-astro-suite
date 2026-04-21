@@ -1,6 +1,7 @@
 ﻿import type { AstroConfig, AstroIntegration, AstroIntegrationLogger } from "astro";
 import type { ClientHeadConfig } from "./integration/virtual-config";
 
+import { configureCapojs } from "./integration/capojs.js";
 import type { IconsOptions } from "./integration/generate-icons";
 import { generateIcons } from "./integration/generate-icons";
 import { validateHumansTxtInBuildOutput } from "./integration/humans-txt";
@@ -22,6 +23,7 @@ export type IntegrationInput = {
 	robotsTxt?: RobotsTxtOptions | false;
 	securityTxt?: SecurityTxtOptions | false;
 	sitemap?: SitemapOptions | false;
+	capojs?: "typescript" | false;
 };
 
 export type IntegrationRuntimeContext = {
@@ -37,11 +39,17 @@ export default function createIntegration(options: IntegrationInput = {}): Astro
 	return {
 		name: "eminence-astro-suite",
 		hooks: {
-			"astro:config:setup": async ({ updateConfig }) => {
+			"astro:config:setup": async ({ updateConfig, addMiddleware, logger }) => {
 				if (options.sitemap !== false) {
 					const sitemapIntegration = await createSitemapIntegration(options.sitemap ?? {});
 					updateConfig({ integrations: [sitemapIntegration] });
 				}
+
+				configureCapojs({
+					capojs: options.capojs,
+					logger,
+					addMiddleware,
+				});
 
 				updateConfig({
 					vite: {

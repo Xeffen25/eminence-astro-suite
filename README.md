@@ -63,6 +63,7 @@ export default defineConfig({
 			robotsTxt: {},
 			securityTxt: {},
 			sitemap: {},
+			capojs: "typescript",
 		}),
 	],
 });
@@ -162,6 +163,28 @@ export default defineConfig({
 			robotsTxt: {},
 			securityTxt: {},
 			sitemap: {},
+			capojs: "typescript",
+		}),
+	],
+});
+```
+
+### Capo.js head optimization
+
+The `capojs` integration option enables automated `<head>` reordering following Capo-inspired prioritization.
+
+- `undefined` (default): no middleware is registered and a recommendation warning is logged.
+- `false`: explicitly disables the feature with no warning.
+- `"typescript"`: enables middleware that reorders `<head>` tags (including JSON-LD scripts) using a high-performance sequence.
+
+```ts
+import { defineConfig } from "astro/config";
+import eminence from "eminence-astro-suite/integration";
+
+export default defineConfig({
+	integrations: [
+		eminence({
+			capojs: "typescript",
 		}),
 	],
 });

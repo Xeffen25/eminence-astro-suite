@@ -1,0 +1,37 @@
+---
+title: Capojs - Integration
+description: Reorder HTML head elements with a Capo-inspired sequence through middleware enabled by the capojs option.
+---
+
+The `capojs` option enables runtime `<head>` optimization for HTML responses.
+
+When enabled, the integration registers middleware that inspects `<head>` tags and reorders them into a Capo-inspired priority sequence. The goal is to promote early discovery of critical metadata and resources.
+
+## Option values
+
+| value          | behavior                                                             |
+| -------------- | -------------------------------------------------------------------- |
+| `undefined`    | Middleware is not registered and a recommendation warning is logged. |
+| `false`        | Middleware is not registered and no warning is logged.               |
+| `"typescript"` | Middleware is registered and head elements are reordered at runtime. |
+
+## Example
+
+```ts title="astro.config.mjs"
+import { defineConfig } from "astro/config";
+import eminence from "eminence-astro-suite/integration";
+
+export default defineConfig({
+	integrations: [
+		eminence({
+			capojs: "typescript",
+		}),
+	],
+});
+```
+
+## Notes
+
+- This optimization applies only to HTML responses.
+- JSON-LD script tags are included in the normal weighting and ordering flow.
+- The middleware runs with `post` order so it can optimize the final emitted head markup.
