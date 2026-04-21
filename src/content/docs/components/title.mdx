@@ -1,0 +1,78 @@
+---
+title: Title - Component
+description: Documentation for Title, focused on rendering the document title tag with optional template formatting. It handles value substitution into a configurable template pattern.
+---
+
+Title renders the `<title>` tag for the document. It accepts a required page-specific value and an optional template containing a `%s` placeholder, which is replaced with `value` at render time.
+
+## Props
+
+| prop       | type                         | default | required | description                                                                                             |
+| ---------- | ---------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `value`    | `string`                     | -       | Yes      | The page-specific title text inserted into the template.                                                |
+| `template` | `` `${string}%s${string}` `` | `"%s"`  | No       | Template string with a `%s` placeholder. Falls back to integration config, then plain `%s` passthrough. |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<Title value="Home" />
+```
+
+Output:
+
+```html
+<title>Home</title>
+```
+
+### Auto usage
+
+Uses integration `head.titleTemplate` when `template` prop is not provided.
+
+Input:
+
+```astro
+<Title value="Home" />
+```
+
+Output (when integration config has `head.titleTemplate: "%s | My Site"`):
+
+```html
+<title>Home | My Site</title>
+```
+
+### Complete usage
+
+Input:
+
+```astro
+<Title value="Home" template="%s | My Site" />
+```
+
+Output:
+
+```html
+<title>Home | My Site</title>
+```
+
+## Decisions Made
+
+### Template uses %s as the single placeholder
+
+The placeholder convention is `%s`, a widely recognized pattern for string interpolation. The type is constrained to `` `${string}%s${string}` `` so TypeScript enforces that the template always contains the placeholder.
+
+### Integration config can define a site-wide template
+
+When `template` is omitted, the component falls back to `clientHeadConfig.titleTemplate` and then to `"%s"`. This allows a site-wide suffix or prefix to be configured once and applied consistently across all pages without per-page repetition.
+
+### Value is always required
+
+Unlike most other head components, `value` is not optional. A title tag without content would produce an empty or incorrect document title, so the component requires it unconditionally.
+
+## Reference
+
+- [MDN: title element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title)
+- [WHATWG HTML Standard: title element](https://html.spec.whatwg.org/multipage/semantics.html#the-title-element)

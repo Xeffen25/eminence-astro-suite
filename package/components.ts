@@ -77,7 +77,7 @@ export const Head = _Head;
  * <Title value="Home" template="%s | My Site" />
  * @example
  * <Title value="Home" />
- * @see {@link https://todo.dev/components/title Title Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/title Title Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title MDN title element reference}
  */
 export const Title = _Title;
