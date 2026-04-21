@@ -8,7 +8,6 @@ import {
 	Generator,
 	HumansTxt,
 	OpenGraph,
-	Publisher,
 	Robots,
 	ThemeColor,
 	Title,
@@ -36,7 +35,6 @@ export type ClientHeadConfig = {
 	generator?: ComponentProps<typeof Generator>["generate"];
 	icons?: IconsOptions | false;
 	openGraphSiteName?: ComponentProps<typeof OpenGraph>["siteName"];
-	publisher?: ComponentProps<typeof Publisher>["content"];
 	robots?: ComponentProps<typeof Robots>;
 	themeColor?: ComponentProps<typeof ThemeColor>;
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
@@ -61,7 +59,6 @@ export const extractClientHeadConfig = (options: IntegrationInput): ClientHeadCo
 		generator: head?.generator,
 		icons,
 		openGraphSiteName: head?.openGraphSiteName,
-		publisher: head?.publisher,
 		robots: head?.robots,
 		themeColor: head?.themeColor,
 		humansTxt: head?.humansTxt,

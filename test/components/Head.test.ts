@@ -19,7 +19,6 @@ const resetClientHeadConfig = () => {
 		icons: undefined,
 		openGraphSiteName: undefined,
 		humansTxt: undefined,
-		publisher: undefined,
 		robots: undefined,
 		themeColor: undefined,
 		verification: undefined,

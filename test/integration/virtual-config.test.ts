@@ -241,20 +241,6 @@ describe("Integration - Virtual Config", () => {
 		});
 	});
 
-	it("extracts publisher defaults into client head config", () => {
-		const options: IntegrationInput = {
-			head: {
-				publisher: "Acme Publishing",
-			},
-		};
-
-		const result = extractClientHeadConfig(options);
-
-		expect(result).toMatchObject({
-			publisher: "Acme Publishing",
-		});
-	});
-
 	it("extracts generator false into client head config", () => {
 		const options: IntegrationInput = {
 			head: {
@@ -385,17 +371,5 @@ describe("Integration - Virtual Config", () => {
 		const result = serializedVirtualConfigModule(options);
 
 		expect(result).toBe('export default {"generator":false};');
-	});
-
-	it("serializes publisher defaults in virtual config module", () => {
-		const options: IntegrationInput = {
-			head: {
-				publisher: "Acme Publishing",
-			},
-		};
-
-		const result = serializedVirtualConfigModule(options);
-
-		expect(result).toBe('export default {"publisher":"Acme Publishing"};');
 	});
 });

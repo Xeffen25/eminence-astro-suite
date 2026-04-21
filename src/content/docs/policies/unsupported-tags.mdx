@@ -270,3 +270,29 @@ If you need to disable Rich Pins for a specific project, add the tag manually in
 - [Pinterest Rich Pins overview](https://developers.pinterest.com/docs/rich-pins/overview/)
 - [Open Graph protocol](https://ogp.me/)
 - [Schema.org](https://schema.org/)
+
+## Publisher Metadata
+
+Included tags:
+
+- `meta name="publisher"`
+
+### Reason
+
+`meta name="publisher"` is still valid HTML, but it is a legacy-style metadata pattern with limited modern impact.
+
+Major search engines do not use this tag as a ranking signal, and modern publisher identity features rely on stronger structured signals. While some niche tools (such as internal CMS workflows, browser scrapers, and some citation systems) may still read it, it is generally non-essential for mainstream SEO.
+
+Because this package prioritizes modern, broadly useful metadata, it does not include a `Publisher` component.
+
+### Recommended Alternative
+
+Use Schema.org JSON-LD for publisher and organization identity, for example `Organization` linked with canonical site information.
+
+If your workflow still requires this meta tag for niche tooling, add it manually in your page head.
+
+### References
+
+- [MDN: meta name="publisher"](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#publisher)
+- [Schema.org: Organization](https://schema.org/Organization)
+- [Google Search Central: Structured data](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data)

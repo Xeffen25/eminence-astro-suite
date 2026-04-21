@@ -13,7 +13,6 @@ import _JsonLd from "./components/JsonLd.astro";
 import _LanguageAlternates from "./components/LanguageAlternates.astro";
 import _Manifest from "./components/Manifest.astro";
 import _OpenGraph from "./components/OpenGraph.astro";
-import _Publisher from "./components/Publisher.astro";
 import _Robots from "./components/Robots.astro";
 import _ThemeColor from "./components/ThemeColor.astro";
 import _Title from "./components/Title.astro";
@@ -143,21 +142,6 @@ export const Description = _Description;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/generator MDN generator reference}
  */
 export const Generator = _Generator;
-
-/**
- * @summary Renders a `<meta name="publisher">` tag.
- * @description
- * Outputs publisher metadata for the current document. When `content` is
- * omitted, the component renders nothing.
- *
- * @example
- * <Publisher content="Acme Publishing" />
- * @example
- * <Publisher />
- * @see {@link https://todo.dev/components/publisher Publisher Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#publisher MDN meta publisher reference}
- */
-export const Publisher = _Publisher;
 
 /**
  * @summary Renders a robots directives meta tag.
