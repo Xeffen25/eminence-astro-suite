@@ -1,0 +1,93 @@
+---
+title: ThemeColor - Component
+description: Documentation for ThemeColor, focused on rendering theme color meta tags for browser UI theming. It handles a single universal color value and scheme-specific light and dark values.
+---
+
+ThemeColor renders one or two `<meta name="theme-color">` tags to control browser chrome coloring. It is scoped to emitting those tags only and does not interact with CSS color schemes.
+
+## Props
+
+The component accepts two mutually exclusive modes.
+
+### Single mode
+
+| prop      | type     | default | required             | description                                        |
+| --------- | -------- | ------- | -------------------- | -------------------------------------------------- |
+| `content` | `string` | -       | Yes (in single mode) | A single color value applied to all color schemes. |
+
+### Light and dark mode
+
+| prop    | type     | default | required                 | description                             |
+| ------- | -------- | ------- | ------------------------ | --------------------------------------- |
+| `light` | `string` | -       | Yes (in light/dark mode) | Color value for the light color scheme. |
+| `dark`  | `string` | -       | Yes (in light/dark mode) | Color value for the dark color scheme.  |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<ThemeColor content="#ffffff" />
+```
+
+Output:
+
+```html
+<meta name="theme-color" content="#ffffff" />
+```
+
+### Auto usage
+
+Uses integration `head.themeColor` when no props are provided.
+
+Input:
+
+```astro
+<ThemeColor />
+```
+
+Output (when integration config has `head.themeColor: { content: "#ffffff" }`):
+
+```html
+<meta name="theme-color" content="#ffffff" />
+```
+
+### Complete usage
+
+Input:
+
+```astro
+<ThemeColor light="#ffffff" dark="#111111" />
+```
+
+Output:
+
+```html
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111111" />
+```
+
+## Decisions Made
+
+### Two mutually exclusive modes
+
+The component accepts either a single `content` value or a `light`/`dark` pair, but not both. The single mode targets all color schemes uniformly; the paired mode uses `media` queries to apply different colors per scheme.
+
+### Both light and dark are required together
+
+When using scheme-specific values, both `light` and `dark` must be provided. This prevents a broken state where only one scheme has a custom color.
+
+### Integration config can define global defaults
+
+When no props are provided, the component falls back to `clientHeadConfig.themeColor`. This allows site-wide theme color values to be defined once in the integration and overridden per page.
+
+### Renders nothing when no value can be resolved
+
+If no content or light/dark pair is available from props or integration config, the component emits no tag.
+
+## Reference
+
+- [MDN: meta name="theme-color"](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/theme-color)
+- [Web App Manifest: theme_color](https://www.w3.org/TR/appmanifest/#theme_color-member)

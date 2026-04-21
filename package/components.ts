@@ -205,7 +205,7 @@ export const LanguageAlternates = _LanguageAlternates;
  * <ThemeColor content="#ffffff" />
  * @example
  * <ThemeColor light="#ffffff" dark="#111111" />
- * @see {@link https://todo.dev/components/theme-color ThemeColor Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/theme-color ThemeColor Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/theme-color MDN theme-color reference}
  */
 export const ThemeColor = _ThemeColor;
