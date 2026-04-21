@@ -14,12 +14,12 @@ describe("Component Verification", () => {
 			props: {
 				google: "google-token",
 				yandex: "yandex-token",
-				yahoo: "yahoo-token",
+				bing: "bing-token",
 			},
 		});
 
 		expect(result).toBe(
-			'<meta name="google-site-verification" content="google-token"><meta name="yandex-verification" content="yandex-token"><meta name="y_key" content="yahoo-token">',
+			'<meta name="google-site-verification" content="google-token"><meta name="yandex-verification" content="yandex-token"><meta name="msvalidate.01" content="bing-token">',
 		);
 	});
 

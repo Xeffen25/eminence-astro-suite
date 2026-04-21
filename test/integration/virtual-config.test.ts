@@ -286,14 +286,14 @@ describe("Integration - Virtual Config", () => {
 		const options: IntegrationInput = {
 			head: {
 				verification: {
-					yahoo: "yahoo-token",
+					bing: "bing-token",
 				},
 			},
 		};
 
 		const result = serializedVirtualConfigModule(options);
 
-		expect(result).toBe('export default {"verification":{"yahoo":"yahoo-token"}};');
+		expect(result).toBe('export default {"verification":{"bing":"bing-token"}};');
 	});
 
 	it("serializes appLinks defaults in virtual config module", () => {

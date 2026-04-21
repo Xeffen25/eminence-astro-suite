@@ -1,30 +1,28 @@
 ---
-/**
- * [ 🌐 Website ] {@link https://todo.dev/components/verification}
- * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/verification.mdx}
- * ---
- * @summary Renders site verification meta tags for search providers.
- * @description
- * Outputs verification `<meta>` tags for Google, Yandex, Yahoo, and custom
- * providers through `others`. Only defined values are rendered.
- *
- * @example
- * <Verification google="google-token" yandex="yandex-token" yahoo="yahoo-token" />
- * @example
- * <Verification others={[{ name: "msvalidate.01", content: "bing-token" }]} />
- *
- * @see {@link https://developers.google.com/search/docs/crawling-indexing/verify-site-owner Google Search Console site verification}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta MDN meta element reference}
- */
-
 import clientHeadConfig from "virtual:eminence-astro-suite/config";
 
 import { hasAnyProp } from "../utils";
 
 interface Props {
+	/**
+	 * Google Search Console verification token.
+	 * Renders as `<meta name="google-site-verification">` when provided.
+	 */
 	google?: string;
+	/**
+	 * Yandex Webmaster Tools verification token.
+	 * Renders as `<meta name="yandex-verification">` when provided.
+	 */
 	yandex?: string;
-	yahoo?: string;
+	/**
+	 * Bing/Yahoo Webmaster Tools verification token.
+	 * Renders as `<meta name="msvalidate.01">` when provided.
+	 */
+	bing?: string;
+	/**
+	 * Additional verification entries for other providers.
+	 * Each entry renders a `<meta>` tag with the given name and content.
+	 */
 	others?: VerificationEntry[];
 }
 
@@ -33,12 +31,12 @@ type VerificationEntry = {
 	content: string;
 };
 
-const { google, yandex, yahoo, others } = (
+const { google, yandex, bing, others } = (
 	hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.verification ?? {})
 ) as Props;
 ---
 
 {google && <meta name="google-site-verification" content={google} />}
 {yandex && <meta name="yandex-verification" content={yandex} />}
-{yahoo && <meta name="y_key" content={yahoo} />}
+{bing && <meta name="msvalidate.01" content={bing} />}
 {others?.map(({ name, content }) => <meta name={name} content={content} />)}

@@ -363,14 +363,14 @@ export const OpenGraph = _OpenGraph;
 /**
  * @summary Renders site verification meta tags for search providers.
  * @description
- * Outputs verification `<meta>` tags for Google, Yandex, Yahoo, and custom
+ * Outputs verification `<meta>` tags for Google, Yandex, Bing, and custom
  * providers through `others`. Only defined values are rendered.
  *
  * @example
- * <Verification google="google-token" yandex="yandex-token" yahoo="yahoo-token" />
+ * <Verification google="google-token" yandex="yandex-token" bing="bing-token" />
  * @example
- * <Verification others={[{ name: "msvalidate.01", content: "bing-token" }]} />
- * @see {@link https://todo.dev/components/verification Verification Component Documentation}
+ * <Verification others={[{ name: "p:domain_verify", content: "pinterest-token" }]} />
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/verification Verification Component Documentation}
  * @see {@link https://developers.google.com/search/docs/crawling-indexing/verify-site-owner Google Search Console site verification}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta MDN meta element reference}
  */
