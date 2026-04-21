@@ -1,26 +1,4 @@
 ---
-/**
- * [ 🌐 Website ] {@link https://todo.dev/components/icons}
- * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/icons.mdx}
- * ---
- * @summary Renders `<link>` tags for favicons, mobile icons, and custom web assets.
- * @description
- * Generates and renders favicon, mobile icon, and PWA asset `<link>` tags with intelligent override handling.
- * Supports automatic asset generation during build and runtime tag injection.
- * Handles media queries for light/dark theme variants and smart SVG detection to prevent tag duplication.
- *
- * @example
- * <Icons source="/public/icon.png" />
- * @example
- * <Icons source="/public/icon.svg" customTags={[{ rel: "alternate icon", href: "/favicon.ico" }]} />
- * @example
- * <Icons source="/public/icon.png" overrides={{ png192: false, appleTouchIcon: "/custom-apple-icon.png" }} />
- *
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types MDN link rel documentation}
- * @see {@link https://web.dev/icons-and-browser-colors Web.dev icon guide}
- * @see {@link https://developer.apple.com/design/human-interface-guidelines/ Apple HIG}
- */
-
 import type { GeneratedIconTag, IconTag } from "../integration/generate-icons";
 import { inferImageMimeType, isSvg } from "../utils";
 import clientHeadConfig from "virtual:eminence-astro-suite/config";
@@ -29,14 +7,57 @@ const icons = clientHeadConfig.icons !== false ? (clientHeadConfig.icons ?? {}) 
 const overrides = icons?.overrides;
 
 interface Props {
+	/**
+	 * Path to the SVG favicon.
+	 * Falls back to integration overrides, then `/favicon.svg`.
+	 * Pass `false` to suppress this tag.
+	 */
 	svg?: string | false;
+	/**
+	 * Path to the ICO favicon.
+	 * Falls back to integration overrides, then `/favicon.ico`.
+	 * Pass `false` to suppress this tag.
+	 */
 	ico?: string | false;
+	/**
+	 * Path to the 32x32 PNG favicon.
+	 * Falls back to integration overrides, then `/favicon.png`.
+	 * Pass `false` to suppress this tag.
+	 */
 	png32?: string | false;
+	/**
+	 * Path to the 48x48 PNG favicon.
+	 * Falls back to integration overrides, then `/favicon-48x48.png`.
+	 * Pass `false` to suppress this tag.
+	 */
 	png48?: string | false;
+	/**
+	 * Path to the Apple touch icon.
+	 * Falls back to integration overrides, then `/apple-touch-icon.png`.
+	 * Pass `false` to suppress this tag.
+	 */
 	appleTouchIcon?: string | false;
+	/**
+	 * Path to the 192x192 app icon.
+	 * Falls back to integration overrides, then `/icon-192x192.png`.
+	 * Pass `false` to suppress this tag.
+	 */
 	png192?: string | false;
+	/**
+	 * Path to the 512x512 app icon.
+	 * Falls back to integration overrides, then `/icon.png`.
+	 * Pass `false` to suppress this tag.
+	 */
 	png512?: string | false;
+	/**
+	 * Additional generated icon tags injected at runtime.
+	 * Useful for build-time generated assets with explicit sizes, type, and media variants.
+	 */
 	customGeneration?: GeneratedIconTag[];
+	/**
+	 * Additional custom `<link>` icon tags.
+	 * These are merged with generated/default tags and then deduplicated by rel, href, sizes, type, and media.
+	 */
 	customTags?: IconTag[];
 }
 
