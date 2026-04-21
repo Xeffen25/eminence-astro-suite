@@ -6,6 +6,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 const DEFAULT_ICONS_HTML =
 	'<link rel="icon" href="/favicon.ico" type="image/x-icon"><link rel="icon" href="/favicon.png" sizes="32x32" type="image/png"><link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png"><link rel="icon" href="/icon-192x192.png" sizes="192x192" type="image/png"><link rel="icon" href="/icon.png" sizes="512x512" type="image/png">';
 
+const DEFAULT_DESCRIPTION = "Home page";
+
 const resetClientHeadConfig = () => {
 	Object.assign(clientHeadConfig, {
 		charset: undefined,
@@ -35,31 +37,31 @@ describe("Component Head", () => {
 
 	it("renders charset, viewport, title, and generator defaults", async () => {
 		const result = await container.renderToString(Head, {
-			props: { title: "Home" },
+			props: { title: "Home", description: DEFAULT_DESCRIPTION },
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
 	it("applies titleTemplate", async () => {
 		const result = await container.renderToString(Head, {
-			props: { title: "Home", titleTemplate: "%s | My Site" },
+			props: { title: "Home", titleTemplate: "%s | My Site", description: DEFAULT_DESCRIPTION },
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | My Site</title><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | My Site</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
 	it("always renders charset and viewport components", async () => {
 		const result = await container.renderToString(Head, {
-			props: { title: "Home" },
+			props: { title: "Home", description: DEFAULT_DESCRIPTION },
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -67,12 +69,13 @@ describe("Component Head", () => {
 		const result = await container.renderToString(Head, {
 			props: {
 				title: "Home",
+				description: DEFAULT_DESCRIPTION,
 				base: { href: "https://example.com", target: "_blank" },
 			},
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="https://example.com" target="_blank"><title>Home</title><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="https://example.com" target="_blank"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -80,12 +83,13 @@ describe("Component Head", () => {
 		const result = await container.renderToString(Head, {
 			props: {
 				title: "Home",
+				description: DEFAULT_DESCRIPTION,
 				humansTxt: "https://example.com/humans.txt",
 			},
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1"><link type="text/plain" rel="author" href="https://example.com/humans.txt">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1"><link type="text/plain" rel="author" href="https://example.com/humans.txt">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -93,12 +97,13 @@ describe("Component Head", () => {
 		const result = await container.renderToString(Head, {
 			props: {
 				title: "Home",
+				description: DEFAULT_DESCRIPTION,
 				manifest: "https://example.com/manifest.webmanifest",
 			},
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}<link rel="manifest" href="https://example.com/manifest.webmanifest"></head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}<link rel="manifest" href="https://example.com/manifest.webmanifest"></head>`,
 		);
 	});
 
@@ -106,12 +111,13 @@ describe("Component Head", () => {
 		const result = await container.renderToString(Head, {
 			props: {
 				title: "Home",
+				description: DEFAULT_DESCRIPTION,
 				canonical: "https://example.com/home",
 			},
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="canonical" href="https://example.com/home"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="canonical" href="https://example.com/home"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -119,6 +125,7 @@ describe("Component Head", () => {
 		const result = await container.renderToString(Head, {
 			props: {
 				title: "Home",
+				description: DEFAULT_DESCRIPTION,
 				appLinks: {
 					ios: { url: "myapp://open", app_store_id: "123456789" },
 					web: { url: "https://example.com/home", should_fallback: false },
@@ -127,7 +134,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -142,11 +149,12 @@ describe("Component Head", () => {
 		const result = await container.renderToString(Head, {
 			props: {
 				title: "Home",
+				description: DEFAULT_DESCRIPTION,
 			},
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -157,11 +165,11 @@ describe("Component Head", () => {
 		});
 
 		const result = await container.renderToString(Head, {
-			props: { title: "Home" },
+			props: { title: "Home", description: DEFAULT_DESCRIPTION },
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | Example</title>${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | Example</title><meta name="description" content="Home page">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -169,12 +177,13 @@ describe("Component Head", () => {
 		const result = await container.renderToString(Head, {
 			props: {
 				title: "Home",
+				description: DEFAULT_DESCRIPTION,
 				canonical: false,
 			},
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 });

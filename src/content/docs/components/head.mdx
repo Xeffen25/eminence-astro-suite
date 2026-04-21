@@ -1,0 +1,137 @@
+---
+title: Head - Component
+description: Documentation for Head, focused on rendering a complete document head with all common SEO and metadata tags. It coordinates all sub-components, applies Capo.js ordering, and merges integration config with per-page props.
+---
+
+Head renders a `<head>` element containing the full set of supported SEO and metadata tags for your page. It coordinates all sub-components — charset, viewport, title, canonical, Open Graph, and more — in a single, opinionated unit. Integration config supplies site-wide defaults; props passed directly to `Head` override them per page.
+
+## Props
+
+| prop                 | type                                             | default                                 | required | description                                                    |
+| -------------------- | ------------------------------------------------ | --------------------------------------- | -------- | -------------------------------------------------------------- |
+| `title`              | `string`                                         | -                                       | Yes      | Page title passed to the `Title` component.                    |
+| `titleTemplate`      | `` `${string}%s${string}` ``                     | integration config                      | No       | Template with `%s` placeholder for the title.                  |
+| `charset`            | `string \| false`                                | `"utf-8"`                               | No       | Character set value. Pass `false` to suppress the tag.         |
+| `viewport`           | `string \| false`                                | `"width=device-width, initial-scale=1"` | No       | Viewport content value. Pass `false` to suppress.              |
+| `base`               | `ComponentProps<typeof Base> \| false`           | integration config                      | No       | Props for the `Base` component. Pass `false` to suppress.      |
+| `canonical`          | `string \| URL \| false`                         | derived from `Astro.site`               | No       | Canonical URL. Pass `false` to suppress.                       |
+| `description`        | `string`                                         | -                                       | No       | Page meta description. Omit to suppress.                       |
+| `colorScheme`        | `string \| false`                                | integration config                      | No       | Color scheme hint. Pass `false` to suppress.                   |
+| `generator`          | `boolean`                                        | `true`                                  | No       | Enables or disables the generator meta tag.                    |
+| `humansTxt`          | `string \| URL \| false`                         | integration config                      | No       | Humans.txt href. Pass `false` to suppress.                     |
+| `icons`              | `ComponentProps<typeof Icons> \| false`          | integration config                      | No       | Icon configuration. Pass `false` to suppress.                  |
+| `jsonLd`             | `string`                                         | -                                       | No       | Pre-serialized JSON-LD string. Omit to suppress.               |
+| `languageAlternates` | `Record<string, string \| URL>`                  | -                                       | No       | Map of language codes to alternate URLs.                       |
+| `manifest`           | `string \| URL \| false`                         | derived from `Astro.site`               | No       | Web app manifest URL. Pass `false` to suppress.                |
+| `openGraph`          | `ComponentProps<typeof OpenGraph>`               | -                                       | No       | Open Graph metadata. Omit to suppress.                         |
+| `robots`             | `ComponentProps<typeof Robots>`                  | integration config                      | No       | Robots directive props or raw content.                         |
+| `themeColor`         | `ComponentProps<typeof ThemeColor> \| false`     | integration config                      | No       | Theme color value(s). Pass `false` to suppress.                |
+| `verification`       | `ComponentProps<typeof Verification> \| false`   | integration config                      | No       | Site verification tokens. Pass `false` to suppress.            |
+| `appleItunesApp`     | `ComponentProps<typeof AppleItunesApp> \| false` | integration config                      | No       | Apple iTunes Smart App Banner props. Pass `false` to suppress. |
+| `appLinks`           | `ComponentProps<typeof AppLinks> \| false`       | integration config                      | No       | App Links metadata props. Pass `false` to suppress.            |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<Head title="Home" />
+```
+
+Output (abbreviated):
+
+```html
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Home</title>
+	<meta name="generator" content="Astro vX.Y.Z" />
+</head>
+```
+
+### Auto usage
+
+Uses integration `head.*` defaults for all omitted props. No props beyond `title` are required.
+
+Input:
+
+```astro
+<Head title="Home" />
+```
+
+Output (when integration sets `head.titleTemplate: "%s | My Site"` and `head.colorScheme: "dark"`):
+
+```html
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Home | My Site</title>
+	<meta name="color-scheme" content="dark" />
+	<meta name="generator" content="Astro vX.Y.Z" />
+</head>
+```
+
+### Complete usage
+
+Input:
+
+```astro
+<Head
+	title="Home"
+	titleTemplate="%s | Example"
+	description="Welcome to Example"
+	canonical="https://example.com/"
+	colorScheme="light dark"
+	openGraph={{ title: "Home", url: "https://example.com/", siteName: "Example" }}
+	verification={{ google: "abc123" }}
+/>
+```
+
+Output (abbreviated):
+
+```html
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Home | Example</title>
+	<link rel="canonical" href="https://example.com/" />
+	<meta name="color-scheme" content="light dark" />
+	<meta name="description" content="Welcome to Example" />
+	<meta name="generator" content="Astro vX.Y.Z" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Home" />
+	<meta property="og:url" content="https://example.com/" />
+	<meta property="og:site_name" content="Example" />
+	<meta name="google-site-verification" content="abc123" />
+</head>
+```
+
+## Decisions Made
+
+### Tag order follows Capo.js convention
+
+Head renders sub-components in the order recommended by [Capo.js](https://rviscomi.github.io/capo.js/): charset and viewport first, then title, then meta and link tags, and finally scripts. This ordering maximizes browser rendering performance by ensuring critical resources are discovered early.
+
+### title is the only required prop
+
+All other props either have sensible defaults, fall back to integration config, or suppress output when omitted. Requiring only `title` keeps per-page usage minimal while making the document title non-negotiable.
+
+### Pass false to suppress any optional tag
+
+Optional sub-components that default to rendering (such as `charset`, `viewport`, `generator`, `humansTxt`, and `manifest`) accept `false` as an explicit opt-out. This provides a clear, type-safe way to disable any tag on a specific page without affecting site-wide defaults.
+
+### Integration config provides site-wide defaults
+
+Most props fall back to values from `clientHeadConfig`, which is serialized from the integration options at build time. This lets you configure defaults once and override per page only when needed.
+
+### Default slot allows custom head tags
+
+Head exposes a default `<slot />` placed after the `<title>` tag so consumers can inject additional link or meta tags while preserving Capo.js ordering for the built-in tags. This is the same slot the `Layout` component uses to forward its `head` slot.
+
+## Reference
+
+- [MDN: head element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/head)
+- [Capo.js: ordering head elements](https://rviscomi.github.io/capo.js/)
+- [web.dev: optimize the order of resources in the head](https://web.dev/articles/optimizing-resource-loading-with-priority-hints)

@@ -1,62 +1,168 @@
 ﻿---
-/**
- * [ 🌐 Website ] {@link https://todo.dev/components/head}
- * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/head.mdx}
- * ---
- * @summary The ultimate `<head>` component for your Astro project.
- * @description
- * Renders a `<head>` element with built-in support for common SEO and metadata tags. Following Capo.js convention as much as possible, allows you to configure site wide defaults via the `head` property in your integration options, and override them on a per-page basis by passing props to the component. With best practices baked in as defaults, you can focus on customizing the essentials and let the component handle the rest.
- *
- * @example
- * <Head head={{ title: "Home" }} />
- * @example
- * <Head head={{ title: "Home", titleTemplate: "%s | My Site", charset: "iso-8859-1" }} />
- *
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/head MDN head element reference}
- */
-
 import type { ComponentProps } from "astro/types";
 
-import LanguageAlternates from "./LanguageAlternates.astro";
-import AppleItunesApp from "./AppleItunesApp.astro";
-import AppLinks from "./AppLinks.astro";
-import Base from "./Base.astro";
-import Canonical from "./Canonical.astro";
-import Charset from "./Charset.astro";
-import ColorScheme from "./ColorScheme.astro";
-import Description from "./Description.astro";
-import Generator from "./Generator.astro";
-import HumansTxt from "./HumansTxt.astro";
-import Icons from "./Icons.astro";
-import JsonLd from "./JsonLd.astro";
-import Manifest from "./Manifest.astro";
-import OpenGraph from "./OpenGraph.astro";
-import Robots from "./Robots.astro";
-import ThemeColor from "./ThemeColor.astro";
-import Title from "./Title.astro";
-import Verification from "./Verification.astro";
-import Viewport from "./Viewport.astro";
+import {
+	AppleItunesApp,
+	AppLinks,
+	Base,
+	Canonical,
+	Charset,
+	ColorScheme,
+	Description,
+	Generator,
+	HumansTxt,
+	Icons,
+	JsonLd,
+	LanguageAlternates,
+	Manifest,
+	OpenGraph,
+	Robots,
+	ThemeColor,
+	Title,
+	Verification,
+	Viewport,
+} from "../components";
 
 interface Props {
+	/**
+	 * Character set for the document. Defaults to `"utf-8"`.
+	 * Pass `false` to suppress the tag entirely.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/charset Charset}
+	 */
 	charset?: ComponentProps<typeof Charset>["charset"] | false;
+	/**
+	 * Viewport meta content value. Defaults to `"width=device-width, initial-scale=1"`.
+	 * Pass `false` to suppress.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/viewport Viewport}
+	 */
 	viewport?: ComponentProps<typeof Viewport>["content"] | false;
+	/**
+	 * Props forwarded to the `Base` component for the `<base>` element.
+	 * Falls back to integration config. Pass `false` to suppress the tag.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/base Base}
+	 */
 	base?: ComponentProps<typeof Base> | false;
+	/**
+	 * Required page title rendered inside `<title>`.
+	 * Applied to `titleTemplate` when provided.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/title Title}
+	 */
 	title: ComponentProps<typeof Title>["value"];
+	/**
+	 * Template string with a `%s` placeholder substituted with `title` at render time.
+	 * Falls back to integration config, then plain `%s` passthrough.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/title Title}
+	 */
 	titleTemplate?: ComponentProps<typeof Title>["template"];
+	/**
+	 * Props for the Apple iTunes Smart App Banner `<meta>` tag.
+	 * Falls back to integration config. Pass `false` to suppress.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/apple-itunes-app AppleItunesApp}
+	 */
 	appleItunesApp?: ComponentProps<typeof AppleItunesApp> | false;
+	/**
+	 * Props for App Links metadata tags.
+	 * Falls back to integration config. Pass `false` to suppress.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/app-links AppLinks}
+	 */
 	appLinks?: ComponentProps<typeof AppLinks> | false;
+	/**
+	 * Canonical URL for the page rendered as `<link rel="canonical">`.
+	 * Auto-derived from `Astro.site` when omitted. Pass `false` to suppress.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/canonical Canonical}
+	 */
 	canonical?: ComponentProps<typeof Canonical>["href"] | false;
+	/**
+	 * Color scheme hint rendered as `<meta name="color-scheme">`.
+	 * Falls back to integration config. Pass `false` to suppress.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/color-scheme ColorScheme}
+	 */
 	colorScheme?: ComponentProps<typeof ColorScheme>["content"] | false;
-	description?: ComponentProps<typeof Description>["content"];
+	/**
+	 * Page meta description rendered as `<meta name="description">`.
+	 * Required for audits and SEO. Should be a concise summary of the page content.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/description Description}
+	 */
+	description: ComponentProps<typeof Description>["content"];
+	/**
+	 * Controls whether the `<meta name="generator">` tag is rendered.
+	 * Defaults to `true`.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/generator Generator}
+	 */
 	generator?: ComponentProps<typeof Generator>["generate"];
+	/**
+	 * URL for the `humans.txt` discovery link.
+	 * Auto-derived from `Astro.site` when omitted. Pass `false` to suppress.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/humans-txt HumansTxt}
+	 */
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | false;
+	/**
+	 * Icon configuration forwarded to the `Icons` component.
+	 * Falls back to integration config. Pass `false` to suppress all icon tags.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/icons Icons}
+	 */
 	icons?: ComponentProps<typeof Icons> | false;
+	/**
+	 * Pre-serialized JSON-LD string injected as `<script type="application/ld+json">`.
+	 * Omit to suppress.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/json-ld JsonLd}
+	 */
 	jsonLd?: ComponentProps<typeof JsonLd>["jsonLd"];
+	/**
+	 * Map of language codes to alternate URLs for `<link rel="alternate" hreflang>` tags.
+	 * Omit to suppress.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/language-alternates LanguageAlternates}
+	 */
 	languageAlternates?: ComponentProps<typeof LanguageAlternates>["languages"];
+	/**
+	 * Web app manifest URL rendered as `<link rel="manifest">`.
+	 * Auto-derived from `Astro.site` when omitted. Pass `false` to suppress.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/manifest Manifest}
+	 */
 	manifest?: ComponentProps<typeof Manifest>["href"] | false;
+	/**
+	 * Open Graph metadata props forwarded to the `OpenGraph` component.
+	 * Omit to suppress all `og:` tags.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/open-graph OpenGraph}
+	 */
 	openGraph?: ComponentProps<typeof OpenGraph>;
+	/**
+	 * Robots directive props controlling search engine crawling and indexing.
+	 * Falls back to integration config.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/robots Robots}
+	 */
 	robots?: ComponentProps<typeof Robots>;
+	/**
+	 * Theme color value(s) for the browser UI chrome.
+	 * Falls back to integration config. Pass `false` to suppress.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/theme-color ThemeColor}
+	 */
 	themeColor?: ComponentProps<typeof ThemeColor> | false;
+	/**
+	 * Site ownership verification tokens for search engine consoles.
+	 * Falls back to integration config. Pass `false` to suppress.
+	 *
+	 * {@link https://eminence-astro-suite.xeffen25.com/components/verification Verification}
+	 */
 	verification?: ComponentProps<typeof Verification> | false;
 }
 
@@ -94,7 +200,7 @@ const {
 	{appLinks !== false && <AppLinks {...(appLinks ?? {})} />}
 	{canonical !== false && <Canonical href={canonical} />}
 	{colorScheme !== false && <ColorScheme content={colorScheme} />}
-	{description && <Description content={description} />}
+	<Description content={description} />
 	{generator !== false && <Generator generate={generator} />}
 	{humansTxt !== false && <HumansTxt href={humansTxt} />}
 	{icons !== false && <Icons {...(icons ?? {})} />}
