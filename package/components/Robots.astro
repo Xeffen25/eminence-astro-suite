@@ -1,25 +1,4 @@
 ---
-/**
- * [ 🌐 Website ] {@link https://todo.dev/components/robots}
- * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/robots.mdx}
- * ---
- * @summary Renders a robots directives meta tag.
- * @description
- * Supports two mutually exclusive modes: pass a raw `content` string directly,
- * or pass directive props that are serialized into a single
- * `<meta name="robots">` content string. In directive mode, undefined and
- * `false` values are omitted, `true` values render as bare directives, and
- * numeric/string values render as `directive:value`.
- *
- * @example
- * <Robots content="noindex, nofollow" />
- * @example
- * <Robots noindex nofollow />
- * @example
- * <Robots noindex unavailable_after="25 Jun 2026 15:00:00 PST" max-snippet={50} />
- *
- * @see {@link https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag Google robots meta tag reference}
- */
 import clientHeadConfig from "virtual:eminence-astro-suite/config";
 
 import { hasAnyProp } from "../utils";

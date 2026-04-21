@@ -159,7 +159,7 @@ export const Generator = _Generator;
  * <Robots noindex nofollow />
  * @example
  * <Robots noindex unavailable_after="25 Jun 2026 15:00:00 PST" max-snippet={50} />
- * @see {@link https://todo.dev/components/robots Robots Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/robots Robots Component Documentation}
  * @see {@link https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag Google robots meta tag reference}
  */
 export const Robots = _Robots;

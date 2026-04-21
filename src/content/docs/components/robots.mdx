@@ -1,0 +1,102 @@
+---
+title: Robots - Component
+description: Documentation for Robots, focused on rendering the robots meta tag for crawler directives. It supports raw content strings and structured directive props with integration config fallback.
+---
+
+Robots renders a `<meta name="robots">` tag in your document head to control crawler behavior. It is scoped to resolving and serializing the directive content only and does not affect `robots.txt` generation.
+
+## Props
+
+The component accepts two mutually exclusive modes. Pass either `content` or any combination of directive props, but not both.
+
+### Content mode
+
+| prop      | type     | default | required              | description                                                              |
+| --------- | -------- | ------- | --------------------- | ------------------------------------------------------------------------ |
+| `content` | `string` | -       | Yes (in content mode) | Raw robots directive string rendered directly as the meta content value. |
+
+### Directive mode
+
+| prop                | type                              | default | required | description                                                                     |
+| ------------------- | --------------------------------- | ------- | -------- | ------------------------------------------------------------------------------- |
+| `noindex`           | `boolean`                         | -       | No       | Prevents the page from being indexed.                                           |
+| `nofollow`          | `boolean`                         | -       | No       | Prevents crawlers from following links on the page.                             |
+| `noarchive`         | `boolean`                         | -       | No       | Prevents search engines from caching the page.                                  |
+| `nosnippet`         | `boolean`                         | -       | No       | Prevents a snippet from being generated in search results.                      |
+| `indexifembedded`   | `boolean`                         | -       | No       | Allows indexing when the page is embedded in an iframe.                         |
+| `max-snippet`       | `number`                          | -       | No       | Maximum character length for the text snippet in search results.                |
+| `max-image-preview` | `"none" \| "standard" \| "large"` | -       | No       | Maximum size of image preview in search results.                                |
+| `max-video-preview` | `number`                          | -       | No       | Maximum number of seconds for a video snippet in search results.                |
+| `notranslate`       | `boolean`                         | -       | No       | Prevents the page from being translated in search results.                      |
+| `noimageindex`      | `boolean`                         | -       | No       | Prevents images on the page from being indexed.                                 |
+| `unavailable_after` | `string`                          | -       | No       | Date and time after which the page should no longer be shown in search results. |
+
+## Usage & Examples
+
+### Basic usage
+
+Input:
+
+```astro
+<Robots content="noindex, nofollow" />
+```
+
+Output:
+
+```html
+<meta name="robots" content="noindex, nofollow" />
+```
+
+### Auto usage
+
+Uses integration `head.robots` when no props are provided.
+
+Input:
+
+```astro
+<Robots />
+```
+
+Output (when integration config has `head.robots: { noindex: true }`):
+
+```html
+<meta name="robots" content="noindex" />
+```
+
+### Complete usage
+
+Input:
+
+```astro
+<Robots noindex nofollow unavailable_after="25 Jun 2026 15:00:00 PST" max-snippet={50} />
+```
+
+Output:
+
+```html
+<meta name="robots" content="noindex, nofollow, max-snippet:50, unavailable_after:25 Jun 2026 15:00:00 PST" />
+```
+
+## Decisions Made
+
+### Two mutually exclusive modes
+
+The component accepts either a raw `content` string or directive props, but not both. The raw string mode is useful for ad-hoc values, while directive mode is type-safe and composable.
+
+### False and undefined directive values are omitted
+
+In directive mode, props set to `false` or left undefined are excluded from the serialized output. This allows partial directive sets without producing empty or invalid directive strings.
+
+### True renders as a bare directive; valued props render as directive:value
+
+Boolean `true` props produce bare directives such as `noindex`. Numeric and string props produce `directive:value` pairs such as `max-snippet:50`.
+
+### Integration config can define global defaults
+
+When no props are provided, the component falls back to `clientHeadConfig.robots`. This allows site-wide crawler settings to be configured once in the integration and overridden per page.
+
+## Reference
+
+- [Google: robots meta tag](https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag)
+- [MDN: meta element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta)
+- [Robots meta tag spec](https://html.spec.whatwg.org/multipage/semantics.html#standard-metadata-names)
