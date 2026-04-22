@@ -1,8 +1,8 @@
 ---
 title: Eminence Astro Suite
-description: Comprehensive metadata and file-output tooling for Astro through a Head component library plus integration-powered automation.
+description: Generate complete site metadata for Astro, including tags and output files, through one integration-first workflow.
 hero:
-    tagline: Complete, consistent, and automated SEO metadata for Astro.
+    tagline: Generate all metadata for your Astro site, both tags and files.
     image:
         file: ../../assets/houston.webp
     actions:
@@ -17,18 +17,20 @@ hero:
 
 import { Card, CardGrid, Steps } from "@astrojs/starlight/components";
 
-Eminence Astro Suite is both:
+Eminence Astro Suite exists to generate complete metadata for Astro sites in one place:
 
-- a component library for metadata generation, and
-- an Astro integration that powers those components through a Vite virtual module and automates important output files.
+- metadata tags, and
+- metadata-related files.
 
-For most components, the integration must be configured in `astro.config.mjs` so runtime defaults and derived metadata are available, and project outputs like `sitemap.xml`, `security.txt`, and `robots.txt` can be generated consistently.
+The workflow is integration first, components second.
+
+The integration is required because it creates a Vite virtual module used by the components at runtime. That lets you define defaults once and keep metadata behavior consistent across the site.
 
 ## How to use it
 
 <Steps>
 
-1. Add the integration in your Astro config.
+1. Configure the integration in `astro.config.mjs`.
 
     ```ts title="astro.config.mjs"
     import { defineConfig } from "astro/config";
@@ -43,27 +45,43 @@ For most components, the integration must be configured in `astro.config.mjs` so
     });
     ```
 
-2. Use only the `Head` component in pages/layouts.
+2. Start with integration-powered defaults and outputs.
 
-3. Start with minimal props (`title`, `description`) and scale up with advanced props like JSON-LD, Open Graph, and other metadata surfaces as needed.
+    The integration handles these responsibilities for you:
+    - Global metadata defaults (for example site name) to keep pages DRY.
+    - Icon generation from an SVG source or a 512x512 icon.
+    - `humans.txt` reminder and generation flow.
+    - `robots.txt` generation.
+    - `security.txt` generation.
+    - `sitemap.xml` generation using Astro's original sitemap integration.
+
+3. Use metadata components from `eminence-astro-suite/components`.
+
+    Most projects only need `Head`.
+
+4. Begin with `title` and `description`, then expand only when needed.
+
+    You can scale from simple pages to advanced metadata by adding JSON-LD, Open Graph, and other supported surfaces over time.
 
 </Steps>
 
 ## Why this design
 
-The intended workflow is simple and opinionated:
+The design is intentionally opinionated:
 
-- Configure integration once.
-- Use one entry point (`Head`) everywhere.
-- Move from basic SEO to advanced metadata without changing architecture.
+- Configure once at integration level.
+- Use one main entry point (`Head`) for page tags.
+- Expand progressively from basic to advanced metadata.
+- Avoid obsolete tags and outdated metadata surfaces.
 
-This keeps metadata consistent across pages, improves DX, and helps prevent mistakes caused by manual and fragmented tag composition.
+This enforces good practices, reduces repeated configuration, and prevents fragmented hand-written metadata.
 
 ## Integration-powered outputs
 
-Beyond metadata tags, the integration can automate related outputs:
+Beyond page tags, the integration automates key metadata files:
 
 - icon generation (favicons and manifest-oriented icon sets)
+- `humans.txt`
 - `security.txt`
 - `robots.txt`
 - `sitemap.xml` (using `@astrojs/sitemap` under the hood)
@@ -76,19 +94,20 @@ Eminence targets relevant, modern SEO/metadata concerns and intentionally avoids
 - Unsupported tags are documented in [Unsupported Tags](/policies/unsupported-tags).
 
 <CardGrid stagger>
-	<Card title="Use Head As The Main API" icon="star">
-		The `Head` component is the canonical entry point, from essential tags to advanced metadata.
+	<Card title="Metadata First-Class" icon="star">
+		Generate both metadata tags and metadata-related files from one cohesive workflow.
 	</Card>
-	<Card title="Integration Is Required" icon="setting">
-		Most metadata components depend on integration-provided virtual config to stay consistent and automatic.
+	<Card title="Integration Comes First" icon="setting">
+		Configure integration once so components can read the virtual config module and stay consistent.
 	</Card>
-	<Card title="Automated File Outputs" icon="open-book">
-		Generate icon sets, `security.txt`, `robots.txt`, and `sitemap.xml` from integration configuration.
+	<Card title="Head Is Usually Enough" icon="open-book">
+		Use components from `eminence-astro-suite/components`, but most sites can rely primarily on `Head`.
 	</Card>
-	<Card title="Strict Modern Scope" icon="warning">
-		Legacy outputs like `browserconfig.xml` and unsupported legacy tags are intentionally excluded.
+	<Card title="Automation Without Repetition" icon="warning">
+		Set global values like site name once and avoid repeating shared metadata page by page.
 	</Card>
-	<Card title="Read The Policies" icon="book">
-		See [Unsupported Files](/policies/unsupported-files) and [Unsupported Tags](/policies/unsupported-tags).
+	<Card title="Modern And Opinionated" icon="book">
+		Outdated tags and legacy outputs are intentionally excluded. See [Unsupported
+		Files](/policies/unsupported-files) and [Unsupported Tags](/policies/unsupported-tags).
 	</Card>
 </CardGrid>
