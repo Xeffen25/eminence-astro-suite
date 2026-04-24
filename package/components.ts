@@ -11,7 +11,6 @@ import _HumansTxt from "./components/HumansTxt.astro";
 import _Icons from "./components/Icons.astro";
 import _JsonLd from "./components/JsonLd.astro";
 import _LanguageAlternates from "./components/LanguageAlternates.astro";
-import _Layout from "./components/Layout.astro";
 import _Manifest from "./components/Manifest.astro";
 import _OpenGraph from "./components/OpenGraph.astro";
 import _Robots from "./components/Robots.astro";
@@ -20,37 +19,141 @@ import _Title from "./components/Title.astro";
 import _Verification from "./components/Verification.astro";
 import _Viewport from "./components/Viewport.astro";
 
+import type { ComponentProps } from "astro/types";
+
 /**
  * @summary Renders an Apple iTunes Smart App Banner meta tag.
  * @description
- * Outputs an `apple-itunes-app` meta tag used by iOS Safari to display a
- * Smart App Banner linking to an App Store application.
+ * Outputs an `apple-itunes-app` meta tag used by iOS Safari to display a Smart App Banner linking to an App Store application.
  *
  * @example
  * <AppleItunesApp id="123456789" />
  * @example
  * <AppleItunesApp id="123456789" argument="myapp://open" />
+ *
  * @see {@link https://eminence-astro-suite.xeffen25.com/components/apple-itunes-app AppleItunesApp Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name MDN Meta name reference}
  * @see {@link https://developer.apple.com/documentation/webkit/promoting-apps-with-smart-app-banners Promoting apps with Smart App Banners}
  */
 export const AppleItunesApp = _AppleItunesApp;
+export type AppleItunesAppProps = ComponentProps<typeof AppleItunesApp>;
 
 /**
  * @summary Renders App Links meta tags for iOS, Android, and web fallback.
  * @description
- * Outputs platform-specific App Links metadata so crawlers and clients can
- * associate a web URL with native app destinations. Supports iOS app URL and
- * App Store ID, Android package details, and web fallback controls.
+ * Outputs platform-specific App Links metadata so crawlers and clients can associate a web URL with native app destinations. Supports iOS app URL and App Store ID, Android package details, and web fallback controls.
  *
  * @example
  * <AppLinks ios={{ url: "myapp://open", app_store_id: "123456789" }} />
  * @example
  * <AppLinks android={{ package: "com.example.app", app_name: "Example App" }} web={{ url: "https://example.com", should_fallback: true }} />
+ *
  * @see {@link https://eminence-astro-suite.xeffen25.com/components/app-links AppLinks Component Documentation}
  * @see {@link https://developers.facebook.com/docs/applinks/metadata-reference/ App Links Meta Tag Reference}
  */
 export const AppLinks = _AppLinks;
+export type AppLinksProps = ComponentProps<typeof AppLinks>;
+
+/**
+ * @summary Renders a `<base>` tag for relative URL resolution.
+ * @description
+ * Outputs a `<base>` tag when either or both `href` or `target` are provided. The `href` prop sets the base URL for relative URLs, and `target` sets the default browsing context for links and forms.
+ *
+ * @example
+ * <Base href="https://example.com" />
+ * @example
+ * <Base target="_blank" />
+ * @example
+ * <Base />
+ * When no props are provided, the component uses the integration configuration if available. If no configuration is set, it renders nothing.
+ * @example
+ * <Base href="https://example.com" target="_blank" />
+ *
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/base Base Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base MDN base element reference}
+ */
+export const Base = _Base;
+export type BaseProps = ComponentProps<typeof Base>;
+
+/**
+ * @summary Renders a `<link rel="canonical">` tag for the current page.
+ * @description
+ * Uses the provided `href` value directly when present. If omitted, it tries to generate a canonical URL from `Astro.site` and `Astro.url.pathname`. When `href` is `false`, the component renders nothing.
+ *
+ * @example
+ * <Canonical href="https://example.com/docs/page" />
+ * @example
+ * Derives canonical URL from Astro.site and Astro.url.pathname
+ * <Canonical />
+ * @example
+ * <Canonical href={new URL("https://example.com/docs/page")} />
+ *
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/canonical Canonical Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#canonical MDN rel="canonical" reference}
+ */
+export const Canonical = _Canonical;
+export type CanonicalProps = ComponentProps<typeof Canonical>;
+
+/**
+ * @summary Renders a `<meta charset>` tag for the document.
+ * @description
+ * Outputs the character encoding meta tag in your `<head>`. If no `charset` prop is provided, it defaults to `utf-8`.
+ *
+ * @example
+ * <Charset charset="iso-8859-1" />
+ * @example
+ * <Charset />
+ *
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/charset Charset Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-meta-charset MDN meta charset reference}
+ */
+export const Charset = _Charset;
+export type CharsetProps = ComponentProps<typeof Charset>;
+
+/**
+ * @summary Renders a color scheme preference meta tag.
+ * @description
+ * Outputs `<meta name="color-scheme">` to declare supported page color schemes for UA rendering behavior.
+ *
+ * @example
+ * <ColorScheme content="light dark" />
+ * @example
+ * <ColorScheme content="dark" />
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/color-scheme ColorScheme Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/color-scheme MDN color-scheme reference}
+ */
+export const ColorScheme = _ColorScheme;
+export type ColorSchemeProps = ComponentProps<typeof ColorScheme>;
+
+/**
+ * @summary Renders a `<meta name="description">` tag for SEO.
+ * @description
+ * Outputs the page meta description tag in your `<head>`. This tag is commonly used by search engines and social media platforms to display a preview of your page content.
+ *
+ * @example
+ * <Description content="Learn how to build efficient web applications" />
+ *
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/description Description Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#description MDN meta name attributes reference}
+ */
+export const Description = _Description;
+export type DescriptionProps = ComponentProps<typeof Description>;
+
+/**
+ * @summary Renders a `<meta name="generator">` tag from `Astro.generator`.
+ * @description
+ * Uses Astro's built-in generator value when `generate` is enabled. Set `generate` to `false` to disable output.
+ *
+ * @example
+ * <Generator />
+ * @example
+ * <Generator generate={false} />
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/generator Generator Component Documentation}
+ * @see {@link https://docs.astro.build/en/reference/api-reference/#astrogenerator Astro.generator reference}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/generator MDN generator reference}
+ */
+export const Generator = _Generator;
+export type GeneratorProps = ComponentProps<typeof Generator>;
 
 /**
  * The ultimate `<head>` component for your Astro project.
@@ -66,231 +169,7 @@ export const AppLinks = _AppLinks;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/head MDN head element reference}
  */
 export const Head = _Head;
-
-/**
- * @summary Renders a full-page HTML layout that wraps the Head component.
- * @description
- * Outputs `<html>`, `<head>`, and `<body>` with four slot regions:
- * `head`, `body-start`, default body content, and `body-end`.
- *
- * @example
- * <Layout head={{ title: "Home" }}>
- *   <Fragment slot="head"><meta name="description" content="Welcome"></Fragment>
- *   <Fragment slot="body-start"><div id="top-banner"></div></Fragment>
- *   <main>Page content</main>
- *   <Fragment slot="body-end"><script src="/app.js"></script></Fragment>
- * </Layout>
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/layout Layout Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/html MDN html element reference}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body MDN body element reference}
- */
-export const Layout = _Layout;
-
-/**
- * @summary Renders a `<title>` tag with optional template formatting.
- * @description
- * Outputs the document `<title>` tag using the provided `value`. An optional
- * `template` prop containing a `%s` placeholder is replaced with `value` at
- * render time, enabling site-wide suffix or prefix patterns.
- *
- * @example
- * <Title value="Home" template="%s | My Site" />
- * @example
- * <Title value="Home" />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/title Title Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title MDN title element reference}
- */
-export const Title = _Title;
-
-/**
- * @summary Renders a `<meta charset>` tag for the document.
- * @description
- * Outputs the character encoding meta tag in your `<head>`. If no `charset`
- * prop is provided, it defaults to `utf-8`.
- *
- * @example
- * <Charset charset="iso-8859-1" />
- * @example
- * <Charset />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/charset Charset Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-meta-charset MDN meta charset reference}
- */
-export const Charset = _Charset;
-
-/**
- * @summary Renders a color scheme preference meta tag.
- * @description
- * Outputs `<meta name="color-scheme">` to declare supported page color
- * schemes for UA rendering behavior.
- *
- * @example
- * <ColorScheme content="light dark" />
- * @example
- * <ColorScheme content="dark" />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/color-scheme ColorScheme Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/color-scheme MDN color-scheme reference}
- */
-export const ColorScheme = _ColorScheme;
-
-/**
- * @summary Renders a `<meta name="description">` tag for SEO.
- * @description
- * Outputs the page meta description tag in your `<head>`. This tag is commonly
- * used by search engines and social media platforms to display a preview of your
- * page content.
- *
- * @example
- * <Description content="Learn how to build efficient web applications" />
- *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/description Description Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#description MDN meta name attributes reference}
- */
-export const Description = _Description;
-
-/**
- * @summary Renders a `<meta name="generator">` tag from `Astro.generator`.
- * @description
- * Uses Astro's built-in generator value when `generate` is enabled. Set
- * `generate` to `false` to disable output.
- *
- * @example
- * <Generator />
- * @example
- * <Generator generate={false} />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/generator Generator Component Documentation}
- * @see {@link https://docs.astro.build/en/reference/api-reference/#astrogenerator Astro.generator reference}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/generator MDN generator reference}
- */
-export const Generator = _Generator;
-
-/**
- * @summary Renders a robots directives meta tag.
- * @description
- * Supports two mutually exclusive modes: pass a raw `content` string directly,
- * or pass directive props that are serialized into a single
- * `<meta name="robots">` content string. In directive mode, undefined and
- * `false` values are omitted, `true` values render as bare directives, and
- * numeric/string values render as `directive:value`.
- *
- * @example
- * <Robots content="noindex, nofollow" />
- *
- * @example
- * <Robots noindex nofollow />
- * @example
- * <Robots noindex unavailable_after="25 Jun 2026 15:00:00 PST" max-snippet={50} />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/robots Robots Component Documentation}
- * @see {@link https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag Google robots meta tag reference}
- */
-export const Robots = _Robots;
-
-/**
- * @summary Renders a single JSON-LD script tag from a pre-serialized string.
- * @description
- * Outputs a `<script type="application/ld+json">` element in your `<head>`.
- * The `jsonLd` prop expects a JSON string, so schema objects can be built and
- * typed in app code (for example with `schema-dts`) before
- * `JSON.stringify(...)` is passed to this component.
- *
- * @example
- * <JsonLd jsonLd='{"@context":"https://schema.org","@type":"WebPage","name":"Home"}' />
- * @example
- * <JsonLd jsonLd={JSON.stringify(websiteSchema)} />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/json-ld JsonLd Component Documentation}
- * @see {@link https://json-ld.org/ JSON-LD specification}
- * @see {@link https://schema.org/docs/gs.html Schema.org getting started}
- */
-export const JsonLd = _JsonLd;
-
-/**
- * @summary Renders `<link rel="alternate">` tags for language variants.
- * @description
- * Outputs alternate link tags to support language variants and regional versions. Accepts language variants as a record of language codes to URLs.
- *
- * @example
- * <LanguageAlternates languages={{ es: "https://example.com/es", fr: "https://example.com/fr", "x-default": "https://example.com" }} />
- *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/language-alternates LanguageAlternates Component Documentation}
- */
-export const LanguageAlternates = _LanguageAlternates;
-
-/**
- * @summary Renders theme color meta tags for browser UI theming.
- * @description
- * Supports either a single `content` value for all color schemes, or a pair of
- * `light` and `dark` values for scheme-specific theming. The two modes are
- * mutually exclusive.
- *
- * @example
- * <ThemeColor content="#ffffff" />
- * @example
- * <ThemeColor light="#ffffff" dark="#111111" />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/theme-color ThemeColor Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/theme-color MDN theme-color reference}
- */
-export const ThemeColor = _ThemeColor;
-
-/**
- * @summary Renders a responsive viewport meta tag.
- * @description
- * Outputs the `<meta name="viewport">` tag in your `<head>`. If no `content`
- * prop is provided, it defaults to `width=device-width, initial-scale=1`.
- *
- * @example
- * <Viewport content="width=device-width, initial-scale=1" />
- * @example
- * <Viewport />
- *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/viewport Viewport Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-meta-viewport MDN viewport meta tag reference}
- */
-export const Viewport = _Viewport;
-
-/**
- * @summary Renders a `<base>` tag for relative URL resolution.
- * @description
- * Outputs a `<base>` tag when either or both `href` or `target` are provided.
- * The `href` prop sets the base URL for relative URLs, and `target` sets the
- * default browsing context for links and forms.
- *
- * @example
- * <Base href="https://example.com" />
- *
- * @example
- * <Base target="_blank" />
- *
- * @example
- * <Base />
- * When no props are provided, the component uses the integration configuration if available. If no configuration is set, it renders nothing.
- *
- * @example
- * <Base href="https://example.com" target="_blank" />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/base Base Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base MDN base element reference}
- */
-export const Base = _Base;
-
-/**
- * @summary Renders a `<link rel="canonical">` tag for the current page.
- * @description
- * Uses the provided `href` value directly when present. If omitted, it tries
- * to generate a canonical URL from `Astro.site` and `Astro.url.pathname`.
- * When `href` is `false`, the component renders nothing.
- *
- * @example
- * <Canonical href="https://example.com/docs/page" />
- *
- * @example
- * Derives canonical URL from Astro.site and Astro.url.pathname
- * <Canonical />
- *
- * @example
- * <Canonical href={new URL("https://example.com/docs/page")} />
- *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/canonical Canonical Component Documentation}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#canonical MDN rel="canonical" reference}
- */
-export const Canonical = _Canonical;
+export type HeadProps = ComponentProps<typeof Head>;
 
 /**
  * @summary Renders a `<link rel="author">` tag pointing to `/humans.txt`.
@@ -311,6 +190,7 @@ export const Canonical = _Canonical;
  * @see {@link https://humanstxt.org/ The Humans.txt Standard}
  */
 export const HumansTxt = _HumansTxt;
+export type HumansTxtProps = ComponentProps<typeof HumansTxt>;
 
 /**
  * @summary Renders `<link>` tags for favicons, mobile icons, and custom web assets.
@@ -330,6 +210,39 @@ export const HumansTxt = _HumansTxt;
  * @see {@link https://web.dev/icons-and-browser-colors Web.dev icon guide}
  */
 export const Icons = _Icons;
+export type IconsProps = ComponentProps<typeof Icons>;
+
+/**
+ * @summary Renders a single JSON-LD script tag from a pre-serialized string.
+ * @description
+ * Outputs a `<script type="application/ld+json">` element in your `<head>`.
+ * The `jsonLd` prop expects a JSON string, so schema objects can be built and
+ * typed in app code (for example with `schema-dts`) before
+ * `JSON.stringify(...)` is passed to this component.
+ *
+ * @example
+ * <JsonLd jsonLd='{"@context":"https://schema.org","@type":"WebPage","name":"Home"}' />
+ * @example
+ * <JsonLd jsonLd={JSON.stringify(websiteSchema)} />
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/json-ld JsonLd Component Documentation}
+ * @see {@link https://json-ld.org/ JSON-LD specification}
+ * @see {@link https://schema.org/docs/gs.html Schema.org getting started}
+ */
+export const JsonLd = _JsonLd;
+export type JsonLdProps = ComponentProps<typeof JsonLd>;
+
+/**
+ * @summary Renders `<link rel="alternate">` tags for language variants.
+ * @description
+ * Outputs alternate link tags to support language variants and regional versions. Accepts language variants as a record of language codes to URLs.
+ *
+ * @example
+ * <LanguageAlternates languages={{ es: "https://example.com/es", fr: "https://example.com/fr", "x-default": "https://example.com" }} />
+ *
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/language-alternates LanguageAlternates Component Documentation}
+ */
+export const LanguageAlternates = _LanguageAlternates;
+export type LanguageAlternatesProps = ComponentProps<typeof LanguageAlternates>;
 
 /**
  * @summary Renders a `<link rel="manifest">` tag for web app metadata.
@@ -349,6 +262,7 @@ export const Icons = _Icons;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/manifest MDN rel="manifest" reference}
  */
 export const Manifest = _Manifest;
+export type ManifestProps = ComponentProps<typeof Manifest>;
 
 /**
  * @summary Renders Open Graph meta tags for social sharing.
@@ -379,6 +293,63 @@ export const Manifest = _Manifest;
  * @see {@link https://developers.facebook.com/docs/sharing/webmasters Open Graph markup guide}
  */
 export const OpenGraph = _OpenGraph;
+export type OpenGraphProps = ComponentProps<typeof OpenGraph>;
+
+/**
+ * @summary Renders a robots directives meta tag.
+ * @description
+ * Supports two mutually exclusive modes: pass a raw `content` string directly,
+ * or pass directive props that are serialized into a single
+ * `<meta name="robots">` content string. In directive mode, undefined and
+ * `false` values are omitted, `true` values render as bare directives, and
+ * numeric/string values render as `directive:value`.
+ *
+ * @example
+ * <Robots content="noindex, nofollow" />
+ *
+ * @example
+ * <Robots noindex nofollow />
+ * @example
+ * <Robots noindex unavailable_after="25 Jun 2026 15:00:00 PST" max-snippet={50} />
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/robots Robots Component Documentation}
+ * @see {@link https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag Google robots meta tag reference}
+ */
+export const Robots = _Robots;
+export type RobotsProps = ComponentProps<typeof Robots>;
+
+/**
+ * @summary Renders theme color meta tags for browser UI theming.
+ * @description
+ * Supports either a single `content` value for all color schemes, or a pair of
+ * `light` and `dark` values for scheme-specific theming. The two modes are
+ * mutually exclusive.
+ *
+ * @example
+ * <ThemeColor content="#ffffff" />
+ * @example
+ * <ThemeColor light="#ffffff" dark="#111111" />
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/theme-color ThemeColor Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/theme-color MDN theme-color reference}
+ */
+export const ThemeColor = _ThemeColor;
+export type ThemeColorProps = ComponentProps<typeof ThemeColor>;
+
+/**
+ * @summary Renders a `<title>` tag with optional template formatting.
+ * @description
+ * Outputs the document `<title>` tag using the provided `value`. An optional
+ * `template` prop containing a `%s` placeholder is replaced with `value` at
+ * render time, enabling site-wide suffix or prefix patterns.
+ *
+ * @example
+ * <Title value="Home" template="%s | My Site" />
+ * @example
+ * <Title value="Home" />
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/title Title Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title MDN title element reference}
+ */
+export const Title = _Title;
+export type TitleProps = ComponentProps<typeof Title>;
 
 /**
  * @summary Renders site verification meta tags for search providers.
@@ -395,3 +366,21 @@ export const OpenGraph = _OpenGraph;
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta MDN meta element reference}
  */
 export const Verification = _Verification;
+export type VerificationProps = ComponentProps<typeof Verification>;
+
+/**
+ * @summary Renders a responsive viewport meta tag.
+ * @description
+ * Outputs the `<meta name="viewport">` tag in your `<head>`. If no `content`
+ * prop is provided, it defaults to `width=device-width, initial-scale=1`.
+ *
+ * @example
+ * <Viewport content="width=device-width, initial-scale=1" />
+ * @example
+ * <Viewport />
+ *
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/viewport Viewport Component Documentation}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-meta-viewport MDN viewport meta tag reference}
+ */
+export const Viewport = _Viewport;
+export type ViewportProps = ComponentProps<typeof Viewport>;
