@@ -104,7 +104,8 @@ function getErrorMessage(error: unknown): string {
 
 async function loadSharp(logger: IntegrationRuntimeContext["logger"]) {
 	try {
-		const module = await import("sharp");
+		const sharpModuleId = "sharp";
+		const module = await import(sharpModuleId);
 		return module.default;
 	} catch (error) {
 		logger.error(
@@ -116,7 +117,8 @@ async function loadSharp(logger: IntegrationRuntimeContext["logger"]) {
 
 async function loadSharpsToIco(logger: IntegrationRuntimeContext["logger"]) {
 	try {
-		const module = await import("sharp-ico");
+		const sharpIcoModuleId = "sharp-ico";
+		const module = await import(sharpIcoModuleId);
 		return module.sharpsToIco;
 	} catch (error) {
 		logger.error(
