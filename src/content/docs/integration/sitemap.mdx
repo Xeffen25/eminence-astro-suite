@@ -1,0 +1,81 @@
+---
+title: Sitemap - Integration
+description: Documentation for the sitemap integration feature, focused on delegating sitemap generation to @astrojs/sitemap. It requires the peer package to be installed and supports all upstream options.
+---
+
+The sitemap feature delegates sitemap generation to [`@astrojs/sitemap`](https://docs.astro.build/en/guides/integrations-guide/sitemap/), Astro's official sitemap integration. Eminence Astro Suite registers it automatically when `sitemap` is configured, so you do not need to add it separately to your `astro.config.mjs`.
+
+You must install `@astrojs/sitemap` as a peer dependency. If it is not installed and `sitemap` is not set to `false`, the integration throws an error at build time with a clear installation message.
+
+## Options
+
+The `sitemap` option accepts a `SitemapOptions` object (re-exported from `@astrojs/sitemap`) or `false` to disable it.
+
+| option    | type                      | default                      | description                                                                |
+| --------- | ------------------------- | ---------------------------- | -------------------------------------------------------------------------- |
+| `sitemap` | `SitemapOptions \| false` | `{}` (enabled with defaults) | Options forwarded directly to `@astrojs/sitemap`. Pass `false` to opt out. |
+
+See the [`@astrojs/sitemap` documentation](https://docs.astro.build/en/guides/integrations-guide/sitemap/) for the full list of supported options.
+
+## Usage & Examples
+
+### Basic usage
+
+Enables sitemap generation with default options. Requires `site` to be set in your Astro config.
+
+```ts
+// astro.config.mjs
+eminence({
+	sitemap: {},
+});
+```
+
+### With options
+
+```ts
+eminence({
+	sitemap: {
+		filter: (page) => !page.includes("/private/"),
+		changefreq: "weekly",
+		priority: 0.8,
+		lastmod: new Date(),
+	},
+});
+```
+
+### Explicit opt-out
+
+```ts
+eminence({
+	sitemap: false,
+});
+```
+
+No sitemap integration is registered and no error is thrown if `@astrojs/sitemap` is not installed.
+
+### Omitting the option
+
+Omitting `sitemap` entirely is equivalent to `sitemap: {}` — the feature is enabled with default options. If `@astrojs/sitemap` is not installed, the build will fail with a peer dependency error.
+
+## Decisions Made
+
+### Delegates entirely to `@astrojs/sitemap`
+
+Rather than reimplementing sitemap generation, the integration wraps `@astrojs/sitemap` directly. This means all upstream features, bug fixes, and options are available without any additional maintenance surface in this package.
+
+### `@astrojs/sitemap` is a required peer
+
+The package is not bundled so consumers manage its version independently. This avoids version conflicts when a project already uses `@astrojs/sitemap` elsewhere, and keeps the dependency graph explicit.
+
+### Registered during `astro:config:setup`
+
+The sitemap integration is injected via `updateConfig({ integrations: [...] })` in the `astro:config:setup` hook. This ensures proper ordering and compatibility with Astro's integration pipeline.
+
+### Setting `false` disables the peer requirement
+
+When `sitemap: false` is passed, the integration does not attempt to import `@astrojs/sitemap`, so the peer package does not need to be installed.
+
+## Reference
+
+- [@astrojs/sitemap documentation](https://docs.astro.build/en/guides/integrations-guide/sitemap/)
+- [Sitemaps.org protocol](https://www.sitemaps.org/protocol.html)

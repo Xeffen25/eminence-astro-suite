@@ -1,0 +1,82 @@
+---
+title: humans.txt - Integration
+description: Documentation for the humans.txt integration feature, focused on validating the presence of a humans.txt file in the build output. It does not generate the file and relies on it being placed in the public directory.
+---
+
+The humans.txt integration feature validates that a `humans.txt` file is present in your build output after `astro build` completes. It does not generate the file — you are responsible for placing it in your `public/` directory so Astro copies it to the build output automatically.
+
+If `head.humansTxt` is omitted from your integration config, a warning is logged recommending you add it. If a `humans.txt` file is not found in the build output, a warning is also logged.
+
+The `HumansTxt` component handles the `<link rel="author">` tag in your document head and is configured separately.
+
+## Options
+
+The humans.txt validation behavior is controlled by the `head.humansTxt` option on the integration. This option is shared with the `HumansTxt` component's default resolution.
+
+| option           | type                     | default | description                                                                                   |
+| ---------------- | ------------------------ | ------- | --------------------------------------------------------------------------------------------- |
+| `head.humansTxt` | `string \| URL \| false` | -       | URL for the humans.txt link tag. Pass `false` to opt out of the link tag and skip validation. |
+
+## Usage & Examples
+
+### Basic usage
+
+Place `humans.txt` in your `public/` directory and configure the integration with the URL.
+
+```txt
+// public/humans.txt
+/* TEAM */
+Developer: Jane Smith
+Contact: jane@example.com
+Location: Paris, France
+
+/* SITE */
+Last update: 2026-04-24
+Language: English
+```
+
+```ts
+// astro.config.mjs
+eminence({
+	head: {
+		humansTxt: "https://example.com/humans.txt",
+	},
+});
+```
+
+At build time, the integration confirms that `humans.txt` exists in the build output.
+
+### Explicit opt-out
+
+```ts
+eminence({
+	head: {
+		humansTxt: false,
+	},
+});
+```
+
+No validation is performed and no `<link rel="author">` tag is injected by the `HumansTxt` component.
+
+## Decisions Made
+
+### Validation only, no generation
+
+The integration does not write a `humans.txt` file. The file must be provided in `public/` so Astro includes it in the build output as a static asset. The integration only checks for its presence and warns if it is missing.
+
+### Warning on missing file, not error
+
+A missing `humans.txt` in the build output is treated as a warning rather than a fatal error. This avoids blocking the build for a non-critical file while still surfacing the issue.
+
+### Shares configuration with the `HumansTxt` component
+
+The `head.humansTxt` option controls both the link tag rendered by the `HumansTxt` component and the integration validation. Setting it to `false` disables both.
+
+### Setting `false` is the explicit opt-out
+
+Passing `head.humansTxt: false` disables both the link tag and the build-time validation. Omitting it entirely logs a recommendation warning.
+
+## Reference
+
+- [Humans.txt Standard](https://humanstxt.org/)
+- [MDN: link rel="author"](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#author)

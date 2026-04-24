@@ -1,0 +1,122 @@
+---
+title: security.txt - Integration
+description: Documentation for the security.txt integration feature, focused on generating a /.well-known/security.txt file at build time. It validates required fields and supports flexible expiry formats.
+---
+
+The security.txt feature generates a `/.well-known/security.txt` file in your build output during `astro build`. It is configured through the `securityTxt` option on the integration and follows the [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116) security disclosure standard.
+
+If `securityTxt` is omitted from your integration config, a warning is logged recommending you add it. If `securityTxt: false` is set, no file is generated and no warning is logged.
+
+## Options
+
+### `SecurityTxtOptions`
+
+| option               | type                                           | default | required | description                                                                                     |
+| -------------------- | ---------------------------------------------- | ------- | -------- | ----------------------------------------------------------------------------------------------- |
+| `contact`            | `string \| string[]`                           | -       | Yes      | Contact address(es). Each must be a `mailto:` address or an `https://` URL.                     |
+| `expires`            | `Date \| string \| SecurityTxtExpiresDuration` | -       | Yes      | Expiry for the disclosure policy. Accepts a Date, ISO 8601 string, or duration like `"1 year"`. |
+| `encryption`         | `string \| string[]`                           | -       | No       | HTTPS URL(s) to a PGP key or encryption information.                                            |
+| `acknowledgments`    | `string \| string[]`                           | -       | No       | HTTPS URL(s) to a page acknowledging security reporters.                                        |
+| `preferredLanguages` | `string \| string[]`                           | -       | No       | BCP 47 language tag(s) for the preferred language(s) of security reports.                       |
+| `canonical`          | `string \| string[]`                           | -       | No       | HTTPS URL(s) to the canonical location of this security.txt file.                               |
+| `policy`             | `string \| string[]`                           | -       | No       | HTTPS URL(s) to the security disclosure policy.                                                 |
+| `hiring`             | `string \| string[]`                           | -       | No       | HTTPS URL(s) to security-related job listings.                                                  |
+| `csaf`               | `string \| string[]`                           | -       | No       | HTTPS URL(s) to a CSAF provider metadata file.                                                  |
+
+### `SecurityTxtExpiresDuration`
+
+A human-readable relative duration string in the form `"N unit"`, where `unit` is one of: `day`, `days`, `month`, `months`, `year`, `years`.
+
+Examples: `"30 days"`, `"6 months"`, `"1 year"`.
+
+## Usage & Examples
+
+### Basic usage
+
+```ts
+// astro.config.mjs
+eminence({
+	securityTxt: {
+		contact: "mailto:security@example.com",
+		expires: "1 year",
+	},
+});
+```
+
+Output at `/.well-known/security.txt`:
+
+```txt
+Contact: mailto:security@example.com
+Expires: 2027-04-24T00:00:00.000Z
+```
+
+### With multiple contacts and policy
+
+```ts
+eminence({
+	securityTxt: {
+		contact: ["mailto:security@example.com", "https://example.com/security"],
+		expires: "6 months",
+		policy: "https://example.com/security-policy",
+		preferredLanguages: ["en", "fr"],
+	},
+});
+```
+
+Output:
+
+```txt
+Contact: mailto:security@example.com
+Contact: https://example.com/security
+Expires: 2026-10-24T00:00:00.000Z
+Preferred-Languages: en, fr
+Policy: https://example.com/security-policy
+```
+
+### With explicit Date expiry
+
+```ts
+eminence({
+	securityTxt: {
+		contact: "mailto:security@example.com",
+		expires: new Date("2027-01-01T00:00:00Z"),
+	},
+});
+```
+
+### Explicit opt-out
+
+```ts
+eminence({
+	securityTxt: false,
+});
+```
+
+No file is generated and no warning is logged.
+
+## Decisions Made
+
+### `contact` requires a `mailto:` address or `https://` URL
+
+Raw strings without a scheme or with `http://` are rejected at build time. This enforces the RFC 9116 requirement that contact values be actionable and verifiable.
+
+### All URL fields require HTTPS
+
+`encryption`, `acknowledgments`, `canonical`, `policy`, `hiring`, and `csaf` only accept `https://` URLs. HTTP URLs are rejected with an error. This matches the RFC 9116 requirement that these fields use secure URLs.
+
+### `expires` accepts three formats
+
+You can pass a JavaScript `Date` object, an ISO 8601 date string, or a human-readable duration string like `"30 days"`. The duration is resolved relative to the time of the build. All formats are normalized to an ISO 8601 string in the output.
+
+### `preferredLanguages` is joined as a comma-separated list
+
+Multiple language tags are combined into a single `Preferred-Languages` line, matching the RFC 9116 format rather than emitting one line per tag.
+
+### Setting `false` is the explicit opt-out
+
+Passing `securityTxt: false` disables the feature cleanly. Omitting `securityTxt` logs a recommendation warning so new projects are nudged to make an intentional choice.
+
+## Reference
+
+- [RFC 9116: security.txt specification](https://www.rfc-editor.org/rfc/rfc9116)
+- [securitytxt.org](https://securitytxt.org/)

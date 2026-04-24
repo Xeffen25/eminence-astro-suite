@@ -1,0 +1,165 @@
+---
+title: Icons - Integration
+description: Documentation for the icons integration feature, focused on generating favicon and app icon files at build time from a single source image. It supports default icon sets, per-icon overrides, custom generation, and custom link tags.
+---
+
+The icons feature generates favicon and app icon files in your build output during `astro build`. It derives all icons from a single source image using `sharp` for raster conversion and `sharp-ico` for `.ico` generation. Generated icon tags are injected into the virtual config so the `Icons` component can reference them in your document head.
+
+`sharp` is a required peer dependency. If it is not installed, the build will fail.
+
+## Options
+
+### `IconsOptions`
+
+| option             | type                 | default | required | description                                                                                       |
+| ------------------ | -------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------- |
+| `source`           | `string \| false`    | -       | No       | Path to the source image to generate icons from. Pass `false` to skip generation without warning. |
+| `overrides`        | `IconsOverrides`     | -       | No       | Per-icon overrides to replace or disable individual generated icons.                              |
+| `customGeneration` | `GeneratedIconTag[]` | -       | No       | Additional icons to generate from the source image with custom sizing and format.                 |
+| `customTags`       | `IconTag[]`          | -       | No       | Additional link tags to inject as-is without generating any files.                                |
+
+### `IconsOverrides`
+
+Each key in `overrides` maps to one of the default icons. Pass a file path string to replace the source for that icon, or `false` to skip generating it.
+
+| key              | default output file    | description                               |
+| ---------------- | ---------------------- | ----------------------------------------- |
+| `ico`            | `favicon.ico`          | Multi-size `.ico` file (16, 32, 48 px).   |
+| `svg`            | `favicon.svg`          | SVG copy (only generated for SVG source). |
+| `png32`          | `favicon.png`          | 32×32 PNG.                                |
+| `png48`          | `favicon-48x48.png`    | 48×48 PNG.                                |
+| `png192`         | `icon-192x192.png`     | 192×192 PNG.                              |
+| `png512`         | `icon.png`             | 512×512 PNG.                              |
+| `appleTouchIcon` | `apple-touch-icon.png` | 180×180 PNG for Apple devices.            |
+
+### `GeneratedIconTag`
+
+| field      | type                                                    | required | description                               |
+| ---------- | ------------------------------------------------------- | -------- | ----------------------------------------- |
+| `rel`      | `string`                                                | Yes      | The `rel` attribute for the link tag.     |
+| `fileName` | `string`                                                | Yes      | Output file name in the build directory.  |
+| `size`     | `number`                                                | Yes      | Pixel size to resize the source image to. |
+| `format`   | `"png" \| "jpg" \| "jpeg" \| "gif" \| "webp" \| "avif"` | Yes      | Output image format.                      |
+| `sizes`    | `string`                                                | No       | The `sizes` attribute for the link tag.   |
+| `type`     | `string`                                                | No       | The `type` attribute for the link tag.    |
+| `media`    | `"light" \| "dark" \| string`                           | No       | The `media` attribute for the link tag.   |
+
+### `IconTag`
+
+| field   | type                          | required | description                             |
+| ------- | ----------------------------- | -------- | --------------------------------------- |
+| `rel`   | `string`                      | Yes      | The `rel` attribute for the link tag.   |
+| `href`  | `string`                      | Yes      | The `href` attribute for the link tag.  |
+| `sizes` | `string`                      | No       | The `sizes` attribute for the link tag. |
+| `type`  | `string`                      | No       | The `type` attribute for the link tag.  |
+| `media` | `"light" \| "dark" \| string` | No       | The `media` attribute for the link tag. |
+
+## Usage & Examples
+
+### Basic usage
+
+Generates the full default icon set from a source SVG or PNG.
+
+```ts
+// astro.config.mjs
+eminence({
+	icons: {
+		source: "src/assets/logo.svg",
+	},
+});
+```
+
+Default output files:
+
+| file                   | size       |
+| ---------------------- | ---------- |
+| `favicon.ico`          | 16/32/48px |
+| `favicon.svg`          | (copy)     |
+| `favicon.png`          | 32×32      |
+| `favicon-48x48.png`    | 48×48      |
+| `apple-touch-icon.png` | 180×180    |
+| `icon-192x192.png`     | 192×192    |
+| `icon.png`             | 512×512    |
+
+### Disabling individual icons
+
+```ts
+eminence({
+	icons: {
+		source: "src/assets/logo.svg",
+		overrides: {
+			ico: false,
+			png48: false,
+		},
+	},
+});
+```
+
+### Adding custom sizes
+
+```ts
+eminence({
+	icons: {
+		source: "src/assets/logo.svg",
+		customGeneration: [
+			{
+				rel: "icon",
+				fileName: "icon-256x256.png",
+				size: 256,
+				format: "png",
+				type: "image/png",
+				sizes: "256x256",
+			},
+		],
+	},
+});
+```
+
+### Adding custom tags without generation
+
+```ts
+eminence({
+	icons: {
+		source: "src/assets/logo.svg",
+		customTags: [{ rel: "mask-icon", href: "/safari-pinned-tab.svg" }],
+	},
+});
+```
+
+### Explicit opt-out
+
+```ts
+eminence({
+	icons: false,
+});
+```
+
+No icons are generated and no warning is logged.
+
+## Decisions Made
+
+### Single source image for all outputs
+
+All default and custom icons are derived from one source file. This ensures visual consistency across icon sizes without requiring multiple source assets.
+
+### SVG source files are copied, not rasterized for SVG output
+
+When the source is an SVG, the `favicon.svg` output is a direct copy. Rasterized formats (PNG, ICO) are still generated from the SVG via `sharp`. This preserves the original SVG fidelity for browsers that support it.
+
+### ICO files contain multiple sizes
+
+`favicon.ico` is generated with 16, 32, and 48 pixel variants embedded using `sharp-ico`. This provides broad legacy browser compatibility from a single file.
+
+### Omitting `source` logs a warning
+
+If `icons` is configured but `source` is not set, the integration logs a warning recommending you provide a source path or set `source: false` to suppress generation explicitly.
+
+### Setting `false` at either level is opt-out
+
+Both `icons: false` (disables the whole feature) and `source: false` (skips file generation but keeps tag injection) are valid opt-outs. This allows projects to manage icon files manually while still using the `Icons` component.
+
+## Reference
+
+- [MDN: link rel="icon"](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#icon)
+- [W3C: Web App Manifest icons](https://www.w3.org/TR/appmanifest/#icons-member)
+- [sharp documentation](https://sharp.pixelplumbing.com/)

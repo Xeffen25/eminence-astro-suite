@@ -1,0 +1,126 @@
+---
+title: robots.txt - Integration
+description: Documentation for the robots.txt integration feature, focused on generating a robots.txt file at build time. It accepts crawl rules, sitemap references, and supports explicit opt-out.
+---
+
+The robots.txt feature generates a `/robots.txt` file in your build output during `astro build`. It is configured through the `robotsTxt` option on the integration and does not affect the `<meta name="robots">` tag, which is handled by the `Robots` component.
+
+If a `robots.txt` file already exists in the build output, generation is skipped and a warning is logged. If `robotsTxt` is omitted from your integration config, a warning is logged recommending you add it.
+
+## Options
+
+### `RobotsTxtOptions`
+
+| option    | type                               | default | required | description                                                             |
+| --------- | ---------------------------------- | ------- | -------- | ----------------------------------------------------------------------- |
+| `rules`   | `RobotsTxtRule \| RobotsTxtRule[]` | -       | Yes      | One or more crawl rules defining agent access.                          |
+| `sitemap` | `string \| string[]`               | -       | No       | Absolute URL(s) or site-relative path(s) to include as Sitemap entries. |
+
+### `RobotsTxtRule`
+
+| option       | type                 | default | required | description                                                  |
+| ------------ | -------------------- | ------- | -------- | ------------------------------------------------------------ |
+| `agent`      | `string \| string[]` | -       | Yes      | One or more user-agent names. Must be non-empty.             |
+| `allow`      | `string \| string[]` | -       | No       | Path(s) to allow. Each must start with `/`.                  |
+| `disallow`   | `string \| string[]` | -       | No       | Path(s) to disallow. Each must start with `/`.               |
+| `noindex`    | `string \| string[]` | -       | No       | Path(s) for the Noindex directive. Each must start with `/`. |
+| `cleanParam` | `string \| string[]` | -       | No       | Query parameter(s) for the Clean-param directive.            |
+| `crawlDelay` | `number`             | -       | No       | Non-negative crawl delay in seconds.                         |
+
+## Usage & Examples
+
+### Basic usage
+
+```ts
+// astro.config.mjs
+eminence({
+	robotsTxt: {
+		rules: {
+			agent: "*",
+			disallow: "/private/",
+		},
+	},
+});
+```
+
+Output at `/robots.txt`:
+
+```txt
+User-agent: *
+Disallow: /private/
+```
+
+### With multiple rules
+
+```ts
+eminence({
+	robotsTxt: {
+		rules: [
+			{ agent: "*", disallow: "/" },
+			{ agent: "Googlebot", allow: "/" },
+		],
+	},
+});
+```
+
+Output:
+
+```txt
+User-agent: *
+Disallow: /
+
+User-agent: Googlebot
+Allow: /
+```
+
+### With sitemap reference
+
+```ts
+eminence({
+	robotsTxt: {
+		rules: { agent: "*" },
+		sitemap: "/sitemap-index.xml",
+	},
+});
+```
+
+Output (assuming `site` is `https://example.com`):
+
+```txt
+User-agent: *
+
+Sitemap: https://example.com/sitemap-index.xml
+```
+
+### Explicit opt-out
+
+```ts
+eminence({
+	robotsTxt: false,
+});
+```
+
+No file is generated and no warning is logged.
+
+## Decisions Made
+
+### Existing file is never overwritten
+
+If a `robots.txt` already exists in the build output when `astro build` runs, the integration skips generation and logs a warning. This avoids silently clobbering a manually maintained file.
+
+### Relative sitemap values require `site` to be configured
+
+Relative sitemap paths are resolved against `Astro.config.site`. If `site` is not set, the integration throws an error rather than producing a broken absolute URL.
+
+### All path directives must start with `/`
+
+`allow`, `disallow`, and `noindex` values are validated to start with `/`. This mirrors the robots.txt specification requirement and surfaces misconfiguration at build time rather than at crawl time.
+
+### Setting `false` is the explicit opt-out
+
+Passing `robotsTxt: false` disables the feature cleanly. Omitting `robotsTxt` logs a recommendation warning so new projects are nudged to make an intentional choice.
+
+## Reference
+
+- [Google: robots.txt specification](https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt)
+- [RFC: Robots Exclusion Protocol](https://www.rfc-editor.org/rfc/rfc9309)
