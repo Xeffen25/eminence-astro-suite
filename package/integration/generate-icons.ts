@@ -2,8 +2,6 @@ import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import sharp from "sharp";
-import { sharpsToIco } from "sharp-ico";
 import type { IntegrationRuntimeContext } from "../integration";
 import { isSvg } from "../utils";
 
@@ -96,19 +94,58 @@ function validateSource(sourceFile: string): { isValid: boolean; isSvg: boolean;
 	};
 }
 
-async function writeIcon(outputDir: string, sourceFile: string, icon: GeneratedIconTag): Promise<void> {
+function getErrorMessage(error: unknown): string {
+	if (error instanceof Error) {
+		return error.message;
+	}
+
+	return String(error);
+}
+
+async function loadSharp(logger: IntegrationRuntimeContext["logger"]) {
+	try {
+		const module = await import("sharp");
+		return module.default;
+	} catch (error) {
+		logger.error(
+			`Icon generation skipped because optional dependency \"sharp\" could not be loaded: ${getErrorMessage(error)}. Install it with \"pnpm add sharp\" (or \"npm install sharp\").`,
+		);
+		return null;
+	}
+}
+
+async function loadSharpsToIco(logger: IntegrationRuntimeContext["logger"]) {
+	try {
+		const module = await import("sharp-ico");
+		return module.sharpsToIco;
+	} catch (error) {
+		logger.error(
+			`favicon.ico was not generated because optional dependency \"sharp-ico\" could not be loaded: ${getErrorMessage(error)}. Install it with \"pnpm add sharp-ico\" (or \"npm install sharp-ico\").`,
+		);
+		return null;
+	}
+}
+
+async function writeIcon(
+	outputDir: string,
+	sourceFile: string,
+	icon: GeneratedIconTag,
+	sharp: NonNullable<Awaited<ReturnType<typeof loadSharp>>>,
+): Promise<void> {
 	const outputPath = join(outputDir, icon.fileName);
 	await mkdir(dirname(outputPath), { recursive: true });
 
-	const buffer = await sharp(sourceFile)
-		.resize(icon.size, icon.size)
-		.toFormat(icon.format as keyof sharp.FormatEnum)
-		.toBuffer();
+	const buffer = await sharp(sourceFile).resize(icon.size, icon.size).toFormat(icon.format).toBuffer();
 
 	await writeFile(outputPath, buffer);
 }
 
-async function writeFaviconIco(outputDir: string, sourceFile: string): Promise<void> {
+async function writeFaviconIco(
+	outputDir: string,
+	sourceFile: string,
+	sharp: NonNullable<Awaited<ReturnType<typeof loadSharp>>>,
+	sharpsToIco: NonNullable<Awaited<ReturnType<typeof loadSharpsToIco>>>,
+): Promise<void> {
 	const outputPath = join(outputDir, "favicon.ico");
 	await mkdir(dirname(outputPath), { recursive: true });
 
@@ -155,10 +192,6 @@ export async function generateIcons({ dir, options, logger }: IntegrationRuntime
 		await writeFile(outputPath, await readFile(resolvedSource));
 	}
 
-	if (icons.overrides?.ico === undefined) {
-		await writeFaviconIco(outputDir, resolvedSource);
-	}
-
 	const iconsToGenerate: GeneratedIconTag[] = [];
 	const overrides = icons.overrides ?? {};
 
@@ -176,7 +209,26 @@ export async function generateIcons({ dir, options, logger }: IntegrationRuntime
 		iconsToGenerate.push(customIcon);
 	}
 
+	const shouldGenerateIco = icons.overrides?.ico === undefined;
+	const shouldGenerateRasterIcons = iconsToGenerate.length > 0;
+
+	if (!shouldGenerateIco && !shouldGenerateRasterIcons) {
+		return;
+	}
+
+	const sharp = await loadSharp(logger);
+	if (!sharp) {
+		return;
+	}
+
+	if (shouldGenerateIco) {
+		const sharpsToIco = await loadSharpsToIco(logger);
+		if (sharpsToIco) {
+			await writeFaviconIco(outputDir, resolvedSource, sharp, sharpsToIco);
+		}
+	}
+
 	for (const icon of iconsToGenerate) {
-		await writeIcon(outputDir, resolvedSource, icon);
+		await writeIcon(outputDir, resolvedSource, icon, sharp);
 	}
 }
