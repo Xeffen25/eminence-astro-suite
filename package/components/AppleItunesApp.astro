@@ -3,13 +3,26 @@ import clientHeadConfig from "virtual:eminence-astro-suite/config";
 
 import { hasAnyProp } from "../utils";
 
-interface Props {
-	id?: string;
+interface Content {
+	content: string;
+	id: never;
+	argument: never;
+}
+
+interface IdArgument {
+	content: never;
+	id: string;
 	argument?: string;
 }
 
-const { id, argument } = (hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.appleItunesApp ?? {})) as Props;
+type Props = Content | IdArgument;
+
+const { id, argument, content } = (
+	hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.appleItunesApp ?? {})
+) as Props;
 ---
+
+{content && <meta name="apple-itunes-app" content={content} />}
 
 {
 	id && (

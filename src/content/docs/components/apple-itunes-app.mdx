@@ -10,6 +10,16 @@ AppleItunesApp renders the `<meta name="apple-itunes-app">` tag that iOS Safari 
 
 ## Props
 
+**Use either `content` OR `id`/`argument`, not both.**
+
+### Option 1: Direct content
+
+| prop      | type     | default | required | description                                                                             |
+| --------- | -------- | ------- | -------- | --------------------------------------------------------------------------------------- |
+| `content` | `string` | -       | No       | Direct content string for the meta tag. When provided, `id` and `argument` are ignored. |
+
+### Option 2: Build from ID and argument
+
 | prop       | type     | default | required | description                                                              |
 | ---------- | -------- | ------- | -------- | ------------------------------------------------------------------------ |
 | `id`       | `string` | -       | No       | The App Store application ID. No tag is rendered when omitted.           |
@@ -61,7 +71,25 @@ Output:
 <meta name="apple-itunes-app" content="app-id=123456789, app-argument=myapp://open" />
 ```
 
+### Direct content
+
+Input:
+
+```astro
+<AppleItunesApp content="app-id=123456789, app-argument=myapp://open" />
+```
+
+Output:
+
+```html
+<meta name="apple-itunes-app" content="app-id=123456789, app-argument=myapp://open" />
+```
+
 ## Decisions Made
+
+### Two mutually exclusive prop patterns
+
+The component accepts either a `content` prop (for direct control) or `id` and `argument` props (for declarative building). These are mutually exclusive—you cannot use both patterns simultaneously. This enforces a clear contract: either you manage the content string yourself, or you let the component build it for you.
 
 ### Only the itunes tag is rendered
 
@@ -73,7 +101,7 @@ The `app-argument` field is omitted from the `content` attribute when no `argume
 
 ### No tag rendered without an id
 
-If `id` is not provided, the component outputs nothing. There is no useful `apple-itunes-app` tag without an App Store application ID.
+If `id` is not provided and no `content` is given, the component outputs nothing. There is no useful `apple-itunes-app` tag without an App Store application ID or direct content.
 
 ## Source code
 

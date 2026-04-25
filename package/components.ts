@@ -24,12 +24,14 @@ import type { ComponentProps } from "astro/types";
 /**
  * @summary Renders an Apple iTunes Smart App Banner meta tag.
  * @description
- * Outputs an `apple-itunes-app` meta tag used by iOS Safari to display a Smart App Banner linking to an App Store application.
+ * Outputs an `apple-itunes-app` meta tag used by iOS Safari to display a Smart App Banner linking to an App Store application. Supports both direct `content` prop or building from `id` and `argument` props.
  *
  * @example
  * <AppleItunesApp id="123456789" />
  * @example
  * <AppleItunesApp id="123456789" argument="myapp://open" />
+ * @example
+ * <AppleItunesApp content="app-id=123456789, app-argument=myapp://open" />
  *
  * @see {@link https://eminence-astro-suite.xeffen25.com/components/apple-itunes-app AppleItunesApp Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name MDN Meta name reference}
