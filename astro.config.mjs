@@ -21,6 +21,10 @@ export default defineConfig({
 					autogenerate: { directory: "components" },
 				},
 				{
+					label: "Integration",
+					autogenerate: { directory: "integrations" },
+				},
+				{
 					label: "Policies",
 					autogenerate: { directory: "policies" },
 				},
