@@ -13,6 +13,9 @@
 		"sharp-ico": ">=0.1.5"
 	},
 	"peerDependenciesMeta": {
+		"astro": {
+			"optional": false
+		},
 		"@astrojs/sitemap": {
 			"optional": true
 		},

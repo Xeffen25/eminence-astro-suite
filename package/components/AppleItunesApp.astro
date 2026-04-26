@@ -15,7 +15,14 @@ interface IdArgument {
 	argument?: string;
 }
 
-type Props = Content | IdArgument;
+type Props =
+	| Content
+	| IdArgument
+	| {
+			content?: never;
+			id?: never;
+			argument?: never;
+	  };
 
 const { id, argument, content } = (
 	hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.appleItunesApp ?? {})
