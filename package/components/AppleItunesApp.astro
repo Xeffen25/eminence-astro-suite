@@ -5,12 +5,12 @@ import { hasAnyProp } from "../utils";
 
 interface Content {
 	content: string;
-	id: never;
-	argument: never;
+	id?: never;
+	argument?: never;
 }
 
 interface IdArgument {
-	content: never;
+	content?: never;
 	id: string;
 	argument?: string;
 }
