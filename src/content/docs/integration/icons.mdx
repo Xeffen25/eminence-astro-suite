@@ -11,12 +11,13 @@ The icons feature generates favicon and app icon files in your build output duri
 
 ### `IconsOptions`
 
-| option             | type                 | default | required | description                                                                                       |
-| ------------------ | -------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------- |
-| `source`           | `string \| false`    | -       | No       | Path to the source image to generate icons from. Pass `false` to skip generation without warning. |
-| `overrides`        | `IconsOverrides`     | -       | No       | Per-icon overrides to replace or disable individual generated icons.                              |
-| `customGeneration` | `GeneratedIconTag[]` | -       | No       | Additional icons to generate from the source image with custom sizing and format.                 |
-| `customTags`       | `IconTag[]`          | -       | No       | Additional link tags to inject as-is without generating any files.                                |
+| option             | type                   | default | required | description                                                                                                       |
+| ------------------ | ---------------------- | ------- | -------- | ----------------------------------------------------------------------------------------------------------------- |
+| `source`           | `string \| false`      | -       | No       | Path to the source image to generate icons from. Pass `false` to skip generation without warning.                 |
+| `overrides`        | `IconsOverrides`       | -       | No       | Per-icon overrides to replace or disable individual generated icons.                                              |
+| `customGeneration` | `GeneratedIconTag[]`   | -       | No       | Additional icons to generate from the source image with custom sizing and format.                                 |
+| `customTags`       | `IconTag[]`            | -       | No       | Additional link tags to inject as-is without generating any files.                                                |
+| `manifest`         | `IconsManifestOptions` | -       | No       | Controls which generated icons are contributed to `manifest.webmanifest` when the manifest integration is active. |
 
 ### `IconsOverrides`
 
@@ -32,17 +33,45 @@ Each key in `overrides` maps to one of the default icons. Pass a file path strin
 | `png512`         | `icon.png`             | 512×512 PNG.                              |
 | `appleTouchIcon` | `apple-touch-icon.png` | 180×180 PNG for Apple devices.            |
 
+### `IconsManifestOptions`
+
+| field              | type                 | default | required | description                                                                                                                           |
+| ------------------ | -------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `autoUseGenerated` | `boolean`            | `true`  | No       | When `true`, generated icons that carry manifest metadata (by default `png192` and `png512`) are automatically added to the manifest. |
+| `icons`            | `ManifestIconItem[]` | -       | No       | Extra manifest icon entries appended before the auto-generated ones. These are always included regardless of `autoUseGenerated`.      |
+
+### `ManifestIconItem`
+
+| field     | type     | required | description                                                                                                   |
+| --------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------- |
+| `src`     | `string` | Yes      | Path to the icon image file.                                                                                  |
+| `sizes`   | `string` | No       | One or more sizes as space-separated `<width>x<height>` values, for example `"192x192"`, or `"any"` for SVGs. |
+| `type`    | `string` | No       | MIME type of the icon, for example `"image/png"` or `"image/svg+xml"`.                                        |
+| `purpose` | `string` | No       | One or more space-separated purpose keywords: `"any"`, `"maskable"`, `"monochrome"`.                          |
+
 ### `GeneratedIconTag`
 
-| field      | type                                                    | required | description                               |
-| ---------- | ------------------------------------------------------- | -------- | ----------------------------------------- |
-| `rel`      | `string`                                                | Yes      | The `rel` attribute for the link tag.     |
-| `fileName` | `string`                                                | Yes      | Output file name in the build directory.  |
-| `size`     | `number`                                                | Yes      | Pixel size to resize the source image to. |
-| `format`   | `"png" \| "jpg" \| "jpeg" \| "gif" \| "webp" \| "avif"` | Yes      | Output image format.                      |
-| `sizes`    | `string`                                                | No       | The `sizes` attribute for the link tag.   |
-| `type`     | `string`                                                | No       | The `type` attribute for the link tag.    |
-| `media`    | `"light" \| "dark" \| string`                           | No       | The `media` attribute for the link tag.   |
+| field      | type                                                    | required | description                                                                                                                                                                           |
+| ---------- | ------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `rel`      | `string`                                                | Yes      | The `rel` attribute for the link tag.                                                                                                                                                 |
+| `fileName` | `string`                                                | Yes      | Output file name in the build directory.                                                                                                                                              |
+| `size`     | `number`                                                | Yes      | Pixel size to resize the source image to.                                                                                                                                             |
+| `format`   | `"png" \| "jpg" \| "jpeg" \| "gif" \| "webp" \| "avif"` | Yes      | Output image format.                                                                                                                                                                  |
+| `sizes`    | `string`                                                | No       | The `sizes` attribute for the link tag.                                                                                                                                               |
+| `type`     | `string`                                                | No       | The `type` attribute for the link tag.                                                                                                                                                |
+| `media`    | `"light" \| "dark" \| string`                           | No       | The `media` attribute for the link tag.                                                                                                                                               |
+| `manifest` | `ManifestIconOptions \| false`                          | No       | Manifest icon metadata for this generated entry. Set to an object to include it in the manifest, `false` to exclude it. Omitting this field also excludes the icon from the manifest. |
+
+### `ManifestIconOptions`
+
+Used on `GeneratedIconTag.manifest` to define the manifest icon entry produced by a custom generated icon. All fields are optional; omitted fields are derived from the generated icon where possible.
+
+| field     | type     | required | description                                                                         |
+| --------- | -------- | -------- | ----------------------------------------------------------------------------------- |
+| `src`     | `string` | No       | Override the `src` written to the manifest. Defaults to `/${fileName}`.             |
+| `sizes`   | `string` | No       | Override the `sizes` written to the manifest. Defaults to the icon's `sizes` value. |
+| `type`    | `string` | No       | Override the `type` written to the manifest. Defaults to the icon's `type` value.   |
+| `purpose` | `string` | No       | Purpose keyword(s) for this icon: `"any"`, `"maskable"`, `"monochrome"`.            |
 
 ### `IconTag`
 
@@ -126,6 +155,72 @@ eminence({
 });
 ```
 
+### Contributing icons to the manifest
+
+When the manifest integration is also active, icons that carry manifest metadata are automatically included in `manifest.webmanifest`. By default `png192` and `png512` contribute manifest entries. Use `icons.manifest` to add extra entries or to control auto-population.
+
+```ts
+eminence({
+	icons: {
+		source: "src/assets/logo.svg",
+		manifest: {
+			icons: [{ src: "/icon-maskable.png", sizes: "512x512", type: "image/png", purpose: "maskable" }],
+		},
+	},
+	manifest: {
+		name: "My App",
+		start_url: "/",
+		display: "standalone",
+	},
+});
+```
+
+To opt a custom generated icon into the manifest, set `manifest` on its entry:
+
+```ts
+eminence({
+	icons: {
+		source: "src/assets/logo.svg",
+		customGeneration: [
+			{
+				rel: "icon",
+				fileName: "badge.png",
+				size: 96,
+				format: "png",
+				manifest: { purpose: "monochrome" },
+			},
+		],
+	},
+	manifest: {
+		name: "My App",
+		start_url: "/",
+		display: "standalone",
+	},
+});
+```
+
+To disable auto-population and manage manifest icon entries entirely through `icons.manifest.icons`:
+
+```ts
+eminence({
+	icons: {
+		source: "src/assets/logo.svg",
+		manifest: {
+			autoUseGenerated: false,
+			icons: [
+				{ src: "/custom-192.png", sizes: "192x192", type: "image/png" },
+				{ src: "/custom-512.png", sizes: "512x512", type: "image/png" },
+			],
+		},
+	},
+	manifest: {
+		name: "My App",
+		start_url: "/",
+		display: "standalone",
+	},
+});
+```
+
 ### Explicit opt-out
 
 ```ts
@@ -158,8 +253,15 @@ If `icons` is configured but `source` is not set, the integration logs a warning
 
 Both `icons: false` (disables the whole feature) and `source: false` (skips file generation but keeps tag injection) are valid opt-outs. This allows projects to manage icon files manually while still using the `Icons` component.
 
+### Generated icons opt in to manifest inclusion via metadata
+
+Default generated icons do not automatically appear in `manifest.webmanifest`. Only `png192` and `png512` carry built-in manifest metadata, because those are the two sizes Chromium requires for a PWA to be installable. All other default icons (32px, 48px, `apple-touch-icon`) are excluded. Custom generated icons are only included when they explicitly set `manifest: { ... }` on their entry.
+
+This design keeps the manifest icon list intentional and minimal by default while making it easy to extend.
+
 ## Reference
 
 - [MDN: link rel="icon"](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#icon)
 - [W3C: Web App Manifest icons](https://www.w3.org/TR/appmanifest/#icons-member)
 - [sharp documentation](https://sharp.pixelplumbing.com/)
+- [manifest.webmanifest integration](/integration/manifest) — how manifest icons are consumed and how auto-population works
