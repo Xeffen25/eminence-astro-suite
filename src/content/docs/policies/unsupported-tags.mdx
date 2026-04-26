@@ -296,3 +296,28 @@ If your workflow still requires this meta tag for niche tooling, add it manually
 - [MDN: meta name="publisher"](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#publisher)
 - [Schema.org: Organization](https://schema.org/Organization)
 - [Google Search Central: Structured data](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data)
+
+## Sitemap Link Relation
+
+Included tags:
+
+- `<link rel="sitemap" href="...">`
+
+### Reason
+
+While `<link rel="sitemap">` is technically valid HTML, it is not an authoritative sitemap discovery mechanism. The [official Sitemaps.org protocol](https://www.sitemaps.org/protocol.html), agreed upon by Google, Microsoft, and Yahoo, defines only two recognized discovery methods: listing the sitemap URL in `robots.txt` and direct submission via a search engine's webmaster console (such as Google Search Console or Bing Webmaster Tools).
+
+Major crawlers such as Googlebot do not use the `<link rel="sitemap">` tag for discovery. The tag originates from Semantic Web conventions and is occasionally read by third-party site auditing tools, but it provides no benefit for search engine indexing. Adding it to every page's `<head>` would be pure bloat with no practical effect on crawlability.
+
+### Recommended Alternative
+
+Announce your sitemap through the two authoritative methods:
+
+- Add a `Sitemap:` directive to your `robots.txt`: `Sitemap: https://example.com/sitemap-index.xml`
+- Submit your sitemap directly in [Google Search Console](https://search.google.com/search-console) and [Bing Webmaster Tools](https://www.bing.com/webmasters)
+
+### References
+
+- [Sitemaps.org: Informing search engines](https://www.sitemaps.org/protocol.html#informing)
+- [Google Search Central: Build and submit a sitemap](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)
+- [MDN: Link types - sitemap](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#sitemap)
