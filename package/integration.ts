@@ -4,6 +4,8 @@ import type { ClientHeadConfig } from "./integration/virtual-config";
 import type { IconsOptions } from "./integration/generate-icons";
 import { generateIcons } from "./integration/generate-icons";
 import { validateHumansTxtInBuildOutput } from "./integration/humans-txt";
+import type { WebManifestOptions } from "./integration/manifest";
+import { generateManifest } from "./integration/manifest";
 import type { RobotsTxtOptions } from "./integration/robots-txt";
 import { generateRobotsTxt } from "./integration/robots-txt";
 import type { SecurityTxtOptions } from "./integration/security-txt";
@@ -19,6 +21,7 @@ import {
 export type IntegrationInput = {
 	head?: ClientHeadConfig;
 	icons?: IconsOptions | false;
+	manifest?: WebManifestOptions | false;
 	robotsTxt?: RobotsTxtOptions | false;
 	securityTxt?: SecurityTxtOptions | false;
 	sitemap?: SitemapOptions | false;
@@ -73,7 +76,7 @@ export default function createIntegration(options: IntegrationInput = {}): Astro
 			"astro:build:done": async ({ dir, logger }) => {
 				try {
 					if (options.icons !== false) await generateIcons({ config, dir, options, logger });
-
+					if (options.manifest !== false) await generateManifest({ config, dir, options, logger });
 					if (options.robotsTxt !== false) await generateRobotsTxt({ config, dir, options, logger });
 					if (options.securityTxt !== false) await generateSecurityTxt({ config, dir, options, logger });
 					if (options.head?.humansTxt !== false)

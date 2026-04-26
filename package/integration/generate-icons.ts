@@ -17,6 +17,21 @@ export interface GeneratedIconTag extends Omit<IconTag, "href"> {
 	fileName: string;
 	size: number; // Sizes and size are related but size is used for generation while sizes is used for the link tag. For example, size can be 32 but sizes can be "16x16 32x32" or "any" so must keep separate.
 	format: "png" | "jpg" | "jpeg" | "gif" | "webp" | "avif";
+	manifest?: ManifestIconOptions | false;
+}
+
+export interface ManifestIconItem {
+	src: string;
+	sizes?: string;
+	type?: string;
+	purpose?: string;
+}
+
+export interface ManifestIconOptions {
+	src?: string;
+	sizes?: string;
+	type?: string;
+	purpose?: string;
 }
 
 export interface IconsOptions {
@@ -32,6 +47,10 @@ export interface IconsOptions {
 	};
 	customGeneration?: GeneratedIconTag[];
 	customTags?: IconTag[];
+	manifest?: {
+		autoUseGenerated?: boolean;
+		icons?: ManifestIconItem[];
+	};
 }
 
 // Default icons configuration except svg as handled separately due to its unique nature (no resizing needed, just copy).
@@ -67,6 +86,10 @@ const DEFAULT_ICONS = {
 		rel: "icon",
 		type: "image/png",
 		sizes: "192x192",
+		manifest: {
+			sizes: "192x192",
+			type: "image/png",
+		},
 	},
 	png512: {
 		fileName: "icon.png",
@@ -75,8 +98,61 @@ const DEFAULT_ICONS = {
 		rel: "icon",
 		type: "image/png",
 		sizes: "512x512",
+		manifest: {
+			sizes: "512x512",
+			type: "image/png",
+		},
 	},
 } satisfies Record<string, GeneratedIconTag>;
+
+const toManifestIcon = (icon: GeneratedIconTag, src?: string): ManifestIconItem | undefined => {
+	if (icon.manifest === false || icon.manifest === undefined) {
+		return undefined;
+	}
+
+	return {
+		src: icon.manifest.src ?? src ?? `/${icon.fileName}`,
+		sizes: icon.manifest.sizes,
+		type: icon.manifest.type,
+		purpose: icon.manifest.purpose,
+	};
+};
+
+export function resolveManifestIconsFromIconsOptions(icons: IconsOptions | false | undefined): ManifestIconItem[] {
+	if (icons === false || icons === undefined) {
+		return [];
+	}
+
+	const manifestIcons: ManifestIconItem[] = [...(icons.manifest?.icons ?? [])];
+	const autoUseGenerated = icons.manifest?.autoUseGenerated ?? true;
+
+	if (!autoUseGenerated) {
+		return manifestIcons;
+	}
+
+	const overrides = icons.overrides ?? {};
+
+	for (const [key, defaultIcon] of Object.entries(DEFAULT_ICONS)) {
+		const overrideValue = overrides[key as keyof typeof overrides];
+		if (overrideValue === false) {
+			continue;
+		}
+
+		const manifestIcon = toManifestIcon(defaultIcon, typeof overrideValue === "string" ? overrideValue : undefined);
+		if (manifestIcon) {
+			manifestIcons.push(manifestIcon);
+		}
+	}
+
+	for (const customIcon of icons.customGeneration ?? []) {
+		const manifestIcon = toManifestIcon(customIcon);
+		if (manifestIcon) {
+			manifestIcons.push(manifestIcon);
+		}
+	}
+
+	return manifestIcons;
+}
 
 function validateSource(sourceFile: string): { isValid: boolean; isSvg: boolean; error?: string } {
 	const resolvedPath = resolve(sourceFile);

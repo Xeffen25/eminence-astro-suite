@@ -1,5 +1,5 @@
 import type { IntegrationRuntimeContext } from "@package/integration";
-import { generateIcons } from "@package/integration/generate-icons";
+import { generateIcons, resolveManifestIconsFromIconsOptions } from "@package/integration/generate-icons";
 import type { AstroConfig } from "astro";
 import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
@@ -116,5 +116,52 @@ describe("Integration - Generate Icons", () => {
 		);
 
 		expect(existsSync(join(outputDir, "favicon.svg"))).toBe(true);
+	});
+
+	it("resolves manifest icons from default generated entries", () => {
+		const manifestIcons = resolveManifestIconsFromIconsOptions({
+			source: "/icons/source.png",
+		});
+
+		expect(manifestIcons).toEqual([
+			{ src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+			{ src: "/icon.png", sizes: "512x512", type: "image/png" },
+		]);
+	});
+
+	it("uses overrides for default generated manifest icons", () => {
+		const manifestIcons = resolveManifestIconsFromIconsOptions({
+			source: "/icons/source.png",
+			overrides: {
+				png192: "/public/custom-192.png",
+				png512: "/public/custom-512.png",
+			},
+		});
+
+		expect(manifestIcons).toEqual([
+			{ src: "/public/custom-192.png", sizes: "192x192", type: "image/png" },
+			{ src: "/public/custom-512.png", sizes: "512x512", type: "image/png" },
+		]);
+	});
+
+	it("includes custom generation manifest metadata and explicit manifest icons", () => {
+		const manifestIcons = resolveManifestIconsFromIconsOptions({
+			source: "/icons/source.png",
+			manifest: {
+				icons: [{ src: "/extra/icon.svg", type: "image/svg+xml", sizes: "any" }],
+			},
+			customGeneration: [
+				{
+					fileName: "badge.png",
+					size: 96,
+					format: "png",
+					rel: "icon",
+					manifest: { purpose: "maskable" },
+				},
+			],
+		});
+
+		expect(manifestIcons).toContainEqual({ src: "/extra/icon.svg", type: "image/svg+xml", sizes: "any" });
+		expect(manifestIcons).toContainEqual({ src: "/badge.png", purpose: "maskable" });
 	});
 });
