@@ -29,10 +29,13 @@ describe("Integration - WebManifest", () => {
 		vi.useRealTimers();
 	});
 
-	const createContext = (manifest: IntegrationRuntimeContext["options"]["manifest"]): IntegrationRuntimeContext => ({
+	const createContext = (
+		manifest: IntegrationRuntimeContext["options"]["manifest"],
+		extraOptions: Partial<IntegrationRuntimeContext["options"]> = {},
+	): IntegrationRuntimeContext => ({
 		config: { outDir: outDirUrl } as unknown as AstroConfig,
 		dir: outDirUrl,
-		options: { manifest },
+		options: { manifest, ...extraOptions },
 		logger: logger as unknown as IntegrationRuntimeContext["logger"],
 	});
 
@@ -142,6 +145,54 @@ describe("Integration - WebManifest", () => {
 		expect(result).not.toHaveProperty("name");
 		expect(result).not.toHaveProperty("display");
 		expect(logger.info).toHaveBeenCalledWith(`Generated "${WEB_MANIFEST_RELATIVE_PATH}"`);
+	});
+
+	it("auto-populates manifest icons from icons defaults when icons are omitted", async () => {
+		await generateManifest(
+			createContext(
+				{
+					name: "Auto Icons App",
+					start_url: "/",
+					display: "standalone",
+				},
+				{
+					icons: {
+						source: "/assets/logo.png",
+					},
+				},
+			),
+		);
+
+		const raw = await readFile(join(outputDir, "manifest.webmanifest"), "utf-8");
+		const result = JSON.parse(raw);
+
+		expect(result.icons).toEqual([
+			{ src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+			{ src: "/icon.png", sizes: "512x512", type: "image/png" },
+		]);
+	});
+
+	it("prefers explicit manifest icons over auto-populated generated icons", async () => {
+		await generateManifest(
+			createContext(
+				{
+					name: "Explicit Icons App",
+					start_url: "/",
+					display: "standalone",
+					icons: [{ src: "/explicit.png", sizes: "1024x1024", type: "image/png" }],
+				},
+				{
+					icons: {
+						source: "/assets/logo.png",
+					},
+				},
+			),
+		);
+
+		const raw = await readFile(join(outputDir, "manifest.webmanifest"), "utf-8");
+		const result = JSON.parse(raw);
+
+		expect(result.icons).toEqual([{ src: "/explicit.png", sizes: "1024x1024", type: "image/png" }]);
 	});
 
 	it("logs info when manifest is false and file already exists", async () => {

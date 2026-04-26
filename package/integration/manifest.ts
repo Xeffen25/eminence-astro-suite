@@ -3,6 +3,7 @@ import { access, mkdir, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { IntegrationRuntimeContext } from "../integration";
+import { resolveManifestIconsFromIconsOptions } from "./generate-icons";
 
 export type WebManifestIconItem = {
 	src: string;
@@ -70,7 +71,7 @@ type DisplayOrDisplayOverride =
 
 type WebManifestBase = {
 	start_url: string;
-	icons: WebManifestIconItem[];
+	icons?: WebManifestIconItem[];
 	prefer_related_applications?: false;
 	description?: string;
 	background_color?: string;
@@ -97,6 +98,25 @@ export const WEB_MANIFEST_RECOMMENDATION =
 	"Recommendation: follow todo.com/later-create-article to learn why adding a manifest.webmanifest is important.";
 
 export const WEB_MANIFEST_RELATIVE_PATH = "/manifest.webmanifest";
+
+const resolveManifestInput = (
+	input: WebManifestOptions,
+	options: IntegrationRuntimeContext["options"],
+): WebManifestOptions => {
+	if (input.icons !== undefined) {
+		return input;
+	}
+
+	const autoIcons = resolveManifestIconsFromIconsOptions(options.icons);
+	if (autoIcons.length === 0) {
+		return input;
+	}
+
+	return {
+		...input,
+		icons: autoIcons,
+	};
+};
 
 const buildManifest = (options: WebManifestOptions): string => {
 	return `${JSON.stringify(options, null, 2)}\n`;
@@ -153,7 +173,8 @@ export async function generateManifest({ dir, options, logger }: IntegrationRunt
 	}
 
 	try {
-		const content = buildManifest(input);
+		const normalizedInput = resolveManifestInput(input, options);
+		const content = buildManifest(normalizedInput);
 		await mkdir(dirname(outputPath), { recursive: true });
 		await writeFile(outputPath, content, "utf-8");
 		logger.info(`Generated "${WEB_MANIFEST_RELATIVE_PATH}"`);
