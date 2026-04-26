@@ -22,7 +22,7 @@ export default defineConfig({
 				},
 				{
 					label: "Integration",
-					autogenerate: { directory: "integrations" },
+					autogenerate: { directory: "integration" },
 				},
 				{
 					label: "Policies",
