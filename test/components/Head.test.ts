@@ -89,7 +89,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1"><link type="text/plain" rel="author" href="https://example.com/humans.txt">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1"><link rel="author" href="https://example.com/humans.txt" type="text/plain">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 

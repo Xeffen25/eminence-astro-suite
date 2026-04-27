@@ -7,7 +7,7 @@ interface Props {
 	 * @default `${Astro.site}/humans.txt`
 	 * @example "https://example.com/humans.txt"
 	 */
-	href?: string | URL | false;
+	href?: string | URL;
 }
 
 const { href: propHref } = Astro.props;
@@ -15,13 +15,17 @@ const configHref = clientHeadConfig.humansTxt;
 const hrefValue = propHref !== undefined ? propHref : configHref;
 
 const href =
-	hrefValue === false
-		? undefined
-		: hrefValue === undefined || hrefValue === true
-			? Astro.site !== undefined
-				? new URL("/humans.txt", Astro.site)
-				: undefined
-			: hrefValue;
+	hrefValue === undefined || hrefValue === true
+		? Astro.site !== undefined
+			? new URL("/humans.txt", Astro.site)
+			: undefined
+		: hrefValue;
+
+if (href === undefined) {
+	console.error(
+		"[Eminence Astro Suite] Component HumansTxt did not resolve a href so it didn't render. Provide an `href` prop or set `Astro.site` so it can be resolved.",
+	);
+}
 ---
 
-{href && <link type="text/plain" rel="author" href={href} />}
+{href && <link rel="author" href={href} type="text/plain" />}

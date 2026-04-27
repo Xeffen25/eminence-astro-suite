@@ -1,12 +1,14 @@
 ---
 title: Integration Overview
-description: A full reference of all integration options available in Eminence Astro Suite, showing how each feature fits together in a single configuration.
+description: A full reference of all integration features in Eminence Astro Suite, grouped by capability, with notes on recommendations and upcoming features.
 sidebar:
     label: Overview
     order: 1
 ---
 
-The `eminence` integration is configured through a single options object passed to `createIntegration`. Each key maps to a distinct feature. All features are optional and can be disabled by passing `false`. Omitting a feature key logs a recommendation warning where applicable.
+import { Aside, Badge, Card, CardGrid } from "@astrojs/starlight/components";
+
+The `eminence` integration is configured through a single options object. Each key maps to a distinct feature grouped by capability: file generation, icon generation, and global head tag defaults. All features are optional and can be disabled by passing `false`. Omitting a feature key logs a recommendation warning where applicable.
 
 ```ts
 // astro.config.mjs
@@ -17,8 +19,11 @@ export default defineConfig({
 	site: "https://example.com",
 	integrations: [
 		eminence({
+			// Global head tag defaults (virtual config module)
 			head: { ... },
+			// Icon generation from a source image
 			icons: { ... },
+			// File generation
 			manifest: { ... },
 			robotsTxt: { ... },
 			securityTxt: { ... },
@@ -28,9 +33,108 @@ export default defineConfig({
 });
 ```
 
-## `head`
+---
 
-Controls default values available to `<head>` components via the virtual config module. All fields are optional.
+## File Generation
+
+These features generate static files into the build output at build time. Each can be disabled by passing `false` to its option key.
+
+### `manifest`
+
+Generates a `/manifest.webmanifest` file at build time. Chromium PWA requirements (`name`/`short_name`, `display`/`display_override`, `start_url`) are enforced as TypeScript types. See [manifest.webmanifest](/integration/manifest) for full option details.
+
+| option             | type                    | required | description                                                              |
+| ------------------ | ----------------------- | -------- | ------------------------------------------------------------------------ |
+| `name`             | `string`                | Yes\*    | Full app name. Required unless `short_name` is provided.                 |
+| `short_name`       | `string`                | Yes\*    | Short app name. Required unless `name` is provided.                      |
+| `start_url`        | `string`                | Yes      | URL loaded when the app is launched.                                     |
+| `display`          | `string`                | Yes\*\*  | Display mode. Required unless `display_override` is provided.            |
+| `display_override` | `string[]`              | Yes\*\*  | Ordered display mode candidates. Required unless `display` is provided.  |
+| `icons`            | `WebManifestIconItem[]` | No       | Icons for the app. Auto-populated from the icons integration if omitted. |
+| _(more)_           |                         |          | Additional optional fields documented on the manifest page.              |
+
+Pass `manifest: false` to disable generation with no warning.
+
+### `robotsTxt`
+
+Generates a `/robots.txt` file at build time. If a `robots.txt` already exists in the build output, generation is skipped. See [robots.txt](/integration/robots-txt) for full option details.
+
+<Aside type="tip">
+	A `robots.txt` file is expected by crawlers on every public site. Omitting this option logs a recommendation
+	warning.
+</Aside>
+
+| option    | type                               | required | description                                                      |
+| --------- | ---------------------------------- | -------- | ---------------------------------------------------------------- |
+| `rules`   | `RobotsTxtRule \| RobotsTxtRule[]` | Yes      | One or more crawl rules defining agent access.                   |
+| `sitemap` | `string \| string[]`               | No       | Absolute URL(s) or site-relative path(s) for `Sitemap:` entries. |
+
+Pass `robotsTxt: false` to disable generation with no warning.
+
+### `securityTxt`
+
+Generates a `/.well-known/security.txt` file at build time following [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116). See [security.txt](/integration/security-txt) for full option details.
+
+<Aside type="tip">
+	A `security.txt` is the standard way for researchers to report vulnerabilities responsibly. Omitting this option
+	logs a recommendation warning.
+</Aside>
+
+| option               | type                                           | required | description                                                                    |
+| -------------------- | ---------------------------------------------- | -------- | ------------------------------------------------------------------------------ |
+| `contact`            | `string \| string[]`                           | Yes      | `mailto:` address(es) or `https://` URL(s).                                    |
+| `expires`            | `Date \| string \| SecurityTxtExpiresDuration` | Yes      | Policy expiry. Accepts a `Date`, ISO 8601 string, or duration like `"1 year"`. |
+| `encryption`         | `string \| string[]`                           | No       | HTTPS URL(s) to a PGP key.                                                     |
+| `policy`             | `string \| string[]`                           | No       | HTTPS URL(s) to the security disclosure policy.                                |
+| `preferredLanguages` | `string \| string[]`                           | No       | BCP 47 language tag(s) for preferred report language(s).                       |
+| _(more)_             |                                                |          | Additional optional fields documented on the security.txt page.                |
+
+Pass `securityTxt: false` to disable generation with no warning.
+
+### `sitemap`
+
+Delegates sitemap generation to [`@astrojs/sitemap`](https://docs.astro.build/en/guides/integrations-guide/sitemap/), which must be installed as a peer dependency. The integration is registered automatically — no need to add it separately. See [Sitemap](/integration/sitemap) for full option details.
+
+<Aside type="tip">
+	A sitemap helps search engines discover and index your pages. Omitting this option is equivalent to `sitemap: {}` —
+	enabled with default options.
+</Aside>
+
+The `sitemap` option accepts a `SitemapOptions` object (forwarded directly to `@astrojs/sitemap`) or `false`.
+
+Pass `sitemap: false` to disable the feature and suppress the peer dependency requirement.
+
+---
+
+## Icon Generation
+
+### `icons`
+
+Generates favicon and app icon files at build time from a single source image. The generated icons are automatically injected as `<link>` tags and, when combined with `manifest`, contributed to the web manifest. See [Icons](/integration/icons) for full option details.
+
+| option             | type                   | description                                                                |
+| ------------------ | ---------------------- | -------------------------------------------------------------------------- |
+| `source`           | `string \| false`      | Path to the source image. Pass `false` to skip generation without warning. |
+| `overrides`        | `IconsOverrides`       | Replace or disable individual default icons.                               |
+| `customGeneration` | `GeneratedIconTag[]`   | Additional icons to generate at custom sizes and formats.                  |
+| `customTags`       | `IconTag[]`            | Extra link tags to inject without generating files.                        |
+| `manifest`         | `IconsManifestOptions` | Controls which generated icons are contributed to the web manifest.        |
+
+Pass `icons: false` to disable generation entirely with no warning.
+
+---
+
+## Global Head Tags
+
+### `head`
+
+Sets default values exposed to `<head>` components via the virtual config module (`eminence-astro-suite/config`). Components read from this module automatically, so values configured here apply site-wide without repeating them per page.
+
+All fields are optional.
+
+<Aside type="note">
+The `humansTxt` option does **not** generate a `humans.txt` file. It only adds a `<link rel="author">` tag pointing to an existing URL. You are responsible for creating and hosting the `humans.txt` file yourself.
+</Aside>
 
 | option              | type                     | description                                                     |
 | ------------------- | ------------------------ | --------------------------------------------------------------- |
@@ -48,71 +152,28 @@ Controls default values available to `<head>` components via the virtual config 
 | `humansTxt`         | `string \| URL \| false` | URL for the `<link rel="author">` tag. Pass `false` to opt out. |
 | `verification`      | `object`                 | Props forwarded to the `Verification` component.                |
 
-## `icons`
+---
 
-Generates favicon and app icon files at build time from a single source image. See [Icons](/integration/icons) for full option details.
+## Coming Soon
 
-| option             | type                   | description                                                                |
-| ------------------ | ---------------------- | -------------------------------------------------------------------------- |
-| `source`           | `string \| false`      | Path to the source image. Pass `false` to skip generation without warning. |
-| `overrides`        | `IconsOverrides`       | Replace or disable individual default icons.                               |
-| `customGeneration` | `GeneratedIconTag[]`   | Additional icons to generate at custom sizes and formats.                  |
-| `customTags`       | `IconTag[]`            | Extra link tags to inject without generating files.                        |
-| `manifest`         | `IconsManifestOptions` | Controls which generated icons are contributed to the web manifest.        |
+The following features are planned and not yet released.
 
-Pass `icons: false` to disable generation entirely with no warning.
+<CardGrid>
+  <Card title="i18n">
+    <Badge text="Coming Soon" variant="caution" />
 
-## `manifest`
+    Internationalization support for multi-language sites. Will provide locale-aware head tag defaults, alternate link management, and integration with Astro's built-in i18n routing.
 
-Generates a `/manifest.webmanifest` file at build time. Chromium PWA requirements (`name`/`short_name`, `display`/`display_override`, `start_url`) are enforced as TypeScript types. See [manifest.webmanifest](/integration/manifest) for full option details.
+  </Card>
+  <Card title="Capo.js Middleware">
+    <Badge text="Coming Soon" variant="caution" />
 
-| option             | type                    | required | description                                                              |
-| ------------------ | ----------------------- | -------- | ------------------------------------------------------------------------ |
-| `name`             | `string`                | Yes\*    | Full app name. Required unless `short_name` is provided.                 |
-| `short_name`       | `string`                | Yes\*    | Short app name. Required unless `name` is provided.                      |
-| `start_url`        | `string`                | Yes      | URL loaded when the app is launched.                                     |
-| `display`          | `string`                | Yes\*\*  | Display mode. Required unless `display_override` is provided.            |
-| `display_override` | `string[]`              | Yes\*\*  | Ordered display mode candidates. Required unless `display` is provided.  |
-| `icons`            | `WebManifestIconItem[]` | No       | Icons for the app. Auto-populated from the icons integration if omitted. |
-| _(more)_           |                         |          | Additional optional fields documented on the manifest page.              |
+    An Astro middleware that reorders `<head>` tags at runtime following the [capo.js](https://rviscomi.github.io/capo.js/) priority rules. Ensures optimal resource loading order without manual tag ordering in your templates.
 
-Pass `manifest: false` to disable generation with no warning.
+  </Card>
+</CardGrid>
 
-## `robotsTxt`
-
-Generates a `/robots.txt` file at build time. If a `robots.txt` already exists in the build output, generation is skipped. See [robots.txt](/integration/robots-txt) for full option details.
-
-| option    | type                               | required | description                                                      |
-| --------- | ---------------------------------- | -------- | ---------------------------------------------------------------- |
-| `rules`   | `RobotsTxtRule \| RobotsTxtRule[]` | Yes      | One or more crawl rules defining agent access.                   |
-| `sitemap` | `string \| string[]`               | No       | Absolute URL(s) or site-relative path(s) for `Sitemap:` entries. |
-
-Pass `robotsTxt: false` to disable generation with no warning.
-
-## `securityTxt`
-
-Generates a `/.well-known/security.txt` file at build time following [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116). See [security.txt](/integration/security-txt) for full option details.
-
-| option               | type                                           | required | description                                                                    |
-| -------------------- | ---------------------------------------------- | -------- | ------------------------------------------------------------------------------ |
-| `contact`            | `string \| string[]`                           | Yes      | `mailto:` address(es) or `https://` URL(s).                                    |
-| `expires`            | `Date \| string \| SecurityTxtExpiresDuration` | Yes      | Policy expiry. Accepts a `Date`, ISO 8601 string, or duration like `"1 year"`. |
-| `encryption`         | `string \| string[]`                           | No       | HTTPS URL(s) to a PGP key.                                                     |
-| `policy`             | `string \| string[]`                           | No       | HTTPS URL(s) to the security disclosure policy.                                |
-| `preferredLanguages` | `string \| string[]`                           | No       | BCP 47 language tag(s) for preferred report language(s).                       |
-| _(more)_             |                                                |          | Additional optional fields documented on the security.txt page.                |
-
-Pass `securityTxt: false` to disable generation with no warning.
-
-## `sitemap`
-
-Delegates sitemap generation to [`@astrojs/sitemap`](https://docs.astro.build/en/guides/integrations-guide/sitemap/), which must be installed as a peer dependency. The integration is registered automatically — no need to add it separately. See [Sitemap](/integration/sitemap) for full option details.
-
-The `sitemap` option accepts a `SitemapOptions` object (forwarded directly to `@astrojs/sitemap`) or `false`.
-
-Omitting `sitemap` is equivalent to `sitemap: {}` — enabled with default options.
-
-Pass `sitemap: false` to disable the feature and suppress the peer dependency requirement.
+---
 
 ## Full example
 
