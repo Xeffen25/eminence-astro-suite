@@ -1,6 +1,9 @@
 ---
-title: manifest.webmanifest - Integration
-description: Documentation for the manifest.webmanifest integration feature, focused on generating a /manifest.webmanifest file at build time. It enforces Chromium PWA requirements through TypeScript types and can automatically derive manifest icons from the icons integration.
+title: manifest.webmanifest
+description: Generate a /manifest.webmanifest file at build time with Chromium PWA requirements enforced through TypeScript types.
+head:
+    - tag: title
+      content: manifest.webmanifest - Integration
 ---
 
 The manifest feature generates a `/manifest.webmanifest` file in your build output during `astro build`. It is configured through the `manifest` option on the integration. The output is a JSON file serialized from the options you provide.

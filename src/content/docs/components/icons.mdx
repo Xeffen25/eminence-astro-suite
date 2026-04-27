@@ -1,6 +1,9 @@
 ---
-title: Icons - Component
+title: Icons
 description: Documentation for Icons, focused on rendering favicon and app icon link tags. It merges defaults, integration overrides, generated assets, and custom tags with deterministic deduplication.
+head:
+    - tag: title
+      content: Icons - Component
 ---
 
 Icons renders the full set of icon-related `<link>` tags used by browsers and devices, including favicon variants, Apple touch icon, and generated app icons. It combines component props with integration `head.icons` values, then deduplicates tags before output.

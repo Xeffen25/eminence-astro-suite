@@ -1,6 +1,9 @@
 ---
-title: humans.txt - Integration
+title: humans.txt
 description: Documentation for the humans.txt integration feature, focused on validating the presence of a humans.txt file in the build output. It does not generate the file and relies on it being placed in the public directory.
+head:
+    - tag: title
+      content: humans.txt - Integration
 ---
 
 The humans.txt integration feature validates that a `humans.txt` file is present in your build output after `astro build` completes. It does not generate the file — you are responsible for placing it in your `public/` directory so Astro copies it to the build output automatically.

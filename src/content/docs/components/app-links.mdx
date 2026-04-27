@@ -1,6 +1,9 @@
 ---
-title: AppLinks - Component
+title: AppLinks
 description: Documentation for AppLinks, focused on rendering platform-specific App Links meta tags. It handles iOS, Android, and web fallback metadata for native deep-link association.
+head:
+    - tag: title
+      content: AppLinks - Component
 ---
 
 AppLinks renders App Links metadata tags for iOS, Android, and web fallback behavior. It is scoped to emitting `al:*` meta tags only and does not perform app-store validation, package verification, or URL rewriting beyond serializing URL values.

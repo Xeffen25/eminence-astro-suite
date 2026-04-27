@@ -1,6 +1,9 @@
 ---
-title: Sitemap - Integration
-description: Documentation for the sitemap integration feature, focused on delegating sitemap generation to @astrojs/sitemap. It requires the peer package to be installed and supports all upstream options.
+title: Sitemap
+description: Generate a sitemap at build time by delegating to @astrojs/sitemap. Requires the peer package to be installed and supports all upstream options.
+head:
+    - tag: title
+      content: Sitemap - Integration
 ---
 
 The sitemap feature delegates sitemap generation to [`@astrojs/sitemap`](https://docs.astro.build/en/guides/integrations-guide/sitemap/), Astro's official sitemap integration. Eminence Astro Suite registers it automatically when `sitemap` is configured, so you do not need to add it separately to your `astro.config.mjs`.

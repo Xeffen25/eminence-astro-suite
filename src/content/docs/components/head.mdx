@@ -1,6 +1,9 @@
 ---
-title: Head - Component
+title: Head
 description: Documentation for Head, focused on rendering a complete document head with all common SEO and metadata tags. It coordinates all sub-components, applies Capo.js ordering, and merges integration config with per-page props.
+head:
+    - tag: title
+      content: Head - Component
 ---
 
 Head renders a `<head>` element containing the full set of supported SEO and metadata tags for your page. It coordinates all sub-components — charset, viewport, title, canonical, Open Graph, and more — in a single, opinionated unit. Integration config supplies site-wide defaults; props passed directly to `Head` override them per page.

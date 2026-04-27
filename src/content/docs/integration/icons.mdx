@@ -1,6 +1,9 @@
 ---
-title: Icons - Integration
+title: Icons
 description: Documentation for the icons integration feature, focused on generating favicon and app icon files at build time from a single source image. It supports default icon sets, per-icon overrides, custom generation, and custom link tags.
+head:
+    - tag: title
+      content: Icons - Integration
 ---
 
 The icons feature generates favicon and app icon files in your build output during `astro build`. It derives all icons from a single source image using `sharp` for raster conversion and `sharp-ico` for `.ico` generation. Generated icon tags are injected into the virtual config so the `Icons` component can reference them in your document head.

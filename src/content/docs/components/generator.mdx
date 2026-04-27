@@ -1,6 +1,9 @@
 ---
-title: Generator - Component
+title: Generator
 description: Documentation for Generator, focused on rendering the generator meta tag from Astro. It handles conditional output through the generate flag and integration fallback.
+head:
+    - tag: title
+      content: Generator - Component
 ---
 
 Generator renders a `<meta name="generator">` tag using Astro's built-in `Astro.generator` value. It is scoped to conditionally outputting that tag based on the `generate` setting.

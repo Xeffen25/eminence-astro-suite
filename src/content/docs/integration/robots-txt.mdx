@@ -1,6 +1,9 @@
 ---
-title: robots.txt - Integration
+title: robots.txt
 description: Documentation for the robots.txt integration feature, focused on generating a robots.txt file at build time. It accepts crawl rules, sitemap references, and supports explicit opt-out.
+head:
+    - tag: title
+      content: robots.txt - Integration
 ---
 
 The robots.txt feature generates a `/robots.txt` file in your build output during `astro build`. It is configured through the `robotsTxt` option on the integration and does not affect the `<meta name="robots">` tag, which is handled by the `Robots` component.

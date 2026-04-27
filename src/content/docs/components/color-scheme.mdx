@@ -1,6 +1,9 @@
 ---
-title: ColorScheme - Component
+title: ColorScheme
 description: Documentation for ColorScheme, focused on rendering the color-scheme meta tag. It handles explicit scheme values and optional fallback to integration configuration.
+head:
+    - tag: title
+      content: ColorScheme - Component
 ---
 
 ColorScheme renders a `<meta name="color-scheme">` tag that tells the user agent which page color schemes are supported. It is limited to serializing the configured `content` value and does not infer schemes from CSS or page styling.

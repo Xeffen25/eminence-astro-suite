@@ -1,6 +1,9 @@
 ---
-title: HumansTxt - Component
+title: HumansTxt
 description: Documentation for HumansTxt, focused on rendering the link rel="author" tag pointing to the humans.txt file. It handles explicit href values, automatic site-based derivation, and explicit opt-out.
+head:
+    - tag: title
+      content: HumansTxt - Component
 ---
 
 HumansTxt renders a `<link rel="author" type="text/plain">` tag that points to the project's `/humans.txt` file. It is scoped to resolving and outputting the href for that tag only and does not generate or validate the humans.txt file itself.

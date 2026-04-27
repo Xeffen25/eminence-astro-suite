@@ -1,6 +1,9 @@
 ---
-title: Robots - Component
+title: Robots
 description: Documentation for Robots, focused on rendering the robots meta tag for crawler directives. It supports raw content strings and structured directive props with integration config fallback.
+head:
+    - tag: title
+      content: Robots - Component
 ---
 
 Robots renders a `<meta name="robots">` tag in your document head to control crawler behavior. It is scoped to resolving and serializing the directive content only and does not affect `robots.txt` generation.

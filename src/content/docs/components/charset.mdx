@@ -1,6 +1,9 @@
 ---
-title: Charset - Component
+title: Charset
 description: Documentation for Charset, focused on rendering the document character encoding meta tag. It handles explicit charset values and defaults to utf-8 when omitted.
+head:
+    - tag: title
+      content: Charset - Component
 ---
 
 Charset renders a `<meta charset>` tag for the current document. It is responsible only for serializing the configured character encoding and defaults to `utf-8` when no prop is provided.
