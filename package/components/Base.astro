@@ -1,5 +1,5 @@
 ---
-import clientHeadConfig from "virtual:eminence-astro-suite/config";
+import config from "virtual:eminence-astro-suite/config";
 
 import { hasAnyProp } from "../utils";
 
@@ -14,7 +14,7 @@ interface Props {
 	target?: string;
 }
 
-const { href, target } = (hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.base ?? {})) as Props;
+const { href, target } = (hasAnyProp(Astro.props) ? Astro.props : (config.base ?? {})) as Props;
 ---
 
 {(href !== undefined || target !== undefined) && <base href={href} target={target} />}

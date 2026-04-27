@@ -1,5 +1,5 @@
 ---
-import clientHeadConfig from "virtual:eminence-astro-suite/config";
+import config from "virtual:eminence-astro-suite/config";
 
 import { hasAnyProp, toHref } from "../utils";
 
@@ -18,7 +18,7 @@ interface Props {
 	};
 }
 
-const { ios, android, web } = (hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.appLinks ?? {})) as Props;
+const { ios, android, web } = (hasAnyProp(Astro.props) ? Astro.props : (config.appLinks ?? {})) as Props;
 ---
 
 {ios?.url && <meta property="al:ios:url" content={toHref(ios.url)} />}

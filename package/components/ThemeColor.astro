@@ -1,5 +1,5 @@
 ---
-import clientHeadConfig from "virtual:eminence-astro-suite/config";
+import config from "virtual:eminence-astro-suite/config";
 
 import { hasAnyProp } from "../utils";
 
@@ -20,7 +20,7 @@ type Props =
 			dark?: never;
 	  };
 
-const { content, light, dark } = (hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.themeColor ?? {})) as Props;
+const { content, light, dark } = (hasAnyProp(Astro.props) ? Astro.props : (config.themeColor ?? {})) as Props;
 ---
 
 {

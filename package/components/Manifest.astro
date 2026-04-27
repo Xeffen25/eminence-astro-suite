@@ -1,25 +1,31 @@
 ---
+import config from "virtual:eminence-astro-suite/config";
+
 interface Props {
 	/**
 	 * Absolute manifest URL rendered directly as the link href.
-	 * Pass `false` to explicitly disable output.
-	 * Omit the prop to derive from `Astro.site`.
 	 * @default `${Astro.site}/manifest.webmanifest`
 	 * @example "https://example.com/manifest.webmanifest"
 	 */
-	href?: string | URL | false;
+	href?: string | URL;
 }
 
 const { href: propHref } = Astro.props;
+const configHref = config.manifest;
+const hrefValue = propHref !== undefined ? propHref : configHref;
 
 const href =
-	propHref === false
-		? undefined
-		: propHref === undefined
-			? Astro.site !== undefined
-				? new URL("/manifest.webmanifest", Astro.site)
-				: undefined
-			: propHref;
+	hrefValue === undefined || hrefValue === true
+		? Astro.site !== undefined
+			? new URL("/manifest.webmanifest", Astro.site)
+			: undefined
+		: hrefValue;
+
+if (href === undefined) {
+	console.error(
+		"[Eminence Astro Suite] Component Manifest did not resolve a href so it didn't render. Provide an `href` prop or set `Astro.site` so it can be resolved.",
+	);
+}
 ---
 
 {href && <link rel="manifest" href={href} />}

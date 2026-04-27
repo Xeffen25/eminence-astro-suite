@@ -7,6 +7,7 @@ import {
 	ColorScheme,
 	Generator,
 	HumansTxt,
+	Manifest,
 	OpenGraph,
 	Robots,
 	ThemeColor,
@@ -37,6 +38,7 @@ export type ClientHeadConfig = {
 	openGraphSiteName?: ComponentProps<typeof OpenGraph>["siteName"];
 	robots?: ComponentProps<typeof Robots>;
 	themeColor?: ComponentProps<typeof ThemeColor>;
+	manifest?: ComponentProps<typeof Manifest>["href"] | boolean;
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
 	verification?: ComponentProps<typeof Verification>;
 };

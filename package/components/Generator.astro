@@ -1,5 +1,5 @@
 ---
-import clientHeadConfig from "virtual:eminence-astro-suite/config";
+import config from "virtual:eminence-astro-suite/config";
 
 interface Props {
 	/**
@@ -9,7 +9,7 @@ interface Props {
 	generate?: boolean;
 }
 
-const generate = Astro.props.generate ?? clientHeadConfig.generator ?? true;
+const generate = Astro.props.generate ?? config.generator ?? true;
 ---
 
 {generate && <meta name="generator" content={Astro.generator} />}

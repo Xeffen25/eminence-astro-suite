@@ -1,9 +1,9 @@
 ---
 import type { GeneratedIconTag, IconTag } from "../integration/generate-icons";
 import { inferImageMimeType, isSvg } from "../utils";
-import clientHeadConfig from "virtual:eminence-astro-suite/config";
+import config from "virtual:eminence-astro-suite/config";
 
-const icons = clientHeadConfig.icons !== false ? (clientHeadConfig.icons ?? {}) : undefined;
+const icons = config.icons !== false ? (config.icons ?? {}) : undefined;
 const overrides = icons?.overrides;
 
 interface Props {

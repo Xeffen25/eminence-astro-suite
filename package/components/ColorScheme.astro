@@ -1,5 +1,5 @@
 ---
-import clientHeadConfig from "virtual:eminence-astro-suite/config";
+import config from "virtual:eminence-astro-suite/config";
 
 interface Props {
 	/**
@@ -9,7 +9,7 @@ interface Props {
 	content?: "normal" | "light" | "dark" | "light dark" | "dark light" | "only light";
 }
 
-const { content = clientHeadConfig.colorScheme } = Astro.props;
+const { content = config.colorScheme } = Astro.props;
 ---
 
 {content && <meta name="color-scheme" content={content} />}

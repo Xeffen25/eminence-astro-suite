@@ -1,5 +1,5 @@
 ---
-import clientHeadConfig from "virtual:eminence-astro-suite/config";
+import config from "virtual:eminence-astro-suite/config";
 
 interface Props {
 	/**
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const { href: propHref } = Astro.props;
-const configHref = clientHeadConfig.humansTxt;
+const configHref = config.humansTxt;
 const hrefValue = propHref !== undefined ? propHref : configHref;
 
 const href =

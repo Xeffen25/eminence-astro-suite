@@ -1,5 +1,5 @@
 ---
-import clientHeadConfig from "virtual:eminence-astro-suite/config";
+import config from "virtual:eminence-astro-suite/config";
 
 interface Props {
 	/**
@@ -16,7 +16,7 @@ interface Props {
 
 type TitleTemplate = `${string}%s${string}`;
 
-const { value, template = clientHeadConfig.titleTemplate ?? "%s" } = Astro.props;
+const { value, template = config.titleTemplate ?? "%s" } = Astro.props;
 ---
 
 <title>{template.replace("%s", value)}</title>

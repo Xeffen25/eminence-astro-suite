@@ -1,5 +1,5 @@
 ---
-import clientHeadConfig from "virtual:eminence-astro-suite/config";
+import config from "virtual:eminence-astro-suite/config";
 
 import { hasAnyProp } from "../utils";
 
@@ -39,9 +39,7 @@ const directivesToContent = (directives: DirectiveProps): string => {
 		.join(", ");
 };
 
-const { content, ...directiveProps } = (
-	hasAnyProp(Astro.props) ? Astro.props : (clientHeadConfig.robots ?? {})
-) as Props;
+const { content, ...directiveProps } = (hasAnyProp(Astro.props) ? Astro.props : (config.robots ?? {})) as Props;
 const robotsContent = content ?? directivesToContent(directiveProps as DirectiveProps);
 ---
 
