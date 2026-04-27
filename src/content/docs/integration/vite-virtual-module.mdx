@@ -1,0 +1,161 @@
+---
+title: Vite Virtual Module - Integration
+description: Technical documentation for the virtual configuration module that powers Eminence Astro Suite components. Explains how it works internally and why users should not interact with it directly.
+---
+
+import { Aside, Tabs, TabItem } from "@astrojs/starlight/components";
+
+## For Most Users: You Don't Need This
+
+<Aside type="caution">
+**This page is for reference only.** Most users should never interact with this module directly. It is internal infrastructure that powers the components and is not part of the public API. It is subject to change without notice.
+
+If you need to access integration configuration in your code, configure the `head` option in `astro.config.mjs` and let components read from it automatically.
+
+</Aside>
+
+---
+
+## What is the Virtual Module?
+
+The Eminence Astro Suite uses a **Vite virtual module** (`eminence-astro-suite/config`) as an internal mechanism to distribute default head tag configuration to components at build time. This module is automatically created and injected by the integration—users do not create, configure, or import it directly.
+
+The virtual module serves a single purpose: it makes configuration defaults available to head tag components without requiring those defaults to be passed as props on every page.
+
+---
+
+## How It Works Internally
+
+### The Module ID
+
+The virtual module is registered with the ID:
+
+```ts
+"virtual:eminence-astro-suite/config";
+```
+
+This ID is used internally by the integration to:
+
+1. Create a Vite virtual module resolver
+2. Generate and inject configuration at build time
+3. Make the module available to components during build and runtime
+
+### Configuration Extraction
+
+The virtual module only exposes a **filtered subset** of integration options—specifically, the fields that are safe for browser consumption.
+
+```ts
+// Only these fields are exposed to components
+type ClientHeadConfig = {
+	charset?: string;
+	viewport?: string;
+	base?: ComponentProps<typeof Base>;
+	colorScheme?: string;
+	titleTemplate?: string;
+	appleItunesApp?: ComponentProps<typeof AppleItunesApp>;
+	appLinks?: ComponentProps<typeof AppLinks>;
+	generator?: boolean;
+	icons?: IconsOptions | false;
+	openGraphSiteName?: string;
+	robots?: ComponentProps<typeof Robots>;
+	themeColor?: ComponentProps<typeof ThemeColor>;
+	humansTxt?: string | URL | boolean;
+	verification?: ComponentProps<typeof Verification>;
+};
+```
+
+Server-only options (like `manifest`, `robotsTxt`, `securityTxt`, `sitemap`) are **never** included in the virtual module and cannot be accessed by components.
+
+### Runtime Behavior
+
+When you configure the integration:
+
+```ts
+// astro.config.mjs
+eminence({
+	head: {
+		charset: "UTF-8",
+		viewport: "width=device-width, initial-scale=1",
+		titleTemplate: "%s | My Site",
+	},
+});
+```
+
+The integration:
+
+1. Extracts only the `head` field
+2. Filters it to client-safe fields
+3. Serializes it as a JSON object
+4. Creates a JavaScript module that exports this object as the default export
+5. Registers this module as a virtual file in Vite
+
+The resulting virtual module looks like:
+
+```ts
+export default {
+	charset: "UTF-8",
+	viewport: "width=device-width, initial-scale=1",
+	titleTemplate: "%s | My Site",
+};
+```
+
+---
+
+## Why It Exists
+
+The virtual module solves a fundamental problem in static site generation:
+
+**Problem:** Head tag components need default values (like viewport, charset, title template) available on every page, but those values are only specified once in `astro.config.mjs`.
+
+**Solution:** The virtual module makes configuration available at build time without requiring:
+
+- Manual prop passing on every page
+- Runtime server calls to fetch configuration
+- Duplicating defaults across your site
+
+### For Component Authors
+
+If you are authoring components that should respect integration defaults, you can optionally import the virtual module:
+
+```ts
+// Inside a component or component helper
+import config from "virtual:eminence-astro-suite/config";
+
+// Use defaults from config, but allow per-page overrides
+const charset = pageCharset ?? config.charset ?? "UTF-8";
+```
+
+<Aside>
+	This pattern is only relevant if you are extending or authoring your own head tag components. Regular users should
+	configure defaults through the integration `head` option and use components as normal.
+</Aside>
+
+---
+
+## Technical Details
+
+### Module Resolution
+
+The integration uses Vite's `resolveId` and `load` hooks to:
+
+- Intercept imports of `virtual:eminence-astro-suite/config`
+- Return the serialized configuration object
+
+### Build-Time Only
+
+The virtual module is fully resolved at build time. There is no runtime overhead or dynamic module loading.
+
+### Type Safety
+
+TypeScript users get full type support through the `ClientHeadConfig` type, which is exported from the package:
+
+```ts
+import type { ClientHeadConfig } from "eminence-astro-suite/integration";
+```
+
+---
+
+## Related Documentation
+
+- [Integration Overview](/integration/overview) — Configure the integration and its features
+- [Head Component](/components/head) — The main component for setting default head tags
