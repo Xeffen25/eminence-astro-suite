@@ -1,6 +1,6 @@
 import { AppLinks } from "@package/components";
 import { experimental_AstroContainer } from "astro/container";
-import clientHeadConfig from "virtual:eminence-astro-suite/config";
+import clientHeadConfig from "virtual:eminence-astro-suite/head-tags";
 import { beforeEach, describe, expect, it } from "vitest";
 
 const resetClientHeadConfig = () => {

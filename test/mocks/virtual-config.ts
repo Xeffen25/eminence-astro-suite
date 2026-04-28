@@ -1,20 +1,21 @@
-import type { ClientHeadConfig } from "@package/integration/virtual-config";
+import type { ResolvedHeadTagsConfig } from "@package/integration/virtual-config";
 
-const clientHeadConfig: ClientHeadConfig = {
-	charset: undefined,
-	viewport: undefined,
+const headTagsConfig: ResolvedHeadTagsConfig = {
+	charset: "utf-8",
+	viewport: "width=device-width, initial-scale=1",
 	base: undefined,
 	colorScheme: undefined,
-	titleTemplate: undefined,
+	titleTemplate: "%s",
 	appleItunesApp: undefined,
 	appLinks: undefined,
-	generator: undefined,
-	icons: undefined,
+	generator: true,
+	icons: {},
 	openGraphSiteName: undefined,
-	humansTxt: undefined,
+	manifest: true,
+	humansTxt: true,
 	robots: undefined,
 	themeColor: undefined,
 	verification: undefined,
 };
 
-export default clientHeadConfig;
+export default headTagsConfig;

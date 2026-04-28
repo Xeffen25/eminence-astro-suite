@@ -1,5 +1,5 @@
 ---
-import config from "virtual:eminence-astro-suite/config";
+import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
 	/**
@@ -8,15 +8,13 @@ interface Props {
 	value: string;
 	/**
 	 * Optional template string containing `%s` as a placeholder for the value.
-	 * @default "%s"
+	 * @default "%s" via integration virtual config
 	 * @example "%s | My Site"
 	 */
-	template?: TitleTemplate;
+	template?: `${string}%s${string}`;
 }
 
-type TitleTemplate = `${string}%s${string}`;
-
-const { value, template = config.titleTemplate ?? "%s" } = Astro.props;
+const { value, template = config.titleTemplate } = Astro.props;
 ---
 
 <title>{template.replace("%s", value)}</title>

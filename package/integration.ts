@@ -1,5 +1,5 @@
 ﻿import type { AstroConfig, AstroIntegration, AstroIntegrationLogger } from "astro";
-import type { ClientHeadConfig } from "./integration/virtual-config";
+import type { HeadTagsOptions } from "./integration/virtual-config";
 
 import type { IconsOptions } from "./integration/generate-icons";
 import { generateIcons } from "./integration/generate-icons";
@@ -19,7 +19,7 @@ import {
 } from "./integration/virtual-config";
 
 export type IntegrationInput = {
-	head?: ClientHeadConfig;
+	headTags?: HeadTagsOptions;
 	icons?: IconsOptions | false;
 	manifest?: WebManifestOptions | false;
 	robotsTxt?: RobotsTxtOptions | false;
@@ -79,7 +79,7 @@ export default function createIntegration(options: IntegrationInput = {}): Astro
 					if (options.manifest !== false) await generateManifest({ config, dir, options, logger });
 					if (options.robotsTxt !== false) await generateRobotsTxt({ config, dir, options, logger });
 					if (options.securityTxt !== false) await generateSecurityTxt({ config, dir, options, logger });
-					if (options.head?.humansTxt !== false)
+					if (options.headTags?.humansTxt !== false)
 						await validateHumansTxtInBuildOutput({ config, dir, options, logger });
 				} catch (error) {
 					const message = error instanceof Error ? error.message : String(error);

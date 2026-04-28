@@ -1,15 +1,15 @@
 ---
-import config from "virtual:eminence-astro-suite/config";
+import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
 	/**
 	 * Enables generator meta tag rendering.
-	 * @default true
+	 * @default true via integration virtual config
 	 */
 	generate?: boolean;
 }
 
-const generate = Astro.props.generate ?? config.generator ?? true;
+const { generate = config.generator } = Astro.props;
 ---
 
 {generate && <meta name="generator" content={Astro.generator} />}

@@ -1,7 +1,7 @@
-declare module "virtual:eminence-astro-suite/config" {
-	type ClientHeadConfig = import("./integration/virtual-config").ClientHeadConfig;
+declare module "virtual:eminence-astro-suite/head-tags" {
+	type Config = import("./integration/virtual-config").ResolvedTagConfig;
 
-	const config: ClientHeadConfig;
+	const config: Config;
 
 	export default config;
 }

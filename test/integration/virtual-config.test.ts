@@ -1,11 +1,27 @@
 import type { IntegrationInput } from "@package/integration";
-import { extractClientHeadConfig, serializedVirtualConfigModule } from "@package/integration/virtual-config";
+import { extractHeadTagsConfig, serializedVirtualConfigModule } from "@package/integration/virtual-config";
 import { describe, expect, it } from "vitest";
+
+const DEFAULT_HEAD_TAGS_OPTIONS = {
+	charset: "utf-8",
+	viewport: "width=device-width, initial-scale=1",
+	titleTemplate: "%s",
+	generator: true,
+	icons: {},
+	manifest: false,
+	humansTxt: false,
+};
+
+const parseSerializedModuleConfig = (moduleSource: string) => {
+	const prefix = "export default ";
+	const json = moduleSource.slice(prefix.length, -1);
+	return JSON.parse(json);
+};
 
 describe("Integration - Virtual Config", () => {
 	it("extracts appleItunesApp defaults into client head config", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				appleItunesApp: {
 					id: "123456789",
 					argument: "myapp://open",
@@ -13,29 +29,20 @@ describe("Integration - Virtual Config", () => {
 			},
 		};
 
-		const result = extractClientHeadConfig(options);
+		const result = extractHeadTagsConfig(options);
 
 		expect(result).toMatchObject({
-			charset: undefined,
-			viewport: undefined,
-			colorScheme: undefined,
+			...DEFAULT_HEAD_TAGS_OPTIONS,
 			appleItunesApp: {
 				id: "123456789",
 				argument: "myapp://open",
 			},
-			appLinks: undefined,
-			robots: undefined,
-			themeColor: undefined,
-			humansTxt: undefined,
-			verification: undefined,
-			base: undefined,
-			titleTemplate: undefined,
 		});
 	});
 
 	it("extracts verification defaults into client head config", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				verification: {
 					google: "google-token",
 					yandex: "yandex-token",
@@ -44,30 +51,21 @@ describe("Integration - Virtual Config", () => {
 			},
 		};
 
-		const result = extractClientHeadConfig(options);
+		const result = extractHeadTagsConfig(options);
 
 		expect(result).toMatchObject({
-			charset: undefined,
-			viewport: undefined,
-			colorScheme: undefined,
-			appleItunesApp: undefined,
-			appLinks: undefined,
-			robots: undefined,
-			themeColor: undefined,
-			humansTxt: undefined,
+			...DEFAULT_HEAD_TAGS_OPTIONS,
 			verification: {
 				google: "google-token",
 				yandex: "yandex-token",
 				others: [{ name: "msvalidate.01", content: "bing-token" }],
 			},
-			base: undefined,
-			titleTemplate: undefined,
 		});
 	});
 
 	it("extracts appLinks defaults into client head config", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				appLinks: {
 					ios: {
 						url: "myapp://open",
@@ -85,13 +83,10 @@ describe("Integration - Virtual Config", () => {
 			},
 		};
 
-		const result = extractClientHeadConfig(options);
+		const result = extractHeadTagsConfig(options);
 
 		expect(result).toMatchObject({
-			charset: undefined,
-			viewport: undefined,
-			colorScheme: undefined,
-			appleItunesApp: undefined,
+			...DEFAULT_HEAD_TAGS_OPTIONS,
 			appLinks: {
 				ios: {
 					url: "myapp://open",
@@ -106,18 +101,12 @@ describe("Integration - Virtual Config", () => {
 					should_fallback: true,
 				},
 			},
-			robots: undefined,
-			themeColor: undefined,
-			humansTxt: undefined,
-			verification: undefined,
-			base: undefined,
-			titleTemplate: undefined,
 		});
 	});
 
 	it("extracts themeColor defaults into client head config", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				themeColor: {
 					light: "#ffffff",
 					dark: "#111111",
@@ -125,53 +114,35 @@ describe("Integration - Virtual Config", () => {
 			},
 		};
 
-		const result = extractClientHeadConfig(options);
+		const result = extractHeadTagsConfig(options);
 
 		expect(result).toMatchObject({
-			charset: undefined,
-			viewport: undefined,
-			colorScheme: undefined,
-			appleItunesApp: undefined,
-			appLinks: undefined,
-			robots: undefined,
+			...DEFAULT_HEAD_TAGS_OPTIONS,
 			themeColor: {
 				light: "#ffffff",
 				dark: "#111111",
 			},
-			humansTxt: undefined,
-			verification: undefined,
-			base: undefined,
-			titleTemplate: undefined,
 		});
 	});
 
 	it("extracts colorScheme defaults into client head config", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				colorScheme: "light dark",
 			},
 		};
 
-		const result = extractClientHeadConfig(options);
+		const result = extractHeadTagsConfig(options);
 
 		expect(result).toMatchObject({
-			charset: undefined,
-			viewport: undefined,
+			...DEFAULT_HEAD_TAGS_OPTIONS,
 			colorScheme: "light dark",
-			appleItunesApp: undefined,
-			appLinks: undefined,
-			robots: undefined,
-			themeColor: undefined,
-			humansTxt: undefined,
-			verification: undefined,
-			base: undefined,
-			titleTemplate: undefined,
 		});
 	});
 
 	it("extracts robots defaults into client head config", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				robots: {
 					noindex: true,
 					"max-snippet": 50,
@@ -179,85 +150,93 @@ describe("Integration - Virtual Config", () => {
 			},
 		};
 
-		const result = extractClientHeadConfig(options);
+		const result = extractHeadTagsConfig(options);
 
 		expect(result).toMatchObject({
-			charset: undefined,
-			viewport: undefined,
-			colorScheme: undefined,
-			appleItunesApp: undefined,
-			appLinks: undefined,
+			...DEFAULT_HEAD_TAGS_OPTIONS,
 			robots: {
 				noindex: true,
 				"max-snippet": 50,
 			},
-			themeColor: undefined,
-			humansTxt: undefined,
-			verification: undefined,
-			base: undefined,
-			titleTemplate: undefined,
 		});
 	});
 
 	it("extracts robots content defaults into client head config", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				robots: {
 					content: "noindex, nofollow",
 				},
 			},
 		};
 
-		const result = extractClientHeadConfig(options);
+		const result = extractHeadTagsConfig(options);
 
 		expect(result).toMatchObject({
-			charset: undefined,
-			viewport: undefined,
-			colorScheme: undefined,
-			appleItunesApp: undefined,
-			appLinks: undefined,
+			...DEFAULT_HEAD_TAGS_OPTIONS,
 			robots: {
 				content: "noindex, nofollow",
 			},
-			themeColor: undefined,
-			humansTxt: undefined,
-			verification: undefined,
-			base: undefined,
-			titleTemplate: undefined,
 		});
 	});
 
 	it("extracts generator defaults into client head config", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				generator: true,
 			},
 		};
 
-		const result = extractClientHeadConfig(options);
+		const result = extractHeadTagsConfig(options);
 
 		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
 			generator: true,
 		});
 	});
 
 	it("extracts generator false into client head config", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				generator: false,
 			},
 		};
 
-		const result = extractClientHeadConfig(options);
+		const result = extractHeadTagsConfig(options);
 
 		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
 			generator: false,
+		});
+	});
+
+	it("extracts default values when no options are provided", () => {
+		const result = extractHeadTagsConfig({});
+		expect(result).toMatchObject(DEFAULT_HEAD_TAGS_OPTIONS);
+	});
+
+	it("keeps false branches for icons, manifest, and humansTxt", () => {
+		const options: IntegrationInput = {
+			icons: false,
+			headTags: {
+				manifest: false,
+				humansTxt: false,
+			},
+		};
+
+		const result = extractHeadTagsConfig(options);
+
+		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
+			icons: false,
+			manifest: false,
+			humansTxt: false,
 		});
 	});
 
 	it("serializes appleItunesApp defaults in virtual config module", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				appleItunesApp: {
 					id: "123456789",
 					argument: "myapp://open",
@@ -265,40 +244,54 @@ describe("Integration - Virtual Config", () => {
 			},
 		};
 
-		const result = serializedVirtualConfigModule(options);
+		const result = parseSerializedModuleConfig(serializedVirtualConfigModule(options));
 
-		expect(result).toBe('export default {"appleItunesApp":{"id":"123456789","argument":"myapp://open"}};');
+		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
+			appleItunesApp: {
+				id: "123456789",
+				argument: "myapp://open",
+			},
+		});
 	});
 
 	it("serializes colorScheme defaults in virtual config module", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				colorScheme: "dark",
 			},
 		};
 
-		const result = serializedVirtualConfigModule(options);
+		const result = parseSerializedModuleConfig(serializedVirtualConfigModule(options));
 
-		expect(result).toBe('export default {"colorScheme":"dark"};');
+		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
+			colorScheme: "dark",
+		});
 	});
 
 	it("serializes verification defaults in virtual config module", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				verification: {
 					bing: "bing-token",
 				},
 			},
 		};
 
-		const result = serializedVirtualConfigModule(options);
+		const result = parseSerializedModuleConfig(serializedVirtualConfigModule(options));
 
-		expect(result).toBe('export default {"verification":{"bing":"bing-token"}};');
+		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
+			verification: {
+				bing: "bing-token",
+			},
+		});
 	});
 
 	it("serializes appLinks defaults in virtual config module", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				appLinks: {
 					ios: {
 						url: new URL("https://ios.example.com/open"),
@@ -311,30 +304,44 @@ describe("Integration - Virtual Config", () => {
 			},
 		};
 
-		const result = serializedVirtualConfigModule(options);
+		const result = parseSerializedModuleConfig(serializedVirtualConfigModule(options));
 
-		expect(result).toBe(
-			'export default {"appLinks":{"ios":{"url":"https://ios.example.com/open"},"web":{"url":"https://example.com/path","should_fallback":false}}};',
-		);
+		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
+			appLinks: {
+				ios: {
+					url: "https://ios.example.com/open",
+				},
+				web: {
+					url: "https://example.com/path",
+					should_fallback: false,
+				},
+			},
+		});
 	});
 
 	it("serializes themeColor defaults in virtual config module", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				themeColor: {
 					content: "#ffffff",
 				},
 			},
 		};
 
-		const result = serializedVirtualConfigModule(options);
+		const result = parseSerializedModuleConfig(serializedVirtualConfigModule(options));
 
-		expect(result).toBe('export default {"themeColor":{"content":"#ffffff"}};');
+		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
+			themeColor: {
+				content: "#ffffff",
+			},
+		});
 	});
 
 	it("serializes robots defaults in virtual config module", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				robots: {
 					nofollow: true,
 					"max-video-preview": -1,
@@ -342,34 +349,48 @@ describe("Integration - Virtual Config", () => {
 			},
 		};
 
-		const result = serializedVirtualConfigModule(options);
+		const result = parseSerializedModuleConfig(serializedVirtualConfigModule(options));
 
-		expect(result).toBe('export default {"robots":{"nofollow":true,"max-video-preview":-1}};');
+		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
+			robots: {
+				nofollow: true,
+				"max-video-preview": -1,
+			},
+		});
 	});
 
 	it("serializes robots content defaults in virtual config module", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				robots: {
 					content: "noindex, nofollow",
 				},
 			},
 		};
 
-		const result = serializedVirtualConfigModule(options);
+		const result = parseSerializedModuleConfig(serializedVirtualConfigModule(options));
 
-		expect(result).toBe('export default {"robots":{"content":"noindex, nofollow"}};');
+		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
+			robots: {
+				content: "noindex, nofollow",
+			},
+		});
 	});
 
 	it("serializes generator defaults in virtual config module", () => {
 		const options: IntegrationInput = {
-			head: {
+			headTags: {
 				generator: false,
 			},
 		};
 
-		const result = serializedVirtualConfigModule(options);
+		const result = parseSerializedModuleConfig(serializedVirtualConfigModule(options));
 
-		expect(result).toBe('export default {"generator":false};');
+		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
+			generator: false,
+		});
 	});
 });

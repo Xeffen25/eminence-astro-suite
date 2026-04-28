@@ -1,19 +1,15 @@
 ---
-import config from "virtual:eminence-astro-suite/config";
-
-import { hasAnyProp } from "../utils";
+import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
 	/**
 	 * Content value used by the viewport meta tag.
-	 * @default "width=device-width, initial-scale=1"
+	 * @default "width=device-width, initial-scale=1" via integration virtual config
 	 */
 	content?: string;
 }
 
-const { content = "width=device-width, initial-scale=1" } = (
-	hasAnyProp(Astro.props) ? Astro.props : (config.viewport ?? {})
-) as Props;
+const { content = config.viewport } = Astro.props;
 ---
 
 <meta name="viewport" content={content} />

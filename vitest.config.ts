@@ -5,7 +5,7 @@ export default getViteConfig(
 	{
 		resolve: {
 			alias: {
-				"virtual:eminence-astro-suite/config": fileURLToPath(
+				"virtual:eminence-astro-suite/head-tags": fileURLToPath(
 					new URL("./test/mocks/virtual-config.ts", import.meta.url),
 				),
 			},

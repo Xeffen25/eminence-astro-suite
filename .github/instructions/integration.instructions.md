@@ -15,8 +15,8 @@ applyTo: "package/integration.ts, package/integration/**/*.ts, test/integration/
 
 ## Virtual Config Rules (`package/integration/virtual-config.ts`)
 
-- Only expose client-safe fields in `ClientHeadConfig`.
-- Treat `extractClientHeadConfig` as a strict allowlist of fields intended for browser consumption.
+- Only expose client-safe fields in `ResolvedTagConfig`.
+- Treat `extractTagConfig` as a strict allowlist of fields intended for browser consumption.
 - Keep `serializedVirtualConfigModule` output as a default export of JSON-serialized config.
 - Preserve module IDs unless there is a deliberate breaking change.
 

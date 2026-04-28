@@ -1,17 +1,15 @@
 ---
-import config from "virtual:eminence-astro-suite/config";
-
-import { hasAnyProp } from "../utils";
+import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
 	/**
 	 * Character encoding used in the rendered meta tag.
-	 * @default "utf-8"
+	 * @default "utf-8" via integration virtual config
 	 */
 	charset?: string;
 }
 
-const { charset = "utf-8" } = (hasAnyProp(Astro.props) ? Astro.props : (config.charset ?? {})) as Props;
+const { charset = config.charset } = Astro.props;
 ---
 
 <meta charset={charset} />

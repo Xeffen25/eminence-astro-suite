@@ -38,7 +38,7 @@ The virtual module serves a single purpose: it makes configuration defaults avai
 The virtual module is registered with the ID:
 
 ```ts
-"virtual:eminence-astro-suite/config";
+"virtual:eminence-astro-suite/head-tags";
 ```
 
 This ID is used internally by the integration to:
@@ -49,29 +49,51 @@ This ID is used internally by the integration to:
 
 ### Configuration Extraction
 
-The virtual module only exposes a **filtered subset** of integration options—specifically, the fields that are safe for browser consumption.
+The integration works with **two distinct types** that reflect the same head tag settings at different stages:
+
+**`TagInput`** — the user-facing type.
+This is the shape of the `head` option in `astro.config.mjs`. Every field is optional. Users only need to specify the values they want to change.
 
 ```ts
-// Only these fields are exposed to components
-type ClientHeadConfig = {
-	charset?: string;
-	viewport?: string;
-	base?: ComponentProps<typeof Base>;
-	colorScheme?: string;
-	titleTemplate?: string;
+// What the user configures
+type TagInput = {
 	appleItunesApp?: ComponentProps<typeof AppleItunesApp>;
 	appLinks?: ComponentProps<typeof AppLinks>;
+	base?: ComponentProps<typeof Base>;
+	charset?: string;
+	colorScheme?: string;
 	generator?: boolean;
+	humansTxt?: string | URL | boolean;
 	icons?: IconsOptions | false;
+	manifest?: string | boolean;
 	openGraphSiteName?: string;
 	robots?: ComponentProps<typeof Robots>;
 	themeColor?: ComponentProps<typeof ThemeColor>;
-	humansTxt?: string | URL | boolean;
+	titleTemplate?: string;
 	verification?: ComponentProps<typeof Verification>;
+	viewport?: string;
 };
 ```
 
-Server-only options (like `manifest`, `robotsTxt`, `securityTxt`, `sitemap`) are **never** included in the virtual module and cannot be accessed by components.
+**`ResolvedTagConfig`** — the virtual module output type.
+This is what the virtual module actually exports after defaults have been applied. Fields that always have a default value (`charset`, `viewport`, `titleTemplate`, `generator`, `icons`, `manifest`, `humansTxt`) are **required and non-nullable** in this type. This means components reading from the virtual module never need fallback guards for those fields.
+
+```ts
+// What components receive from the virtual module
+// Defaulted fields are required; optional fields remain optional
+type ResolvedTagConfig = {
+	charset: string; // default: "utf-8"
+	viewport: string; // default: "width=device-width, initial-scale=1"
+	titleTemplate: string; // default: "%s"
+	generator: boolean; // default: true
+	icons: IconsOptions | false; // default: {}
+	manifest: string | boolean; // default: false
+	humansTxt: string | URL | boolean; // default: "/humans.txt"
+	// ...all other TagInput fields remain optional
+};
+```
+
+Server-only options (like `robotsTxt`, `securityTxt`, `sitemap`) are **never** included in the virtual module and cannot be accessed by components.
 
 ### Runtime Behavior
 
@@ -126,10 +148,10 @@ If you are authoring components that should respect integration defaults, you ca
 
 ```ts
 // Inside a component or component helper
-import config from "virtual:eminence-astro-suite/config";
+import config from "virtual:eminence-astro-suite/head-tags";
 
 // Use defaults from config, but allow per-page overrides
-const charset = pageCharset ?? config.charset ?? "UTF-8";
+const charset = pageCharset ?? config.charset;
 ```
 
 <Aside>
@@ -145,7 +167,7 @@ const charset = pageCharset ?? config.charset ?? "UTF-8";
 
 The integration uses Vite's `resolveId` and `load` hooks to:
 
-- Intercept imports of `virtual:eminence-astro-suite/config`
+- Intercept imports of `virtual:eminence-astro-suite/head-tags`
 - Return the serialized configuration object
 
 ### Build-Time Only
@@ -154,10 +176,16 @@ The virtual module is fully resolved at build time. There is no runtime overhead
 
 ### Type Safety
 
-TypeScript users get full type support through the `ClientHeadConfig` type, which is exported from the package:
+TypeScript users get full type support through the `ResolvedTagConfig` type, which is exported from the package:
 
 ```ts
-import type { ClientHeadConfig } from "eminence-astro-suite/integration";
+import type { ResolvedTagConfig } from "eminence-astro-suite/integration";
+```
+
+For configuring the integration in `astro.config.mjs`, use `TagInput`:
+
+```ts
+import type { TagInput } from "eminence-astro-suite/integration";
 ```
 
 ---
