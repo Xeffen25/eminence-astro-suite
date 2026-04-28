@@ -57,6 +57,11 @@ This is the shape of the `head` option in `astro.config.mjs`. Every field is opt
 ```ts
 // What the user configures
 type TagInput = {
+	extend?: {
+		link?: Array<HTMLAttributes<"link"> & { prefetch?: boolean }>;
+		meta?: Array<HTMLAttributes<"meta"> & { property: string }>;
+		custom?: string | string[];
+	};
 	appleItunesApp?: ComponentProps<typeof AppleItunesApp>;
 	appLinks?: ComponentProps<typeof AppLinks>;
 	base?: ComponentProps<typeof Base>;
@@ -89,6 +94,11 @@ type ResolvedTagConfig = {
 	icons: IconsOptions | false; // default: {}
 	manifest: string | boolean; // default: false
 	humansTxt: string | URL | boolean; // default: "/humans.txt"
+	extend?: {
+		link?: Array<HTMLAttributes<"link"> & { prefetch?: boolean }>;
+		meta?: Array<HTMLAttributes<"meta"> & { property: string }>;
+		custom?: string | string[];
+	};
 	// ...all other TagInput fields remain optional
 };
 ```
@@ -141,6 +151,10 @@ The virtual module solves a fundamental problem in static site generation:
 - Manual prop passing on every page
 - Runtime server calls to fetch configuration
 - Duplicating defaults across your site
+
+For custom tags, prefer inserting one-off elements directly in the `Head` slot. Use `extend.link` and `extend.meta` when you need global defaults from integration config.
+
+`extend.custom` is passed through to Astro `set:html`, so it is not escaped automatically. Only pass trusted or sanitized HTML strings.
 
 ### For Component Authors
 

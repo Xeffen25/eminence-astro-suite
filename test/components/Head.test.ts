@@ -172,4 +172,86 @@ describe("Component Head", () => {
 			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
+
+	it("renders extend link and meta tags from props after slot", async () => {
+		const result = await container.renderToString(Head, {
+			props: {
+				title: "Home",
+				description: DEFAULT_DESCRIPTION,
+				extend: {
+					link: [{ rel: "preconnect", href: "https://cdn.example.com", prefetch: true }],
+					meta: [{ property: "custom:token", content: "abc123" }],
+				},
+			},
+			slots: {
+				default: '<meta name="slot-meta" content="slot">',
+			},
+		});
+
+		expect(result).toBe(
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="slot-meta" content="slot"><link rel="preconnect" href="https://cdn.example.com" prefetch="true"><meta property="custom:token" content="abc123"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+		);
+	});
+
+	it("renders extend custom HTML string and string arrays", async () => {
+		const result = await container.renderToString(Head, {
+			props: {
+				title: "Home",
+				description: DEFAULT_DESCRIPTION,
+				extend: {
+					custom: [
+						'<meta name="custom-a" content="1">',
+						'<script type="application/json">{"key":"value"}</script>',
+					],
+				},
+			},
+		});
+
+		expect(result).toBe(
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="custom-a" content="1"><script type="application/json">{"key":"value"}</script><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+		);
+	});
+
+	it("uses integration extend defaults when extend prop is omitted", async () => {
+		Object.assign(clientHeadConfig, {
+			extend: {
+				link: [{ rel: "dns-prefetch", href: "https://assets.example.com" }],
+				meta: [{ property: "custom:source", content: "integration" }],
+				custom: '<meta name="custom-inline" content="from-config">',
+			},
+		});
+
+		const result = await container.renderToString(Head, {
+			props: {
+				title: "Home",
+				description: DEFAULT_DESCRIPTION,
+			},
+		});
+
+		expect(result).toBe(
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="dns-prefetch" href="https://assets.example.com"><meta property="custom:source" content="integration"><meta name="custom-inline" content="from-config"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+		);
+	});
+
+	it("prefers extend props over integration defaults", async () => {
+		Object.assign(clientHeadConfig, {
+			extend: {
+				meta: [{ property: "custom:source", content: "integration" }],
+			},
+		});
+
+		const result = await container.renderToString(Head, {
+			props: {
+				title: "Home",
+				description: DEFAULT_DESCRIPTION,
+				extend: {
+					meta: [{ property: "custom:source", content: "props" }],
+				},
+			},
+		});
+
+		expect(result).toBe(
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="custom:source" content="props"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+		);
+	});
 });

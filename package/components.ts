@@ -5,6 +5,7 @@ import _Canonical from "./components/Canonical.astro";
 import _Charset from "./components/Charset.astro";
 import _ColorScheme from "./components/ColorScheme.astro";
 import _Description from "./components/Description.astro";
+import _Extend from "./components/Extend.astro";
 import _Generator from "./components/Generator.astro";
 import _Head from "./components/Head.astro";
 import _HumansTxt from "./components/HumansTxt.astro";
@@ -142,6 +143,23 @@ export const Description = _Description;
 export type DescriptionProps = ComponentProps<typeof Description>;
 
 /**
+ * @summary Renders free-form `<link>`, `<meta>`, and custom HTML fragments for head extension.
+ * @description
+ * Provides a configuration-driven way to append custom head tags. Prefer adding one-off tags directly in the `Head` slot; use this component when shared defaults are needed across many pages. The `extend.custom` value is rendered with Astro `set:html` and is not escaped.
+ *
+ * @example
+ * <Extend link={[{ rel: "preconnect", href: "https://cdn.example.com", prefetch: true }]} />
+ * @example
+ * <Extend meta={[{ property: "custom:token", content: "abc123" }]} />
+ * @example
+ * <Extend custom="<meta name=\"custom\" content=\"1\">" />
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/extend Extend Component Documentation}
+ * @see {@link https://docs.astro.build/en/reference/directives-reference/#sethtml Astro set:html reference}
+ */
+export const Extend = _Extend;
+export type ExtendProps = ComponentProps<typeof Extend>;
+
+/**
  * @summary Renders a `<meta name="generator">` tag from `Astro.generator`.
  * @description
  * Uses Astro's built-in generator value when `generate` is enabled. Set `generate` to `false` to disable output.
@@ -162,10 +180,16 @@ export type GeneratorProps = ComponentProps<typeof Generator>;
  * @description
  * Renders a `<head>` element with built-in support for common SEO and metadata tags. Following Capo.js convention as much as possible, allows you to configure site wide defaults via the `head` property in your integration options, and override them on a per-page basis by passing props to the component. With best practices baked in as defaults, you can focus on customizing the essentials and let the component handle the rest.
  *
+ * For additional custom tags, it's better to just place the elements directly inside the component slot.
+ *
+ * The `extend` prop is best suited for configuration-driven defaults shared across multiple pages.
+ *
+ * `extend.custom` is rendered via Astro `set:html` and is not escaped. Only pass trusted or pre-sanitized HTML.
+ *
  * @example
- * <Head head={{ title: "Home" }} />
+ * <Head title="Home" description="Welcome" />
  * @example
- * <Head head={{ title: "Home", titleTemplate: "%s | My Site", charset: "iso-8859-1" }} />
+ * <Head title="Home" description="Welcome" extend={{ link: [{ rel: "preconnect", href: "https://cdn.example.com", prefetch: true }] }} />
  *
  * @see {@link https://eminence-astro-suite.xeffen25.com/components/head Head Docs Source}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/head MDN head element reference}

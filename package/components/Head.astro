@@ -9,6 +9,7 @@ import {
 	Charset,
 	ColorScheme,
 	Description,
+	Extend,
 	Generator,
 	HumansTxt,
 	Icons,
@@ -73,6 +74,11 @@ interface Props {
 	 * {@link https://eminence-astro-suite.xeffen25.com/components/app-links AppLinks}
 	 */
 	appLinks?: ComponentProps<typeof AppLinks> | false;
+	/**
+	 * Additional tags rendered after the component slot and before built-in tags.
+	 * Prefer adding one-off tags directly inside the `Head` slot when possible.
+	 */
+	extend?: ComponentProps<typeof Extend>;
 	/**
 	 * Canonical URL for the page rendered as `<link rel="canonical">`.
 	 * Auto-derived from `Astro.site` when omitted. Pass `false` to suppress.
@@ -187,6 +193,7 @@ const {
 	robots,
 	themeColor,
 	verification,
+	extend,
 } = Astro.props;
 ---
 
@@ -196,6 +203,7 @@ const {
 	{base !== false && <Base {...(base ?? {})} />}
 	<Title value={title} template={titleTemplate} />
 	<slot />
+	<Extend {...extend ?? {}} />
 	{appleItunesApp !== false && <AppleItunesApp {...(appleItunesApp ?? {})} />}
 	{appLinks !== false && <AppLinks {...(appLinks ?? {})} />}
 	{canonical !== false && <Canonical href={canonical} />}

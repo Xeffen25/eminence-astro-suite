@@ -154,6 +154,13 @@ The `humansTxt` option does **not** generate a `humans.txt` file. It only adds a
 | `themeColor`        | `object`                 | Props forwarded to the `ThemeColor` component.                  |
 | `humansTxt`         | `string \| URL \| false` | URL for the `<link rel="author">` tag. Pass `false` to opt out. |
 | `verification`      | `object`                 | Props forwarded to the `Verification` component.                |
+| `extend.link`       | `object[]`               | Additional free-form `<link>` tags for Head.                    |
+| `extend.meta`       | `object[]`               | Additional free-form `<meta>` tags for Head.                    |
+| `extend.custom`     | `string \| string[]`     | Raw HTML injected with `set:html` in Head.                      |
+
+Use `extend.*` for shared configuration defaults. For one-off page tags, prefer inserting tags directly inside the `Head` component slot.
+
+`extend.custom` is intentionally unescaped because it uses Astro `set:html`; only pass trusted or pre-sanitized content.
 
 ---
 

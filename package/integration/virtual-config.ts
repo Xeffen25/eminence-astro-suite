@@ -5,6 +5,7 @@ import {
 	Base,
 	Charset,
 	ColorScheme,
+	Extend,
 	Generator,
 	HumansTxt,
 	Manifest,
@@ -32,6 +33,7 @@ export type HeadTagsOptions = {
 	base?: ComponentProps<typeof Base>;
 	charset?: ComponentProps<typeof Charset>["charset"];
 	colorScheme?: ComponentProps<typeof ColorScheme>["content"];
+	extend?: ComponentProps<typeof Extend>;
 	generator?: ComponentProps<typeof Generator>["generate"];
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
 	icons?: IconsOptions | false;
@@ -92,6 +94,7 @@ export const extractHeadTagsConfig = (options: IntegrationInput): ResolvedHeadTa
 		base: headTags?.base,
 		charset: headTags?.charset ?? DEFAULT_HEAD_TAGS_CONFIG.charset,
 		colorScheme: headTags?.colorScheme,
+		extend: headTags?.extend,
 		generator: headTags?.generator ?? DEFAULT_HEAD_TAGS_CONFIG.generator,
 		humansTxt: headTags?.humansTxt ?? DEFAULT_HEAD_TAGS_CONFIG.humansTxt,
 		icons: icons ?? DEFAULT_HEAD_TAGS_CONFIG.icons,

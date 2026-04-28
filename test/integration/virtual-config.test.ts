@@ -215,6 +215,29 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toMatchObject(DEFAULT_HEAD_TAGS_OPTIONS);
 	});
 
+	it("extracts extend defaults into client head config", () => {
+		const options: IntegrationInput = {
+			headTags: {
+				extend: {
+					link: [{ rel: "preconnect", href: "https://cdn.example.com", prefetch: true }],
+					meta: [{ property: "custom:source", content: "integration" }],
+					custom: ['<meta name="custom" content="1">'],
+				},
+			},
+		};
+
+		const result = extractHeadTagsConfig(options);
+
+		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
+			extend: {
+				link: [{ rel: "preconnect", href: "https://cdn.example.com", prefetch: true }],
+				meta: [{ property: "custom:source", content: "integration" }],
+				custom: ['<meta name="custom" content="1">'],
+			},
+		});
+	});
+
 	it("keeps false branches for icons, manifest, and humansTxt", () => {
 		const options: IntegrationInput = {
 			icons: false,
@@ -391,6 +414,29 @@ describe("Integration - Virtual Config", () => {
 		expect(result).toMatchObject({
 			...DEFAULT_HEAD_TAGS_OPTIONS,
 			generator: false,
+		});
+	});
+
+	it("serializes extend defaults in virtual config module", () => {
+		const options: IntegrationInput = {
+			headTags: {
+				extend: {
+					link: [{ rel: "dns-prefetch", href: "https://assets.example.com" }],
+					meta: [{ property: "custom:token", content: "abc123" }],
+					custom: '<script data-test="x"></script>',
+				},
+			},
+		};
+
+		const result = parseSerializedModuleConfig(serializedVirtualConfigModule(options));
+
+		expect(result).toMatchObject({
+			...DEFAULT_HEAD_TAGS_OPTIONS,
+			extend: {
+				link: [{ rel: "dns-prefetch", href: "https://assets.example.com" }],
+				meta: [{ property: "custom:token", content: "abc123" }],
+				custom: '<script data-test="x"></script>',
+			},
 		});
 	});
 });
