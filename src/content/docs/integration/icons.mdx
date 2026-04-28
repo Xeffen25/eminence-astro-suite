@@ -6,9 +6,38 @@ head:
       content: Icons - Integration
 ---
 
+import { TabItem, Tabs } from "@astrojs/starlight/components";
+
 The icons feature generates favicon and app icon files in your build output during `astro build`. It derives all icons from a single source image using `sharp` for raster conversion and `sharp-ico` for `.ico` generation. Generated icon tags are injected into the virtual config so the `Icons` component can reference them in your document head.
 
-`sharp` is a required peer dependency. If it is not installed, the build will fail.
+`sharp` and `sharp-ico` are required peer dependencies. If they are not installed, the build will fail.
+
+Install them with:
+
+<Tabs>
+	<TabItem label="npm">
+
+    ```bash
+    npm install sharp sharp-ico
+    ```
+
+    </TabItem>
+    <TabItem label="pnpm">
+
+    ```bash
+    pnpm add sharp sharp-ico
+    ```
+
+    </TabItem>
+    <TabItem label="yarn">
+
+    ```bash
+    yarn add sharp sharp-ico
+    ```
+
+    </TabItem>
+
+</Tabs>
 
 ## Options
 
