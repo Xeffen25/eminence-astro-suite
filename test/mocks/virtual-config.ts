@@ -10,7 +10,7 @@ const headTagsConfig: ResolvedHeadTagsConfig = {
 	appleItunesApp: undefined,
 	appLinks: undefined,
 	generator: true,
-	icons: {},
+	icons: [],
 	openGraphSiteName: undefined,
 	manifest: true,
 	humansTxt: true,

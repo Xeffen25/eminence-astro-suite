@@ -1,5 +1,9 @@
 import type { IntegrationRuntimeContext } from "@package/integration";
-import { generateIcons, resolveManifestIconsFromIconsOptions } from "@package/integration/generate-icons";
+import {
+	generateIcons,
+	resolveHeadIconTagsFromIconsOptions,
+	resolveManifestIconsFromIconsOptions,
+} from "@package/integration/generate-icons";
 import type { AstroConfig } from "astro";
 import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
@@ -50,7 +54,7 @@ describe("Integration - Generate Icons", () => {
 	});
 
 	it("warns when icons.source is undefined", async () => {
-		await generateIcons(createContext({ icons: {} }));
+		await generateIcons(createContext({ icons: {} as never }));
 
 		expect(logger.warn).toHaveBeenCalledWith(ICON_SOURCE_UNDEFINED_WARNING);
 	});
@@ -60,6 +64,10 @@ describe("Integration - Generate Icons", () => {
 			createContext({
 				icons: {
 					source: join(sourceDir, "missing.png"),
+					"favicon.png": {
+						size: 32,
+						tag: { rel: "icon" },
+					},
 				},
 			}),
 		);
@@ -69,7 +77,7 @@ describe("Integration - Generate Icons", () => {
 		);
 	});
 
-	it("generates default icon files from a png source", async () => {
+	it("generates configured icon files from a png source", async () => {
 		const source = join(sourceDir, "source.png");
 		await sharp({
 			create: {
@@ -86,16 +94,33 @@ describe("Integration - Generate Icons", () => {
 			createContext({
 				icons: {
 					source,
+					"favicon.ico": {
+						sizes: [16, 32, 48],
+						tag: { rel: "icon" },
+					},
+					"favicon.png": {
+						size: 32,
+						tag: { rel: "icon" },
+					},
+					"apple-touch-icon.png": {
+						size: 180,
+						tag: { rel: "apple-touch-icon" },
+					},
+					"icon-192x192.png": {
+						size: 192,
+						tag: { rel: "icon" },
+						manifest: true,
+					},
 				},
 			}),
 		);
 
 		expect(existsSync(join(outputDir, "favicon.ico"))).toBe(true);
 		expect(existsSync(join(outputDir, "favicon.png"))).toBe(true);
-		expect(existsSync(join(outputDir, "favicon-48x48.png"))).toBe(true);
 		expect(existsSync(join(outputDir, "apple-touch-icon.png"))).toBe(true);
 		expect(existsSync(join(outputDir, "icon-192x192.png"))).toBe(true);
-		expect(existsSync(join(outputDir, "icon.png"))).toBe(true);
+		expect(existsSync(join(outputDir, "favicon-48x48.png"))).toBe(false);
+		expect(existsSync(join(outputDir, "icon.png"))).toBe(false);
 		expect(existsSync(join(outputDir, "favicon.svg"))).toBe(false);
 	});
 
@@ -118,50 +143,74 @@ describe("Integration - Generate Icons", () => {
 		expect(existsSync(join(outputDir, "favicon.svg"))).toBe(true);
 	});
 
-	it("resolves manifest icons from default generated entries", () => {
+	it("resolves head icon tags from file-keyed entries and skips false sizes", () => {
+		const tags = resolveHeadIconTagsFromIconsOptions({
+			source: "/icons/source.svg",
+			"favicon.ico": {
+				sizes: [16, 32, 48],
+				tag: { rel: "icon" },
+			},
+			"apple-touch-icon.png": {
+				size: 180,
+				tag: { rel: "apple-touch-icon" },
+			},
+			"icon-192x192.png": {
+				size: false,
+				tag: { rel: "icon" },
+			},
+		});
+
+		expect(tags).toEqual([
+			{ rel: "icon", href: "/favicon.svg", sizes: "any", type: "image/svg+xml" },
+			{ rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+			{ rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+		]);
+	});
+
+	it("resolves manifest icons from keyed entries marked for manifest output", () => {
 		const manifestIcons = resolveManifestIconsFromIconsOptions({
 			source: "/icons/source.png",
+			"favicon.ico": {
+				sizes: [16, 32, 48],
+				tag: { rel: "icon" },
+				manifest: true,
+			},
+			"icon-192x192.png": {
+				size: 192,
+				tag: { rel: "icon" },
+				manifest: true,
+			},
+			"icon.png": {
+				size: 512,
+				tag: { rel: "icon" },
+				manifest: { purpose: "maskable" },
+			},
+			"disabled.png": {
+				size: false,
+				tag: { rel: "icon" },
+				manifest: true,
+			},
 		});
 
 		expect(manifestIcons).toEqual([
+			{ src: "/favicon.ico", sizes: "16x16 32x32 48x48", type: "image/x-icon" },
 			{ src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
-			{ src: "/icon.png", sizes: "512x512", type: "image/png" },
+			{ src: "/icon.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
 		]);
 	});
 
-	it("uses overrides for default generated manifest icons", () => {
+	it("uses per-entry manifest overrides when provided", () => {
 		const manifestIcons = resolveManifestIconsFromIconsOptions({
 			source: "/icons/source.png",
-			overrides: {
-				png192: "/public/custom-192.png",
-				png512: "/public/custom-512.png",
+			"badge.png": {
+				size: 96,
+				tag: { rel: "icon" },
+				manifest: { src: "/extra/badge.png", type: "image/custom", purpose: "maskable" },
 			},
 		});
 
 		expect(manifestIcons).toEqual([
-			{ src: "/public/custom-192.png", sizes: "192x192", type: "image/png" },
-			{ src: "/public/custom-512.png", sizes: "512x512", type: "image/png" },
+			{ src: "/extra/badge.png", sizes: "96x96", type: "image/custom", purpose: "maskable" },
 		]);
-	});
-
-	it("includes custom generation manifest metadata and explicit manifest icons", () => {
-		const manifestIcons = resolveManifestIconsFromIconsOptions({
-			source: "/icons/source.png",
-			manifest: {
-				icons: [{ src: "/extra/icon.svg", type: "image/svg+xml", sizes: "any" }],
-			},
-			customGeneration: [
-				{
-					fileName: "badge.png",
-					size: 96,
-					format: "png",
-					rel: "icon",
-					manifest: { purpose: "maskable" },
-				},
-			],
-		});
-
-		expect(manifestIcons).toContainEqual({ src: "/extra/icon.svg", type: "image/svg+xml", sizes: "any" });
-		expect(manifestIcons).toContainEqual({ src: "/badge.png", purpose: "maskable" });
 	});
 });

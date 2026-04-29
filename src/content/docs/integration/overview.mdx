@@ -115,13 +115,12 @@ Pass `sitemap: false` to disable the feature and suppress the peer dependency re
 
 Generates favicon and app icon files at build time from a single source image. The generated icons are automatically injected as `<link>` tags and, when combined with `manifest`, contributed to the web manifest. See [Icons](/integration/icons) for full option details.
 
-| option             | type                   | description                                                                |
-| ------------------ | ---------------------- | -------------------------------------------------------------------------- |
-| `source`           | `string \| false`      | Path to the source image. Pass `false` to skip generation without warning. |
-| `overrides`        | `IconsOverrides`       | Replace or disable individual default icons.                               |
-| `customGeneration` | `GeneratedIconTag[]`   | Additional icons to generate at custom sizes and formats.                  |
-| `customTags`       | `IconTag[]`            | Extra link tags to inject without generating files.                        |
-| `manifest`         | `IconsManifestOptions` | Controls which generated icons are contributed to the web manifest.        |
+| option              | type             | description                                                                     |
+| ------------------- | ---------------- | ------------------------------------------------------------------------------- |
+| `source`            | `string`         | Global source image used when a keyed icon entry does not provide `source`.     |
+| `[filename.ico]`    | keyed icon entry | Generates a multi-size `.ico` file and optional head and manifest metadata.     |
+| `[filename.svg]`    | keyed icon entry | Adds SVG metadata-only icon tags; explicit SVG entries do not generate files.   |
+| `[filename.raster]` | keyed icon entry | Generates raster files such as PNG or WebP with inferred `sizes` and MIME type. |
 
 Pass `icons: false` to disable generation entirely with no warning.
 
