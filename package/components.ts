@@ -221,16 +221,13 @@ export type HumansTxtProps = ComponentProps<typeof HumansTxt>;
 /**
  * @summary Renders `<link>` tags for favicons, mobile icons, and custom web assets.
  * @description
- * Generates and renders favicon, mobile icon, and PWA asset `<link>` tags with intelligent override handling.
- * Supports automatic asset generation during build and runtime tag injection.
- * Handles media queries for light/dark theme variants and smart SVG detection to prevent tag duplication.
+ * Renders the build-time resolved icon `<link>` tags from the integration virtual module.
+ * Accepts a single late-bound `icons` prop to replace those tags at runtime when a page needs custom overrides.
  *
  * @example
- * <Icons source="/public/icon.png" />
+ * <Icons />
  * @example
- * <Icons source="/public/icon.svg" customTags={[{ rel: "alternate icon", href: "/favicon.ico" }]} />
- * @example
- * <Icons source="/public/icon.png" overrides={{ png192: false, appleTouchIcon: "/custom-apple-icon.png" }} />
+ * <Icons icons={[{ rel: "icon", href: "/campaign.ico", type: "image/x-icon" }]} />
  * @see {@link https://eminence-astro-suite.xeffen25.com/components/icons Icons Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types MDN link rel documentation}
  * @see {@link https://web.dev/icons-and-browser-colors Web.dev icon guide}

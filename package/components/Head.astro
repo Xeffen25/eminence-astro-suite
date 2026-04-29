@@ -115,12 +115,12 @@ interface Props {
 	 */
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | false;
 	/**
-	 * Icon configuration forwarded to the `Icons` component.
+	 * Late-bound icon tags forwarded to the `Icons` component.
 	 * Falls back to integration config. Pass `false` to suppress all icon tags.
 	 *
 	 * {@link https://eminence-astro-suite.xeffen25.com/components/icons Icons}
 	 */
-	icons?: ComponentProps<typeof Icons> | false;
+	icons?: ComponentProps<typeof Icons>["icons"] | false;
 	/**
 	 * Pre-serialized JSON-LD string injected as `<script type="application/ld+json">`.
 	 * Omit to suppress.
@@ -211,7 +211,7 @@ const {
 	<Description content={description} />
 	{generator !== false && <Generator generate={generator} />}
 	{humansTxt !== false && <HumansTxt href={humansTxt} />}
-	{icons !== false && <Icons {...(icons ?? {})} />}
+	{icons !== false && <Icons icons={icons} />}
 	{jsonLd && <JsonLd jsonLd={jsonLd} />}
 	{languageAlternates && <LanguageAlternates languages={languageAlternates} />}
 	{manifest !== false && <Manifest href={manifest} />}
