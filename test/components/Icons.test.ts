@@ -38,23 +38,39 @@ describe("Component Icons", () => {
 		);
 	});
 
-	it("prefers the runtime icons prop over build-time defaults and preserves extra attributes", async () => {
+	it("merges runtime icons over build-time defaults by href and preserves extra attributes", async () => {
 		Object.assign(clientHeadConfig, {
-			icons: [{ rel: "icon", href: "/build-time.ico", type: "image/x-icon" }],
+			icons: [
+				{ rel: "icon", href: "/shared.png", sizes: "16x16", type: "image/png" },
+				{ rel: "icon", href: "/build-time.ico", type: "image/x-icon" },
+			],
 		});
 
 		const result = await container.renderToString(Icons, {
 			props: {
 				icons: [
-					{ rel: "icon", href: "/runtime-dark.png", sizes: "32x32", type: "image/png", media: "dark" },
+					{ rel: "icon", href: "/shared.png", sizes: "32x32", type: "image/png", media: "dark" },
 					{ rel: "preload", href: "/runtime-mask.svg", as: "image", type: "image/svg+xml" },
-					{ rel: "icon", href: "/runtime-dark.png", sizes: "32x32", type: "image/png", media: "dark" },
+					{ rel: "icon", href: "/runtime-mask.svg", type: "image/svg+xml" },
 				],
 			},
 		});
 
 		expect(result).toBe(
-			'<link rel="icon" href="/runtime-dark.png" sizes="32x32" type="image/png" media="(prefers-color-scheme: dark)"><link rel="preload" href="/runtime-mask.svg" as="image" type="image/svg+xml">',
+			'<link rel="icon" href="/shared.png" sizes="32x32" type="image/png" media="(prefers-color-scheme: dark)"><link rel="icon" href="/build-time.ico" type="image/x-icon"><link rel="icon" href="/runtime-mask.svg" type="image/svg+xml">',
 		);
+	});
+
+	it("uses the last build-time icon for duplicate href entries", async () => {
+		Object.assign(clientHeadConfig, {
+			icons: [
+				{ rel: "icon", href: "/shared.png", sizes: "16x16", type: "image/png" },
+				{ rel: "icon", href: "/shared.png", sizes: "32x32", type: "image/png" },
+			],
+		});
+
+		const result = await container.renderToString(Icons, { props: {} });
+
+		expect(result).toBe('<link rel="icon" href="/shared.png" sizes="32x32" type="image/png">');
 	});
 });

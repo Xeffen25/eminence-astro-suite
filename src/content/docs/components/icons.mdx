@@ -1,17 +1,17 @@
 ---
 title: Icons - Component
-description: Documentation for Icons, focused on rendering resolved icon link tags. It accepts a late-bound replacement array when a page needs custom icon output.
+description: Documentation for Icons, focused on rendering resolved icon link tags. It accepts late-bound overrides that merge over the build-time icon array.
 ---
 
 Icons renders icon-related `<link>` tags from the build-time configuration resolved by the integration. The component is intentionally thin: file names, MIME types, and inferred `sizes` are computed before the virtual module is serialized, and the component only renders the resolved tags.
 
-When you pass the `icons` prop, it replaces the integration-provided tags for that render. This is useful for page-specific campaigns, experiments, or other late-bound overrides.
+When you pass the `icons` prop, it merges over the integration-provided tags for that render. Matching entries are deduplicated by `href`, with later runtime entries overriding earlier build-time entries.
 
 ## Props
 
-| prop    | type        | default                                | required | description                                                                                                                                  |
-| ------- | ----------- | -------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `icons` | `IconTag[]` | integration-resolved icon tags or `[]` | No       | Complete late-bound replacement list for icon `<link>` tags. Duplicate tags are deduplicated by `rel`, `href`, `sizes`, `type`, and `media`. |
+| prop    | type        | default                                | required | description                                                                                                                      |
+| ------- | ----------- | -------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `icons` | `IconTag[]` | integration-resolved icon tags or `[]` | No       | Late-bound icon overrides. Entries are keyed by `href`; runtime entries replace matching build-time entries and append new ones. |
 
 ## Usage & Examples
 
@@ -74,17 +74,17 @@ Output (`.html`):
 
 The integration resolves `href`, `type`, and inferred `sizes` before `Icons` renders. This avoids repeating file-extension logic in every page render and keeps the component surface small.
 
-### The runtime prop is a full replacement
+### The runtime prop merges by `href`
 
-Passing `icons` replaces the build-time defaults for that render instead of merging by filename. At render time only the final `IconTag[]` remains, so full replacement is the clearest and least ambiguous override model.
+Passing `icons` merges over the build-time defaults for that render. Because the build config is keyed by filename, the runtime component uses final `href` values as the override boundary and lets later entries win.
 
 ### Light and dark media values expand automatically
 
 When a tag uses `media: "light"` or `media: "dark"`, the component expands that shorthand into the matching `prefers-color-scheme` query. Other custom media strings are passed through unchanged.
 
-### Deduplication remains content-based
+### Deduplication is runtime-only and `href`-based
 
-Tags are deduplicated by `rel`, `href`, `sizes`, `type`, and `media`. This keeps repeated runtime arrays or duplicated build output from rendering duplicate `<link>` elements.
+Build-time resolution preserves the raw tag array. `Icons` performs the final dedupe step by `href`, first across the config tags and then across runtime overrides, so later entries replace earlier ones predictably.
 
 ## Reference
 

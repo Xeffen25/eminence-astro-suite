@@ -327,19 +327,6 @@ const getIconDefinitions = (icons: IconsOptions): Array<[IconFileName, IconDefin
 	);
 };
 
-export const dedupeIconTags = (tags: IconTag[]): IconTag[] => {
-	const uniqueTags = new Map<string, IconTag>();
-
-	for (const tag of tags) {
-		const dedupeKey = [tag.rel, tag.href, tag.sizes ?? "", tag.type ?? "", tag.media ?? ""].join("|");
-		if (!uniqueTags.has(dedupeKey)) {
-			uniqueTags.set(dedupeKey, tag);
-		}
-	}
-
-	return Array.from(uniqueTags.values());
-};
-
 export const resolveIconsOptions = (icons: IconsOptions | false | undefined): ResolvedIconsOptions => {
 	if (icons === false || icons === undefined) {
 		return { tags: [], manifestIcons: [], generationTasks: [] };
@@ -385,7 +372,7 @@ export const resolveIconsOptions = (icons: IconsOptions | false | undefined): Re
 	}
 
 	return {
-		tags: dedupeIconTags(tags),
+		tags,
 		manifestIcons,
 		generationTasks,
 	};

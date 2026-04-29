@@ -1,18 +1,28 @@
 ---
-import { dedupeIconTags, type IconTag } from "../integration/generate-icons";
+import type { IconTag } from "../integration/generate-icons";
 import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
 	/**
 	 * Late-bound `<link>` tag overrides.
-	 * When provided, this fully replaces the build-time resolved icon tags from the virtual module.
+	 * These are merged over the build-time resolved icon tags from the virtual module.
 	 */
 	icons?: IconTag[];
 }
 
-const { icons = config.icons ?? [] } = Astro.props;
+const { icons: overrideIcons } = Astro.props;
 
-const iconTagsToRender = dedupeIconTags(icons);
+const iconTagsMap = new Map<string, IconTag>();
+
+for (const iconTag of config.icons ?? []) {
+	iconTagsMap.set(iconTag.href, iconTag);
+}
+
+for (const iconTag of overrideIcons ?? []) {
+	iconTagsMap.set(iconTag.href, iconTag);
+}
+
+const iconTagsToRender = Array.from(iconTagsMap.values());
 
 const resolveMedia = (media: IconTag["media"]): string | undefined => {
 	if (media === undefined) {

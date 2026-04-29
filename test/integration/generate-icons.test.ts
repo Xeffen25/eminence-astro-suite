@@ -167,6 +167,26 @@ describe("Integration - Generate Icons", () => {
 		]);
 	});
 
+	it("preserves raw build-time icon tags so the component can resolve href collisions", () => {
+		const tags = resolveHeadIconTagsFromIconsOptions({
+			source: "/icons/source.svg",
+			"icon-light.png": {
+				size: 32,
+				tag: { rel: "icon", href: "/shared.png", media: "light" },
+			},
+			"icon-dark.png": {
+				size: 32,
+				tag: { rel: "icon", href: "/shared.png", media: "dark" },
+			},
+		});
+
+		expect(tags).toEqual([
+			{ rel: "icon", href: "/favicon.svg", sizes: "any", type: "image/svg+xml" },
+			{ rel: "icon", href: "/icon-light.png", sizes: "32x32", type: "image/png", media: "light" },
+			{ rel: "icon", href: "/icon-dark.png", sizes: "32x32", type: "image/png", media: "dark" },
+		]);
+	});
+
 	it("resolves manifest icons from keyed entries marked for manifest output", () => {
 		const manifestIcons = resolveManifestIconsFromIconsOptions({
 			source: "/icons/source.png",

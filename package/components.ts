@@ -222,7 +222,7 @@ export type HumansTxtProps = ComponentProps<typeof HumansTxt>;
  * @summary Renders `<link>` tags for favicons, mobile icons, and custom web assets.
  * @description
  * Renders the build-time resolved icon `<link>` tags from the integration virtual module.
- * Accepts a single late-bound `icons` prop to replace those tags at runtime when a page needs custom overrides.
+ * Accepts a single late-bound `icons` prop to override matching build-time tags by `href` and append new ones at runtime.
  *
  * @example
  * <Icons />
