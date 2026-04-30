@@ -1,165 +1,40 @@
 ---
-import type { GeneratedIconTag, IconTag } from "../integration/generate-icons";
-import { inferImageMimeType, isSvg } from "../utils";
+import type { IconTag } from "../integration/generate-icons";
 import config from "virtual:eminence-astro-suite/head-tags";
-
-const icons = config.icons !== false ? (config.icons ?? {}) : undefined;
-const overrides = icons?.overrides;
 
 interface Props {
 	/**
-	 * Path to the SVG favicon.
-	 * Falls back to integration overrides, then `/favicon.svg`.
-	 * Pass `false` to suppress this tag.
+	 * Late-bound `<link>` tag overrides.
+	 * These are merged over the build-time resolved icon tags from the virtual module.
 	 */
-	svg?: string | false;
-	/**
-	 * Path to the ICO favicon.
-	 * Falls back to integration overrides, then `/favicon.ico`.
-	 * Pass `false` to suppress this tag.
-	 */
-	ico?: string | false;
-	/**
-	 * Path to the 32x32 PNG favicon.
-	 * Falls back to integration overrides, then `/favicon.png`.
-	 * Pass `false` to suppress this tag.
-	 */
-	png32?: string | false;
-	/**
-	 * Path to the 48x48 PNG favicon.
-	 * Falls back to integration overrides, then `/favicon-48x48.png`.
-	 * Pass `false` to suppress this tag.
-	 */
-	png48?: string | false;
-	/**
-	 * Path to the Apple touch icon.
-	 * Falls back to integration overrides, then `/apple-touch-icon.png`.
-	 * Pass `false` to suppress this tag.
-	 */
-	appleTouchIcon?: string | false;
-	/**
-	 * Path to the 192x192 app icon.
-	 * Falls back to integration overrides, then `/icon-192x192.png`.
-	 * Pass `false` to suppress this tag.
-	 */
-	png192?: string | false;
-	/**
-	 * Path to the 512x512 app icon.
-	 * Falls back to integration overrides, then `/icon.png`.
-	 * Pass `false` to suppress this tag.
-	 */
-	png512?: string | false;
-	/**
-	 * Additional generated icon tags injected at runtime.
-	 * Useful for build-time generated assets with explicit sizes, type, and media variants.
-	 */
-	customGeneration?: GeneratedIconTag[];
-	/**
-	 * Additional custom `<link>` icon tags.
-	 * These are merged with generated/default tags and then deduplicated by rel, href, sizes, type, and media.
-	 */
-	customTags?: IconTag[];
+	icons?: IconTag[];
 }
 
-const {
-	svg = overrides?.svg ?? "/favicon.svg",
-	png32 = overrides?.png32 ?? "/favicon.png",
-	png48 = overrides?.png48 ?? "/favicon-48x48.png",
-	appleTouchIcon = overrides?.appleTouchIcon ?? "/apple-touch-icon.png",
-	png192 = overrides?.png192 ?? "/icon-192x192.png",
-	png512 = overrides?.png512 ?? "/icon.png",
-	ico = overrides?.ico ?? "/favicon.ico",
-	customGeneration = icons?.customGeneration ?? [],
-	customTags = icons?.customTags ?? [],
-} = Astro.props;
+const { icons: overrideIcons } = Astro.props;
 
-const allIconTags: IconTag[] = [...customTags];
+const iconTagsMap = new Map<string, IconTag>();
 
-const sourceIsSvg = icons?.source ? isSvg(icons?.source) : false;
-if (svg && sourceIsSvg)
-	allIconTags.push({
-		rel: "icon",
-		href: svg,
-		sizes: "any",
-		type: inferImageMimeType(svg),
-	});
-
-if (ico)
-	allIconTags.push({
-		rel: "icon",
-		href: ico,
-		type: inferImageMimeType(ico),
-	});
-
-if (png32)
-	allIconTags.push({
-		rel: "icon",
-		href: png32,
-		sizes: "32x32",
-		type: inferImageMimeType(png32),
-	});
-
-if (png48)
-	allIconTags.push({
-		rel: "icon",
-		href: png48,
-		sizes: "48x48",
-		type: inferImageMimeType(png48),
-	});
-
-if (appleTouchIcon)
-	allIconTags.push({
-		rel: "apple-touch-icon",
-		href: appleTouchIcon,
-		sizes: "180x180",
-		type: inferImageMimeType(appleTouchIcon),
-	});
-
-if (png192)
-	allIconTags.push({
-		rel: "icon",
-		href: png192,
-		sizes: "192x192",
-		type: inferImageMimeType(png192),
-	});
-
-if (png512)
-	allIconTags.push({
-		rel: "icon",
-		href: png512,
-		sizes: "512x512",
-		type: inferImageMimeType(png512),
-	});
-
-for (const icon of customGeneration) {
-	allIconTags.push({
-		rel: icon.rel,
-		href: icon.fileName.startsWith("/") ? icon.fileName : `/${icon.fileName}`,
-		sizes: icon.sizes,
-		type: icon.type ?? inferImageMimeType(icon.fileName, icon.format),
-		media: icon.media,
-	});
+for (const iconTag of config.icons ?? []) {
+	iconTagsMap.set(iconTag.href, iconTag);
 }
 
-const uniqueIconTags = new Map<string, IconTag>();
-
-for (const icon of allIconTags) {
-	if (!icon.href) continue;
-	const normalizedType = icon.type ?? inferImageMimeType(icon.href);
-	const dedupeKey = [icon.rel, icon.href, icon.sizes ?? "", normalizedType ?? "", icon.media ?? ""].join("|");
-
-	if (uniqueIconTags.has(dedupeKey)) continue;
-	uniqueIconTags.set(dedupeKey, {
-		...icon,
-		type: normalizedType,
-	});
+for (const iconTag of overrideIcons ?? []) {
+	iconTagsMap.set(iconTag.href, iconTag);
 }
 
-const iconTagsToRender = Array.from(uniqueIconTags.values());
+const iconTagsToRender = Array.from(iconTagsMap.values());
+
+const resolveMedia = (media: IconTag["media"]): string | undefined => {
+	if (media === undefined) {
+		return undefined;
+	}
+
+	if (media === "light" || media === "dark") {
+		return `(prefers-color-scheme: ${media})`;
+	}
+
+	return media;
+};
 ---
 
-{
-	iconTagsToRender.map(({ rel, href, sizes, type, media }) => (
-		<link rel={rel} href={href} sizes={sizes} type={type} media={media && `(prefers-color-scheme: ${media})`} />
-	))
-}
+{iconTagsToRender.map(({ media, ...iconTag }) => <link {...iconTag} media={resolveMedia(media)} />)}

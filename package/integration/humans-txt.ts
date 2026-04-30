@@ -28,7 +28,7 @@ export async function validateHumansTxtInBuildOutput({
 	options,
 	logger,
 }: IntegrationRuntimeContext): Promise<void> {
-	const humansTxtOption = options.head?.humansTxt;
+	const humansTxtOption = options.headTags?.humansTxt;
 
 	if (humansTxtOption === false) {
 		return;

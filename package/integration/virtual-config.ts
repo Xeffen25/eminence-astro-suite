@@ -17,7 +17,7 @@ import {
 	Viewport,
 } from "../components";
 import type { IntegrationInput } from "../integration";
-import type { IconsOptions } from "./generate-icons";
+import { resolveHeadIconTagsFromIconsOptions, type IconTag } from "./generate-icons";
 
 export const VIRTUAL_CONFIG_MODULE_ID = "virtual:eminence-astro-suite/head-tags";
 export const RESOLVED_VIRTUAL_CONFIG_MODULE_ID = `\0${VIRTUAL_CONFIG_MODULE_ID}`;
@@ -36,7 +36,7 @@ export type HeadTagsOptions = {
 	extend?: ComponentProps<typeof Extend>;
 	generator?: ComponentProps<typeof Generator>["generate"];
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
-	icons?: IconsOptions | false;
+	icons?: IconTag[];
 	manifest?: ComponentProps<typeof Manifest>["href"] | boolean;
 	openGraphSiteName?: ComponentProps<typeof OpenGraph>["siteName"];
 	robots?: ComponentProps<typeof Robots>;
@@ -46,14 +46,7 @@ export type HeadTagsOptions = {
 	viewport?: ComponentProps<typeof Viewport>["content"];
 };
 
-type DefaultedHeadTagsKeys =
-	| "charset"
-	| "viewport"
-	| "titleTemplate"
-	| "generator"
-	| "icons"
-	| "manifest"
-	| "humansTxt";
+type DefaultedHeadTagsKeys = "charset" | "viewport" | "titleTemplate" | "generator" | "manifest" | "humansTxt";
 
 /**
  * The resolved shape of the `virtual:eminence-astro-suite/head-tags` virtual module.
@@ -65,6 +58,8 @@ type DefaultedHeadTagsKeys =
  */
 export type ResolvedHeadTagsConfig = Omit<HeadTagsOptions, DefaultedHeadTagsKeys> & {
 	[K in DefaultedHeadTagsKeys]-?: NonNullable<HeadTagsOptions[K]>;
+} & {
+	icons: IconTag[];
 };
 
 const DEFAULT_HEAD_TAGS_CONFIG: Pick<
@@ -75,9 +70,23 @@ const DEFAULT_HEAD_TAGS_CONFIG: Pick<
 	viewport: "width=device-width, initial-scale=1",
 	titleTemplate: "%s",
 	generator: true,
-	icons: {},
+	icons: [],
 	manifest: false,
 	humansTxt: false,
+};
+
+const mergeIconTagsByHref = (base: IconTag[], overrides: IconTag[] = []): IconTag[] => {
+	const iconTagsByHref = new Map<string, IconTag>();
+
+	for (const iconTag of base) {
+		iconTagsByHref.set(iconTag.href, iconTag);
+	}
+
+	for (const iconTag of overrides) {
+		iconTagsByHref.set(iconTag.href, iconTag);
+	}
+
+	return Array.from(iconTagsByHref.values());
 };
 
 /**
@@ -85,8 +94,12 @@ const DEFAULT_HEAD_TAGS_CONFIG: Pick<
  * The result is what gets serialized into the virtual module — it is a strict
  * allowlist; server-only build options are never included.
  */
-export const extractHeadTagsConfig = (options: IntegrationInput): ResolvedHeadTagsConfig => {
-	const { headTags, icons } = options;
+export const extractHeadTagsConfig = (
+	options: IntegrationInput,
+	resolvedIcons: IconTag[] = resolveHeadIconTagsFromIconsOptions(options.icons),
+): ResolvedHeadTagsConfig => {
+	const { headTags } = options;
+	const mergedIcons = mergeIconTagsByHref(resolvedIcons, headTags?.icons);
 
 	return {
 		appleItunesApp: headTags?.appleItunesApp,
@@ -97,7 +110,7 @@ export const extractHeadTagsConfig = (options: IntegrationInput): ResolvedHeadTa
 		extend: headTags?.extend,
 		generator: headTags?.generator ?? DEFAULT_HEAD_TAGS_CONFIG.generator,
 		humansTxt: headTags?.humansTxt ?? DEFAULT_HEAD_TAGS_CONFIG.humansTxt,
-		icons: icons ?? DEFAULT_HEAD_TAGS_CONFIG.icons,
+		icons: mergedIcons,
 		manifest: headTags?.manifest ?? DEFAULT_HEAD_TAGS_CONFIG.manifest,
 		openGraphSiteName: headTags?.openGraphSiteName,
 		robots: headTags?.robots,
@@ -112,8 +125,8 @@ export const extractHeadTagsConfig = (options: IntegrationInput): ResolvedHeadTa
  * Transforms the filtered configuration into a string of JavaScript code.
  * This string becomes the "source code" for the virtual module.
  */
-export const serializedVirtualConfigModule = (options: IntegrationInput): string => {
-	const tagConfig = extractHeadTagsConfig(options);
+export const serializedVirtualConfigModule = (options: IntegrationInput, resolvedIcons?: IconTag[]): string => {
+	const tagConfig = extractHeadTagsConfig(options, resolvedIcons);
 
 	// Converts the JS object into a JSON string and wraps it in a standard export
 	return `export default ${JSON.stringify(tagConfig)};`;

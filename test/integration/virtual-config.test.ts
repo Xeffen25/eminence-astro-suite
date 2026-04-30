@@ -7,7 +7,7 @@ const DEFAULT_HEAD_TAGS_OPTIONS = {
 	viewport: "width=device-width, initial-scale=1",
 	titleTemplate: "%s",
 	generator: true,
-	icons: {},
+	icons: [],
 	manifest: false,
 	humansTxt: false,
 };
@@ -238,7 +238,7 @@ describe("Integration - Virtual Config", () => {
 		});
 	});
 
-	it("keeps false branches for icons, manifest, and humansTxt", () => {
+	it("keeps manifest and humansTxt false branches while resolving icons to an array", () => {
 		const options: IntegrationInput = {
 			icons: false,
 			headTags: {
@@ -251,10 +251,54 @@ describe("Integration - Virtual Config", () => {
 
 		expect(result).toMatchObject({
 			...DEFAULT_HEAD_TAGS_OPTIONS,
-			icons: false,
+			icons: [],
 			manifest: false,
 			humansTxt: false,
 		});
+	});
+
+	it("resolves build-time icon tags into the virtual config", () => {
+		const options: IntegrationInput = {
+			icons: {
+				source: "/assets/logo.svg",
+				"favicon.ico": { sizes: [16, 32, 48], tag: { rel: "icon" } },
+				"apple-touch-icon.png": { size: 180, tag: { rel: "apple-touch-icon" } },
+				"icon-192x192.png": { size: false, tag: { rel: "icon" } },
+			},
+		};
+
+		const result = extractHeadTagsConfig(options);
+
+		expect(result.icons).toEqual([
+			{ rel: "icon", href: "/favicon.svg", sizes: "any", type: "image/svg+xml" },
+			{ rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+			{ rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+		]);
+	});
+
+	it("merges headTags.icons over generated icon tags using href as the key", () => {
+		const options: IntegrationInput = {
+			icons: {
+				source: "/assets/logo.svg",
+				"favicon.ico": { sizes: [16, 32, 48], tag: { rel: "icon" } },
+				"apple-touch-icon.png": { size: 180, tag: { rel: "apple-touch-icon" } },
+			},
+			headTags: {
+				icons: [
+					{ rel: "icon", href: "/favicon.ico", sizes: "32x32", type: "image/png" },
+					{ rel: "mask-icon", href: "/safari-pinned-tab.svg", type: "image/svg+xml" },
+				],
+			},
+		};
+
+		const result = extractHeadTagsConfig(options);
+
+		expect(result.icons).toEqual([
+			{ rel: "icon", href: "/favicon.svg", sizes: "any", type: "image/svg+xml" },
+			{ rel: "icon", href: "/favicon.ico", sizes: "32x32", type: "image/png" },
+			{ rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+			{ rel: "mask-icon", href: "/safari-pinned-tab.svg", type: "image/svg+xml" },
+		]);
 	});
 
 	it("serializes appleItunesApp defaults in virtual config module", () => {

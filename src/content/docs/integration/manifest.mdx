@@ -191,24 +191,19 @@ The generated `manifest.webmanifest` will include:
 
 ### Customizing manifest icons from the icons integration
 
-Use `icons.manifest` to control what auto-population produces. You can add extra manifest icon entries, disable auto-population entirely, or set custom metadata (including `purpose`) per generated icon via `customGeneration`.
+Manifest icon auto-population now scans the file-keyed `icons` entries. Any entry with `manifest: true` or a `ManifestIconOptions` object is added to `manifest.webmanifest` using its inferred path, inferred size metadata, and inferred MIME type.
 
 ```ts
 eminence({
 	icons: {
 		source: "src/assets/logo.svg",
-		manifest: {
-			icons: [{ src: "/icon-maskable.png", sizes: "512x512", type: "image/png", purpose: "maskable" }],
+		"icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
+		"icon.png": { size: 512, tag: { rel: "icon" }, manifest: { purpose: "maskable" } },
+		"badge.png": {
+			size: 96,
+			tag: { rel: "icon" },
+			manifest: { src: "/brand/badge.png", purpose: "monochrome" },
 		},
-		customGeneration: [
-			{
-				rel: "icon",
-				fileName: "badge.png",
-				size: 96,
-				format: "png",
-				manifest: { purpose: "monochrome" },
-			},
-		],
 	},
 	manifest: {
 		name: "My App",
@@ -229,24 +224,23 @@ Resulting `icons` array in `manifest.webmanifest`:
 ]
 ```
 
-To disable auto-population and control icon entries entirely through `icons.manifest.icons`:
+You can also provide `manifest.icons` directly. Those entries are merged over icons resolved from the integration using `src` as the key, so matching `src` values override generated metadata:
 
 ```ts
 eminence({
 	icons: {
 		source: "src/assets/logo.svg",
-		manifest: {
-			autoUseGenerated: false,
-			icons: [
-				{ src: "/custom-192.png", sizes: "192x192", type: "image/png" },
-				{ src: "/custom-512.png", sizes: "512x512", type: "image/png" },
-			],
-		},
+		"icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
+		"icon.png": { size: 512, tag: { rel: "icon" }, manifest: true },
 	},
 	manifest: {
 		name: "My App",
 		start_url: "/",
 		display: "standalone",
+		icons: [
+			{ src: "/custom-192.png", sizes: "192x192", type: "image/png" },
+			{ src: "/custom-512.png", sizes: "512x512", type: "image/png" },
+		],
 	},
 });
 ```
@@ -322,19 +316,19 @@ Chromium's required manifest members — at least one of `name` or `short_name`,
 
 ### `icons` is optional when the icons integration is active
 
-When `icons` is omitted from `manifest`, the integration checks if the icons integration is configured and automatically injects the generated 192×192 (`/icon-192x192.png`) and 512×512 (`/icon.png`) entries. This avoids requiring you to repeat file paths that the integration already knows about.
+When `icons` is omitted from `manifest`, the integration scans the configured file-keyed `icons` entries and automatically injects any files marked with `manifest: true` or a `ManifestIconOptions` object. This avoids requiring you to repeat file paths that the integration already knows about.
 
-Explicit `manifest.icons` always takes precedence. Auto-population only runs when `icons` is absent from the manifest config.
+`manifest.icons` is merged over generated manifest icons. Generated entries are added first, then explicit `manifest.icons` entries override by matching `src`.
 
-### Auto icon population is controlled through `icons.manifest`
+### Auto icon population is controlled per icon entry
 
-Rather than adding separate manifest-icon config to the manifest options, the icons integration owns the source of truth for which generated files contribute to the manifest. Each generated icon entry can carry optional manifest metadata (`sizes`, `type`, `purpose`, `src`). Custom generated icons opt in to manifest inclusion by setting `manifest: { ... }` on their entry. Default 192 and 512 icons participate by default.
+Rather than adding separate manifest-icon config to the manifest options, the icons integration owns the source of truth for which generated files contribute to the manifest. Each keyed icon entry can carry optional manifest metadata (`sizes`, `type`, `purpose`, `src`) or a simple `manifest: true` opt-in.
 
 This keeps manifest icon paths and generation paths in sync automatically when overrides change.
 
 ### Icons not marked for manifest are excluded
 
-Default generated icons that are not commonly used as PWA manifest icons (32px, 48px, `apple-touch-icon`) do not produce manifest entries. Only `png192` and `png512` are included by default. Custom generated icons are only included when they explicitly carry a `manifest` object.
+Icons that do not set `manifest` do not produce manifest entries. This keeps favicon-only assets, Apple touch icons, and other auxiliary files out of `manifest.webmanifest` unless you explicitly opt them in.
 
 ### File is not overwritten if it already exists
 

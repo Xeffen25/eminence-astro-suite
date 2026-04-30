@@ -2,7 +2,7 @@
 import type { HeadTagsOptions } from "./integration/virtual-config";
 
 import type { IconsOptions } from "./integration/generate-icons";
-import { generateIcons } from "./integration/generate-icons";
+import { generateIcons, resolveHeadIconTagsFromIconsOptions, type IconTag } from "./integration/generate-icons";
 import { validateHumansTxtInBuildOutput } from "./integration/humans-txt";
 import type { WebManifestOptions } from "./integration/manifest";
 import { generateManifest } from "./integration/manifest";
@@ -36,6 +36,7 @@ export type IntegrationRuntimeContext = {
 
 export default function createIntegration(options: IntegrationInput = {}): AstroIntegration {
 	let config: AstroConfig;
+	let resolvedHeadIconTags: IconTag[] = resolveHeadIconTagsFromIconsOptions(options.icons);
 
 	return {
 		name: "eminence-astro-suite",
@@ -58,9 +59,12 @@ export default function createIntegration(options: IntegrationInput = {}): Astro
 
 									return undefined;
 								},
+								async buildStart() {
+									resolvedHeadIconTags = resolveHeadIconTagsFromIconsOptions(options.icons);
+								},
 								load(id) {
 									if (id === RESOLVED_VIRTUAL_CONFIG_MODULE_ID) {
-										return serializedVirtualConfigModule(options);
+										return serializedVirtualConfigModule(options, resolvedHeadIconTags);
 									}
 
 									return undefined;

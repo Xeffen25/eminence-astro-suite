@@ -147,7 +147,7 @@ describe("Integration - WebManifest", () => {
 		expect(logger.info).toHaveBeenCalledWith(`Generated "${WEB_MANIFEST_RELATIVE_PATH}"`);
 	});
 
-	it("auto-populates manifest icons from icons defaults when icons are omitted", async () => {
+	it("auto-populates manifest icons from keyed icon entries when icons are omitted", async () => {
 		await generateManifest(
 			createContext(
 				{
@@ -158,6 +158,8 @@ describe("Integration - WebManifest", () => {
 				{
 					icons: {
 						source: "/assets/logo.png",
+						"icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
+						"icon.png": { size: 512, tag: { rel: "icon" }, manifest: true },
 					},
 				},
 			),
@@ -172,7 +174,7 @@ describe("Integration - WebManifest", () => {
 		]);
 	});
 
-	it("prefers explicit manifest icons over auto-populated generated icons", async () => {
+	it("merges explicit manifest icons over auto-populated generated icons", async () => {
 		await generateManifest(
 			createContext(
 				{
@@ -184,6 +186,7 @@ describe("Integration - WebManifest", () => {
 				{
 					icons: {
 						source: "/assets/logo.png",
+						"icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
 					},
 				},
 			),
@@ -192,7 +195,34 @@ describe("Integration - WebManifest", () => {
 		const raw = await readFile(join(outputDir, "manifest.webmanifest"), "utf-8");
 		const result = JSON.parse(raw);
 
-		expect(result.icons).toEqual([{ src: "/explicit.png", sizes: "1024x1024", type: "image/png" }]);
+		expect(result.icons).toEqual([
+			{ src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+			{ src: "/explicit.png", sizes: "1024x1024", type: "image/png" },
+		]);
+	});
+
+	it("overrides auto-populated generated icons when manifest icons share the same src", async () => {
+		await generateManifest(
+			createContext(
+				{
+					name: "Explicit Icons App",
+					start_url: "/",
+					display: "standalone",
+					icons: [{ src: "/icon-192x192.png", sizes: "200x200", type: "image/custom" }],
+				},
+				{
+					icons: {
+						source: "/assets/logo.png",
+						"icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
+					},
+				},
+			),
+		);
+
+		const raw = await readFile(join(outputDir, "manifest.webmanifest"), "utf-8");
+		const result = JSON.parse(raw);
+
+		expect(result.icons).toEqual([{ src: "/icon-192x192.png", sizes: "200x200", type: "image/custom" }]);
 	});
 
 	it("logs info when manifest is false and file already exists", async () => {

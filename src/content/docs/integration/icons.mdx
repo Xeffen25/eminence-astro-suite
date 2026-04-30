@@ -1,6 +1,6 @@
 ---
 title: Icons
-description: Documentation for the icons integration feature, focused on generating favicon and app icon files at build time from a single source image. It supports default icon sets, per-icon overrides, custom generation, and custom link tags.
+description: Documentation for the icons integration feature, focused on resolving file-keyed icon entries into generated assets, head tags, and manifest icons at build time.
 head:
     - tag: title
       content: Icons - Integration
@@ -8,9 +8,24 @@ head:
 
 import { TabItem, Tabs } from "@astrojs/starlight/components";
 
-The icons feature generates favicon and app icon files in your build output during `astro build`. It derives all icons from a single source image using `sharp` for raster conversion and `sharp-ico` for `.ico` generation. Generated icon tags are injected into the virtual config so the `Icons` component can reference them in your document head.
+The icons integration resolves icon metadata at build time from a file-keyed configuration. Each key is an output file name, and each value describes how that file should be generated, whether it should emit a `<link>` tag, and whether it should contribute an entry to `manifest.webmanifest`.
 
-`sharp` and `sharp-ico` are required peer dependencies. If they are not installed, the build will fail.
+Icon resolution happens in three layers:
+
+1. `icons`: generates assets and produces base head/manifest icon metadata from those keyed files.
+2. `headTags.icons`: merged over generated head icon tags using `href` as the key.
+3. `manifest.icons`: merged over generated manifest icon entries using `src` as the key.
+
+When keys collide, the later layer overrides the earlier one.
+
+During the build the integration:
+
+- generates raster and `.ico` assets with `sharp` and `sharp-ico`
+- resolves `href`, `sizes`, and `type` into static `IconTag[]`
+- injects those tags through `virtual:eminence-astro-suite/head-tags`
+- scans `manifest: true` entries to populate `manifest.webmanifest`
+
+`sharp` and `sharp-ico` are required peer dependencies when you generate raster or `.ico` files.
 
 Install them with:
 
@@ -43,67 +58,31 @@ Install them with:
 
 ### `IconsOptions`
 
-| option             | type                   | default | required | description                                                                                                       |
-| ------------------ | ---------------------- | ------- | -------- | ----------------------------------------------------------------------------------------------------------------- |
-| `source`           | `string \| false`      | -       | No       | Path to the source image to generate icons from. Pass `false` to skip generation without warning.                 |
-| `overrides`        | `IconsOverrides`       | -       | No       | Per-icon overrides to replace or disable individual generated icons.                                              |
-| `customGeneration` | `GeneratedIconTag[]`   | -       | No       | Additional icons to generate from the source image with custom sizing and format.                                 |
-| `customTags`       | `IconTag[]`            | -       | No       | Additional link tags to inject as-is without generating any files.                                                |
-| `manifest`         | `IconsManifestOptions` | -       | No       | Controls which generated icons are contributed to `manifest.webmanifest` when the manifest integration is active. |
+| option                                         | type                                                                                                                                                                   | required | description                                                                                                                                                                                            |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `source`                                       | `string`                                                                                                                                                               | Yes      | Global source image used for generated raster and `.ico` outputs unless a keyed entry provides its own `source`.                                                                                       |
+| `[filename.ico]`                               | `{ sizes: number[] \| false; tag?: Partial<IconTag> & Pick<IconTag, "rel">; manifest?: boolean \| ManifestIconOptions; source?: string; sharpOptions?: SharpOptions }` | No       | Generates a multi-size `.ico` file. `sizes: false` skips the entry entirely. Link-tag `sizes` are never inferred for `.ico`; set them manually in `tag` if needed.                                     |
+| `[filename.svg]`                               | `{ tag?: Partial<IconTag> & Pick<IconTag, "rel">; manifest?: boolean \| ManifestIconOptions }`                                                                         | No       | Metadata-only SVG entry. No file is generated for explicit SVG keys. If the global `source` is SVG and `favicon.svg` is not defined, the integration auto-copies the source and injects a favicon tag. |
+| `[filename.<png\|jpg\|jpeg\|gif\|webp\|avif>]` | `{ size: number \| false; tag?: Partial<IconTag> & Pick<IconTag, "rel">; manifest?: boolean \| ManifestIconOptions; source?: string; sharpOptions?: SharpOptions }`    | No       | Generates a raster file at the configured square size. `size: false` skips the entry entirely. Raster link-tag sizes are inferred as `NxN`.                                                            |
 
-### `IconsOverrides`
+### `IconTag`
 
-Each key in `overrides` maps to one of the default icons. Pass a file path string to replace the source for that icon, or `false` to skip generating it.
-
-| key              | default output file    | description                               |
-| ---------------- | ---------------------- | ----------------------------------------- |
-| `ico`            | `favicon.ico`          | Multi-size `.ico` file (16, 32, 48 px).   |
-| `svg`            | `favicon.svg`          | SVG copy (only generated for SVG source). |
-| `png32`          | `favicon.png`          | 32×32 PNG.                                |
-| `png48`          | `favicon-48x48.png`    | 48×48 PNG.                                |
-| `png192`         | `icon-192x192.png`     | 192×192 PNG.                              |
-| `png512`         | `icon.png`             | 512×512 PNG.                              |
-| `appleTouchIcon` | `apple-touch-icon.png` | 180×180 PNG for Apple devices.            |
-
-### `IconsManifestOptions`
-
-| field              | type                 | default | required | description                                                                                                                           |
-| ------------------ | -------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `autoUseGenerated` | `boolean`            | `true`  | No       | When `true`, generated icons that carry manifest metadata (by default `png192` and `png512`) are automatically added to the manifest. |
-| `icons`            | `ManifestIconItem[]` | -       | No       | Extra manifest icon entries appended before the auto-generated ones. These are always included regardless of `autoUseGenerated`.      |
-
-### `ManifestIconItem`
-
-| field     | type     | required | description                                                                                                   |
-| --------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------- |
-| `src`     | `string` | Yes      | Path to the icon image file.                                                                                  |
-| `sizes`   | `string` | No       | One or more sizes as space-separated `<width>x<height>` values, for example `"192x192"`, or `"any"` for SVGs. |
-| `type`    | `string` | No       | MIME type of the icon, for example `"image/png"` or `"image/svg+xml"`.                                        |
-| `purpose` | `string` | No       | One or more space-separated purpose keywords: `"any"`, `"maskable"`, `"monochrome"`.                          |
-
-### `GeneratedIconTag`
-
-| field      | type                                                    | required | description                                                                                                                                                                           |
-| ---------- | ------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `rel`      | `string`                                                | Yes      | The `rel` attribute for the link tag.                                                                                                                                                 |
-| `fileName` | `string`                                                | Yes      | Output file name in the build directory.                                                                                                                                              |
-| `size`     | `number`                                                | Yes      | Pixel size to resize the source image to.                                                                                                                                             |
-| `format`   | `"png" \| "jpg" \| "jpeg" \| "gif" \| "webp" \| "avif"` | Yes      | Output image format.                                                                                                                                                                  |
-| `sizes`    | `string`                                                | No       | The `sizes` attribute for the link tag.                                                                                                                                               |
-| `type`     | `string`                                                | No       | The `type` attribute for the link tag.                                                                                                                                                |
-| `media`    | `"light" \| "dark" \| string`                           | No       | The `media` attribute for the link tag.                                                                                                                                               |
-| `manifest` | `ManifestIconOptions \| false`                          | No       | Manifest icon metadata for this generated entry. Set to an object to include it in the manifest, `false` to exclude it. Omitting this field also excludes the icon from the manifest. |
+| field   | type                          | required | description                                                                                                                                       |
+| ------- | ----------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `rel`   | `string`                      | Yes      | Required to emit a `<link>` tag. If `tag.rel` is omitted, the file can still generate and contribute to the manifest, but no head tag is emitted. |
+| `href`  | `string`                      | No       | Ignored in build config. The integration always derives `href` from the file key and normalizes it with a leading `/`.                            |
+| `sizes` | `string`                      | No       | Optional explicit `sizes`. Used as-is for `.ico` or SVG metadata. Raster files infer this automatically from `size`.                              |
+| `type`  | `string`                      | No       | Optional MIME override. Defaults to `inferImageMimeType(fileName)`.                                                                               |
+| `media` | `"light" \| "dark" \| string` | No       | Optional media hint. The component renderer expands `light` and `dark` to `prefers-color-scheme` queries.                                         |
 
 ### `ManifestIconOptions`
 
-Used on `GeneratedIconTag.manifest` to define the manifest icon entry produced by a custom generated icon. All fields are optional; omitted fields are derived from the generated icon where possible.
-
-| field     | type     | required | description                                                                         |
-| --------- | -------- | -------- | ----------------------------------------------------------------------------------- |
-| `src`     | `string` | No       | Override the `src` written to the manifest. Defaults to `/${fileName}`.             |
-| `sizes`   | `string` | No       | Override the `sizes` written to the manifest. Defaults to the icon's `sizes` value. |
-| `type`    | `string` | No       | Override the `type` written to the manifest. Defaults to the icon's `type` value.   |
-| `purpose` | `string` | No       | Purpose keyword(s) for this icon: `"any"`, `"maskable"`, `"monochrome"`.            |
+| field     | type     | required | description                                                                                                                 |
+| --------- | -------- | -------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `src`     | `string` | No       | Override the manifest icon path. Defaults to the normalized file key.                                                       |
+| `sizes`   | `string` | No       | Override inferred sizes. Raster icons infer `NxN`; `.ico` icons infer a space-separated list such as `"16x16 32x32 48x48"`. |
+| `type`    | `string` | No       | Override inferred MIME type.                                                                                                |
+| `purpose` | `string` | No       | Optional manifest purpose such as `"maskable"` or `"monochrome"`.                                                           |
 
 ### `IconTag`
 
@@ -119,84 +98,65 @@ Used on `GeneratedIconTag.manifest` to define the manifest icon entry produced b
 
 ### Basic usage
 
-Generates the full default icon set from a source SVG or PNG.
-
 ```ts
-// astro.config.mjs
 eminence({
 	icons: {
 		source: "src/assets/logo.svg",
+		"favicon.ico": { sizes: [16, 32, 48], tag: { rel: "icon" } },
+		"apple-touch-icon.png": { size: 180, tag: { rel: "apple-touch-icon" } },
+		"icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
+		"icon.png": { size: 512, tag: { rel: "icon" }, manifest: true },
 	},
 });
 ```
 
-Default output files:
+This generates the configured files, injects the resolved icon tags into the virtual module, and contributes the two manifest-enabled icons to `manifest.webmanifest` when the manifest integration is active.
 
-| file                   | size       |
-| ---------------------- | ---------- |
-| `favicon.ico`          | 16/32/48px |
-| `favicon.svg`          | (copy)     |
-| `favicon.png`          | 32×32      |
-| `favicon-48x48.png`    | 48×48      |
-| `apple-touch-icon.png` | 180×180    |
-| `icon-192x192.png`     | 192×192    |
-| `icon.png`             | 512×512    |
+If you also set `headTags.icons` or `manifest.icons`, those arrays are merged over the generated entries (by `href` and `src` respectively).
 
-### Disabling individual icons
+### Automatic SVG favicon
 
 ```ts
 eminence({
 	icons: {
 		source: "src/assets/logo.svg",
-		overrides: {
-			ico: false,
-			png48: false,
-		},
+		"favicon.ico": { sizes: [16, 32, 48], tag: { rel: "icon" } },
 	},
 });
 ```
 
-### Adding custom sizes
+Because the global source is SVG and `favicon.svg` is not explicitly configured, the integration automatically copies the source to `/favicon.svg` and injects:
+
+```html
+<link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
+```
+
+### Skipping specific outputs
 
 ```ts
 eminence({
 	icons: {
-		source: "src/assets/logo.svg",
-		customGeneration: [
-			{
-				rel: "icon",
-				fileName: "icon-256x256.png",
-				size: 256,
-				format: "png",
-				type: "image/png",
-				sizes: "256x256",
-			},
-		],
+		source: "src/assets/logo.png",
+		"favicon.ico": { sizes: false, tag: { rel: "icon" } },
+		"icon-192x192.png": { size: false, tag: { rel: "icon" } },
+		"apple-touch-icon.png": { size: 180, tag: { rel: "apple-touch-icon" } },
 	},
 });
 ```
 
-### Adding custom tags without generation
+Entries with `size: false` or `sizes: false` are skipped for generation, head-tag resolution, and manifest population.
+
+### Adding manifest metadata per file
 
 ```ts
 eminence({
 	icons: {
 		source: "src/assets/logo.svg",
-		customTags: [{ rel: "mask-icon", href: "/safari-pinned-tab.svg" }],
-	},
-});
-```
-
-### Contributing icons to the manifest
-
-When the manifest integration is also active, icons that carry manifest metadata are automatically included in `manifest.webmanifest`. By default `png192` and `png512` contribute manifest entries. Use `icons.manifest` to add extra entries or to control auto-population.
-
-```ts
-eminence({
-	icons: {
-		source: "src/assets/logo.svg",
-		manifest: {
-			icons: [{ src: "/icon-maskable.png", sizes: "512x512", type: "image/png", purpose: "maskable" }],
+		"icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
+		"badge.png": {
+			size: 96,
+			tag: { rel: "icon" },
+			manifest: { purpose: "monochrome", src: "/brand/badge.png" },
 		},
 	},
 	manifest: {
@@ -207,51 +167,20 @@ eminence({
 });
 ```
 
-To opt a custom generated icon into the manifest, set `manifest` on its entry:
+### Metadata-only SVG entries
 
 ```ts
 eminence({
 	icons: {
-		source: "src/assets/logo.svg",
-		customGeneration: [
-			{
-				rel: "icon",
-				fileName: "badge.png",
-				size: 96,
-				format: "png",
-				manifest: { purpose: "monochrome" },
-			},
-		],
-	},
-	manifest: {
-		name: "My App",
-		start_url: "/",
-		display: "standalone",
-	},
-});
-```
-
-To disable auto-population and manage manifest icon entries entirely through `icons.manifest.icons`:
-
-```ts
-eminence({
-	icons: {
-		source: "src/assets/logo.svg",
-		manifest: {
-			autoUseGenerated: false,
-			icons: [
-				{ src: "/custom-192.png", sizes: "192x192", type: "image/png" },
-				{ src: "/custom-512.png", sizes: "512x512", type: "image/png" },
-			],
+		source: "src/assets/logo.png",
+		"safari-pinned-tab.svg": {
+			tag: { rel: "mask-icon", color: "#111111" },
 		},
 	},
-	manifest: {
-		name: "My App",
-		start_url: "/",
-		display: "standalone",
-	},
 });
 ```
+
+This emits a `<link rel="mask-icon">` tag for `/safari-pinned-tab.svg` but does not generate the file. The SVG must already exist in the final site output path.
 
 ### Explicit opt-out
 
@@ -265,25 +194,29 @@ No icons are generated and no warning is logged.
 
 ## Decisions Made
 
-### Single source image for all outputs
+### File names are the API boundary
 
-All default and custom icons are derived from one source file. This ensures visual consistency across icon sizes without requiring multiple source assets.
+The config is keyed by output file name so the final public URLs are explicit and stable. This removes the old preset-name indirection and makes the manifest and head tags derive from the same source of truth.
 
-### SVG source files are copied, not rasterized for SVG output
+### Build-time resolution keeps the renderer thin
 
-When the source is an SVG, the `favicon.svg` output is a direct copy. Rasterized formats (PNG, ICO) are still generated from the SVG via `sharp`. This preserves the original SVG fidelity for browsers that support it.
+The integration resolves `href`, `sizes`, and MIME type before the `Icons` component runs. That reduces runtime logic and avoids shipping repeated inference code into every page render.
 
-### ICO files contain multiple sizes
+### Manifest population scans the same keyed entries
 
-`favicon.ico` is generated with 16, 32, and 48 pixel variants embedded using `sharp-ico`. This provides broad legacy browser compatibility from a single file.
+Manifest icons now come from the same file entries used for generation and head tags. That prevents drift between generated files, rendered tags, and `manifest.webmanifest` icon metadata.
 
-### Omitting `source` logs a warning
+### `tag.rel` controls head-tag output explicitly
 
-If `icons` is configured but `source` is not set, the integration logs a warning recommending you provide a source path or set `source: false` to suppress generation explicitly.
+Generation and manifest population can happen without a rendered `<link>` tag. Requiring `tag.rel` makes head-tag output opt-in and avoids accidental link injection.
 
-### Setting `false` at either level is opt-out
+If `icons` is configured but `source` is not set, the integration logs a warning recommending you provide a source path or set `icons: false` to disable this feature explicitly.
 
-Both `icons: false` (disables the whole feature) and `source: false` (skips file generation but keeps tag injection) are valid opt-outs. This allows projects to manage icon files manually while still using the `Icons` component.
+### Setting `false` is the explicit opt-out
+
+Use `icons: false` to disable icon generation and icon metadata resolution from this integration.
+
+If you want to manage files manually but still control rendered icon tags and manifest icons, configure `headTags.icons` and/or `manifest.icons` directly.
 
 ### Generated icons opt in to manifest inclusion via metadata
 

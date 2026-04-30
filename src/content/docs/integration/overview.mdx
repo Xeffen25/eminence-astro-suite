@@ -23,7 +23,7 @@ export default defineConfig({
 	integrations: [
 		eminence({
 			// Global head tag defaults (virtual config module)
-			head: { ... },
+			headTags: { ... },
 			// Icon generation from a source image
 			icons: { ... },
 			// File generation
@@ -46,15 +46,15 @@ These features generate static files into the build output at build time. Each c
 
 Generates a `/manifest.webmanifest` file at build time. Chromium PWA requirements (`name`/`short_name`, `display`/`display_override`, `start_url`) are enforced as TypeScript types. See [manifest.webmanifest](/integration/manifest) for full option details.
 
-| option             | type                    | required | description                                                              |
-| ------------------ | ----------------------- | -------- | ------------------------------------------------------------------------ |
-| `name`             | `string`                | Yes\*    | Full app name. Required unless `short_name` is provided.                 |
-| `short_name`       | `string`                | Yes\*    | Short app name. Required unless `name` is provided.                      |
-| `start_url`        | `string`                | Yes      | URL loaded when the app is launched.                                     |
-| `display`          | `string`                | Yes\*\*  | Display mode. Required unless `display_override` is provided.            |
-| `display_override` | `string[]`              | Yes\*\*  | Ordered display mode candidates. Required unless `display` is provided.  |
-| `icons`            | `WebManifestIconItem[]` | No       | Icons for the app. Auto-populated from the icons integration if omitted. |
-| _(more)_           |                         |          | Additional optional fields documented on the manifest page.              |
+| option             | type                    | required | description                                                                                                           |
+| ------------------ | ----------------------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
+| `name`             | `string`                | Yes\*    | Full app name. Required unless `short_name` is provided.                                                              |
+| `short_name`       | `string`                | Yes\*    | Short app name. Required unless `name` is provided.                                                                   |
+| `start_url`        | `string`                | Yes      | URL loaded when the app is launched.                                                                                  |
+| `display`          | `string`                | Yes\*\*  | Display mode. Required unless `display_override` is provided.                                                         |
+| `display_override` | `string[]`              | Yes\*\*  | Ordered display mode candidates. Required unless `display` is provided.                                               |
+| `icons`            | `WebManifestIconItem[]` | No       | Icons for the app. Generated manifest icons are added first; explicit `manifest.icons` are merged over them by `src`. |
+| _(more)_           |                         |          | Additional optional fields documented on the manifest page.                                                           |
 
 Pass `manifest: false` to disable generation with no warning.
 
@@ -115,13 +115,18 @@ Pass `sitemap: false` to disable the feature and suppress the peer dependency re
 
 Generates favicon and app icon files at build time from a single source image. The generated icons are automatically injected as `<link>` tags and, when combined with `manifest`, contributed to the web manifest. See [Icons](/integration/icons) for full option details.
 
-| option             | type                   | description                                                                |
-| ------------------ | ---------------------- | -------------------------------------------------------------------------- |
-| `source`           | `string \| false`      | Path to the source image. Pass `false` to skip generation without warning. |
-| `overrides`        | `IconsOverrides`       | Replace or disable individual default icons.                               |
-| `customGeneration` | `GeneratedIconTag[]`   | Additional icons to generate at custom sizes and formats.                  |
-| `customTags`       | `IconTag[]`            | Extra link tags to inject without generating files.                        |
-| `manifest`         | `IconsManifestOptions` | Controls which generated icons are contributed to the web manifest.        |
+Icon resolution uses three layers:
+
+1. `icons` generates assets and base icon metadata.
+2. `headTags.icons` merges over generated head icon tags by `href`.
+3. `manifest.icons` merges over generated manifest icon entries by `src`.
+
+| option              | type             | description                                                                     |
+| ------------------- | ---------------- | ------------------------------------------------------------------------------- |
+| `source`            | `string`         | Global source image used when a keyed icon entry does not provide `source`.     |
+| `[filename.ico]`    | keyed icon entry | Generates a multi-size `.ico` file and optional head and manifest metadata.     |
+| `[filename.svg]`    | keyed icon entry | Adds SVG metadata-only icon tags; explicit SVG entries do not generate files.   |
+| `[filename.raster]` | keyed icon entry | Generates raster files such as PNG or WebP with inferred `sizes` and MIME type. |
 
 Pass `icons: false` to disable generation entirely with no warning.
 
@@ -129,9 +134,9 @@ Pass `icons: false` to disable generation entirely with no warning.
 
 ## Global Head Tags
 
-### `head`
+### `headTags`
 
-Sets default values exposed to `<head>` components via the virtual config module (`eminence-astro-suite/config`). Components read from this module automatically, so values configured here apply site-wide without repeating them per page.
+Sets default values exposed to `<head>` components via the virtual config module (`virtual:eminence-astro-suite/head-tags`). Components read from this module automatically, so values configured here apply site-wide without repeating them per page.
 
 All fields are optional.
 
@@ -139,24 +144,26 @@ All fields are optional.
 The `humansTxt` option does **not** generate a `humans.txt` file. It only adds a `<link rel="author">` tag pointing to an existing URL. You are responsible for creating and hosting the `humans.txt` file yourself.
 </Aside>
 
-| option              | type                     | description                                                     |
-| ------------------- | ------------------------ | --------------------------------------------------------------- |
-| `charset`           | `string`                 | Default charset for the `Charset` component.                    |
-| `viewport`          | `string`                 | Default viewport content string for the `Viewport` component.   |
-| `base`              | `object`                 | Props forwarded to the `Base` component.                        |
-| `colorScheme`       | `string`                 | Default color scheme for the `ColorScheme` component.           |
-| `titleTemplate`     | `string`                 | Title template string for the `Title` component.                |
-| `appleItunesApp`    | `object`                 | Props forwarded to the `AppleItunesApp` component.              |
-| `appLinks`          | `object`                 | Props forwarded to the `AppLinks` component.                    |
-| `generator`         | `boolean`                | Whether to render the `Generator` tag.                          |
-| `openGraphSiteName` | `string`                 | Site name for Open Graph tags.                                  |
-| `robots`            | `object`                 | Props forwarded to the `Robots` component.                      |
-| `themeColor`        | `object`                 | Props forwarded to the `ThemeColor` component.                  |
-| `humansTxt`         | `string \| URL \| false` | URL for the `<link rel="author">` tag. Pass `false` to opt out. |
-| `verification`      | `object`                 | Props forwarded to the `Verification` component.                |
-| `extend.link`       | `object[]`               | Additional free-form `<link>` tags for Head.                    |
-| `extend.meta`       | `object[]`               | Additional free-form `<meta>` tags for Head.                    |
-| `extend.custom`     | `string \| string[]`     | Raw HTML injected with `set:html` in Head.                      |
+| option              | type                     | description                                                       |
+| ------------------- | ------------------------ | ----------------------------------------------------------------- |
+| `charset`           | `string`                 | Default charset for the `Charset` component.                      |
+| `viewport`          | `string`                 | Default viewport content string for the `Viewport` component.     |
+| `base`              | `object`                 | Props forwarded to the `Base` component.                          |
+| `colorScheme`       | `string`                 | Default color scheme for the `ColorScheme` component.             |
+| `titleTemplate`     | `string`                 | Title template string for the `Title` component.                  |
+| `appleItunesApp`    | `object`                 | Props forwarded to the `AppleItunesApp` component.                |
+| `appLinks`          | `object`                 | Props forwarded to the `AppLinks` component.                      |
+| `generator`         | `boolean`                | Whether to render the `Generator` tag.                            |
+| `icons`             | `IconTag[]`              | Build-time icon tags merged over generated icon tags by `href`.   |
+| `manifest`          | `string \| URL \| false` | URL for the `<link rel="manifest">` tag. Pass `false` to opt out. |
+| `openGraphSiteName` | `string`                 | Site name for Open Graph tags.                                    |
+| `robots`            | `object`                 | Props forwarded to the `Robots` component.                        |
+| `themeColor`        | `object`                 | Props forwarded to the `ThemeColor` component.                    |
+| `humansTxt`         | `string \| URL \| false` | URL for the `<link rel="author">` tag. Pass `false` to opt out.   |
+| `verification`      | `object`                 | Props forwarded to the `Verification` component.                  |
+| `extend.link`       | `object[]`               | Additional free-form `<link>` tags for Head.                      |
+| `extend.meta`       | `object[]`               | Additional free-form `<meta>` tags for Head.                      |
+| `extend.custom`     | `string \| string[]`     | Raw HTML injected with `set:html` in Head.                        |
 
 Use `extend.*` for shared configuration defaults. For one-off page tags, prefer inserting tags directly inside the `Head` component slot.
 
@@ -196,7 +203,7 @@ export default defineConfig({
 	site: "https://example.com",
 	integrations: [
 		eminence({
-			head: {
+			headTags: {
 				charset: "UTF-8",
 				viewport: "width=device-width, initial-scale=1",
 				titleTemplate: "%s | My Site",

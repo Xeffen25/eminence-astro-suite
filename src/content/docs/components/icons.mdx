@@ -1,126 +1,94 @@
 ---
-title: Icons
-description: Documentation for Icons, focused on rendering favicon and app icon link tags. It merges defaults, integration overrides, generated assets, and custom tags with deterministic deduplication.
-head:
-    - tag: title
-      content: Icons - Component
+title: Icons - Component
+description: Documentation for Icons, focused on rendering resolved icon link tags. It accepts late-bound overrides that merge over the build-time icon array.
 ---
 
-Icons renders the full set of icon-related `<link>` tags used by browsers and devices, including favicon variants, Apple touch icon, and generated app icons. It combines component props with integration `head.icons` values, then deduplicates tags before output.
+Icons renders icon-related `<link>` tags from the build-time configuration resolved by the integration. The component is intentionally thin: file names, MIME types, and inferred `sizes` are computed before the virtual module is serialized, and the component only renders the resolved tags.
+
+When you pass the `icons` prop, it merges over the integration-provided tags for that render. Matching entries are deduplicated by `href`, with later runtime entries overriding earlier build-time entries.
 
 ## Props
 
-| prop               | type                 | default                                           | required                                                                     | description                                                              |
-| ------------------ | -------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
-| `svg`              | `string              | false`                                            | integration `head.icons.overrides.svg` or `/favicon.svg`                     | No                                                                       | SVG icon href used when integration `icons.source` is SVG. Pass `false` to suppress.    |
-| `ico`              | `string              | false`                                            | integration `head.icons.overrides.ico` or `/favicon.ico`                     | No                                                                       | Classic ICO favicon href. Pass `false` to suppress.                                     |
-| `png32`            | `string              | false`                                            | integration `head.icons.overrides.png32` or `/favicon.png`                   | No                                                                       | 32x32 PNG favicon href. Pass `false` to suppress.                                       |
-| `png48`            | `string              | false`                                            | integration `head.icons.overrides.png48` or `/favicon-48x48.png`             | No                                                                       | 48x48 PNG favicon href. Pass `false` to suppress.                                       |
-| `appleTouchIcon`   | `string              | false`                                            | integration `head.icons.overrides.appleTouchIcon` or `/apple-touch-icon.png` | No                                                                       | Apple touch icon href rendered with `rel="apple-touch-icon"`. Pass `false` to suppress. |
-| `png192`           | `string              | false`                                            | integration `head.icons.overrides.png192` or `/icon-192x192.png`             | No                                                                       | 192x192 app icon href. Pass `false` to suppress.                                        |
-| `png512`           | `string              | false`                                            | integration `head.icons.overrides.png512` or `/icon.png`                     | No                                                                       | 512x512 app icon href. Pass `false` to suppress.                                        |
-| `customGeneration` | `GeneratedIconTag[]` | integration `head.icons.customGeneration` or `[]` | No                                                                           | Build-generated icon descriptors merged into the final tag list.         |
-| `customTags`       | `IconTag[]`          | integration `head.icons.customTags` or `[]`       | No                                                                           | Extra raw icon tags merged first, then deduplicated with all other tags. |
+| prop    | type        | default                                | required | description                                                                                                                      |
+| ------- | ----------- | -------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `icons` | `IconTag[]` | integration-resolved icon tags or `[]` | No       | Late-bound icon overrides. Entries are keyed by `href`; runtime entries replace matching build-time entries and append new ones. |
 
 ## Usage & Examples
 
 ### Basic usage
 
-Input:
+Input (`.astro`):
 
 ```astro
 <Icons />
 ```
 
-Output:
+Output (`.html`):
 
 ```html
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
-<link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png" />
-<link rel="icon" href="/icon-192x192.png" sizes="192x192" type="image/png" />
-<link rel="icon" href="/icon.png" sizes="512x512" type="image/png" />
 ```
 
 ### Auto usage
 
-With integration `head.icons.source` set to an SVG, the SVG icon tag is auto-rendered before other defaults.
+With an SVG integration source and no explicit `favicon.svg` entry, the integration auto-adds a copied SVG favicon tag to the resolved output.
 
-Input:
+Input (`.astro`):
 
 ```astro
 <Icons />
 ```
 
-Output (when `head.icons.source` is `/logo.svg`):
+Output (`.html`):
 
 ```html
 <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
-<link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png" />
 <link rel="icon" href="/icon-192x192.png" sizes="192x192" type="image/png" />
-<link rel="icon" href="/icon.png" sizes="512x512" type="image/png" />
 ```
 
 ### Complete usage
 
-Input:
+Input (`.astro`):
 
 ```astro
 <Icons
-	svg="/brand.svg"
-	ico="/brand.ico"
-	png32="/brand-32.png"
-	png48="/brand-48.png"
-	appleTouchIcon="/apple-touch-brand.png"
-	png192="/icon-192-brand.png"
-	png512="/icon-512-brand.png"
-	customGeneration={[{ rel: "icon", fileName: "icon-dark.png", sizes: "32x32", format: "png", media: "dark" }]}
-	customTags={[{ rel: "alternate icon", href: "/favicon-alt.ico" }]}
+	icons={[
+		{ rel: "icon", href: "/campaign-dark.png", sizes: "32x32", type: "image/png", media: "dark" },
+		{ rel: "preload", href: "/campaign-mask.svg", as: "image", type: "image/svg+xml" },
+	]}
 />
 ```
 
-Output:
+Output (`.html`):
 
 ```html
-<link rel="alternate icon" href="/favicon-alt.ico" type="image/x-icon" />
-<link rel="icon" href="/brand.ico" type="image/x-icon" />
-<link rel="icon" href="/brand-32.png" sizes="32x32" type="image/png" />
-<link rel="icon" href="/brand-48.png" sizes="48x48" type="image/png" />
-<link rel="apple-touch-icon" href="/apple-touch-brand.png" sizes="180x180" type="image/png" />
-<link rel="icon" href="/icon-192-brand.png" sizes="192x192" type="image/png" />
-<link rel="icon" href="/icon-512-brand.png" sizes="512x512" type="image/png" />
-<link rel="icon" href="/icon-dark.png" sizes="32x32" type="image/png" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="/campaign-dark.png" sizes="32x32" type="image/png" media="(prefers-color-scheme: dark)" />
+<link rel="preload" href="/campaign-mask.svg" as="image" type="image/svg+xml" />
 ```
 
 ## Decisions Made
 
-### Defaults are always present unless explicitly disabled
+### Build-time resolution owns inference
 
-The component defines concrete defaults for ico/png/apple/app icons so common favicon setups work with no props. Each default icon prop also accepts `false` so pages can explicitly opt out.
+The integration resolves `href`, `type`, and inferred `sizes` before `Icons` renders. This avoids repeating file-extension logic in every page render and keeps the component surface small.
 
-### SVG icon rendering depends on integration source type
+### The runtime prop merges by `href`
 
-The SVG icon tag is only added when integration `icons.source` is SVG. This prevents accidental duplicate icon entries when PNG is the canonical source asset.
+Passing `icons` merges over the build-time defaults for that render. Because the build config is keyed by filename, the runtime component uses final `href` values as the override boundary and lets later entries win.
 
-### Generated and custom tags are merged into one pipeline
+### Light and dark media values expand automatically
 
-`customTags` and `customGeneration` are merged with defaults before rendering. This keeps advanced use cases in one predictable output path instead of handling each source independently.
+When a tag uses `media: "light"` or `media: "dark"`, the component expands that shorthand into the matching `prefers-color-scheme` query. Other custom media strings are passed through unchanged.
 
-### Deduplication is deterministic and content-based
+### Deduplication is runtime-only and `href`-based
 
-Tags are deduplicated by `rel`, `href`, `sizes`, `type`, and `media`. This avoids duplicate `<link>` entries when overrides, generation, or custom tags overlap.
-
-### Media variants map to prefers-color-scheme
-
-Generated tags with `media` are emitted as `(prefers-color-scheme: <value>)`. This provides first-class light/dark icon support without requiring manual media attribute strings.
+Build-time resolution preserves the raw tag array. `Icons` performs the final dedupe step by `href`, first across the config tags and then across runtime overrides, so later entries replace earlier ones predictably.
 
 ## Reference
 
-- [MDN: rel attribute for link](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel)
-- [MDN: link element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link)
-- [web.dev: icons and browser colors](https://web.dev/icons-and-browser-colors/)
-- [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/app-icons)
+- [MDN: `<link>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link)
+- [MDN: `rel` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel)
+- [MDN: `sizes` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#sizes)
+- [web.dev: Icons and Browser Colors](https://web.dev/icons-and-browser-colors/)
