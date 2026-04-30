@@ -276,6 +276,31 @@ describe("Integration - Virtual Config", () => {
 		]);
 	});
 
+	it("merges headTags.icons over generated icon tags using href as the key", () => {
+		const options: IntegrationInput = {
+			icons: {
+				source: "/assets/logo.svg",
+				"favicon.ico": { sizes: [16, 32, 48], tag: { rel: "icon" } },
+				"apple-touch-icon.png": { size: 180, tag: { rel: "apple-touch-icon" } },
+			},
+			headTags: {
+				icons: [
+					{ rel: "icon", href: "/favicon.ico", sizes: "32x32", type: "image/png" },
+					{ rel: "mask-icon", href: "/safari-pinned-tab.svg", type: "image/svg+xml" },
+				],
+			},
+		};
+
+		const result = extractHeadTagsConfig(options);
+
+		expect(result.icons).toEqual([
+			{ rel: "icon", href: "/favicon.svg", sizes: "any", type: "image/svg+xml" },
+			{ rel: "icon", href: "/favicon.ico", sizes: "32x32", type: "image/png" },
+			{ rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+			{ rel: "mask-icon", href: "/safari-pinned-tab.svg", type: "image/svg+xml" },
+		]);
+	});
+
 	it("serializes appleItunesApp defaults in virtual config module", () => {
 		const options: IntegrationInput = {
 			headTags: {

@@ -36,6 +36,7 @@ export type HeadTagsOptions = {
 	extend?: ComponentProps<typeof Extend>;
 	generator?: ComponentProps<typeof Generator>["generate"];
 	humansTxt?: ComponentProps<typeof HumansTxt>["href"] | boolean;
+	icons?: IconTag[];
 	manifest?: ComponentProps<typeof Manifest>["href"] | boolean;
 	openGraphSiteName?: ComponentProps<typeof OpenGraph>["siteName"];
 	robots?: ComponentProps<typeof Robots>;
@@ -74,6 +75,20 @@ const DEFAULT_HEAD_TAGS_CONFIG: Pick<
 	humansTxt: false,
 };
 
+const mergeIconTagsByHref = (base: IconTag[], overrides: IconTag[] = []): IconTag[] => {
+	const iconTagsByHref = new Map<string, IconTag>();
+
+	for (const iconTag of base) {
+		iconTagsByHref.set(iconTag.href, iconTag);
+	}
+
+	for (const iconTag of overrides) {
+		iconTagsByHref.set(iconTag.href, iconTag);
+	}
+
+	return Array.from(iconTagsByHref.values());
+};
+
 /**
  * Extracts the client-safe tag config from user input and applies defaults.
  * The result is what gets serialized into the virtual module — it is a strict
@@ -84,6 +99,7 @@ export const extractHeadTagsConfig = (
 	resolvedIcons: IconTag[] = resolveHeadIconTagsFromIconsOptions(options.icons),
 ): ResolvedHeadTagsConfig => {
 	const { headTags } = options;
+	const mergedIcons = mergeIconTagsByHref(resolvedIcons, headTags?.icons);
 
 	return {
 		appleItunesApp: headTags?.appleItunesApp,
@@ -94,7 +110,7 @@ export const extractHeadTagsConfig = (
 		extend: headTags?.extend,
 		generator: headTags?.generator ?? DEFAULT_HEAD_TAGS_CONFIG.generator,
 		humansTxt: headTags?.humansTxt ?? DEFAULT_HEAD_TAGS_CONFIG.humansTxt,
-		icons: resolvedIcons,
+		icons: mergedIcons,
 		manifest: headTags?.manifest ?? DEFAULT_HEAD_TAGS_CONFIG.manifest,
 		openGraphSiteName: headTags?.openGraphSiteName,
 		robots: headTags?.robots,

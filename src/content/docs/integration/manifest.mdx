@@ -224,7 +224,7 @@ Resulting `icons` array in `manifest.webmanifest`:
 ]
 ```
 
-To bypass auto-population entirely, provide `manifest.icons` directly in the manifest config. Explicit `manifest.icons` always wins over icons resolved from the integration:
+You can also provide `manifest.icons` directly. Those entries are merged over icons resolved from the integration using `src` as the key, so matching `src` values override generated metadata:
 
 ```ts
 eminence({
@@ -318,7 +318,7 @@ Chromium's required manifest members — at least one of `name` or `short_name`,
 
 When `icons` is omitted from `manifest`, the integration scans the configured file-keyed `icons` entries and automatically injects any files marked with `manifest: true` or a `ManifestIconOptions` object. This avoids requiring you to repeat file paths that the integration already knows about.
 
-Explicit `manifest.icons` always takes precedence. Auto-population only runs when `icons` is absent from the manifest config.
+`manifest.icons` is merged over generated manifest icons. Generated entries are added first, then explicit `manifest.icons` entries override by matching `src`.
 
 ### Auto icon population is controlled per icon entry
 

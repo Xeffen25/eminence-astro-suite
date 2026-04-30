@@ -103,18 +103,31 @@ const resolveManifestInput = (
 	input: WebManifestOptions,
 	options: IntegrationRuntimeContext["options"],
 ): WebManifestOptions => {
-	if (input.icons !== undefined) {
+	const autoIcons = resolveManifestIconsFromIconsOptions(options.icons);
+	if (autoIcons.length === 0 && input.icons === undefined) {
 		return input;
 	}
 
-	const autoIcons = resolveManifestIconsFromIconsOptions(options.icons);
-	if (autoIcons.length === 0) {
-		return input;
+	if (input.icons === undefined) {
+		return {
+			...input,
+			icons: autoIcons,
+		};
+	}
+
+	const iconsBySrc = new Map<string, WebManifestIconItem>();
+
+	for (const icon of autoIcons) {
+		iconsBySrc.set(icon.src, icon);
+	}
+
+	for (const icon of input.icons) {
+		iconsBySrc.set(icon.src, icon);
 	}
 
 	return {
 		...input,
-		icons: autoIcons,
+		icons: Array.from(iconsBySrc.values()),
 	};
 };
 

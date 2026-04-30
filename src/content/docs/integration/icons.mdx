@@ -10,6 +10,14 @@ import { TabItem, Tabs } from "@astrojs/starlight/components";
 
 The icons integration resolves icon metadata at build time from a file-keyed configuration. Each key is an output file name, and each value describes how that file should be generated, whether it should emit a `<link>` tag, and whether it should contribute an entry to `manifest.webmanifest`.
 
+Icon resolution happens in three layers:
+
+1. `icons`: generates assets and produces base head/manifest icon metadata from those keyed files.
+2. `headTags.icons`: merged over generated head icon tags using `href` as the key.
+3. `manifest.icons`: merged over generated manifest icon entries using `src` as the key.
+
+When keys collide, the later layer overrides the earlier one.
+
 During the build the integration:
 
 - generates raster and `.ico` assets with `sharp` and `sharp-ico`
@@ -103,6 +111,8 @@ eminence({
 ```
 
 This generates the configured files, injects the resolved icon tags into the virtual module, and contributes the two manifest-enabled icons to `manifest.webmanifest` when the manifest integration is active.
+
+If you also set `headTags.icons` or `manifest.icons`, those arrays are merged over the generated entries (by `href` and `src` respectively).
 
 ### Automatic SVG favicon
 
@@ -200,11 +210,13 @@ Manifest icons now come from the same file entries used for generation and head 
 
 Generation and manifest population can happen without a rendered `<link>` tag. Requiring `tag.rel` makes head-tag output opt-in and avoids accidental link injection.
 
-If `icons` is configured but `source` is not set, the integration logs a warning recommending you provide a source path or set `source: false` to suppress generation explicitly.
+If `icons` is configured but `source` is not set, the integration logs a warning recommending you provide a source path or set `icons: false` to disable this feature explicitly.
 
-### Setting `false` at either level is opt-out
+### Setting `false` is the explicit opt-out
 
-Both `icons: false` (disables the whole feature) and `source: false` (skips file generation but keeps tag injection) are valid opt-outs. This allows projects to manage icon files manually while still using the `Icons` component.
+Use `icons: false` to disable icon generation and icon metadata resolution from this integration.
+
+If you want to manage files manually but still control rendered icon tags and manifest icons, configure `headTags.icons` and/or `manifest.icons` directly.
 
 ### Generated icons opt in to manifest inclusion via metadata
 
