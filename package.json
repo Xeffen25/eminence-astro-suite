@@ -4,9 +4,9 @@
 	"type": "module",
 	"version": "0.0.0",
 	"scripts": {
-		"dev": "pnpm --filter eminence-astro-suite-docs dev",
-		"build": "pnpm --filter eminence-astro-suite-docs build",
-		"preview": "pnpm --filter eminence-astro-suite-docs preview",
+		"dev": "pnpm --filter ./docs dev",
+		"build": "pnpm --filter ./docs build",
+		"preview": "pnpm --filter ./docs preview",
 		"format:fix": "prettier . --write",
 		"format:check": "prettier . --check",
 		"test": "vitest run",
