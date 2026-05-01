@@ -26,7 +26,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -36,7 +36,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | My Site</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | My Site</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -46,7 +46,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -60,7 +60,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="https://example.com" target="_blank"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="https://example.com" target="_blank"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -74,7 +74,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1"><link rel="author" href="https://example.com/humans.txt" type="text/plain">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1"><link rel="author" href="https://example.com/humans.txt" type="text/plain">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -88,7 +88,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}<link rel="manifest" href="https://example.com/manifest.webmanifest"></head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}<link rel="manifest" href="https://example.com/manifest.webmanifest"></head>`,
 		);
 	});
 
@@ -102,7 +102,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="canonical" href="https://example.com/home"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="canonical" href="https://example.com/home"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -119,7 +119,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -139,7 +139,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -168,7 +168,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -188,7 +188,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="slot-meta" content="slot"><link rel="preconnect" href="https://cdn.example.com" prefetch="true"><meta property="custom:token" content="abc123"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="slot-meta" content="slot"><link rel="preconnect" href="https://cdn.example.com" prefetch="true"><meta property="custom:token" content="abc123"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -207,7 +207,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="custom-a" content="1"><script type="application/json">{"key":"value"}</script><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="custom-a" content="1"><script type="application/json">{"key":"value"}</script><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -228,7 +228,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="dns-prefetch" href="https://assets.example.com"><meta property="custom:source" content="integration"><meta name="custom-inline" content="from-config"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><link rel="dns-prefetch" href="https://assets.example.com"><meta property="custom:source" content="integration"><meta name="custom-inline" content="from-config"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 
@@ -250,7 +250,7 @@ describe("Component Head", () => {
 		});
 
 		expect(result).toBe(
-			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="custom:source" content="props"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1">${DEFAULT_ICONS_HTML}</head>`,
+			`<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="custom:source" content="props"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
 		);
 	});
 });

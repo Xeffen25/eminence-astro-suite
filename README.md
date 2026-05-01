@@ -140,7 +140,7 @@ import {
 </html>
 ```
 
-Read more in the component docs under `src/content/docs/components/`.
+Read more in the component docs under `docs/src/content/docs/components/`.
 
 ## Integration
 

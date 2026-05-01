@@ -7,10 +7,10 @@
 		"./components": "./components.ts"
 	},
 	"peerDependencies": {
-		"astro": ">=6.0.0",
-		"@astrojs/sitemap": ">=3.0.0",
-		"sharp": ">=0.34.0",
-		"sharp-ico": ">=0.1.5"
+		"@astrojs/sitemap": "catalog:peer",
+		"astro": "catalog:peer",
+		"sharp": "catalog:peer",
+		"sharp-ico": "catalog:peer"
 	},
 	"peerDependenciesMeta": {
 		"astro": {
@@ -25,5 +25,11 @@
 		"sharp-ico": {
 			"optional": true
 		}
+	},
+	"devDependencies": {
+		"@astrojs/sitemap": "catalog:",
+		"astro": "catalog:",
+		"sharp": "catalog:",
+		"sharp-ico": "catalog:"
 	}
 }

@@ -1,44 +1,34 @@
 {
-	"name": "eminence-astro-suite-website",
+	"name": "eminence-astro-suite-monorepo",
+	"private": true,
 	"type": "module",
-	"version": "0.0.1",
+	"version": "0.0.0",
 	"scripts": {
-		"dev": "astro dev",
-		"start": "astro dev",
-		"build": "astro build",
-		"preview": "astro preview",
-		"astro": "astro",
+		"dev": "pnpm --filter eminence-astro-suite-docs dev",
+		"build": "pnpm --filter eminence-astro-suite-docs build",
+		"preview": "pnpm --filter eminence-astro-suite-docs preview",
 		"format:fix": "prettier . --write",
 		"format:check": "prettier . --check",
 		"test": "vitest run",
 		"test:watch": "vitest",
-		"check": "pnpm format:check && astro check && pnpm test",
-		"all": "pnpm format:fix && astro check && pnpm test",
+		"check": "pnpm format:check && pnpm astro check && pnpm test",
+		"all": "pnpm format:fix && pnpm astro check && pnpm test",
 		"prepare": "husky"
 	},
 	"lint-staged": {
 		"*": "prettier --write"
 	},
-	"dependencies": {
-		"@astrojs/cloudflare": "^13.1.8",
-		"@astrojs/starlight": "^0.38.2",
-		"astro": "^6.0.1",
-		"sharp": "^0.34.2",
-		"sharp-ico": "^0.1.5"
-	},
 	"devDependencies": {
-		"@astrojs/check": "^0.9.8",
-		"@astrojs/sitemap": "^3.7.2",
-		"@vitest/browser": "^4.1.2",
+		"@astrojs/check": "^0.9.9",
+		"astro": "catalog:",
 		"husky": "^9.1.7",
-		"jsdom": "^29.0.1",
 		"lint-staged": "^16.4.0",
-		"playwright": "^1.58.2",
-		"prettier": "^3.8.1",
+		"prettier": "^3.8.3",
 		"prettier-plugin-astro": "^0.14.1",
 		"prettier-plugin-organize-imports": "^4.3.0",
-		"typescript": "^6.0.2",
-		"vitest": "^4.1.2",
-		"wrangler": "^4.81.1"
+		"sharp": "catalog:",
+		"sharp-ico": "catalog:",
+		"typescript": "^5.9.3",
+		"vitest": "^4.1.5"
 	}
 }

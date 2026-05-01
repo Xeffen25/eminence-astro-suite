@@ -1,3 +1,16 @@
 packages:
-    - "."
+    - "docs"
     - "package"
+
+catalog:
+    "@astrojs/sitemap": "^3.7.2"
+    "astro": "^6.2.1"
+    "sharp": "^0.34.5"
+    "sharp-ico": "^0.1.5"
+
+catalogs:
+    peer:
+        "@astrojs/sitemap": ">=3.0.0"
+        "astro": ">=6.0.0"
+        "sharp": ">=0.34.0"
+        "sharp-ico": ">=0.1.5"

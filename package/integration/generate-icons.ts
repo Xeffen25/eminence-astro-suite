@@ -128,15 +128,18 @@ const getExtension = (fileName: string): SupportedExtensions | undefined => {
 const getIconFileExtension = (fileName: IconFileName): SupportedExtensions =>
 	getExtension(fileName) as SupportedExtensions;
 
-const isIcoDefinition = (fileName: IconFileName, definition: IconDefinition): definition is IcoIconDefinition => {
+const isIcoDefinition = (fileName: IconFileName, _definition: IconDefinition): _definition is IcoIconDefinition => {
 	return getIconFileExtension(fileName) === "ico";
 };
 
-const isSvgDefinition = (fileName: IconFileName, definition: IconDefinition): definition is SvgIconDefinition => {
+const isSvgDefinition = (fileName: IconFileName, _definition: IconDefinition): _definition is SvgIconDefinition => {
 	return getIconFileExtension(fileName) === "svg";
 };
 
-const isRasterDefinition = (fileName: IconFileName, definition: IconDefinition): definition is RasterIconDefinition => {
+const isRasterDefinition = (
+	fileName: IconFileName,
+	_definition: IconDefinition,
+): _definition is RasterIconDefinition => {
 	const extension = getIconFileExtension(fileName);
 	return extension !== "ico" && extension !== "svg";
 };

@@ -1,11 +1,11 @@
 {
 	"extends": "astro/tsconfigs/strict",
-	"include": [".astro/types.d.ts", "**/*"],
-	"exclude": ["dist"],
+	"include": ["docs/.astro/types.d.ts", "docs/**/*", "package/**/*", "test/**/*", "vitest.config.ts"],
+	"exclude": ["dist", "docs/dist"],
 	"compilerOptions": {
 		"paths": {
-			"~/": ["./public/*"],
-			"@/*": ["./src/*"],
+			"~/*": ["./docs/public/*"],
+			"@/*": ["./docs/src/*"],
 			"@package/*": ["./package/*"],
 			"@test/*": ["./test/*"]
 		}
