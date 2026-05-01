@@ -2,11 +2,17 @@
 import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
-	/**
-	 * Supported page color schemes advertised to the user agent.
-	 * When omitted, the value falls back to the integration config.
-	 */
-	content?: "normal" | "light" | "dark" | "light dark" | "dark light" | "only light";
+  /**
+   * Supported page color schemes advertised to the user agent.
+   * When omitted, the value falls back to the integration config.
+   */
+  content?:
+    | "normal"
+    | "light"
+    | "dark"
+    | "light dark"
+    | "dark light"
+    | "only light";
 }
 
 const { content = config.colorScheme } = Astro.props;

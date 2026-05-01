@@ -20,50 +20,104 @@
  */
 
 interface PriceInfo {
-	amount: number;
-	currency: string;
+  amount: number;
+  currency: string;
 }
 
 interface Props {
-	originalPrice?: PriceInfo;
-	salePrice?: PriceInfo;
-	/**
-	 * Optional sale window rendered as start/end sale date tags.
-	 */
-	salePriceDates?: {
-		/**
-		 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
-		 * @example 2026-04-01
-		 * @example 2026-04-01T00:00:00Z
-		 */
-		start?: string;
-		/**
-		 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
-		 * @example 2026-04-01
-		 * @example 2026-04-01T00:00:00Z
-		 */
-		end?: string;
-	};
-	/**
-	 * Open Graph product condition token.
-	 */
-	condition?: "new" | "refurbished" | "used";
-	/**
-	 * Open Graph availability token.
-	 */
-	availability?: "instock" | "oos" | "pending";
-	retailerCategory?: string;
+  originalPrice?: PriceInfo;
+  salePrice?: PriceInfo;
+  /**
+   * Optional sale window rendered as start/end sale date tags.
+   */
+  salePriceDates?: {
+    /**
+     * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+     * @example 2026-04-01
+     * @example 2026-04-01T00:00:00Z
+     */
+    start?: string;
+    /**
+     * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+     * @example 2026-04-01
+     * @example 2026-04-01T00:00:00Z
+     */
+    end?: string;
+  };
+  /**
+   * Open Graph product condition token.
+   */
+  condition?: "new" | "refurbished" | "used";
+  /**
+   * Open Graph availability token.
+   */
+  availability?: "instock" | "oos" | "pending";
+  retailerCategory?: string;
 }
 
-const { originalPrice, salePrice, salePriceDates, condition, availability, retailerCategory } = Astro.props;
+const {
+  originalPrice,
+  salePrice,
+  salePriceDates,
+  condition,
+  availability,
+  retailerCategory,
+} = Astro.props;
 ---
 
-{originalPrice && <meta property="product:original_price:amount" content={String(originalPrice.amount)} />}
-{originalPrice && <meta property="product:original_price:currency" content={originalPrice.currency} />}
-{salePrice && <meta property="product:sale_price:amount" content={String(salePrice.amount)} />}
-{salePrice && <meta property="product:sale_price:currency" content={salePrice.currency} />}
-{salePriceDates?.start && <meta property="product:sale_price_dates:start" content={salePriceDates.start} />}
-{salePriceDates?.end && <meta property="product:sale_price_dates:end" content={salePriceDates.end} />}
+{
+  originalPrice && (
+    <meta
+      property="product:original_price:amount"
+      content={String(originalPrice.amount)}
+    />
+  )
+}
+{
+  originalPrice && (
+    <meta
+      property="product:original_price:currency"
+      content={originalPrice.currency}
+    />
+  )
+}
+{
+  salePrice && (
+    <meta
+      property="product:sale_price:amount"
+      content={String(salePrice.amount)}
+    />
+  )
+}
+{
+  salePrice && (
+    <meta property="product:sale_price:currency" content={salePrice.currency} />
+  )
+}
+{
+  salePriceDates?.start && (
+    <meta
+      property="product:sale_price_dates:start"
+      content={salePriceDates.start}
+    />
+  )
+}
+{
+  salePriceDates?.end && (
+    <meta
+      property="product:sale_price_dates:end"
+      content={salePriceDates.end}
+    />
+  )
+}
 {condition && <meta property="product:condition" content={condition} />}
-{availability && <meta property="product:availability" content={availability} />}
-{retailerCategory && <meta property="product:retailer_category" content={retailerCategory} />}
+{
+  availability && (
+    <meta property="product:availability" content={availability} />
+  )
+}
+{
+  retailerCategory && (
+    <meta property="product:retailer_category" content={retailerCategory} />
+  )
+}

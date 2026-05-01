@@ -2,8 +2,8 @@
 title: JsonLd
 description: Documentation for JsonLd, focused on rendering a JSON-LD script tag from pre-serialized schema data. It handles safe inline output by escaping HTML-sensitive characters.
 head:
-    - tag: title
-      content: JsonLd - Component
+  - tag: title
+    content: JsonLd - Component
 ---
 
 JsonLd renders a `<script type="application/ld+json">` tag in the document head from a pre-serialized JSON string. It is responsible for safely writing the JSON payload inline and does not validate schema structure.
@@ -21,14 +21,16 @@ JsonLd renders a `<script type="application/ld+json">` tag in the document head 
 Input:
 
 ```astro
-<JsonLd jsonLd='{"@context":"https://schema.org","@type":"WebPage","name":"Home"}' />
+<JsonLd
+  jsonLd='{"@context":"https://schema.org","@type":"WebPage","name":"Home"}'
+/>
 ```
 
 Output:
 
 ```html
 <script type="application/ld+json">
-	{ "@context": "https://schema.org", "@type": "WebPage", "name": "Home" }
+  { "@context": "https://schema.org", "@type": "WebPage", "name": "Home" }
 </script>
 ```
 
@@ -55,10 +57,10 @@ Input:
 ```astro
 ---
 const websiteSchema = {
-	"@context": "https://schema.org",
-	"@type": "WebSite",
-	name: "Example Site",
-	url: "https://example.com",
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Example Site",
+  url: "https://example.com",
 };
 ---
 
@@ -69,7 +71,12 @@ Output:
 
 ```html
 <script type="application/ld+json">
-	{ "@context": "https://schema.org", "@type": "WebSite", "name": "Example Site", "url": "https://example.com" }
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Example Site",
+    "url": "https://example.com"
+  }
 </script>
 ```
 

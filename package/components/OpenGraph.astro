@@ -16,158 +16,159 @@ import OpenGraphVideoType from "./openGraph/OpenGraphVideoType.astro";
 import config from "virtual:eminence-astro-suite/head-tags";
 
 type BaseProps = {
-	title: string;
-	/**
-	 * Defaults to the current page URL when `Astro.site` is configured.
-	 */
-	url?: string | URL;
-	description?: string;
-	/**
-	 * Defaults to the integration-level `head.openGraph.siteName` value.
-	 */
-	siteName?: string;
-	/**
-	 * Passed through as provided; use Open Graph format values like `en_US`.
-	 */
-	locale?: string;
-	/**
-	 * Each entry emits an `og:locale:alternate` tag in Open Graph format.
-	 */
-	localeAlternate?: string[];
-	/**
-	 * Optional rich preview image metadata for social cards.
-	 */
-	image?: ComponentProps<typeof OpenGraphImage>;
-	audio?: ComponentProps<typeof OpenGraphAudio>;
-	video?: ComponentProps<typeof OpenGraphVideo>;
+  title: string;
+  /**
+   * Defaults to the current page URL when `Astro.site` is configured.
+   */
+  url?: string | URL;
+  description?: string;
+  /**
+   * Defaults to the integration-level `head.openGraph.siteName` value.
+   */
+  siteName?: string;
+  /**
+   * Passed through as provided; use Open Graph format values like `en_US`.
+   */
+  locale?: string;
+  /**
+   * Each entry emits an `og:locale:alternate` tag in Open Graph format.
+   */
+  localeAlternate?: string[];
+  /**
+   * Optional rich preview image metadata for social cards.
+   */
+  image?: ComponentProps<typeof OpenGraphImage>;
+  audio?: ComponentProps<typeof OpenGraphAudio>;
+  video?: ComponentProps<typeof OpenGraphVideo>;
 };
 
 type TypedVariant =
-	| {
-			article: ComponentProps<typeof OpenGraphArticle>;
-			book?: never;
-			business?: never;
-			music?: never;
-			place?: never;
-			product?: never;
-			profile?: never;
-			videoType?: never;
-	  }
-	| {
-			article?: never;
-			book: ComponentProps<typeof OpenGraphBook>;
-			business?: never;
-			music?: never;
-			place?: never;
-			product?: never;
-			profile?: never;
-			videoType?: never;
-	  }
-	| {
-			article?: never;
-			book?: never;
-			business: ComponentProps<typeof OpenGraphBusiness>;
-			music?: never;
-			place?: never;
-			product?: never;
-			profile?: never;
-			videoType?: never;
-	  }
-	| {
-			article?: never;
-			book?: never;
-			business?: never;
-			music: ComponentProps<typeof OpenGraphMusic>;
-			place?: never;
-			product?: never;
-			profile?: never;
-			videoType?: never;
-	  }
-	| {
-			article?: never;
-			book?: never;
-			business?: never;
-			music?: never;
-			place: ComponentProps<typeof OpenGraphPlace>;
-			product?: never;
-			profile?: never;
-			videoType?: never;
-	  }
-	| {
-			article?: never;
-			book?: never;
-			business?: never;
-			music?: never;
-			place?: never;
-			product: ComponentProps<typeof OpenGraphProduct>;
-			profile?: never;
-			videoType?: never;
-	  }
-	| {
-			article?: never;
-			book?: never;
-			business?: never;
-			music?: never;
-			place?: never;
-			product?: never;
-			profile: ComponentProps<typeof OpenGraphProfile>;
-			videoType?: never;
-	  }
-	| {
-			article?: never;
-			book?: never;
-			business?: never;
-			music?: never;
-			place?: never;
-			product?: never;
-			profile?: never;
-			videoType?: ComponentProps<typeof OpenGraphVideoType>;
-	  }
-	| {
-			article?: never;
-			book?: never;
-			business?: never;
-			music?: never;
-			place?: never;
-			product?: never;
-			profile?: never;
-			videoType?: never;
-	  };
+  | {
+      article: ComponentProps<typeof OpenGraphArticle>;
+      book?: never;
+      business?: never;
+      music?: never;
+      place?: never;
+      product?: never;
+      profile?: never;
+      videoType?: never;
+    }
+  | {
+      article?: never;
+      book: ComponentProps<typeof OpenGraphBook>;
+      business?: never;
+      music?: never;
+      place?: never;
+      product?: never;
+      profile?: never;
+      videoType?: never;
+    }
+  | {
+      article?: never;
+      book?: never;
+      business: ComponentProps<typeof OpenGraphBusiness>;
+      music?: never;
+      place?: never;
+      product?: never;
+      profile?: never;
+      videoType?: never;
+    }
+  | {
+      article?: never;
+      book?: never;
+      business?: never;
+      music: ComponentProps<typeof OpenGraphMusic>;
+      place?: never;
+      product?: never;
+      profile?: never;
+      videoType?: never;
+    }
+  | {
+      article?: never;
+      book?: never;
+      business?: never;
+      music?: never;
+      place: ComponentProps<typeof OpenGraphPlace>;
+      product?: never;
+      profile?: never;
+      videoType?: never;
+    }
+  | {
+      article?: never;
+      book?: never;
+      business?: never;
+      music?: never;
+      place?: never;
+      product: ComponentProps<typeof OpenGraphProduct>;
+      profile?: never;
+      videoType?: never;
+    }
+  | {
+      article?: never;
+      book?: never;
+      business?: never;
+      music?: never;
+      place?: never;
+      product?: never;
+      profile: ComponentProps<typeof OpenGraphProfile>;
+      videoType?: never;
+    }
+  | {
+      article?: never;
+      book?: never;
+      business?: never;
+      music?: never;
+      place?: never;
+      product?: never;
+      profile?: never;
+      videoType?: ComponentProps<typeof OpenGraphVideoType>;
+    }
+  | {
+      article?: never;
+      book?: never;
+      business?: never;
+      music?: never;
+      place?: never;
+      product?: never;
+      profile?: never;
+      videoType?: never;
+    };
 type Props = BaseProps & TypedVariant;
 
 const {
-	title,
-	url,
-	description,
-	siteName = config.openGraphSiteName,
-	image,
-	audio,
-	video,
-	locale,
-	localeAlternate = [],
-	article,
-	book,
-	business,
-	music,
-	place,
-	product,
-	profile,
-	videoType,
+  title,
+  url,
+  description,
+  siteName = config.openGraphSiteName,
+  image,
+  audio,
+  video,
+  locale,
+  localeAlternate = [],
+  article,
+  book,
+  business,
+  music,
+  place,
+  product,
+  profile,
+  videoType,
 } = Astro.props;
 
 const inferredUrl = Astro.site
-	? new URL(Astro.url.pathname + Astro.url.search + Astro.url.hash, Astro.site).href
-	: undefined;
+  ? new URL(Astro.url.pathname + Astro.url.search + Astro.url.hash, Astro.site)
+      .href
+  : undefined;
 const resolvedUrl = url ? toHref(url) : inferredUrl;
 
 const ogType = (() => {
-	// Canonical OG types take precedence; non-canonical namespaces keep website.
-	if (article) return "article";
-	if (book) return "book";
-	if (profile) return "profile";
-	if (music) return `music.${music.subtype}`;
-	if (videoType) return `video.${videoType.subtype}`;
-	return "website";
+  // Canonical OG types take precedence; non-canonical namespaces keep website.
+  if (article) return "article";
+  if (book) return "book";
+  if (profile) return "profile";
+  if (music) return `music.${music.subtype}`;
+  if (videoType) return `video.${videoType.subtype}`;
+  return "website";
 })();
 ---
 
@@ -177,7 +178,11 @@ const ogType = (() => {
 {description && <meta property="og:description" content={description} />}
 {siteName && <meta property="og:site_name" content={siteName} />}
 {locale && <meta property="og:locale" content={locale} />}
-{localeAlternate.map((locale) => <meta property="og:locale:alternate" content={locale} />)}
+{
+  localeAlternate.map((locale) => (
+    <meta property="og:locale:alternate" content={locale} />
+  ))
+}
 {image && <OpenGraphImage {...image} />}
 {audio && <OpenGraphAudio {...audio} />}
 {video && <OpenGraphVideo {...video} />}

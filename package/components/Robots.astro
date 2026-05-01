@@ -4,43 +4,46 @@ import config from "virtual:eminence-astro-suite/head-tags";
 import { hasAnyProp } from "../utils";
 
 interface DirectiveProps {
-	noindex?: boolean;
-	nofollow?: boolean;
-	noarchive?: boolean;
-	nosnippet?: boolean;
-	indexifembedded?: boolean;
-	"max-snippet"?: number;
-	"max-image-preview"?: "none" | "standard" | "large";
-	"max-video-preview"?: number;
-	notranslate?: boolean;
-	noimageindex?: boolean;
-	unavailable_after?: string;
+  noindex?: boolean;
+  nofollow?: boolean;
+  noarchive?: boolean;
+  nosnippet?: boolean;
+  indexifembedded?: boolean;
+  "max-snippet"?: number;
+  "max-image-preview"?: "none" | "standard" | "large";
+  "max-video-preview"?: number;
+  notranslate?: boolean;
+  noimageindex?: boolean;
+  unavailable_after?: string;
 }
 
 type Props =
-	| ({
-			content: string;
-	  } & {
-			[K in keyof DirectiveProps]?: never;
-	  })
-	| (DirectiveProps & {
-			content?: never;
-	  });
+  | ({
+      content: string;
+    } & {
+      [K in keyof DirectiveProps]?: never;
+    })
+  | (DirectiveProps & {
+      content?: never;
+    });
 
 const directivesToContent = (directives: DirectiveProps): string => {
-	return Object.entries(directives)
-		.flatMap(([directive, value]) => {
-			if (value === undefined || value === false) return [];
+  return Object.entries(directives)
+    .flatMap(([directive, value]) => {
+      if (value === undefined || value === false) return [];
 
-			if (value === true) return [directive];
+      if (value === true) return [directive];
 
-			return [`${directive}:${value}`];
-		})
-		.join(", ");
+      return [`${directive}:${value}`];
+    })
+    .join(", ");
 };
 
-const { content, ...directiveProps } = (hasAnyProp(Astro.props) ? Astro.props : (config.robots ?? {})) as Props;
-const robotsContent = content ?? directivesToContent(directiveProps as DirectiveProps);
+const { content, ...directiveProps } = (
+  hasAnyProp(Astro.props) ? Astro.props : (config.robots ?? {})
+) as Props;
+const robotsContent =
+  content ?? directivesToContent(directiveProps as DirectiveProps);
 ---
 
 {robotsContent && <meta name="robots" content={robotsContent} />}

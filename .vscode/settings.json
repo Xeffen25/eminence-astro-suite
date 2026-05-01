@@ -1,8 +1,8 @@
 {
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"editor.formatOnSave": true,
-	"editor.insertSpaces": false,
-	"editor.detectIndentation": false,
-	"prettier.configPath": ".prettierrc",
-	"prettier.requireConfig": true
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": false,
+  "editor.detectIndentation": false,
+  "prettier.configPath": ".prettierrc",
+  "prettier.requireConfig": true
 }

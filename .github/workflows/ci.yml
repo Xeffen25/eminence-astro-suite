@@ -1,40 +1,40 @@
 name: CI
 
 on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 permissions:
-    contents: read
+  contents: read
 
 jobs:
-    check:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            - name: Setup pnpm
-              uses: pnpm/action-setup@v4
-              with:
-                  version: 10
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
 
-            - name: Setup Node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 24
-                  cache: pnpm
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
 
-            - name: Install dependencies
-              run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-            - name: Format check
-              run: pnpm format:check
+      - name: Format check
+        run: pnpm format:check
 
-            - name: Type check
-              run: pnpm astro check
+      - name: Type check
+        run: pnpm astro check
 
-            - name: Run tests
-              run: pnpm test
+      - name: Run tests
+        run: pnpm test

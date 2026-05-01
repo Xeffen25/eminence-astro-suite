@@ -2,11 +2,11 @@
 import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
-	/**
-	 * Character encoding used in the rendered meta tag.
-	 * @default "utf-8" via integration virtual config
-	 */
-	charset?: string;
+  /**
+   * Character encoding used in the rendered meta tag.
+   * @default "utf-8" via integration virtual config
+   */
+  charset?: string;
 }
 
 const { charset = config.charset } = Astro.props;

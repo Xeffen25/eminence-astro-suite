@@ -1,4 +1,8 @@
 {
-	"recommendations": ["astro-build.astro-vscode", "esbenp.prettier-vscode", "vitest.explorer"],
-	"unwantedRecommendations": []
+  "recommendations": [
+    "astro-build.astro-vscode",
+    "esbenp.prettier-vscode",
+    "vitest.explorer"
+  ],
+  "unwantedRecommendations": []
 }

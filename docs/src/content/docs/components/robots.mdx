@@ -2,8 +2,8 @@
 title: Robots
 description: Documentation for Robots, focused on rendering the robots meta tag for crawler directives. It supports raw content strings and structured directive props with integration config fallback.
 head:
-    - tag: title
-      content: Robots - Component
+  - tag: title
+    content: Robots - Component
 ---
 
 Robots renders a `<meta name="robots">` tag in your document head to control crawler behavior. It is scoped to resolving and serializing the directive content only and does not affect `robots.txt` generation.
@@ -71,13 +71,21 @@ Output (when integration config has `head.robots: { noindex: true }`):
 Input:
 
 ```astro
-<Robots noindex nofollow unavailable_after="25 Jun 2026 15:00:00 PST" max-snippet={50} />
+<Robots
+  noindex
+  nofollow
+  unavailable_after="25 Jun 2026 15:00:00 PST"
+  max-snippet={50}
+/>
 ```
 
 Output:
 
 ```html
-<meta name="robots" content="noindex, nofollow, max-snippet:50, unavailable_after:25 Jun 2026 15:00:00 PST" />
+<meta
+  name="robots"
+  content="noindex, nofollow, max-snippet:50, unavailable_after:25 Jun 2026 15:00:00 PST"
+/>
 ```
 
 ## Decisions Made

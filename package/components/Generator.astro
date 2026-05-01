@@ -2,11 +2,11 @@
 import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
-	/**
-	 * Enables generator meta tag rendering.
-	 * @default true via integration virtual config
-	 */
-	generate?: boolean;
+  /**
+   * Enables generator meta tag rendering.
+   * @default true via integration virtual config
+   */
+  generate?: boolean;
 }
 
 const { generate = config.generator } = Astro.props;

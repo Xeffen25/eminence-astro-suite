@@ -6,30 +6,31 @@ type ExtendLinkTag = HTMLAttributes<"link"> & { prefetch?: boolean };
 type ExtendMetaTag = HTMLAttributes<"meta"> & { property: string };
 
 interface Props {
-	/**
-	 * Free-form `<link>` tags to inject.
-	 * Supports arbitrary attributes, including `prefetch`.
-	 */
-	link?: ExtendLinkTag[];
-	/**
-	 * Free-form `<meta>` tags to inject.
-	 * Each item should include at least `property` and any additional attributes.
-	 */
-	meta?: ExtendMetaTag[];
-	/**
-	 * Raw HTML fragment(s) injected with Astro `set:html`.
-	 * The value is not escaped. Only use trusted or pre-sanitized content.
-	 */
-	custom?: string | string[];
+  /**
+   * Free-form `<link>` tags to inject.
+   * Supports arbitrary attributes, including `prefetch`.
+   */
+  link?: ExtendLinkTag[];
+  /**
+   * Free-form `<meta>` tags to inject.
+   * Each item should include at least `property` and any additional attributes.
+   */
+  meta?: ExtendMetaTag[];
+  /**
+   * Raw HTML fragment(s) injected with Astro `set:html`.
+   * The value is not escaped. Only use trusted or pre-sanitized content.
+   */
+  custom?: string | string[];
 }
 
 const {
-	link = config.extend?.link ?? [],
-	meta = config.extend?.meta ?? [],
-	custom = config.extend?.custom,
+  link = config.extend?.link ?? [],
+  meta = config.extend?.meta ?? [],
+  custom = config.extend?.custom,
 }: Props = Astro.props;
 
-const customHtmlFragments = typeof custom === "string" ? [custom] : Array.isArray(custom) ? custom : [];
+const customHtmlFragments =
+  typeof custom === "string" ? [custom] : Array.isArray(custom) ? custom : [];
 ---
 
 {link.map((attributes: ExtendLinkTag) => <link {...attributes} />)}

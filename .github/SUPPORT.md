@@ -16,32 +16,36 @@ For component references, integration configuration, and usage guides specific t
 
 ---
 
-## 📚 2. Official Technical Documentation
-
-If your question is about a specific technology we use, the official docs are the fastest way to get an answer. We use the following stack (ordered by relevance):
-
-- [Astro](https://docs.astro.build)
-- [@astrojs/sitemap](https://docs.astro.build/en/guides/integrations-guide/sitemap/)
-- [TypeScript](https://www.typescriptlang.org/docs/)
-- [pnpm](https://pnpm.io/docs)
-- [Vitest](https://vitest.dev/guide/)
-- [sharp](https://sharp.pixelplumbing.com/)
-- [sharp-ico](https://github.com/ssnangua/sharp-ico)
-- [Prettier](https://prettier.io/docs/en/)
-- [Husky](https://typicode.github.io/husky/)
-- [Lint-staged](https://github.com/okonet/lint-staged)
-
----
-
-## 🔍 3. Troubleshooting Workflow
+## 🔍 2. Troubleshooting Workflow
 
 If you encounter an error during development:
 
-1. **Read the docs:** Ensure the integration is registered in your Astro config — components depend on the integration runtime config and will fail without it.
+1. **Read the docs:** Ensure the integration is registered in your Astro config. Components depend on the integration runtime config and will fail without it.
 2. **Clean Install:** Try running `pnpm install` again to ensure dependencies are synced.
 3. **Run checks:** Use `pnpm check` to catch formatting, type, and test issues in one step.
 4. **Verify Git Hooks:** If your commit is failing, ensure your code passes the Prettier rules enforced by **Husky** and **Lint-staged**.
 5. **Search Issues:** Check both open and closed issues on the repository before filing a new one.
+
+---
+
+## 📚 3. Official Technical Documentation
+
+If your question is about a specific technology we use, the official docs are the fastest way to get an answer. We use the following stack (ordered by relevance):
+
+- [Astro](https://docs.astro.build)
+- [@astrojs/starlight](https://starlight.astro.build)
+- [pnpm](https://pnpm.io/docs)
+- [@astrojs/cloudflare](https://docs.astro.build/en/guides/integrations-guide/cloudflare/)
+- [Wrangler](https://developers.cloudflare.com/workers/wrangler/)
+- [@astrojs/check](https://docs.astro.build/en/guides/typescript/#type-checking)
+- [TypeScript](https://www.typescriptlang.org/docs/)
+- [Vitest](https://vitest.dev/guide/)
+- [sharp](https://sharp.pixelplumbing.com/)
+- [sharp-ico](https://github.com/ssnangua/sharp-ico)
+- [@astrojs/sitemap](https://docs.astro.build/en/guides/integrations-guide/sitemap/)
+- [Prettier](https://prettier.io/docs/en/)
+- [Husky](https://typicode.github.io/husky/)
+- [Lint-staged](https://github.com/okonet/lint-staged)
 
 ---
 

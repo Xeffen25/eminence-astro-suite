@@ -2,8 +2,8 @@
 title: LanguageAlternates
 description: Documentation for LanguageAlternates, focused on rendering language-specific rel="alternate" link tags. It handles hreflang entries from language-code-to-URL mappings.
 head:
-    - tag: title
-      content: LanguageAlternates - Component
+  - tag: title
+    content: LanguageAlternates - Component
 ---
 
 import { Code } from "@astrojs/starlight/components";
@@ -25,11 +25,11 @@ LanguageAlternates renders one or more `<link rel="alternate">` tags with `hrefl
 
 ```astro
 <LanguageAlternates
-	languages={{
-		es: "https://example.com/es",
-		fr: new URL("https://example.com/fr"),
-		"x-default": "https://example.com",
-	}}
+  languages={{
+    es: "https://example.com/es",
+    fr: new URL("https://example.com/fr"),
+    "x-default": "https://example.com",
+  }}
 />
 ```
 

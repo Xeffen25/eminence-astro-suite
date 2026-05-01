@@ -3,8 +3,8 @@
 ## Test Commands
 
 - Run `pnpm test` when modifying either:
-    - files that already have tests, or
-    - test files themselves.
+  - files that already have tests, or
+  - test files themselves.
 
 ## Git Workflow And Contribution Policy
 
@@ -18,20 +18,14 @@
 
 - `package/`: publishable package source (components, integration, virtual module types).
 - `test/`: Vitest tests for package components and integration behavior.
-- `src/`: documentation site content and site configuration.
-- `public/`: static assets for the site.
+- `docs/`: documentation site content and site configuration.
 - Treat this as a docs site + package workspace: package changes and docs changes have different impact.
 
 ## Import Conventions
 
 - Outside `package/`, prefer TypeScript path aliases for imports:
-    - `@/*` for `src/*`
-    - `@package/*` for `package/*`
-    - `@test/*` for `test/*`
-    - `~/*` for `public/*`
-- Inside `package/`, imports must be relative paths.
-- Rationale for `package/`: there is no build step for path alias rewriting there.
-
-## Agent Behavior Expectations
-
-- Keep changes minimal and scoped to the task.
+  - `@/*` for `docs/src/*`
+  - `@package/*` for `package/*`
+  - `@test/*` for `test/*`
+  - `~/*` for `docs/public/*`
+- Inside `package/`, imports must be relative paths. There is no build step for path alias rewriting there.

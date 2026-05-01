@@ -2,11 +2,11 @@
 title: Overview
 description: A full reference of all integration features in Eminence Astro Suite, grouped by capability, with notes on recommendations and upcoming features.
 sidebar:
-    label: Overview
-    order: 1
+  label: Overview
+  order: 1
 head:
-    - tag: title
-      content: Overview - Integration
+  - tag: title
+    content: Overview - Integration
 ---
 
 import { Aside, Badge, Card, CardGrid } from "@astrojs/starlight/components";
@@ -63,8 +63,8 @@ Pass `manifest: false` to disable generation with no warning.
 Generates a `/robots.txt` file at build time. If a `robots.txt` already exists in the build output, generation is skipped. See [robots.txt](/integration/robots-txt) for full option details.
 
 <Aside type="tip">
-	A `robots.txt` file is expected by crawlers on every public site. Omitting this option logs a recommendation
-	warning.
+  A `robots.txt` file is expected by crawlers on every public site. Omitting
+  this option logs a recommendation warning.
 </Aside>
 
 | option    | type                               | required | description                                                      |
@@ -79,8 +79,8 @@ Pass `robotsTxt: false` to disable generation with no warning.
 Generates a `/.well-known/security.txt` file at build time following [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116). See [security.txt](/integration/security-txt) for full option details.
 
 <Aside type="tip">
-	A `security.txt` is the standard way for researchers to report vulnerabilities responsibly. Omitting this option
-	logs a recommendation warning.
+  A `security.txt` is the standard way for researchers to report vulnerabilities
+  responsibly. Omitting this option logs a recommendation warning.
 </Aside>
 
 | option               | type                                           | required | description                                                                    |
@@ -99,8 +99,8 @@ Pass `securityTxt: false` to disable generation with no warning.
 Delegates sitemap generation to [`@astrojs/sitemap`](https://docs.astro.build/en/guides/integrations-guide/sitemap/), which must be installed as a peer dependency. The integration is registered automatically — no need to add it separately. See [Sitemap](/integration/sitemap) for full option details.
 
 <Aside type="tip">
-	A sitemap helps search engines discover and index your pages. Omitting this option is equivalent to `sitemap: {}` —
-	enabled with default options.
+  A sitemap helps search engines discover and index your pages. Omitting this
+  option is equivalent to `sitemap: {}` — enabled with default options.
 </Aside>
 
 The `sitemap` option accepts a `SitemapOptions` object (forwarded directly to `@astrojs/sitemap`) or `false`.
@@ -200,38 +200,38 @@ import { defineConfig } from "astro/config";
 import eminence from "eminence-astro-suite";
 
 export default defineConfig({
-	site: "https://example.com",
-	integrations: [
-		eminence({
-			headTags: {
-				charset: "UTF-8",
-				viewport: "width=device-width, initial-scale=1",
-				titleTemplate: "%s | My Site",
-				colorScheme: "light dark",
-				humansTxt: "https://example.com/humans.txt",
-			},
-			icons: {
-				source: "./src/assets/icon.svg",
-			},
-			manifest: {
-				name: "My Site",
-				short_name: "MySite",
-				start_url: "/",
-				display: "standalone",
-				background_color: "#ffffff",
-				theme_color: "#0070f3",
-			},
-			robotsTxt: {
-				rules: { agent: "*", disallow: "/private/" },
-				sitemap: "/sitemap-index.xml",
-			},
-			securityTxt: {
-				contact: "mailto:security@example.com",
-				expires: "1 year",
-				policy: "https://example.com/security-policy",
-			},
-			sitemap: {},
-		}),
-	],
+  site: "https://example.com",
+  integrations: [
+    eminence({
+      headTags: {
+        charset: "UTF-8",
+        viewport: "width=device-width, initial-scale=1",
+        titleTemplate: "%s | My Site",
+        colorScheme: "light dark",
+        humansTxt: "https://example.com/humans.txt",
+      },
+      icons: {
+        source: "./src/assets/icon.svg",
+      },
+      manifest: {
+        name: "My Site",
+        short_name: "MySite",
+        start_url: "/",
+        display: "standalone",
+        background_color: "#ffffff",
+        theme_color: "#0070f3",
+      },
+      robotsTxt: {
+        rules: { agent: "*", disallow: "/private/" },
+        sitemap: "/sitemap-index.xml",
+      },
+      securityTxt: {
+        contact: "mailto:security@example.com",
+        expires: "1 year",
+        policy: "https://example.com/security-policy",
+      },
+      sitemap: {},
+    }),
+  ],
 });
 ```

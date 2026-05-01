@@ -19,21 +19,21 @@
  */
 
 interface Props {
-	/**
-	 * Each value renders one `book:author` tag.
-	 */
-	authors?: string[];
-	isbn?: string;
-	/**
-	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
-	 * @example 2026-04-01
-	 * @example 2026-04-01T00:00:00Z
-	 */
-	releaseDate?: string;
-	/**
-	 * Each value renders one `book:tag` tag.
-	 */
-	tags?: string[];
+  /**
+   * Each value renders one `book:author` tag.
+   */
+  authors?: string[];
+  isbn?: string;
+  /**
+   * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+   * @example 2026-04-01
+   * @example 2026-04-01T00:00:00Z
+   */
+  releaseDate?: string;
+  /**
+   * Each value renders one `book:tag` tag.
+   */
+  tags?: string[];
 }
 
 const { authors = [], isbn, releaseDate, tags = [] } = Astro.props;

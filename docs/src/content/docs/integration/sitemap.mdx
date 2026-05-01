@@ -2,8 +2,8 @@
 title: Sitemap
 description: Generate a sitemap at build time by delegating to @astrojs/sitemap. Requires the peer package to be installed and supports all upstream options.
 head:
-    - tag: title
-      content: Sitemap - Integration
+  - tag: title
+    content: Sitemap - Integration
 ---
 
 The sitemap feature delegates sitemap generation to [`@astrojs/sitemap`](https://docs.astro.build/en/guides/integrations-guide/sitemap/), Astro's official sitemap integration. Eminence Astro Suite registers it automatically when `sitemap` is configured, so you do not need to add it separately to your `astro.config.mjs`.
@@ -29,7 +29,7 @@ Enables sitemap generation with default options. Requires `site` to be set in yo
 ```ts
 // astro.config.mjs
 eminence({
-	sitemap: {},
+  sitemap: {},
 });
 ```
 
@@ -37,12 +37,12 @@ eminence({
 
 ```ts
 eminence({
-	sitemap: {
-		filter: (page) => !page.includes("/private/"),
-		changefreq: "weekly",
-		priority: 0.8,
-		lastmod: new Date(),
-	},
+  sitemap: {
+    filter: (page) => !page.includes("/private/"),
+    changefreq: "weekly",
+    priority: 0.8,
+    lastmod: new Date(),
+  },
 });
 ```
 
@@ -50,7 +50,7 @@ eminence({
 
 ```ts
 eminence({
-	sitemap: false,
+  sitemap: false,
 });
 ```
 

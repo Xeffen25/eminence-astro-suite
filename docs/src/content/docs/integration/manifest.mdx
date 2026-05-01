@@ -2,8 +2,8 @@
 title: manifest.webmanifest
 description: Generate a /manifest.webmanifest file at build time with Chromium PWA requirements enforced through TypeScript types.
 head:
-    - tag: title
-      content: manifest.webmanifest - Integration
+  - tag: title
+    content: manifest.webmanifest - Integration
 ---
 
 The manifest feature generates a `/manifest.webmanifest` file in your build output during `astro build`. It is configured through the `manifest` option on the integration. The output is a JSON file serialized from the options you provide.
@@ -132,15 +132,15 @@ If `manifest` is omitted from your integration config, a warning is logged recom
 ```ts
 // astro.config.mjs
 eminence({
-	manifest: {
-		name: "My App",
-		start_url: "/",
-		display: "standalone",
-		icons: [
-			{ src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
-			{ src: "/icon.png", sizes: "512x512", type: "image/png" },
-		],
-	},
+  manifest: {
+    name: "My App",
+    start_url: "/",
+    display: "standalone",
+    icons: [
+      { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { src: "/icon.png", sizes: "512x512", type: "image/png" },
+    ],
+  },
 });
 ```
 
@@ -148,13 +148,13 @@ Output at `/manifest.webmanifest`:
 
 ```json
 {
-	"name": "My App",
-	"start_url": "/",
-	"display": "standalone",
-	"icons": [
-		{ "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
-		{ "src": "/icon.png", "sizes": "512x512", "type": "image/png" }
-	]
+  "name": "My App",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    { "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon.png", "sizes": "512x512", "type": "image/png" }
+  ]
 }
 ```
 
@@ -164,14 +164,14 @@ When the icons integration is configured, you can omit `icons` from `manifest` e
 
 ```ts
 eminence({
-	icons: {
-		source: "src/assets/logo.svg",
-	},
-	manifest: {
-		name: "My App",
-		start_url: "/",
-		display: "standalone",
-	},
+  icons: {
+    source: "src/assets/logo.svg",
+  },
+  manifest: {
+    name: "My App",
+    start_url: "/",
+    display: "standalone",
+  },
 });
 ```
 
@@ -179,13 +179,13 @@ The generated `manifest.webmanifest` will include:
 
 ```json
 {
-	"name": "My App",
-	"start_url": "/",
-	"display": "standalone",
-	"icons": [
-		{ "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
-		{ "src": "/icon.png", "sizes": "512x512", "type": "image/png" }
-	]
+  "name": "My App",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    { "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon.png", "sizes": "512x512", "type": "image/png" }
+  ]
 }
 ```
 
@@ -195,21 +195,25 @@ Manifest icon auto-population now scans the file-keyed `icons` entries. Any entr
 
 ```ts
 eminence({
-	icons: {
-		source: "src/assets/logo.svg",
-		"icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
-		"icon.png": { size: 512, tag: { rel: "icon" }, manifest: { purpose: "maskable" } },
-		"badge.png": {
-			size: 96,
-			tag: { rel: "icon" },
-			manifest: { src: "/brand/badge.png", purpose: "monochrome" },
-		},
-	},
-	manifest: {
-		name: "My App",
-		start_url: "/",
-		display: "standalone",
-	},
+  icons: {
+    source: "src/assets/logo.svg",
+    "icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
+    "icon.png": {
+      size: 512,
+      tag: { rel: "icon" },
+      manifest: { purpose: "maskable" },
+    },
+    "badge.png": {
+      size: 96,
+      tag: { rel: "icon" },
+      manifest: { src: "/brand/badge.png", purpose: "monochrome" },
+    },
+  },
+  manifest: {
+    name: "My App",
+    start_url: "/",
+    display: "standalone",
+  },
 });
 ```
 
@@ -217,10 +221,15 @@ Resulting `icons` array in `manifest.webmanifest`:
 
 ```json
 [
-	{ "src": "/icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
-	{ "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
-	{ "src": "/icon.png", "sizes": "512x512", "type": "image/png" },
-	{ "src": "/badge.png", "purpose": "monochrome" }
+  {
+    "src": "/icon-maskable.png",
+    "sizes": "512x512",
+    "type": "image/png",
+    "purpose": "maskable"
+  },
+  { "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
+  { "src": "/icon.png", "sizes": "512x512", "type": "image/png" },
+  { "src": "/badge.png", "purpose": "monochrome" }
 ]
 ```
 
@@ -228,20 +237,20 @@ You can also provide `manifest.icons` directly. Those entries are merged over ic
 
 ```ts
 eminence({
-	icons: {
-		source: "src/assets/logo.svg",
-		"icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
-		"icon.png": { size: 512, tag: { rel: "icon" }, manifest: true },
-	},
-	manifest: {
-		name: "My App",
-		start_url: "/",
-		display: "standalone",
-		icons: [
-			{ src: "/custom-192.png", sizes: "192x192", type: "image/png" },
-			{ src: "/custom-512.png", sizes: "512x512", type: "image/png" },
-		],
-	},
+  icons: {
+    source: "src/assets/logo.svg",
+    "icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
+    "icon.png": { size: 512, tag: { rel: "icon" }, manifest: true },
+  },
+  manifest: {
+    name: "My App",
+    start_url: "/",
+    display: "standalone",
+    icons: [
+      { src: "/custom-192.png", sizes: "192x192", type: "image/png" },
+      { src: "/custom-512.png", sizes: "512x512", type: "image/png" },
+    ],
+  },
 });
 ```
 
@@ -249,12 +258,12 @@ eminence({
 
 ```ts
 eminence({
-	manifest: {
-		short_name: "App",
-		start_url: "/",
-		display_override: ["window-controls-overlay", "standalone"],
-		icons: [{ src: "/icon-192x192.png", sizes: "192x192", type: "image/png" }],
-	},
+  manifest: {
+    short_name: "App",
+    start_url: "/",
+    display_override: ["window-controls-overlay", "standalone"],
+    icons: [{ src: "/icon-192x192.png", sizes: "192x192", type: "image/png" }],
+  },
 });
 ```
 
@@ -262,37 +271,46 @@ eminence({
 
 ```ts
 eminence({
-	manifest: {
-		name: "My App",
-		short_name: "App",
-		start_url: "/",
-		display: "standalone",
-		icons: [
-			{ src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
-			{ src: "/icon.png", sizes: "512x512", type: "image/png" },
-		],
-		description: "A great web app",
-		background_color: "#ffffff",
-		theme_color: "#1a1a2e",
-		scope: "/",
-		orientation: "portrait",
-		id: "my-app",
-		categories: ["productivity"],
-		screenshots: [{ src: "/screenshots/home.png", sizes: "1280x720", type: "image/png", form_factor: "wide" }],
-		shortcuts: [{ name: "New Note", url: "/notes/new" }],
-		related_applications: [{ platform: "play", id: "com.example.app" }],
-		prefer_related_applications: false,
-		file_handlers: [{ action: "/open-file", accept: { "text/plain": [".txt"] } }],
-		protocol_handlers: [{ protocol: "web+myapp", url: "/handle?url=%s" }],
-		share_target: {
-			action: "/share",
-			method: "POST",
-			enctype: "multipart/form-data",
-		},
-		launch_handler: {
-			client_mode: "navigate-existing",
-		},
-	},
+  manifest: {
+    name: "My App",
+    short_name: "App",
+    start_url: "/",
+    display: "standalone",
+    icons: [
+      { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { src: "/icon.png", sizes: "512x512", type: "image/png" },
+    ],
+    description: "A great web app",
+    background_color: "#ffffff",
+    theme_color: "#1a1a2e",
+    scope: "/",
+    orientation: "portrait",
+    id: "my-app",
+    categories: ["productivity"],
+    screenshots: [
+      {
+        src: "/screenshots/home.png",
+        sizes: "1280x720",
+        type: "image/png",
+        form_factor: "wide",
+      },
+    ],
+    shortcuts: [{ name: "New Note", url: "/notes/new" }],
+    related_applications: [{ platform: "play", id: "com.example.app" }],
+    prefer_related_applications: false,
+    file_handlers: [
+      { action: "/open-file", accept: { "text/plain": [".txt"] } },
+    ],
+    protocol_handlers: [{ protocol: "web+myapp", url: "/handle?url=%s" }],
+    share_target: {
+      action: "/share",
+      method: "POST",
+      enctype: "multipart/form-data",
+    },
+    launch_handler: {
+      client_mode: "navigate-existing",
+    },
+  },
 });
 ```
 
@@ -300,7 +318,7 @@ eminence({
 
 ```ts
 eminence({
-	manifest: false,
+  manifest: false,
 });
 ```
 

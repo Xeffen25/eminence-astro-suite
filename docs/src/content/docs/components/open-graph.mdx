@@ -2,8 +2,8 @@
 title: OpenGraph
 description: Documentation for OpenGraph, focused on rendering Open Graph metadata tags for social sharing. It handles og:type inference, media metadata, locale tags, and typed OG namespace outputs.
 head:
-    - tag: title
-      content: OpenGraph - Component
+  - tag: title
+    content: OpenGraph - Component
 ---
 
 OpenGraph renders a complete set of Open Graph meta tags with a type-safe API. It infers the primary `og:type` from a single type-driving object, supports common core fields, and outputs media and namespace tags based on the props you provide.
@@ -73,19 +73,24 @@ Input:
 
 ```astro
 <OpenGraph
-	title="My Article"
-	url="https://example.com/posts/1"
-	description="Open Graph overview"
-	siteName="Example"
-	locale="en_US"
-	localeAlternate={["es_ES", "fr_FR"]}
-	image={{ src: "https://example.com/og.png", width: 1200, height: 630, alt: "Banner" }}
-	article={{
-		publishedTime: "2026-01-01T00:00:00Z",
-		authors: ["https://example.com/author"],
-		section: "Tech",
-		tags: ["astro", "seo"],
-	}}
+  title="My Article"
+  url="https://example.com/posts/1"
+  description="Open Graph overview"
+  siteName="Example"
+  locale="en_US"
+  localeAlternate={["es_ES", "fr_FR"]}
+  image={{
+    src: "https://example.com/og.png",
+    width: 1200,
+    height: 630,
+    alt: "Banner",
+  }}
+  article={{
+    publishedTime: "2026-01-01T00:00:00Z",
+    authors: ["https://example.com/author"],
+    section: "Tech",
+    tags: ["astro", "seo"],
+  }}
 />
 ```
 

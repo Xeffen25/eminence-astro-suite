@@ -2,8 +2,8 @@
 title: Viewport
 description: Documentation for Viewport, focused on rendering the viewport meta tag for responsive layout control. It handles the default responsive value and custom content overrides.
 head:
-    - tag: title
-      content: Viewport - Component
+  - tag: title
+    content: Viewport - Component
 ---
 
 Viewport renders the `<meta name="viewport">` tag in your document head. It always emits a tag, defaulting to the standard responsive value when no `content` prop is provided.
@@ -57,7 +57,10 @@ Input:
 Output:
 
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=5"
+/>
 ```
 
 ## Decisions Made

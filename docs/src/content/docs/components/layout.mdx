@@ -2,8 +2,8 @@
 title: Layout
 description: Documentation for Layout, focused on rendering a complete HTML page structure with Head integration. It provides four named slots to inject content into the head and body regions.
 head:
-    - tag: title
-      content: Layout - Component
+  - tag: title
+    content: Layout - Component
 ---
 
 Layout renders a full HTML document — `<!doctype html>`, `<html>`, `<head>`, and `<body>` — with `Head` wired in automatically. It is scoped to document shell structure only and does not impose any CSS, styling, or content opinions.
@@ -22,7 +22,7 @@ Input:
 
 ```astro
 <Layout head={{ title: "Home" }}>
-	<main>Page content</main>
+  <main>Page content</main>
 </Layout>
 ```
 
@@ -31,14 +31,14 @@ Output:
 ```html
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Home</title>
-	</head>
-	<body>
-		<main>Page content</main>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home</title>
+  </head>
+  <body>
+    <main>Page content</main>
+  </body>
 </html>
 ```
 
@@ -54,16 +54,22 @@ Input:
 
 ```astro
 <Layout head={{ title: "Home", description: "Welcome to my site" }}>
-	<Fragment slot="head">
-		<link rel="preload" href="/fonts/body.woff2" as="font" type="font/woff2" crossorigin />
-	</Fragment>
-	<Fragment slot="body-start">
-		<div id="skip-nav"><a href="#main">Skip to content</a></div>
-	</Fragment>
-	<main id="main">Page content</main>
-	<Fragment slot="body-end">
-		<script src="/app.js"></script>
-	</Fragment>
+  <Fragment slot="head">
+    <link
+      rel="preload"
+      href="/fonts/body.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  </Fragment>
+  <Fragment slot="body-start">
+    <div id="skip-nav"><a href="#main">Skip to content</a></div>
+  </Fragment>
+  <main id="main">Page content</main>
+  <Fragment slot="body-end">
+    <script src="/app.js"></script>
+  </Fragment>
 </Layout>
 ```
 
@@ -72,18 +78,24 @@ Output:
 ```html
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Home</title>
-		<link rel="preload" href="/fonts/body.woff2" as="font" type="font/woff2" crossorigin />
-		<meta name="description" content="Welcome to my site" />
-	</head>
-	<body>
-		<div id="skip-nav"><a href="#main">Skip to content</a></div>
-		<main id="main">Page content</main>
-		<script src="/app.js"></script>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home</title>
+    <link
+      rel="preload"
+      href="/fonts/body.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta name="description" content="Welcome to my site" />
+  </head>
+  <body>
+    <div id="skip-nav"><a href="#main">Skip to content</a></div>
+    <main id="main">Page content</main>
+    <script src="/app.js"></script>
+  </body>
 </html>
 ```
 

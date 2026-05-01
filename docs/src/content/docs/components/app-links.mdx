@@ -2,8 +2,8 @@
 title: AppLinks
 description: Documentation for AppLinks, focused on rendering platform-specific App Links meta tags. It handles iOS, Android, and web fallback metadata for native deep-link association.
 head:
-    - tag: title
-      content: AppLinks - Component
+  - tag: title
+    content: AppLinks - Component
 ---
 
 AppLinks renders App Links metadata tags for iOS, Android, and web fallback behavior. It is scoped to emitting `al:*` meta tags only and does not perform app-store validation, package verification, or URL rewriting beyond serializing URL values.
@@ -29,7 +29,8 @@ Input:
 Output:
 
 ```html
-<meta property="al:ios:url" content="myapp://open" /> <meta property="al:ios:app_store_id" content="123456789" />
+<meta property="al:ios:url" content="myapp://open" />
+<meta property="al:ios:app_store_id" content="123456789" />
 ```
 
 ### Auto usage
@@ -59,9 +60,9 @@ Input:
 
 ```astro
 <AppLinks
-	ios={{ url: "myapp://open", app_store_id: "123456789" }}
-	android={{ package: "com.example.app", app_name: "Example App" }}
-	web={{ url: "https://example.com", should_fallback: true }}
+  ios={{ url: "myapp://open", app_store_id: "123456789" }}
+  android={{ package: "com.example.app", app_name: "Example App" }}
+  web={{ url: "https://example.com", should_fallback: true }}
 />
 ```
 

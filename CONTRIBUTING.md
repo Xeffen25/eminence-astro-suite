@@ -60,6 +60,6 @@ While your `branch` and `commit` must stick to a single `type` for traceability,
 3. Before commiting run `pnpm all` this will format and test the entire project.
 4. Commit your changes: Use the conventional commit `type`s.
 5. Push & Pull Request:
-    - Push to your fork.
-    - Open a PR against the `main` branch.
-    - Clearly describe the changes and link the issue (e.g., `Closes #12`).
+   - Push to your fork.
+   - Open a PR against the `main` branch.
+   - Clearly describe the changes and link the issue (e.g., `Closes #12`).

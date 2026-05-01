@@ -3,11 +3,11 @@ import type { IconTag } from "../integration/generate-icons";
 import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
-	/**
-	 * Late-bound `<link>` tag overrides.
-	 * These are merged over the build-time resolved icon tags from the virtual module.
-	 */
-	icons?: IconTag[];
+  /**
+   * Late-bound `<link>` tag overrides.
+   * These are merged over the build-time resolved icon tags from the virtual module.
+   */
+  icons?: IconTag[];
 }
 
 const { icons: overrideIcons } = Astro.props;
@@ -15,26 +15,30 @@ const { icons: overrideIcons } = Astro.props;
 const iconTagsMap = new Map<string, IconTag>();
 
 for (const iconTag of config.icons ?? []) {
-	iconTagsMap.set(iconTag.href, iconTag);
+  iconTagsMap.set(iconTag.href, iconTag);
 }
 
 for (const iconTag of overrideIcons ?? []) {
-	iconTagsMap.set(iconTag.href, iconTag);
+  iconTagsMap.set(iconTag.href, iconTag);
 }
 
 const iconTagsToRender = Array.from(iconTagsMap.values());
 
 const resolveMedia = (media: IconTag["media"]): string | undefined => {
-	if (media === undefined) {
-		return undefined;
-	}
+  if (media === undefined) {
+    return undefined;
+  }
 
-	if (media === "light" || media === "dark") {
-		return `(prefers-color-scheme: ${media})`;
-	}
+  if (media === "light" || media === "dark") {
+    return `(prefers-color-scheme: ${media})`;
+  }
 
-	return media;
+  return media;
 };
 ---
 
-{iconTagsToRender.map(({ media, ...iconTag }) => <link {...iconTag} media={resolveMedia(media)} />)}
+{
+  iconTagsToRender.map(({ media, ...iconTag }) => (
+    <link {...iconTag} media={resolveMedia(media)} />
+  ))
+}

@@ -1,15 +1,17 @@
 ---
 interface Props {
-	/**
-	 * Canonical URL for the page. Can be a string or URL object.
-	 * If omitted, derives from Astro.site and current pathname.
-	 */
-	href?: string | URL;
+  /**
+   * Canonical URL for the page. Can be a string or URL object.
+   * If omitted, derives from Astro.site and current pathname.
+   */
+  href?: string | URL;
 }
 
 const { href } = Astro.props;
 
-const defaultCanonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+const defaultCanonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site)
+  : undefined;
 
 const canonicalHref = href === undefined ? defaultCanonical : href;
 ---

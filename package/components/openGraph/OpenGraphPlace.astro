@@ -20,23 +20,35 @@
  */
 
 interface Props {
-	/**
-	 * Decimal latitude rendered to `place:location:latitude`.
-	 */
-	latitude?: number;
-	/**
-	 * Decimal longitude rendered to `place:location:longitude`.
-	 */
-	longitude?: number;
-	/**
-	 * Optional elevation rendered to `place:location:altitude`.
-	 */
-	altitude?: number;
+  /**
+   * Decimal latitude rendered to `place:location:latitude`.
+   */
+  latitude?: number;
+  /**
+   * Decimal longitude rendered to `place:location:longitude`.
+   */
+  longitude?: number;
+  /**
+   * Optional elevation rendered to `place:location:altitude`.
+   */
+  altitude?: number;
 }
 
 const { latitude, longitude, altitude } = Astro.props;
 ---
 
-{latitude !== undefined && <meta property="place:location:latitude" content={String(latitude)} />}
-{longitude !== undefined && <meta property="place:location:longitude" content={String(longitude)} />}
-{altitude !== undefined && <meta property="place:location:altitude" content={String(altitude)} />}
+{
+  latitude !== undefined && (
+    <meta property="place:location:latitude" content={String(latitude)} />
+  )
+}
+{
+  longitude !== undefined && (
+    <meta property="place:location:longitude" content={String(longitude)} />
+  )
+}
+{
+  altitude !== undefined && (
+    <meta property="place:location:altitude" content={String(altitude)} />
+  )
+}

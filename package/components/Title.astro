@@ -2,16 +2,16 @@
 import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
-	/**
-	 * The page-specific title text.
-	 */
-	value: string;
-	/**
-	 * Optional template string containing `%s` as a placeholder for the value.
-	 * @default "%s" via integration virtual config
-	 * @example "%s | My Site"
-	 */
-	template?: `${string}%s${string}`;
+  /**
+   * The page-specific title text.
+   */
+  value: string;
+  /**
+   * Optional template string containing `%s` as a placeholder for the value.
+   * @default "%s" via integration virtual config
+   * @example "%s | My Site"
+   */
+  template?: `${string}%s${string}`;
 }
 
 const { value, template = config.titleTemplate } = Astro.props;

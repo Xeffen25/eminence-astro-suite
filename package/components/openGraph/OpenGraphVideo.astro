@@ -23,20 +23,20 @@
 import { inferVideoMimeType, toHref } from "../../utils";
 
 interface Props {
-	/**
-	 * Required video URL. Relative paths are emitted as provided.
-	 */
-	src: string | URL;
-	/**
-	 * HTTPS variant of `src`, emitted as `og:video:secure_url`.
-	 */
-	secureUrl?: string | URL;
-	/**
-	 * Overrides extension-based MIME inference for `og:video:type`.
-	 */
-	type?: string;
-	width?: number;
-	height?: number;
+  /**
+   * Required video URL. Relative paths are emitted as provided.
+   */
+  src: string | URL;
+  /**
+   * HTTPS variant of `src`, emitted as `og:video:secure_url`.
+   */
+  secureUrl?: string | URL;
+  /**
+   * Overrides extension-based MIME inference for `og:video:type`.
+   */
+  type?: string;
+  width?: number;
+  height?: number;
 }
 
 const { src, secureUrl, type } = Astro.props;
@@ -49,7 +49,19 @@ const resolvedHeight = Astro.props.height;
 ---
 
 <meta property="og:video" content={resolvedSrc} />
-{resolvedSecureUrl && <meta property="og:video:secure_url" content={resolvedSecureUrl} />}
+{
+  resolvedSecureUrl && (
+    <meta property="og:video:secure_url" content={resolvedSecureUrl} />
+  )
+}
 {resolvedType && <meta property="og:video:type" content={resolvedType} />}
-{resolvedWidth !== undefined && <meta property="og:video:width" content={String(resolvedWidth)} />}
-{resolvedHeight !== undefined && <meta property="og:video:height" content={String(resolvedHeight)} />}
+{
+  resolvedWidth !== undefined && (
+    <meta property="og:video:width" content={String(resolvedWidth)} />
+  )
+}
+{
+  resolvedHeight !== undefined && (
+    <meta property="og:video:height" content={String(resolvedHeight)} />
+  )
+}

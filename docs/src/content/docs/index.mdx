@@ -20,36 +20,36 @@ The integration is required because it creates a Vite virtual module used by the
 
 1. Configure the integration in `astro.config.mjs`.
 
-    ```ts title="astro.config.mjs"
-    import { defineConfig } from "astro/config";
-    import eminence from "eminence-astro-suite";
+   ```ts title="astro.config.mjs"
+   import { defineConfig } from "astro/config";
+   import eminence from "eminence-astro-suite";
 
-    export default defineConfig({
-    	integrations: [
-    		eminence({
-    			// Your project defaults for metadata and generated files.
-    		}),
-    	],
-    });
-    ```
+   export default defineConfig({
+     integrations: [
+       eminence({
+         // Your project defaults for metadata and generated files.
+       }),
+     ],
+   });
+   ```
 
 2. Start with integration-powered defaults and outputs.
 
-    The integration handles these responsibilities for you:
-    - Global metadata defaults (for example site name) to keep pages DRY.
-    - Icon generation from an SVG source or a 512x512 icon.
-    - `humans.txt` reminder and generation flow.
-    - `robots.txt` generation.
-    - `security.txt` generation.
-    - `sitemap.xml` generation using Astro's original sitemap integration.
+   The integration handles these responsibilities for you:
+   - Global metadata defaults (for example site name) to keep pages DRY.
+   - Icon generation from an SVG source or a 512x512 icon.
+   - `humans.txt` reminder and generation flow.
+   - `robots.txt` generation.
+   - `security.txt` generation.
+   - `sitemap.xml` generation using Astro's original sitemap integration.
 
 3. Use metadata components from `eminence-astro-suite/components`.
 
-    Most projects only need `Head`.
+   Most projects only need `Head`.
 
 4. Begin with `title` and `description`, then expand only when needed.
 
-    You can scale from simple pages to advanced metadata by adding JSON-LD, Open Graph, and other supported surfaces over time.
+   You can scale from simple pages to advanced metadata by adding JSON-LD, Open Graph, and other supported surfaces over time.
 
 </Steps>
 
@@ -82,20 +82,25 @@ Eminence targets relevant, modern SEO/metadata concerns and intentionally avoids
 - Unsupported tags are documented in [Unsupported Tags](/policies/unsupported-tags).
 
 <CardGrid stagger>
-	<Card title="Metadata First-Class" icon="star">
-		Generate both metadata tags and metadata-related files from one cohesive workflow.
-	</Card>
-	<Card title="Integration Comes First" icon="setting">
-		Configure integration once so components can read the virtual config module and stay consistent.
-	</Card>
-	<Card title="Head Is Usually Enough" icon="open-book">
-		Use components from `eminence-astro-suite/components`, but most sites can rely primarily on `Head`.
-	</Card>
-	<Card title="Automation Without Repetition" icon="warning">
-		Set global values like site name once and avoid repeating shared metadata page by page.
-	</Card>
-	<Card title="Modern And Opinionated" icon="book">
-		Outdated tags and legacy outputs are intentionally excluded. See [Unsupported
-		Files](/policies/unsupported-files) and [Unsupported Tags](/policies/unsupported-tags).
-	</Card>
+  <Card title="Metadata First-Class" icon="star">
+    Generate both metadata tags and metadata-related files from one cohesive
+    workflow.
+  </Card>
+  <Card title="Integration Comes First" icon="setting">
+    Configure integration once so components can read the virtual config module
+    and stay consistent.
+  </Card>
+  <Card title="Head Is Usually Enough" icon="open-book">
+    Use components from `eminence-astro-suite/components`, but most sites can
+    rely primarily on `Head`.
+  </Card>
+  <Card title="Automation Without Repetition" icon="warning">
+    Set global values like site name once and avoid repeating shared metadata
+    page by page.
+  </Card>
+  <Card title="Modern And Opinionated" icon="book">
+    Outdated tags and legacy outputs are intentionally excluded. See
+    [Unsupported Files](/policies/unsupported-files) and [Unsupported
+    Tags](/policies/unsupported-tags).
+  </Card>
 </CardGrid>

@@ -2,8 +2,8 @@
 title: security.txt
 description: Generate a /.well-known/security.txt file at build time with required fields validated and flexible expiry formats supported.
 head:
-    - tag: title
-      content: security.txt - Integration
+  - tag: title
+    content: security.txt - Integration
 ---
 
 The security.txt feature generates a `/.well-known/security.txt` file in your build output during `astro build`. It is configured through the `securityTxt` option on the integration and follows the [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116) security disclosure standard.
@@ -39,10 +39,10 @@ Examples: `"30 days"`, `"6 months"`, `"1 year"`.
 ```ts
 // astro.config.mjs
 eminence({
-	securityTxt: {
-		contact: "mailto:security@example.com",
-		expires: "1 year",
-	},
+  securityTxt: {
+    contact: "mailto:security@example.com",
+    expires: "1 year",
+  },
 });
 ```
 
@@ -57,12 +57,12 @@ Expires: 2027-04-24T00:00:00.000Z
 
 ```ts
 eminence({
-	securityTxt: {
-		contact: ["mailto:security@example.com", "https://example.com/security"],
-		expires: "6 months",
-		policy: "https://example.com/security-policy",
-		preferredLanguages: ["en", "fr"],
-	},
+  securityTxt: {
+    contact: ["mailto:security@example.com", "https://example.com/security"],
+    expires: "6 months",
+    policy: "https://example.com/security-policy",
+    preferredLanguages: ["en", "fr"],
+  },
 });
 ```
 
@@ -80,10 +80,10 @@ Policy: https://example.com/security-policy
 
 ```ts
 eminence({
-	securityTxt: {
-		contact: "mailto:security@example.com",
-		expires: new Date("2027-01-01T00:00:00Z"),
-	},
+  securityTxt: {
+    contact: "mailto:security@example.com",
+    expires: new Date("2027-01-01T00:00:00Z"),
+  },
 });
 ```
 
@@ -91,7 +91,7 @@ eminence({
 
 ```ts
 eminence({
-	securityTxt: false,
+  securityTxt: false,
 });
 ```
 

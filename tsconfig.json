@@ -1,13 +1,19 @@
 {
-	"extends": "astro/tsconfigs/strict",
-	"include": ["docs/.astro/types.d.ts", "docs/**/*", "package/**/*", "test/**/*", "vitest.config.ts"],
-	"exclude": ["dist", "docs/dist"],
-	"compilerOptions": {
-		"paths": {
-			"~/*": ["./docs/public/*"],
-			"@/*": ["./docs/src/*"],
-			"@package/*": ["./package/*"],
-			"@test/*": ["./test/*"]
-		}
-	}
+  "extends": "astro/tsconfigs/strict",
+  "include": [
+    "docs/.astro/types.d.ts",
+    "docs/**/*",
+    "package/**/*",
+    "test/**/*",
+    "vitest.config.ts"
+  ],
+  "exclude": ["dist", "docs/dist"],
+  "compilerOptions": {
+    "paths": {
+      "~/*": ["./docs/public/*"],
+      "@/*": ["./docs/src/*"],
+      "@package/*": ["./package/*"],
+      "@test/*": ["./test/*"]
+    }
+  }
 }

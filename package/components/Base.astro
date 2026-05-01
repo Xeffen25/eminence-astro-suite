@@ -4,17 +4,23 @@ import config from "virtual:eminence-astro-suite/head-tags";
 import { hasAnyProp } from "../utils";
 
 interface Props {
-	/**
-	 * Base URL used for all relative URLs in the document.
-	 */
-	href?: string;
-	/**
-	 * Default browsing context for links and forms.
-	 */
-	target?: string;
+  /**
+   * Base URL used for all relative URLs in the document.
+   */
+  href?: string;
+  /**
+   * Default browsing context for links and forms.
+   */
+  target?: string;
 }
 
-const { href, target } = (hasAnyProp(Astro.props) ? Astro.props : (config.base ?? {})) as Props;
+const { href, target } = (
+  hasAnyProp(Astro.props) ? Astro.props : (config.base ?? {})
+) as Props;
 ---
 
-{(href !== undefined || target !== undefined) && <base href={href} target={target} />}
+{
+  (href !== undefined || target !== undefined) && (
+    <base href={href} target={target} />
+  )
+}

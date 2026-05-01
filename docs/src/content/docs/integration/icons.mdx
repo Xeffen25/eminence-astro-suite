@@ -2,8 +2,8 @@
 title: Icons
 description: Documentation for the icons integration feature, focused on resolving file-keyed icon entries into generated assets, head tags, and manifest icons at build time.
 head:
-    - tag: title
-      content: Icons - Integration
+  - tag: title
+    content: Icons - Integration
 ---
 
 import { TabItem, Tabs } from "@astrojs/starlight/components";
@@ -100,13 +100,13 @@ Install them with:
 
 ```ts
 eminence({
-	icons: {
-		source: "src/assets/logo.svg",
-		"favicon.ico": { sizes: [16, 32, 48], tag: { rel: "icon" } },
-		"apple-touch-icon.png": { size: 180, tag: { rel: "apple-touch-icon" } },
-		"icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
-		"icon.png": { size: 512, tag: { rel: "icon" }, manifest: true },
-	},
+  icons: {
+    source: "src/assets/logo.svg",
+    "favicon.ico": { sizes: [16, 32, 48], tag: { rel: "icon" } },
+    "apple-touch-icon.png": { size: 180, tag: { rel: "apple-touch-icon" } },
+    "icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
+    "icon.png": { size: 512, tag: { rel: "icon" }, manifest: true },
+  },
 });
 ```
 
@@ -118,10 +118,10 @@ If you also set `headTags.icons` or `manifest.icons`, those arrays are merged ov
 
 ```ts
 eminence({
-	icons: {
-		source: "src/assets/logo.svg",
-		"favicon.ico": { sizes: [16, 32, 48], tag: { rel: "icon" } },
-	},
+  icons: {
+    source: "src/assets/logo.svg",
+    "favicon.ico": { sizes: [16, 32, 48], tag: { rel: "icon" } },
+  },
 });
 ```
 
@@ -135,12 +135,12 @@ Because the global source is SVG and `favicon.svg` is not explicitly configured,
 
 ```ts
 eminence({
-	icons: {
-		source: "src/assets/logo.png",
-		"favicon.ico": { sizes: false, tag: { rel: "icon" } },
-		"icon-192x192.png": { size: false, tag: { rel: "icon" } },
-		"apple-touch-icon.png": { size: 180, tag: { rel: "apple-touch-icon" } },
-	},
+  icons: {
+    source: "src/assets/logo.png",
+    "favicon.ico": { sizes: false, tag: { rel: "icon" } },
+    "icon-192x192.png": { size: false, tag: { rel: "icon" } },
+    "apple-touch-icon.png": { size: 180, tag: { rel: "apple-touch-icon" } },
+  },
 });
 ```
 
@@ -150,20 +150,20 @@ Entries with `size: false` or `sizes: false` are skipped for generation, head-ta
 
 ```ts
 eminence({
-	icons: {
-		source: "src/assets/logo.svg",
-		"icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
-		"badge.png": {
-			size: 96,
-			tag: { rel: "icon" },
-			manifest: { purpose: "monochrome", src: "/brand/badge.png" },
-		},
-	},
-	manifest: {
-		name: "My App",
-		start_url: "/",
-		display: "standalone",
-	},
+  icons: {
+    source: "src/assets/logo.svg",
+    "icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
+    "badge.png": {
+      size: 96,
+      tag: { rel: "icon" },
+      manifest: { purpose: "monochrome", src: "/brand/badge.png" },
+    },
+  },
+  manifest: {
+    name: "My App",
+    start_url: "/",
+    display: "standalone",
+  },
 });
 ```
 
@@ -171,12 +171,12 @@ eminence({
 
 ```ts
 eminence({
-	icons: {
-		source: "src/assets/logo.png",
-		"safari-pinned-tab.svg": {
-			tag: { rel: "mask-icon", color: "#111111" },
-		},
-	},
+  icons: {
+    source: "src/assets/logo.png",
+    "safari-pinned-tab.svg": {
+      tag: { rel: "mask-icon", color: "#111111" },
+    },
+  },
 });
 ```
 
@@ -186,7 +186,7 @@ This emits a `<link rel="mask-icon">` tag for `/safari-pinned-tab.svg` but does 
 
 ```ts
 eminence({
-	icons: false,
+  icons: false,
 });
 ```
 

@@ -2,12 +2,12 @@
 import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
-	/**
-	 * Absolute humans.txt URL rendered directly as the link href.
-	 * @default `${Astro.site}/humans.txt`
-	 * @example "https://example.com/humans.txt"
-	 */
-	href?: string | URL;
+  /**
+   * Absolute humans.txt URL rendered directly as the link href.
+   * @default `${Astro.site}/humans.txt`
+   * @example "https://example.com/humans.txt"
+   */
+  href?: string | URL;
 }
 
 const { href: propHref } = Astro.props;
@@ -15,16 +15,16 @@ const configHref = config.humansTxt;
 const hrefValue = propHref !== undefined ? propHref : configHref;
 
 const href =
-	hrefValue === undefined || hrefValue === true
-		? Astro.site !== undefined
-			? new URL("/humans.txt", Astro.site)
-			: undefined
-		: hrefValue;
+  hrefValue === undefined || hrefValue === true
+    ? Astro.site !== undefined
+      ? new URL("/humans.txt", Astro.site)
+      : undefined
+    : hrefValue;
 
 if (href === undefined) {
-	console.error(
-		"[Eminence Astro Suite] Component HumansTxt did not resolve a href so it didn't render. Provide an `href` prop or set `Astro.site` so it can be resolved.",
-	);
+  console.error(
+    "[Eminence Astro Suite] Component HumansTxt did not resolve a href so it didn't render. Provide an `href` prop or set `Astro.site` so it can be resolved.",
+  );
 }
 ---
 

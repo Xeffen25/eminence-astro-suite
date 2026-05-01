@@ -4,34 +4,36 @@ import config from "virtual:eminence-astro-suite/head-tags";
 import { hasAnyProp } from "../utils";
 
 interface Props {
-	/**
-	 * Google Search Console verification token.
-	 * Renders as `<meta name="google-site-verification">` when provided.
-	 */
-	google?: string;
-	/**
-	 * Yandex Webmaster Tools verification token.
-	 * Renders as `<meta name="yandex-verification">` when provided.
-	 */
-	yandex?: string;
-	/**
-	 * Bing/Yahoo Webmaster Tools verification token.
-	 * Renders as `<meta name="msvalidate.01">` when provided.
-	 */
-	bing?: string;
-	/**
-	 * Additional verification entries for other providers.
-	 * Each entry renders a `<meta>` tag with the given name and content.
-	 */
-	others?: VerificationEntry[];
+  /**
+   * Google Search Console verification token.
+   * Renders as `<meta name="google-site-verification">` when provided.
+   */
+  google?: string;
+  /**
+   * Yandex Webmaster Tools verification token.
+   * Renders as `<meta name="yandex-verification">` when provided.
+   */
+  yandex?: string;
+  /**
+   * Bing/Yahoo Webmaster Tools verification token.
+   * Renders as `<meta name="msvalidate.01">` when provided.
+   */
+  bing?: string;
+  /**
+   * Additional verification entries for other providers.
+   * Each entry renders a `<meta>` tag with the given name and content.
+   */
+  others?: VerificationEntry[];
 }
 
 type VerificationEntry = {
-	name: string;
-	content: string;
+  name: string;
+  content: string;
 };
 
-const { google, yandex, bing, others } = (hasAnyProp(Astro.props) ? Astro.props : (config.verification ?? {})) as Props;
+const { google, yandex, bing, others } = (
+  hasAnyProp(Astro.props) ? Astro.props : (config.verification ?? {})
+) as Props;
 ---
 
 {google && <meta name="google-site-verification" content={google} />}

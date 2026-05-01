@@ -1,17 +1,20 @@
 ---
 interface Props {
-	jsonLd: string;
+  jsonLd: string;
 }
 
 const { jsonLd }: Props = Astro.props;
 
 const ESCAPE_MAP: Record<string, string> = {
-	"<": "\\u003c",
-	">": "\\u003e",
-	"&": "\\u0026",
+  "<": "\\u003c",
+  ">": "\\u003e",
+  "&": "\\u0026",
 };
 
-const escapedJsonLd = jsonLd.replace(/[<>&]/g, (character) => ESCAPE_MAP[character]);
+const escapedJsonLd = jsonLd.replace(
+  /[<>&]/g,
+  (character) => ESCAPE_MAP[character],
+);
 ---
 
 <script is:inline type="application/ld+json" set:html={escapedJsonLd} />

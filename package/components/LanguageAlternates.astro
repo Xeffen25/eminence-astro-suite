@@ -1,9 +1,13 @@
 ---
 interface Props {
-	languages: Record<string, string | URL>;
+  languages: Record<string, string | URL>;
 }
 
 const { languages } = Astro.props;
 ---
 
-{Object.entries(languages).map(([hreflang, href]) => <link rel="alternate" hreflang={hreflang} href={href} />)}
+{
+  Object.entries(languages).map(([hreflang, href]) => (
+    <link rel="alternate" hreflang={hreflang} href={href} />
+  ))
+}

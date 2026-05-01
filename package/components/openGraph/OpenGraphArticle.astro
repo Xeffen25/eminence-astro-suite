@@ -19,41 +19,60 @@
  */
 
 interface Props {
-	/**
-	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
-	 * @example 2026-04-01
-	 * @example 2026-04-01T00:00:00Z
-	 */
-	publishedTime?: string;
-	/**
-	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
-	 * @example 2026-04-01
-	 * @example 2026-04-01T00:00:00Z
-	 */
-	modifiedTime?: string;
-	/**
-	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
-	 * @example 2026-04-01
-	 * @example 2026-04-01T00:00:00Z
-	 */
-	expirationTime?: string;
-	/**
-	 * Each value renders one `article:author` tag.
-	 */
-	authors?: string[];
-	section?: string;
-	/**
-	 * Each value renders one `article:tag` tag.
-	 */
-	tags?: string[];
+  /**
+   * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+   * @example 2026-04-01
+   * @example 2026-04-01T00:00:00Z
+   */
+  publishedTime?: string;
+  /**
+   * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+   * @example 2026-04-01
+   * @example 2026-04-01T00:00:00Z
+   */
+  modifiedTime?: string;
+  /**
+   * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+   * @example 2026-04-01
+   * @example 2026-04-01T00:00:00Z
+   */
+  expirationTime?: string;
+  /**
+   * Each value renders one `article:author` tag.
+   */
+  authors?: string[];
+  section?: string;
+  /**
+   * Each value renders one `article:tag` tag.
+   */
+  tags?: string[];
 }
 
-const { publishedTime, modifiedTime, expirationTime, authors = [], section, tags = [] } = Astro.props;
+const {
+  publishedTime,
+  modifiedTime,
+  expirationTime,
+  authors = [],
+  section,
+  tags = [],
+} = Astro.props;
 ---
 
-{publishedTime && <meta property="article:published_time" content={publishedTime} />}
-{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
-{expirationTime && <meta property="article:expiration_time" content={expirationTime} />}
+{
+  publishedTime && (
+    <meta property="article:published_time" content={publishedTime} />
+  )
+}
+{
+  modifiedTime && (
+    <meta property="article:modified_time" content={modifiedTime} />
+  )
+}
+{
+  expirationTime && (
+    <meta property="article:expiration_time" content={expirationTime} />
+  )
+}
 {authors.map((a) => <meta property="article:author" content={a} />)}
 {section && <meta property="article:section" content={section} />}
 {tags.map((t) => <meta property="article:tag" content={t} />)}

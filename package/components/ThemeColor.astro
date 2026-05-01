@@ -4,32 +4,42 @@ import config from "virtual:eminence-astro-suite/head-tags";
 import { hasAnyProp } from "../utils";
 
 type Props =
-	| {
-			content: string;
-			light?: never;
-			dark?: never;
-	  }
-	| {
-			content?: never;
-			light: string;
-			dark: string;
-	  }
-	| {
-			content?: never;
-			light?: never;
-			dark?: never;
-	  };
+  | {
+      content: string;
+      light?: never;
+      dark?: never;
+    }
+  | {
+      content?: never;
+      light: string;
+      dark: string;
+    }
+  | {
+      content?: never;
+      light?: never;
+      dark?: never;
+    };
 
-const { content, light, dark } = (hasAnyProp(Astro.props) ? Astro.props : (config.themeColor ?? {})) as Props;
+const { content, light, dark } = (
+  hasAnyProp(Astro.props) ? Astro.props : (config.themeColor ?? {})
+) as Props;
 ---
 
 {
-	content !== undefined ? (
-		<meta name="theme-color" content={content} />
-	) : light !== undefined && dark !== undefined ? (
-		<>
-			<meta name="theme-color" media="(prefers-color-scheme: light)" content={light} />
-			<meta name="theme-color" media="(prefers-color-scheme: dark)" content={dark} />
-		</>
-	) : null
+  content !== undefined ? (
+    <meta name="theme-color" content={content} />
+  ) : light !== undefined && dark !== undefined ? (
+    <>
+      <meta
+        name="theme-color"
+        media="(prefers-color-scheme: light)"
+        content={light}
+      />
+      <meta
+        name="theme-color"
+        media="(prefers-color-scheme: dark)"
+        content={dark}
+      />
+    </>
+  ) : null
 }

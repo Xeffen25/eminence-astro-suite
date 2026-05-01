@@ -25,31 +25,31 @@ import { inferImageMimeType, toHref } from "../../utils";
 type ImageSource = ImageMetadata | string | URL;
 
 function isMetadata(src: ImageSource): src is ImageMetadata {
-	return typeof src === "object" && !(src instanceof URL) && "format" in src;
+  return typeof src === "object" && !(src instanceof URL) && "format" in src;
 }
 
 interface Props {
-	/**
-	 * Supports imported Astro `ImageMetadata` or a URL/path-like value.
-	 */
-	src: ImageSource;
-	/**
-	 * HTTPS variant of `src`, emitted as `og:image:secure_url`.
-	 */
-	secureUrl?: string | URL;
-	/**
-	 * Overrides imported metadata width when both are provided.
-	 */
-	width?: number;
-	/**
-	 * Overrides imported metadata height when both are provided.
-	 */
-	height?: number;
-	alt?: string;
-	/**
-	 * Overrides extension/metadata-based MIME inference.
-	 */
-	type?: string;
+  /**
+   * Supports imported Astro `ImageMetadata` or a URL/path-like value.
+   */
+  src: ImageSource;
+  /**
+   * HTTPS variant of `src`, emitted as `og:image:secure_url`.
+   */
+  secureUrl?: string | URL;
+  /**
+   * Overrides imported metadata width when both are provided.
+   */
+  width?: number;
+  /**
+   * Overrides imported metadata height when both are provided.
+   */
+  height?: number;
+  alt?: string;
+  /**
+   * Overrides extension/metadata-based MIME inference.
+   */
+  type?: string;
 }
 
 const { src, secureUrl, alt, type } = Astro.props;
@@ -63,8 +63,20 @@ const resolvedSecureUrl = secureUrl ? toHref(secureUrl) : undefined;
 ---
 
 <meta property="og:image" content={resolvedSrc} />
-{resolvedSecureUrl && <meta property="og:image:secure_url" content={resolvedSecureUrl} />}
+{
+  resolvedSecureUrl && (
+    <meta property="og:image:secure_url" content={resolvedSecureUrl} />
+  )
+}
 {resolvedType && <meta property="og:image:type" content={resolvedType} />}
-{resolvedWidth !== undefined && <meta property="og:image:width" content={String(resolvedWidth)} />}
-{resolvedHeight !== undefined && <meta property="og:image:height" content={String(resolvedHeight)} />}
+{
+  resolvedWidth !== undefined && (
+    <meta property="og:image:width" content={String(resolvedWidth)} />
+  )
+}
+{
+  resolvedHeight !== undefined && (
+    <meta property="og:image:height" content={String(resolvedHeight)} />
+  )
+}
 {alt && <meta property="og:image:alt" content={alt} />}

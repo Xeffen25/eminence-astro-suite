@@ -1,34 +1,34 @@
 {
-	"name": "eminence-astro-suite-monorepo",
-	"private": true,
-	"type": "module",
-	"version": "0.0.0",
-	"scripts": {
-		"dev": "pnpm --filter ./docs dev",
-		"build": "pnpm --filter ./docs build",
-		"preview": "pnpm --filter ./docs preview",
-		"format:fix": "prettier . --write",
-		"format:check": "prettier . --check",
-		"test": "vitest run",
-		"test:watch": "vitest",
-		"check": "pnpm format:check && pnpm astro check && pnpm test",
-		"all": "pnpm format:fix && pnpm astro check && pnpm test",
-		"prepare": "husky"
-	},
-	"lint-staged": {
-		"*": "prettier --write"
-	},
-	"devDependencies": {
-		"@astrojs/check": "^0.9.9",
-		"astro": "catalog:",
-		"husky": "^9.1.7",
-		"lint-staged": "^16.4.0",
-		"prettier": "^3.8.3",
-		"prettier-plugin-astro": "^0.14.1",
-		"prettier-plugin-organize-imports": "^4.3.0",
-		"sharp": "catalog:",
-		"sharp-ico": "catalog:",
-		"typescript": "^5.9.3",
-		"vitest": "^4.1.5"
-	}
+  "name": "eminence-astro-suite-monorepo",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "pnpm --filter ./docs dev",
+    "build": "pnpm --filter ./docs build",
+    "preview": "pnpm --filter ./docs preview",
+    "format:fix": "prettier . --write",
+    "format:check": "prettier . --check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "pnpm format:check && pnpm astro check && pnpm test",
+    "all": "pnpm format:fix && pnpm astro check && pnpm test",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*": "prettier --write"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "astro": "catalog:",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "sharp": "catalog:",
+    "sharp-ico": "catalog:",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.5"
+  }
 }

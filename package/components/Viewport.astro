@@ -2,11 +2,11 @@
 import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
-	/**
-	 * Content value used by the viewport meta tag.
-	 * @default "width=device-width, initial-scale=1" via integration virtual config
-	 */
-	content?: string;
+  /**
+   * Content value used by the viewport meta tag.
+   * @default "width=device-width, initial-scale=1" via integration virtual config
+   */
+  content?: string;
 }
 
 const { content = config.viewport } = Astro.props;

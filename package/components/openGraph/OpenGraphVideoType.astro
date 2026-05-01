@@ -20,69 +20,81 @@
  */
 
 interface Actor {
-	/**
-	 * Actor profile URL emitted as `video:actor`.
-	 */
-	name: string;
-	/**
-	 * Character or role label for `video:actor:role`.
-	 */
-	role?: string;
+  /**
+   * Actor profile URL emitted as `video:actor`.
+   */
+  name: string;
+  /**
+   * Character or role label for `video:actor:role`.
+   */
+  role?: string;
 }
 
 interface BaseProps {
-	/**
-	 * Each value renders one `video:actor` tag.
-	 */
-	actors?: Actor[];
-	/**
-	 * Each value renders one `video:director` tag.
-	 */
-	directors?: string[];
-	/**
-	 * Each value renders one `video:writer` tag.
-	 */
-	writers?: string[];
-	duration?: number;
-	/**
-	 * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
-	 * @example 2026-04-01
-	 * @example 2026-04-01T00:00:00Z
-	 */
-	releaseDate?: string;
-	/**
-	 * Each value renders one `video:tag` tag.
-	 */
-	tags?: string[];
+  /**
+   * Each value renders one `video:actor` tag.
+   */
+  actors?: Actor[];
+  /**
+   * Each value renders one `video:director` tag.
+   */
+  directors?: string[];
+  /**
+   * Each value renders one `video:writer` tag.
+   */
+  writers?: string[];
+  duration?: number;
+  /**
+   * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).
+   * @example 2026-04-01
+   * @example 2026-04-01T00:00:00Z
+   */
+  releaseDate?: string;
+  /**
+   * Each value renders one `video:tag` tag.
+   */
+  tags?: string[];
 }
 
 type Props =
-	| (BaseProps & {
-			subtype: "episode";
-			/**
-			 * Only valid for `video.episode` objects.
-			 */
-			series?: string;
-	  })
-	| (BaseProps & {
-			subtype: "movie" | "tv_show" | "other";
-			series?: never;
-	  });
+  | (BaseProps & {
+      subtype: "episode";
+      /**
+       * Only valid for `video.episode` objects.
+       */
+      series?: string;
+    })
+  | (BaseProps & {
+      subtype: "movie" | "tv_show" | "other";
+      series?: never;
+    });
 
-const { actors = [], directors = [], writers = [], duration, releaseDate, tags = [], series } = Astro.props;
+const {
+  actors = [],
+  directors = [],
+  writers = [],
+  duration,
+  releaseDate,
+  tags = [],
+  series,
+} = Astro.props;
 ---
 
 {
-	actors.map(({ name, role }) => (
-		<>
-			<meta property="video:actor" content={name} />
-			{role && <meta property="video:actor:role" content={role} />}
-		</>
-	))
+  actors.map(({ name, role }) => (
+    <>
+      <meta property="video:actor" content={name} />
+      {role && <meta property="video:actor:role" content={role} />}
+    </>
+  ))
 }
 {directors.map((value) => <meta property="video:director" content={value} />)}
 {writers.map((value) => <meta property="video:writer" content={value} />)}
-{duration !== undefined && <meta property="video:duration" content={String(duration)} />}
+{
+  duration !== undefined && (
+    <meta property="video:duration" content={String(duration)} />
+  )
+}
 {releaseDate && <meta property="video:release_date" content={releaseDate} />}
 {tags.map((value) => <meta property="video:tag" content={value} />)}
 {series && <meta property="video:series" content={series} />}

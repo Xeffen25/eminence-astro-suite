@@ -27,7 +27,12 @@ Output (`.html`):
 
 ```html
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png" />
+<link
+  rel="apple-touch-icon"
+  href="/apple-touch-icon.png"
+  sizes="180x180"
+  type="image/png"
+/>
 ```
 
 ### Auto usage
@@ -54,17 +59,34 @@ Input (`.astro`):
 
 ```astro
 <Icons
-	icons={[
-		{ rel: "icon", href: "/campaign-dark.png", sizes: "32x32", type: "image/png", media: "dark" },
-		{ rel: "preload", href: "/campaign-mask.svg", as: "image", type: "image/svg+xml" },
-	]}
+  icons={[
+    {
+      rel: "icon",
+      href: "/campaign-dark.png",
+      sizes: "32x32",
+      type: "image/png",
+      media: "dark",
+    },
+    {
+      rel: "preload",
+      href: "/campaign-mask.svg",
+      as: "image",
+      type: "image/svg+xml",
+    },
+  ]}
 />
 ```
 
 Output (`.html`):
 
 ```html
-<link rel="icon" href="/campaign-dark.png" sizes="32x32" type="image/png" media="(prefers-color-scheme: dark)" />
+<link
+  rel="icon"
+  href="/campaign-dark.png"
+  sizes="32x32"
+  type="image/png"
+  media="(prefers-color-scheme: dark)"
+/>
 <link rel="preload" href="/campaign-mask.svg" as="image" type="image/svg+xml" />
 ```
 

@@ -54,17 +54,17 @@ import { defineConfig } from "astro/config";
 import eminence from "eminence-astro-suite/integration";
 
 export default defineConfig({
-	integrations: [
-		eminence({
-			head: {
-				titleTemplate: "%s | My Site",
-			},
-			icons: {},
-			robotsTxt: {},
-			securityTxt: {},
-			sitemap: {},
-		}),
-	],
+  integrations: [
+    eminence({
+      head: {
+        titleTemplate: "%s | My Site",
+      },
+      icons: {},
+      robotsTxt: {},
+      securityTxt: {},
+      sitemap: {},
+    }),
+  ],
 });
 ```
 
@@ -85,21 +85,21 @@ import { Head } from "eminence-astro-suite/components";
 ---
 
 <html lang="en">
-	<head>
-		<Head
-			title="Home"
-			titleTemplate="%s | My Site"
-			description="Welcome to my site"
-			openGraph={{
-				title: "Home",
-				description: "Welcome to my site",
-				images: [{ url: "/og.jpg", alt: "My Site", width: 1200, height: 630 }],
-			}}
-		/>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <Head
+      title="Home"
+      titleTemplate="%s | My Site"
+      description="Welcome to my site"
+      openGraph={{
+        title: "Home",
+        description: "Welcome to my site",
+        images: [{ url: "/og.jpg", alt: "My Site", width: 1200, height: 630 }],
+      }}
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 ```
 
@@ -112,31 +112,35 @@ Use components directly in your `<head>` for full control.
 ```astro
 ---
 import {
-	Charset,
-	Viewport,
-	Title,
-	Description,
-	Canonical,
-	OpenGraph,
-	Robots,
-	Icons,
+  Charset,
+  Viewport,
+  Title,
+  Description,
+  Canonical,
+  OpenGraph,
+  Robots,
+  Icons,
 } from "eminence-astro-suite/components";
 ---
 
 <html lang="en">
-	<head>
-		<Charset />
-		<Viewport />
-		<Title value="My Page" template="%s | My Site" />
-		<Description content="Welcome to my site" />
-		<Canonical href="https://example.com/my-page" />
-		<OpenGraph title="My Page" description="Welcome to my site" images={[{ url: "/og.jpg", alt: "My Site" }]} />
-		<Robots index follow />
-		<Icons />
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <Charset />
+    <Viewport />
+    <Title value="My Page" template="%s | My Site" />
+    <Description content="Welcome to my site" />
+    <Canonical href="https://example.com/my-page" />
+    <OpenGraph
+      title="My Page"
+      description="Welcome to my site"
+      images={[{ url: "/og.jpg", alt: "My Site" }]}
+    />
+    <Robots index follow />
+    <Icons />
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 ```
 
@@ -152,18 +156,18 @@ import { defineConfig } from "astro/config";
 import eminence from "eminence-astro-suite/integration";
 
 export default defineConfig({
-	integrations: [
-		eminence({
-			head: {
-				titleTemplate: "%s | My Site",
-			},
-			// Set any of these to false to disable
-			icons: {},
-			robotsTxt: {},
-			securityTxt: {},
-			sitemap: {},
-		}),
-	],
+  integrations: [
+    eminence({
+      head: {
+        titleTemplate: "%s | My Site",
+      },
+      // Set any of these to false to disable
+      icons: {},
+      robotsTxt: {},
+      securityTxt: {},
+      sitemap: {},
+    }),
+  ],
 });
 ```
 

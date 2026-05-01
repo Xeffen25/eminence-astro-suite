@@ -2,8 +2,8 @@
 title: Head
 description: Documentation for Head, focused on rendering a complete document head with all common SEO and metadata tags. It coordinates all sub-components, applies Capo.js ordering, and merges integration config with per-page props.
 head:
-    - tag: title
-      content: Head - Component
+  - tag: title
+    content: Head - Component
 ---
 
 Head renders a `<head>` element containing the full set of supported SEO and metadata tags for your page. It coordinates all sub-components — charset, viewport, title, canonical, Open Graph, and more — in a single, opinionated unit. Integration config supplies site-wide defaults; props passed directly to `Head` override them per page.
@@ -50,10 +50,10 @@ Output (abbreviated):
 
 ```html
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Home</title>
-	<meta name="generator" content="Astro vX.Y.Z" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home</title>
+  <meta name="generator" content="Astro vX.Y.Z" />
 </head>
 ```
 
@@ -71,11 +71,11 @@ Output (when integration sets `head.titleTemplate: "%s | My Site"` and `head.col
 
 ```html
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Home | My Site</title>
-	<meta name="color-scheme" content="dark" />
-	<meta name="generator" content="Astro vX.Y.Z" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home | My Site</title>
+  <meta name="color-scheme" content="dark" />
+  <meta name="generator" content="Astro vX.Y.Z" />
 </head>
 ```
 
@@ -85,17 +85,23 @@ Input:
 
 ```astro
 <Head
-	title="Home"
-	titleTemplate="%s | Example"
-	description="Welcome to Example"
-	canonical="https://example.com/"
-	colorScheme="light dark"
-	openGraph={{ title: "Home", url: "https://example.com/", siteName: "Example" }}
-	verification={{ google: "abc123" }}
-	extend={{
-		link: [{ rel: "preconnect", href: "https://cdn.example.com", prefetch: true }],
-		meta: [{ property: "custom:token", content: "abc123" }],
-	}}
+  title="Home"
+  titleTemplate="%s | Example"
+  description="Welcome to Example"
+  canonical="https://example.com/"
+  colorScheme="light dark"
+  openGraph={{
+    title: "Home",
+    url: "https://example.com/",
+    siteName: "Example",
+  }}
+  verification={{ google: "abc123" }}
+  extend={{
+    link: [
+      { rel: "preconnect", href: "https://cdn.example.com", prefetch: true },
+    ],
+    meta: [{ property: "custom:token", content: "abc123" }],
+  }}
 />
 ```
 
@@ -103,20 +109,20 @@ Output (abbreviated):
 
 ```html
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Home | Example</title>
-	<link rel="canonical" href="https://example.com/" />
-	<meta name="color-scheme" content="light dark" />
-	<meta name="description" content="Welcome to Example" />
-	<meta name="generator" content="Astro vX.Y.Z" />
-	<meta property="og:type" content="website" />
-	<meta property="og:title" content="Home" />
-	<meta property="og:url" content="https://example.com/" />
-	<meta property="og:site_name" content="Example" />
-	<meta name="google-site-verification" content="abc123" />
-	<link rel="preconnect" href="https://cdn.example.com" prefetch />
-	<meta property="custom:token" content="abc123" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home | Example</title>
+  <link rel="canonical" href="https://example.com/" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="Welcome to Example" />
+  <meta name="generator" content="Astro vX.Y.Z" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Home" />
+  <meta property="og:url" content="https://example.com/" />
+  <meta property="og:site_name" content="Example" />
+  <meta name="google-site-verification" content="abc123" />
+  <link rel="preconnect" href="https://cdn.example.com" prefetch />
+  <meta property="custom:token" content="abc123" />
 </head>
 ```
 

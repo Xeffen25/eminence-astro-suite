@@ -4,20 +4,24 @@ import config from "virtual:eminence-astro-suite/head-tags";
 import { hasAnyProp } from "../utils";
 
 type Props =
-	| { content: string; id?: never; argument?: never }
-	| { id: string; argument?: string; content?: never }
-	| { content?: never; id?: never; argument?: never };
+  | { content: string; id?: never; argument?: never }
+  | { id: string; argument?: string; content?: never }
+  | { content?: never; id?: never; argument?: never };
 
-const { id, argument, content } = (hasAnyProp(Astro.props) ? Astro.props : (config.appleItunesApp ?? {})) as Props;
+const { id, argument, content } = (
+  hasAnyProp(Astro.props) ? Astro.props : (config.appleItunesApp ?? {})
+) as Props;
 ---
 
 {content && <meta name="apple-itunes-app" content={content} />}
 
 {
-	id && (
-		<meta
-			name="apple-itunes-app"
-			content={[`app-id=${id}`, argument && `app-argument=${argument}`].filter(Boolean).join(", ")}
-		/>
-	)
+  id && (
+    <meta
+      name="apple-itunes-app"
+      content={[`app-id=${id}`, argument && `app-argument=${argument}`]
+        .filter(Boolean)
+        .join(", ")}
+    />
+  )
 }
