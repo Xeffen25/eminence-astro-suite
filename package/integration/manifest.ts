@@ -2,7 +2,7 @@ import { constants } from "node:fs";
 import { access, mkdir, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { IntegrationRuntimeContext } from "../integration";
+import type { IntegrationRuntimeContext } from ".";
 import { resolveManifestIconsFromIconsOptions } from "./generate-icons";
 
 export type WebManifestIconItem = {

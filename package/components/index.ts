@@ -1,24 +1,24 @@
-import _AppleItunesApp from "./components/AppleItunesApp.astro";
-import _AppLinks from "./components/AppLinks.astro";
-import _Base from "./components/Base.astro";
-import _Canonical from "./components/Canonical.astro";
-import _Charset from "./components/Charset.astro";
-import _ColorScheme from "./components/ColorScheme.astro";
-import _Description from "./components/Description.astro";
-import _Extend from "./components/Extend.astro";
-import _Generator from "./components/Generator.astro";
-import _Head from "./components/Head.astro";
-import _HumansTxt from "./components/HumansTxt.astro";
-import _Icons from "./components/Icons.astro";
-import _JsonLd from "./components/JsonLd.astro";
-import _LanguageAlternates from "./components/LanguageAlternates.astro";
-import _Manifest from "./components/Manifest.astro";
-import _OpenGraph from "./components/OpenGraph.astro";
-import _Robots from "./components/Robots.astro";
-import _ThemeColor from "./components/ThemeColor.astro";
-import _Title from "./components/Title.astro";
-import _Verification from "./components/Verification.astro";
-import _Viewport from "./components/Viewport.astro";
+import _AppleItunesApp from "./AppleItunesApp.astro";
+import _AppLinks from "./AppLinks.astro";
+import _Base from "./Base.astro";
+import _Canonical from "./Canonical.astro";
+import _Charset from "./Charset.astro";
+import _ColorScheme from "./ColorScheme.astro";
+import _Description from "./Description.astro";
+import _Extend from "./Extend.astro";
+import _Generator from "./Generator.astro";
+import _Head from "./Head.astro";
+import _HumansTxt from "./HumansTxt.astro";
+import _Icons from "./Icons.astro";
+import _JsonLd from "./JsonLd.astro";
+import _LanguageAlternates from "./LanguageAlternates.astro";
+import _Manifest from "./Manifest.astro";
+import _OpenGraph from "./OpenGraph.astro";
+import _Robots from "./Robots.astro";
+import _ThemeColor from "./ThemeColor.astro";
+import _Title from "./Title.astro";
+import _Verification from "./Verification.astro";
+import _Viewport from "./Viewport.astro";
 
 import type { ComponentProps } from "astro/types";
 
@@ -34,7 +34,7 @@ import type { ComponentProps } from "astro/types";
  * @example
  * <AppleItunesApp content="app-id=123456789, app-argument=myapp://open" />
  *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/apple-itunes-app AppleItunesApp Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/apple-itunes-app AppleItunesApp Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name MDN Meta name reference}
  * @see {@link https://developer.apple.com/documentation/webkit/promoting-apps-with-smart-app-banners Promoting apps with Smart App Banners}
  */
@@ -51,7 +51,7 @@ export type AppleItunesAppProps = ComponentProps<typeof AppleItunesApp>;
  * @example
  * <AppLinks android={{ package: "com.example.app", app_name: "Example App" }} web={{ url: "https://example.com", should_fallback: true }} />
  *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/app-links AppLinks Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/app-links AppLinks Component Documentation}
  * @see {@link https://developers.facebook.com/docs/applinks/metadata-reference/ App Links Meta Tag Reference}
  */
 export const AppLinks = _AppLinks;
@@ -72,7 +72,7 @@ export type AppLinksProps = ComponentProps<typeof AppLinks>;
  * @example
  * <Base href="https://example.com" target="_blank" />
  *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/base Base Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/base Base Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base MDN base element reference}
  */
 export const Base = _Base;
@@ -91,7 +91,7 @@ export type BaseProps = ComponentProps<typeof Base>;
  * @example
  * <Canonical href={new URL("https://example.com/docs/page")} />
  *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/canonical Canonical Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/canonical Canonical Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#canonical MDN rel="canonical" reference}
  */
 export const Canonical = _Canonical;
@@ -107,7 +107,7 @@ export type CanonicalProps = ComponentProps<typeof Canonical>;
  * @example
  * <Charset />
  *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/charset Charset Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/charset Charset Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-meta-charset MDN meta charset reference}
  */
 export const Charset = _Charset;
@@ -122,7 +122,7 @@ export type CharsetProps = ComponentProps<typeof Charset>;
  * <ColorScheme content="light dark" />
  * @example
  * <ColorScheme content="dark" />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/color-scheme ColorScheme Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/color-scheme ColorScheme Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/color-scheme MDN color-scheme reference}
  */
 export const ColorScheme = _ColorScheme;
@@ -136,7 +136,7 @@ export type ColorSchemeProps = ComponentProps<typeof ColorScheme>;
  * @example
  * <Description content="Learn how to build efficient web applications" />
  *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/description Description Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/description Description Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#description MDN meta name attributes reference}
  */
 export const Description = _Description;
@@ -153,7 +153,7 @@ export type DescriptionProps = ComponentProps<typeof Description>;
  * <Extend meta={[{ property: "custom:token", content: "abc123" }]} />
  * @example
  * <Extend custom="<meta name=\"custom\" content=\"1\">" />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/extend Extend Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/extend Extend Component Documentation}
  * @see {@link https://docs.astro.build/en/reference/directives-reference/#sethtml Astro set:html reference}
  */
 export const Extend = _Extend;
@@ -168,7 +168,7 @@ export type ExtendProps = ComponentProps<typeof Extend>;
  * <Generator />
  * @example
  * <Generator generate={false} />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/generator Generator Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/generator Generator Component Documentation}
  * @see {@link https://docs.astro.build/en/reference/api-reference/#astrogenerator Astro.generator reference}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/generator MDN generator reference}
  */
@@ -191,7 +191,7 @@ export type GeneratorProps = ComponentProps<typeof Generator>;
  * @example
  * <Head title="Home" description="Welcome" extend={{ link: [{ rel: "preconnect", href: "https://cdn.example.com", prefetch: true }] }} />
  *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/head Head Docs Source}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/head Head Docs Source}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/head MDN head element reference}
  */
 export const Head = _Head;
@@ -211,7 +211,7 @@ export type HeadProps = ComponentProps<typeof Head>;
  * @example
  * // Derives href from Astro.site by appending /humans.txt
  * <HumansTxt />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/humans-txt HumansTxt Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/humans-txt HumansTxt Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link MDN link element reference}
  * @see {@link https://humanstxt.org/ The Humans.txt Standard}
  */
@@ -228,7 +228,7 @@ export type HumansTxtProps = ComponentProps<typeof HumansTxt>;
  * <Icons />
  * @example
  * <Icons icons={[{ rel: "icon", href: "/campaign.ico", type: "image/x-icon" }]} />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/icons Icons Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/icons Icons Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types MDN link rel documentation}
  * @see {@link https://web.dev/icons-and-browser-colors Web.dev icon guide}
  */
@@ -247,7 +247,7 @@ export type IconsProps = ComponentProps<typeof Icons>;
  * <JsonLd jsonLd='{"@context":"https://schema.org","@type":"WebPage","name":"Home"}' />
  * @example
  * <JsonLd jsonLd={JSON.stringify(websiteSchema)} />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/json-ld JsonLd Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/json-ld JsonLd Component Documentation}
  * @see {@link https://json-ld.org/ JSON-LD specification}
  * @see {@link https://schema.org/docs/gs.html Schema.org getting started}
  */
@@ -262,7 +262,7 @@ export type JsonLdProps = ComponentProps<typeof JsonLd>;
  * @example
  * <LanguageAlternates languages={{ es: "https://example.com/es", fr: "https://example.com/fr", "x-default": "https://example.com" }} />
  *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/language-alternates LanguageAlternates Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/language-alternates LanguageAlternates Component Documentation}
  */
 export const LanguageAlternates = _LanguageAlternates;
 export type LanguageAlternatesProps = ComponentProps<typeof LanguageAlternates>;
@@ -281,7 +281,7 @@ export type LanguageAlternatesProps = ComponentProps<typeof LanguageAlternates>;
  * @example
  * // Derives href from Astro.site by appending /manifest.webmanifest
  * <Manifest />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/manifest Manifest Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/manifest Manifest Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/manifest MDN rel="manifest" reference}
  */
 export const Manifest = _Manifest;
@@ -311,7 +311,7 @@ export type ManifestProps = ComponentProps<typeof Manifest>;
  * <OpenGraph title="My Article" url="https://example.com/posts/1" image={{ src: "/og.png", width: 1200, height: 630, alt: "Banner" }} article={{ publishedTime: "2026-01-01T00:00:00Z" }} />
  * @example
  * <OpenGraph title="Feature Film" video={{ src: "https://cdn.example.com/trailer.mp4", width: 1280, height: 720 }} videoType={{ subtype: "movie", directors: ["https://example.com/director"] }} />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/open-graph OpenGraph Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/open-graph OpenGraph Component Documentation}
  * @see {@link https://ogp.me/ Open Graph protocol}
  * @see {@link https://developers.facebook.com/docs/sharing/webmasters Open Graph markup guide}
  */
@@ -334,7 +334,7 @@ export type OpenGraphProps = ComponentProps<typeof OpenGraph>;
  * <Robots noindex nofollow />
  * @example
  * <Robots noindex unavailable_after="25 Jun 2026 15:00:00 PST" max-snippet={50} />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/robots Robots Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/robots Robots Component Documentation}
  * @see {@link https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag Google robots meta tag reference}
  */
 export const Robots = _Robots;
@@ -351,7 +351,7 @@ export type RobotsProps = ComponentProps<typeof Robots>;
  * <ThemeColor content="#ffffff" />
  * @example
  * <ThemeColor light="#ffffff" dark="#111111" />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/theme-color ThemeColor Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/theme-color ThemeColor Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/theme-color MDN theme-color reference}
  */
 export const ThemeColor = _ThemeColor;
@@ -368,7 +368,7 @@ export type ThemeColorProps = ComponentProps<typeof ThemeColor>;
  * <Title value="Home" template="%s | My Site" />
  * @example
  * <Title value="Home" />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/title Title Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/title Title Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title MDN title element reference}
  */
 export const Title = _Title;
@@ -384,7 +384,7 @@ export type TitleProps = ComponentProps<typeof Title>;
  * <Verification google="google-token" yandex="yandex-token" bing="bing-token" />
  * @example
  * <Verification others={[{ name: "p:domain_verify", content: "pinterest-token" }]} />
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/verification Verification Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/verification Verification Component Documentation}
  * @see {@link https://developers.google.com/search/docs/crawling-indexing/verify-site-owner Google Search Console site verification}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta MDN meta element reference}
  */
@@ -402,7 +402,7 @@ export type VerificationProps = ComponentProps<typeof Verification>;
  * @example
  * <Viewport />
  *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/viewport Viewport Component Documentation}
+ * @see {@link https://eminence-astro-suite.xeffen25.com/viewport Viewport Component Documentation}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-meta-viewport MDN viewport meta tag reference}
  */
 export const Viewport = _Viewport;

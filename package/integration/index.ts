@@ -3,28 +3,28 @@
   AstroIntegration,
   AstroIntegrationLogger,
 } from "astro";
-import type { HeadTagsOptions } from "./integration/virtual-config";
+import type { HeadTagsOptions } from "./virtual-config";
 
-import type { IconsOptions } from "./integration/generate-icons";
+import type { IconsOptions } from "./generate-icons";
 import {
   generateIcons,
   resolveHeadIconTagsFromIconsOptions,
   type IconTag,
-} from "./integration/generate-icons";
-import { validateHumansTxtInBuildOutput } from "./integration/humans-txt";
-import type { WebManifestOptions } from "./integration/manifest";
-import { generateManifest } from "./integration/manifest";
-import type { RobotsTxtOptions } from "./integration/robots-txt";
-import { generateRobotsTxt } from "./integration/robots-txt";
-import type { SecurityTxtOptions } from "./integration/security-txt";
-import { generateSecurityTxt } from "./integration/security-txt";
-import type { SitemapOptions } from "./integration/sitemap";
-import { createSitemapIntegration } from "./integration/sitemap";
+} from "./generate-icons";
+import { validateHumansTxtInBuildOutput } from "./humans-txt";
+import type { WebManifestOptions } from "./manifest";
+import { generateManifest } from "./manifest";
+import type { RobotsTxtOptions } from "./robots-txt";
+import { generateRobotsTxt } from "./robots-txt";
+import type { SecurityTxtOptions } from "./security-txt";
+import { generateSecurityTxt } from "./security-txt";
+import type { SitemapOptions } from "./sitemap";
+import { createSitemapIntegration } from "./sitemap";
 import {
   RESOLVED_VIRTUAL_CONFIG_MODULE_ID,
   serializedVirtualConfigModule,
   VIRTUAL_CONFIG_MODULE_ID,
-} from "./integration/virtual-config";
+} from "./virtual-config";
 
 export type IntegrationInput = {
   headTags?: HeadTagsOptions;

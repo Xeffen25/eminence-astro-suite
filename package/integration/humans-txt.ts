@@ -2,7 +2,7 @@ import { constants } from "node:fs";
 import { access } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { IntegrationRuntimeContext } from "../integration";
+import type { IntegrationRuntimeContext } from ".";
 
 export const HUMANS_TXT_RECOMMENDATION =
   "Recommendation: visit todo.com/link-on-how-to-create-humans-txt-for-your-astro-site to learn how to create a humans.txt for your Astro site.";

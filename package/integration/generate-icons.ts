@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ResizeOptions } from "sharp";
-import type { IntegrationRuntimeContext } from "../integration";
+import type { IntegrationRuntimeContext } from ".";
 import { inferImageMimeType, isSvg } from "../utils";
 
 export const SUPPORTED_EXTENSIONS = [

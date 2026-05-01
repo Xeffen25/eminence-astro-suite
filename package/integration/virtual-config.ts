@@ -1,4 +1,5 @@
 import type { ComponentProps } from "astro/types";
+import type { IntegrationInput } from ".";
 import {
   AppleItunesApp,
   AppLinks,
@@ -16,7 +17,6 @@ import {
   Verification,
   Viewport,
 } from "../components";
-import type { IntegrationInput } from "../integration";
 import {
   resolveHeadIconTagsFromIconsOptions,
   type IconTag,

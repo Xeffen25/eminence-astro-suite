@@ -4,6 +4,7 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
+    "types": "pnpm --filter ./docs types",
     "dev": "pnpm --filter ./docs dev",
     "build": "pnpm --filter ./docs build",
     "preview": "pnpm --filter ./docs preview",
