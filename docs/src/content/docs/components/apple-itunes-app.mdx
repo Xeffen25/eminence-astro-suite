@@ -113,19 +113,11 @@ Output:
 
 ### Two mutually exclusive prop patterns
 
-The component accepts either a `content` prop (for direct control) or `id` and `argument` props (for declarative building). These are mutually exclusive—you cannot use both patterns simultaneously. This enforces a clear contract: either you manage the content string yourself, or you let the component build it for you.
+The component accepts either a `content` prop or `id`/`argument` props. Mixing both patterns is intentionally disallowed so there is a single source of truth for the generated `content` value.
 
 ### Only the itunes tag is rendered
 
-This component is scoped exclusively to the `apple-itunes-app` Smart App Banner. Other Apple-specific tags (standalone mode, status bar style, startup images) are not implemented at all. Instead of using: apple-mobile-web-app-title, apple-touch-startup-image, apple-mobile-web-app-capable, apple-mobile-web-app-status-bar-style, etc., you should use the [manifest](/integration/manifest) integration configuration.
-
-### The argument is appended only when provided
-
-The `app-argument` field is omitted from the `content` attribute when no `argument` prop is given. This avoids outputting a malformed or vacuous `app-argument=` entry that could confuse parsers.
-
-### No tag rendered without an id or content
-
-If `id` is not provided and no `content` is given, the component outputs nothing. There is no useful `apple-itunes-app` tag without an App Store application ID or direct content.
+This component intentionally renders only `apple-itunes-app`. Related Apple tags (for example `apple-mobile-web-app-capable` and startup/status-bar tags) are intentionally excluded. See [unsupported tags](/policies/unsupported-tags) for more information. You should probably use a [manifest](/integration/manifest) instead for those.
 
 ## Source code
 
