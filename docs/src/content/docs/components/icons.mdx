@@ -1,6 +1,6 @@
 ---
 title: Icons - Component
-description: Documentation for Icons, focused on rendering resolved icon link tags. It accepts late-bound overrides that merge over the build-time icon array.
+description: Astro component that renders resolved icon link tags. Manages build-time resolution, late-bound overrides, and href deduplication for favicon and app icons.
 ---
 
 Icons renders icon-related `<link>` tags from the build-time configuration resolved by the integration. The component is intentionally thin: file names, MIME types, and inferred `sizes` are computed before the virtual module is serialized, and the component only renders the resolved tags.
