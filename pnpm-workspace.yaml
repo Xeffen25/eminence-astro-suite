@@ -3,10 +3,21 @@ packages:
   - "package"
 
 catalog:
+  "@astrojs/check": "^0.9.9"
+  "@astrojs/cloudflare": "^13.3.0"
   "@astrojs/sitemap": "^3.7.2"
+  "@astrojs/starlight": "^0.38.4"
   "astro": "^6.2.1"
+  "husky": "^9.1.7"
+  "lint-staged": "^16.4.0"
+  "prettier": "^3.8.3"
+  "prettier-plugin-astro": "^0.14.1"
+  "prettier-plugin-organize-imports": "^4.3.0"
   "sharp": "^0.34.5"
   "sharp-ico": "^0.1.5"
+  "typescript": "^5.9.3"
+  "vitest": "^4.1.5"
+  "wrangler": "^4.87.0"
 
 catalogs:
   peer:

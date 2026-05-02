@@ -21,7 +21,7 @@ const href =
       : undefined
     : hrefValue;
 
-if (href === undefined) {
+if (!href) {
   console.error(
     "[Eminence Astro Suite] Component HumansTxt did not resolve a href so it didn't render. Provide an `href` prop or set `Astro.site` so it can be resolved.",
   );

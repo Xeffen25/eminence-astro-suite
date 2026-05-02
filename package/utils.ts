@@ -4,7 +4,6 @@ export const toHref = (value: string | URL) =>
 export const hasAnyProp = (props: object): boolean =>
   Object.keys(props).length > 0;
 
-// Audio MIME type inference
 const AUDIO_MIME_MAP: Record<string, string> = {
   mp3: "audio/mpeg",
   ogg: "audio/ogg",
@@ -21,7 +20,6 @@ export const inferAudioMimeType = (src: string): string | undefined => {
   return AUDIO_MIME_MAP[key];
 };
 
-// Image MIME type inference
 const IMAGE_MIME_MAP: Record<string, string> = {
   png: "image/png",
   jpg: "image/jpeg",
@@ -49,7 +47,6 @@ export const isSvg = (input: string): boolean => {
   return inferImageMimeType(input) === "image/svg+xml";
 };
 
-// Video MIME type inference
 const VIDEO_MIME_MAP: Record<string, string> = {
   mp4: "video/mp4",
   webm: "video/webm",

@@ -29,7 +29,7 @@ describe("Component HumansTxt", () => {
     );
   });
 
-  it("renders nothing when href and Astro.site are unavailable", async () => {
+  it("logs when it cannot resolve href", async () => {
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     const result = await container.renderToString(HumansTxt, {
