@@ -19,20 +19,20 @@ import { defineConfig } from "astro/config";
 import eminence from "eminence-astro-suite";
 
 export default defineConfig({
-	site: "https://example.com",
-	integrations: [
-		eminence({
-			// Global head tag defaults (virtual config module)
-			headTags: { ... },
-			// Icon generation from a source image
-			icons: { ... },
-			// File generation
-			manifest: { ... },
-			robotsTxt: { ... },
-			securityTxt: { ... },
-			sitemap: { ... },
-		}),
-	],
+  site: "https://example.com",
+  integrations: [
+    eminence({
+      // Global head tag defaults (virtual config module)
+      headTags: { ... },
+      // Icon generation from a source image
+      icons: { ... },
+      // File generation
+      manifest: { ... },
+      robotsTxt: { ... },
+      securityTxt: { ... },
+      sitemap: { ... },
+    }),
+  ],
 });
 ```
 

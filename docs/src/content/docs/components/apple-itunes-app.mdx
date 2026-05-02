@@ -28,9 +28,9 @@ AppleItunesApp renders the `<meta name="apple-itunes-app">` tag that iOS Safari 
 | `id`       | `string` | -       | No       | The App Store application ID. No tag is rendered when omitted.           |
 | `argument` | `string` | -       | No       | A URL or deep-link argument passed to the app when the banner is tapped. |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 Input:
 
@@ -44,11 +44,23 @@ Output:
 <meta name="apple-itunes-app" content="app-id=123456789" />
 ```
 
-### Auto mode
+### Automatic (using integration settings)
 
 Uses the info in the integration configuration to render the tag without props.
 
 Input:
+
+```js
+// astro.config.mjs
+eminence({
+  headTags: {
+    appleItunesApp: {
+      id: "123456789",
+      argument: "myapp://open",
+    },
+  },
+});
+```
 
 ```astro
 <AppleItunesApp />
@@ -63,7 +75,7 @@ Output:
 />
 ```
 
-### Complete usage
+### Complete
 
 Input:
 
@@ -105,13 +117,13 @@ The component accepts either a `content` prop (for direct control) or `id` and `
 
 ### Only the itunes tag is rendered
 
-This component is scoped exclusively to the `apple-itunes-app` Smart App Banner. Other Apple-specific tags (standalone mode, status bar style, startup images) are not implemented at all. Instead of using: apple-mobile-web-app-title, apple-touch-startup-image, apple-mobile-web-app-capable, apple-mobile-web-app-status-bar-style, etc., you should use the (manifest)[/integration/manifest] integration configuratoion.
+This component is scoped exclusively to the `apple-itunes-app` Smart App Banner. Other Apple-specific tags (standalone mode, status bar style, startup images) are not implemented at all. Instead of using: apple-mobile-web-app-title, apple-touch-startup-image, apple-mobile-web-app-capable, apple-mobile-web-app-status-bar-style, etc., you should use the [manifest](/integration/manifest) integration configuration.
 
 ### The argument is appended only when provided
 
 The `app-argument` field is omitted from the `content` attribute when no `argument` prop is given. This avoids outputting a malformed or vacuous `app-argument=` entry that could confuse parsers.
 
-### No tag rendered without an id
+### No tag rendered without an id or content
 
 If `id` is not provided and no `content` is given, the component outputs nothing. There is no useful `apple-itunes-app` tag without an App Store application ID or direct content.
 
