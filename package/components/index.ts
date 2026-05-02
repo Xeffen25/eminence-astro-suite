@@ -1,5 +1,4 @@
 import _AppleItunesApp from "./AppleItunesApp.astro";
-import _AppLinks from "./AppLinks.astro";
 import _Base from "./Base.astro";
 import _Canonical from "./Canonical.astro";
 import _Charset from "./Charset.astro";
@@ -38,21 +37,6 @@ import type { ComponentProps } from "astro/types";
  */
 export const AppleItunesApp = _AppleItunesApp;
 export type AppleItunesAppProps = ComponentProps<typeof AppleItunesApp>;
-
-/**
- * @summary Renders App Links meta tags for iOS, Android, and web fallback.
- * @description
- * Outputs platform-specific App Links metadata so crawlers and clients can associate a web URL with native app destinations. Supports iOS app URL and App Store ID, Android package details, and web fallback controls.
- *
- * @example
- * <AppLinks ios={{ url: "myapp://open", app_store_id: "123456789" }} />
- * @example
- * <AppLinks android={{ package: "com.example.app", app_name: "Example App" }} web={{ url: "https://example.com", should_fallback: true }} />
- *
- * @see {@link https://eminence-astro-suite.xeffen25.com/components/app-links AppLinks Component Documentation}
- */
-export const AppLinks = _AppLinks;
-export type AppLinksProps = ComponentProps<typeof AppLinks>;
 
 /**
  * @summary Renders a `<base>` tag for relative URL resolution.

@@ -271,6 +271,43 @@ If you need to disable Rich Pins for a specific project, add the tag manually in
 - [Open Graph protocol](https://ogp.me/)
 - [Schema.org](https://schema.org/)
 
+## Legacy App Links Metadata
+
+Included tags:
+
+- `meta property="al:ios:url"`
+- `meta property="al:ios:app_store_id"`
+- `meta property="al:android:url"`
+- `meta property="al:android:package"`
+- `meta property="al:web:url"`
+- `meta property="al:web:should_fallback"`
+
+### Reason
+
+App Links metadata tags were introduced as an early deep-linking convention, primarily in social crawler ecosystems. They still work in some contexts, but they are now legacy relative to modern platform-native deep-linking standards.
+
+Modern deep linking on iOS and Android is based on verified domain association, not HTML metadata tags. Those native systems are more secure, avoid URI-scheme hijacking issues, and provide smoother user experience by opening apps directly when associations are valid.
+
+Because this package prioritizes standards-oriented metadata with broad long-term value, App Links tags are no longer supported as a built-in component.
+
+### Recommended Alternative
+
+Use native deep-linking configuration as your primary strategy:
+
+- iOS Universal Links via `apple-app-site-association`
+- Android App Links via `assetlinks.json`
+- standard web fallback routing in your app/site logic
+
+Use platform metadata only when needed for a specific ecosystem behavior.
+
+If your project depends on Meta/Facebook share flows, you may still add legacy `al:*` tags manually for compatibility as a secondary fallback.
+
+### References
+
+- [Apple: Supporting Universal Links in your app](https://developer.apple.com/documentation/xcode/supporting-universal-links-in-your-app)
+- [Android Developers: Verify Android App Links](https://developer.android.com/training/app-links/verify-android-applinks)
+- [Facebook Developers: App Links Metadata](https://developers.facebook.com/docs/applinks/metadata-reference/)
+
 ## Publisher Metadata
 
 Included tags:

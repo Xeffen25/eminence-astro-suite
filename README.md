@@ -174,7 +174,6 @@ export default defineConfig({
 ## Components
 
 - AppleItunesApp
-- AppLinks
 - Base
 - Canonical
 - Charset

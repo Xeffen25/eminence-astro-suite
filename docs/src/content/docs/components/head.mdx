@@ -31,7 +31,6 @@ Head renders a `<head>` element containing the full set of supported SEO and met
 | `themeColor`         | `ComponentProps<typeof ThemeColor> \| false`             | integration config                      | No       | Theme color value(s). Pass `false` to suppress.                |
 | `verification`       | `ComponentProps<typeof Verification> \| false`           | integration config                      | No       | Site verification tokens. Pass `false` to suppress.            |
 | `appleItunesApp`     | `ComponentProps<typeof AppleItunesApp> \| false`         | integration config                      | No       | Apple iTunes Smart App Banner props. Pass `false` to suppress. |
-| `appLinks`           | `ComponentProps<typeof AppLinks> \| false`               | integration config                      | No       | App Links metadata props. Pass `false` to suppress.            |
 | `extend.link`        | `Array<HTMLAttributes<"link"> & { prefetch?: boolean }>` | integration config                      | No       | Free-form `<link>` tags to append after the slot.              |
 | `extend.meta`        | `Array<HTMLAttributes<"meta"> & { property: string }>`   | integration config                      | No       | Free-form `<meta>` tags to append after the slot.              |
 | `extend.custom`      | `string \| string[]`                                     | integration config                      | No       | Raw HTML fragment(s) injected with `set:html`.                 |

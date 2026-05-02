@@ -110,43 +110,6 @@ describe("Component Head", () => {
     );
   });
 
-  it("renders appLinks meta tags when configured", async () => {
-    const result = await container.renderToString(Head, {
-      props: {
-        title: "Home",
-        description: DEFAULT_DESCRIPTION,
-        appLinks: {
-          ios: { url: "myapp://open", app_store_id: "123456789" },
-          web: { url: "https://example.com/home", should_fallback: false },
-        },
-      },
-    });
-
-    expect(result).toBe(
-      `<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
-    );
-  });
-
-  it("renders appLinks from integration defaults when Head appLinks prop is omitted", async () => {
-    Object.assign(clientHeadConfig, {
-      appLinks: {
-        ios: { url: "myapp://open", app_store_id: "123456789" },
-        web: { url: "https://example.com/home", should_fallback: false },
-      },
-    });
-
-    const result = await container.renderToString(Head, {
-      props: {
-        title: "Home",
-        description: DEFAULT_DESCRIPTION,
-      },
-    });
-
-    expect(result).toBe(
-      `<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta property="al:ios:url" content="myapp://open"><meta property="al:ios:app_store_id" content="123456789"><meta property="al:web:url" content="https://example.com/home"><meta property="al:web:should_fallback" content="false"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}</head>`,
-    );
-  });
-
   it("uses child component config fallbacks", async () => {
     Object.assign(clientHeadConfig, {
       titleTemplate: "%s | Example",

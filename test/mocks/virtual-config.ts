@@ -8,7 +8,6 @@ const headTagsConfig: ResolvedHeadTagsConfig = {
   extend: undefined,
   titleTemplate: "%s",
   appleItunesApp: undefined,
-  appLinks: undefined,
   generator: true,
   icons: [],
   openGraphSiteName: undefined,

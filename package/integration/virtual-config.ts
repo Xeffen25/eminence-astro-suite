@@ -2,7 +2,6 @@ import type { ComponentProps } from "astro/types";
 import type { IntegrationInput } from ".";
 import {
   AppleItunesApp,
-  AppLinks,
   Base,
   Charset,
   ColorScheme,
@@ -33,7 +32,6 @@ export const RESOLVED_VIRTUAL_CONFIG_MODULE_ID = `\0${VIRTUAL_CONFIG_MODULE_ID}`
  */
 export type HeadTagsOptions = {
   appleItunesApp?: ComponentProps<typeof AppleItunesApp>;
-  appLinks?: ComponentProps<typeof AppLinks>;
   base?: ComponentProps<typeof Base>;
   charset?: ComponentProps<typeof Charset>["charset"];
   colorScheme?: ComponentProps<typeof ColorScheme>["content"];
@@ -125,7 +123,6 @@ export const extractHeadTagsConfig = (
 
   return {
     appleItunesApp: headTags?.appleItunesApp,
-    appLinks: headTags?.appLinks,
     base: headTags?.base,
     charset: headTags?.charset ?? DEFAULT_HEAD_TAGS_CONFIG.charset,
     colorScheme: headTags?.colorScheme,

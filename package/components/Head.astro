@@ -3,7 +3,6 @@ import type { ComponentProps } from "astro/types";
 
 import {
   AppleItunesApp,
-  AppLinks,
   Base,
   Canonical,
   Charset,
@@ -67,13 +66,6 @@ interface Props {
    * {@link https://eminence-astro-suite.xeffen25.com/components/apple-itunes-app AppleItunesApp}
    */
   appleItunesApp?: ComponentProps<typeof AppleItunesApp> | false;
-  /**
-   * Props for App Links metadata tags.
-   * Falls back to integration config. Pass `false` to suppress.
-   *
-   * {@link https://eminence-astro-suite.xeffen25.com/components/app-links AppLinks}
-   */
-  appLinks?: ComponentProps<typeof AppLinks> | false;
   /**
    * Additional tags rendered after the component slot and before built-in tags.
    * Prefer adding one-off tags directly inside the `Head` slot when possible.
@@ -179,7 +171,6 @@ const {
   title,
   titleTemplate,
   appleItunesApp,
-  appLinks,
   canonical,
   colorScheme,
   description,
@@ -205,7 +196,6 @@ const {
   <slot />
   <Extend {...extend ?? {}} />
   {appleItunesApp !== false && <AppleItunesApp {...(appleItunesApp ?? {})} />}
-  {appLinks !== false && <AppLinks {...(appLinks ?? {})} />}
   {canonical !== false && <Canonical href={canonical} />}
   {colorScheme !== false && <ColorScheme content={colorScheme} />}
   <Description content={description} />

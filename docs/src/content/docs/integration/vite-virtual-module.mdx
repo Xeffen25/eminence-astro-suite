@@ -25,7 +25,7 @@ If you need to access integration configuration in your code, configure the `hea
 
 ## What is the Virtual Module?
 
-The Eminence Astro Suite uses a **Vite virtual module** (`eminence-astro-suite/config`) as an internal mechanism to distribute default head tag configuration to components at build time. This module is automatically created and injected by the integration—users do not create, configure, or import it directly.
+The Eminence Astro Suite uses a **Vite virtual module** (`virtual:eminence-astro-suite/head-tags`) as an internal mechanism to distribute default head tag configuration to components at build time. This module is automatically created and injected by the integration—users do not create, configure, or import it directly.
 
 The virtual module serves a single purpose: it makes configuration defaults available to head tag components without requiring those defaults to be passed as props on every page.
 
@@ -63,7 +63,6 @@ type TagInput = {
     custom?: string | string[];
   };
   appleItunesApp?: ComponentProps<typeof AppleItunesApp>;
-  appLinks?: ComponentProps<typeof AppLinks>;
   base?: ComponentProps<typeof Base>;
   charset?: string;
   colorScheme?: string;

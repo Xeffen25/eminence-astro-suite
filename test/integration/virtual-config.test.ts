@@ -66,47 +66,6 @@ describe("Integration - Virtual Config", () => {
     });
   });
 
-  it("extracts appLinks defaults into client head config", () => {
-    const options: IntegrationInput = {
-      headTags: {
-        appLinks: {
-          ios: {
-            url: "myapp://open",
-            app_store_id: "123456789",
-          },
-          android: {
-            package: "com.example.app",
-            app_name: "Example App",
-          },
-          web: {
-            url: "https://example.com",
-            should_fallback: true,
-          },
-        },
-      },
-    };
-
-    const result = extractHeadTagsConfig(options);
-
-    expect(result).toMatchObject({
-      ...DEFAULT_HEAD_TAGS_OPTIONS,
-      appLinks: {
-        ios: {
-          url: "myapp://open",
-          app_store_id: "123456789",
-        },
-        android: {
-          package: "com.example.app",
-          app_name: "Example App",
-        },
-        web: {
-          url: "https://example.com",
-          should_fallback: true,
-        },
-      },
-    });
-  });
-
   it("extracts themeColor defaults into client head config", () => {
     const options: IntegrationInput = {
       headTags: {
@@ -406,39 +365,6 @@ describe("Integration - Virtual Config", () => {
       ...DEFAULT_HEAD_TAGS_OPTIONS,
       verification: {
         bing: "bing-token",
-      },
-    });
-  });
-
-  it("serializes appLinks defaults in virtual config module", () => {
-    const options: IntegrationInput = {
-      headTags: {
-        appLinks: {
-          ios: {
-            url: new URL("https://ios.example.com/open"),
-          },
-          web: {
-            url: new URL("https://example.com/path"),
-            should_fallback: false,
-          },
-        },
-      },
-    };
-
-    const result = parseSerializedModuleConfig(
-      serializedVirtualConfigModule(options),
-    );
-
-    expect(result).toMatchObject({
-      ...DEFAULT_HEAD_TAGS_OPTIONS,
-      appLinks: {
-        ios: {
-          url: "https://ios.example.com/open",
-        },
-        web: {
-          url: "https://example.com/path",
-          should_fallback: false,
-        },
       },
     });
   });
