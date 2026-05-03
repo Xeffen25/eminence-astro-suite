@@ -6,17 +6,20 @@ head:
     content: ColorScheme - Component
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import ColorSchemeSource from "@package/components/ColorScheme.astro?raw";
+
 ColorScheme renders a `<meta name="color-scheme">` tag that tells the user agent which page color schemes are supported. It is limited to serializing the configured `content` value and does not infer schemes from CSS or page styling.
 
 ## Props
 
-| prop      | type                                                                            | default                        | required | description                                                |
-| --------- | ------------------------------------------------------------------------------- | ------------------------------ | -------- | ---------------------------------------------------------- |
-| `content` | `"normal" \| "light" \| "dark" \| "light dark" \| "dark light" \| "only light"` | `clientHeadConfig.colorScheme` | No       | Supported page color schemes advertised to the user agent. |
+| prop      | type                                                                            | default                | required | description                                                |
+| --------- | ------------------------------------------------------------------------------- | ---------------------- | -------- | ---------------------------------------------------------- |
+| `content` | `"normal" \| "light" \| "dark" \| "light dark" \| "dark light" \| "only light"` | `headTags.colorScheme` | No       | Supported page color schemes advertised to the user agent. |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 Input:
 
@@ -30,11 +33,20 @@ Output:
 <meta name="color-scheme" content="light dark" />
 ```
 
-### Auto usage
+### Automatic
 
-Uses the integration `head.colorScheme` value when no prop is provided.
+Uses the integration `headTags.colorScheme` value when no prop is provided.
 
 Input:
+
+```js
+// in astro.config.mjs integration config
+eminence({
+  headTags: {
+    colorScheme: "light dark",
+  },
+});
+```
 
 ```astro
 <ColorScheme />
@@ -46,7 +58,7 @@ Output:
 <meta name="color-scheme" content="light dark" />
 ```
 
-### Complete usage
+### Complete
 
 Input:
 
@@ -66,13 +78,13 @@ Output:
 
 ColorScheme emits no tag when neither the `content` prop nor the integration configuration provides a value. This avoids outputting an incomplete meta tag with no declared scheme.
 
-### Supported values are constrained to known color-scheme tokens
-
-The `content` prop accepts a fixed union of supported color-scheme values. This keeps usage aligned with the values understood by the meta tag and reduces invalid input at the type level.
-
 ### Integration config can provide the default
 
-When `content` is omitted, ColorScheme falls back to `clientHeadConfig.colorScheme`. This supports defining a site-wide default once while still allowing page-level overrides.
+When `content` is omitted, ColorScheme falls back to `headTags.colorScheme`. This supports defining a site-wide default once while still allowing page-level overrides.
+
+## Source code
+
+<Code code={ColorSchemeSource} lang="astro" />
 
 ## Reference
 
