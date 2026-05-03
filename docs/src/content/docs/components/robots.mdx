@@ -6,6 +6,9 @@ head:
     content: Robots - Component
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import RobotsSource from "@package/components/Robots.astro?raw";
+
 Robots renders a `<meta name="robots">` tag in your document head to control crawler behavior. It is scoped to resolving and serializing the directive content only and does not affect `robots.txt` generation.
 
 ## Props
@@ -50,23 +53,32 @@ Output:
 <meta name="robots" content="noindex, nofollow" />
 ```
 
-### Auto usage
+### Automatic
 
-Uses integration `head.robots` when no props are provided.
+Uses the integration `headTags.robots` value when no props are provided.
 
 Input:
+
+```js
+// in astro.config.mjs integration config
+eminence({
+  headTags: {
+    robots: { noindex: true },
+  },
+});
+```
 
 ```astro
 <Robots />
 ```
 
-Output (when integration config has `head.robots: { noindex: true }`):
+Output:
 
 ```html
 <meta name="robots" content="noindex" />
 ```
 
-### Complete usage
+### Complete
 
 Input:
 
@@ -74,8 +86,8 @@ Input:
 <Robots
   noindex
   nofollow
-  unavailable_after="25 Jun 2026 15:00:00 PST"
   max-snippet={50}
+  unavailable_after="25 Jun 2026 15:00:00 PST"
 />
 ```
 
@@ -94,17 +106,9 @@ Output:
 
 The component accepts either a raw `content` string or directive props, but not both. The raw string mode is useful for ad-hoc values, while directive mode is type-safe and composable.
 
-### False and undefined directive values are omitted
+## Source code
 
-In directive mode, props set to `false` or left undefined are excluded from the serialized output. This allows partial directive sets without producing empty or invalid directive strings.
-
-### True renders as a bare directive; valued props render as directive:value
-
-Boolean `true` props produce bare directives such as `noindex`. Numeric and string props produce `directive:value` pairs such as `max-snippet:50`.
-
-### Integration config can define global defaults
-
-When no props are provided, the component falls back to the virtual module's `robots` config. This allows site-wide crawler settings to be configured once in the integration and overridden per page.
+<Code code={RobotsSource} lang="astro" />
 
 ## Reference
 

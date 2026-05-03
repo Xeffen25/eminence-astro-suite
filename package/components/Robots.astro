@@ -39,9 +39,9 @@ const directivesToContent = (directives: DirectiveProps): string => {
     .join(", ");
 };
 
-const { content, ...directiveProps } = (
-  hasAnyProp(Astro.props) ? Astro.props : (config.robots ?? {})
-) as Props;
+const { content, ...directiveProps } = hasAnyProp(Astro.props)
+  ? Astro.props
+  : (config.robots ?? {});
 const robotsContent =
   content ?? directivesToContent(directiveProps as DirectiveProps);
 ---
