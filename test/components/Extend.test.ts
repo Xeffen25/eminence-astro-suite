@@ -1,19 +1,19 @@
 import { Extend } from "@package/components";
 import { experimental_AstroContainer } from "astro/container";
-import clientHeadConfig from "virtual:eminence-astro-suite/head-tags";
+import config from "virtual:eminence-astro-suite/head-tags";
 import { beforeEach, describe, expect, it } from "vitest";
 
-const DEFAULT_HEAD_TAGS_CONFIG = { ...clientHeadConfig };
+const DEFAULT_HEAD_TAGS_CONFIG = { ...config };
 
-const resetClientHeadConfig = () => {
-  Object.assign(clientHeadConfig, DEFAULT_HEAD_TAGS_CONFIG);
+const resetConfig = () => {
+  Object.assign(config, DEFAULT_HEAD_TAGS_CONFIG);
 };
 
 describe("Component Extend", () => {
   let container: experimental_AstroContainer;
 
   beforeEach(async () => {
-    resetClientHeadConfig();
+    resetConfig();
     container = await experimental_AstroContainer.create();
   });
 
@@ -55,7 +55,7 @@ describe("Component Extend", () => {
 
   // Automatic example
   it("uses integration defaults when extend prop is omitted", async () => {
-    Object.assign(clientHeadConfig, {
+    Object.assign(config, {
       extend: {
         link: [{ rel: "dns-prefetch", href: "https://assets.example.com" }],
         meta: [{ property: "custom:source", content: "integration" }],
@@ -86,7 +86,7 @@ describe("Component Extend", () => {
   });
 
   it("ignores all integration config when any prop is provided", async () => {
-    Object.assign(clientHeadConfig, {
+    Object.assign(config, {
       extend: {
         link: [{ rel: "dns-prefetch", href: "https://assets.example.com" }],
         meta: [{ property: "custom:source", content: "integration" }],
