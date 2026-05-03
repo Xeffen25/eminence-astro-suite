@@ -72,7 +72,7 @@ type TagInput = {
   manifest?: string | boolean;
   openGraphSiteName?: string;
   robots?: ComponentProps<typeof Robots>;
-  themeColor?: ComponentProps<typeof ThemeColor>;
+  themeColor?: string | { light: string; dark: string };
   titleTemplate?: string;
   verification?: ComponentProps<typeof Verification>;
   viewport?: string;

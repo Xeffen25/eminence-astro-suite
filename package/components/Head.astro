@@ -22,6 +22,7 @@ import {
   Verification,
   Viewport,
 } from ".";
+import type { ThemeColorValue } from "./ThemeColor.astro";
 
 interface Props {
   /**
@@ -154,7 +155,7 @@ interface Props {
    *
    * {@link https://eminence-astro-suite.xeffen25.com/components/theme-color ThemeColor}
    */
-  themeColor?: ComponentProps<typeof ThemeColor> | false;
+  themeColor?: ThemeColorValue | false;
   /**
    * Site ownership verification tokens for search engine consoles.
    * Falls back to integration config. Pass `false` to suppress.
@@ -207,6 +208,15 @@ const {
   {manifest !== false && <Manifest href={manifest} />}
   {openGraph && <OpenGraph {...openGraph} />}
   <Robots {...robots ?? {}} />
-  {themeColor !== false && <ThemeColor {...themeColor} />}
+  {
+    themeColor !== false &&
+      (typeof themeColor === "string" ? (
+        <ThemeColor content={themeColor} />
+      ) : themeColor ? (
+        <ThemeColor {...themeColor} />
+      ) : (
+        <ThemeColor />
+      ))
+  }
   {verification !== false && <Verification {...verification} />}
 </head>

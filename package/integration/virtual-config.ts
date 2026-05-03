@@ -16,6 +16,7 @@ import {
   Verification,
   Viewport,
 } from "../components";
+import type { ThemeColorValue } from "../components/ThemeColor.astro";
 import { resolveIconsOptions, type IconTag } from "./generate-icons";
 
 export const VIRTUAL_CONFIG_MODULE_ID =
@@ -41,7 +42,7 @@ export type HeadTagsOptions = {
   manifest?: ComponentProps<typeof Manifest>["href"] | boolean;
   openGraphSiteName?: ComponentProps<typeof OpenGraph>["siteName"];
   robots?: ComponentProps<typeof Robots>;
-  themeColor?: ComponentProps<typeof ThemeColor>;
+  themeColor?: ThemeColorValue;
   titleTemplate?: ComponentProps<typeof Title>["template"];
   verification?: ComponentProps<typeof Verification>;
   viewport?: ComponentProps<typeof Viewport>["content"];
@@ -65,13 +66,14 @@ type DefaultedHeadTagsKeys =
  */
 export type ResolvedHeadTagsConfig = Omit<
   HeadTagsOptions,
-  DefaultedHeadTagsKeys
+  DefaultedHeadTagsKeys | "themeColor"
 > & {
   [K in DefaultedHeadTagsKeys]-?: NonNullable<HeadTagsOptions[K]>;
 } & {
   icons: IconTag[];
   humansTxt: ComponentProps<typeof HumansTxt>["href"];
   manifest: ComponentProps<typeof Manifest>["href"];
+  themeColor?: ComponentProps<typeof ThemeColor>;
 };
 
 const resolveDefaultHref = (path: string, site?: string): string => {
@@ -149,6 +151,20 @@ const resolveIcons = (
   return Array.from(iconTagsByHref.values());
 };
 
+const resolveThemeColor = (
+  themeColor: HeadTagsOptions["themeColor"],
+): ComponentProps<typeof ThemeColor> | undefined => {
+  if (themeColor === undefined) {
+    return undefined;
+  }
+
+  if (typeof themeColor === "string") {
+    return { content: themeColor };
+  }
+
+  return { light: themeColor.light, dark: themeColor.dark };
+};
+
 /**
  * Transforms the filtered configuration into a string of JavaScript code.
  * This string becomes the "source code" for the virtual module.
@@ -170,7 +186,7 @@ export const serializedVirtualConfigModule = (
     manifest: resolveManifestHref(headTags?.manifest, options.manifest, site),
     openGraphSiteName: headTags?.openGraphSiteName,
     robots: headTags?.robots,
-    themeColor: headTags?.themeColor,
+    themeColor: resolveThemeColor(headTags?.themeColor),
     titleTemplate: headTags?.titleTemplate ?? "%s",
     verification: headTags?.verification,
     viewport: headTags?.viewport ?? "width=device-width, initial-scale=1",

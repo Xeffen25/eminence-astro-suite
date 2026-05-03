@@ -20,9 +20,11 @@ type Props =
       dark?: never;
     };
 
-const { content, light, dark } = (
-  hasAnyProp(Astro.props) ? Astro.props : (config.themeColor ?? {})
-) as Props;
+const { content, light, dark } = hasAnyProp(Astro.props)
+  ? Astro.props
+  : (config.themeColor ?? {});
+
+export type ThemeColorValue = string | { light: string; dark: string };
 ---
 
 {

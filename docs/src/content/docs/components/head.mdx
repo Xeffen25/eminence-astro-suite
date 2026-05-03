@@ -28,7 +28,7 @@ Head renders a `<head>` element containing the full set of supported SEO and met
 | `manifest`           | `string \| URL \| false`                                 | derived from `Astro.site`               | No       | Web app manifest URL. Pass `false` to suppress.                |
 | `openGraph`          | `ComponentProps<typeof OpenGraph>`                       | -                                       | No       | Open Graph metadata. Omit to suppress.                         |
 | `robots`             | `ComponentProps<typeof Robots>`                          | integration config                      | No       | Robots directive props or raw content.                         |
-| `themeColor`         | `ComponentProps<typeof ThemeColor> \| false`             | integration config                      | No       | Theme color value(s). Pass `false` to suppress.                |
+| `themeColor`         | `string \| { light: string; dark: string } \| false`     | integration config                      | No       | Theme color value(s). Pass `false` to suppress.                |
 | `verification`       | `ComponentProps<typeof Verification> \| false`           | integration config                      | No       | Site verification tokens. Pass `false` to suppress.            |
 | `appleItunesApp`     | `ComponentProps<typeof AppleItunesApp> \| false`         | integration config                      | No       | Apple iTunes Smart App Banner props. Pass `false` to suppress. |
 | `extend.link`        | `Array<HTMLAttributes<"link"> & { prefetch?: boolean }>` | integration config                      | No       | Free-form `<link>` tags to append after the slot.              |

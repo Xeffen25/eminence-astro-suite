@@ -96,6 +96,34 @@ describe("Component Head", () => {
     );
   });
 
+  it("renders a single theme-color tag when themeColor is a direct value", async () => {
+    const result = await container.renderToString(Head, {
+      props: {
+        title: "Home",
+        description: DEFAULT_DESCRIPTION,
+        themeColor: "#ffffff",
+      },
+    });
+
+    expect(result).toBe(
+      `<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}<meta name="theme-color" content="#ffffff"></head>`,
+    );
+  });
+
+  it("renders light and dark theme-color tags when themeColor is a light/dark object", async () => {
+    const result = await container.renderToString(Head, {
+      props: {
+        title: "Home",
+        description: DEFAULT_DESCRIPTION,
+        themeColor: { light: "#ffffff", dark: "#111111" },
+      },
+    });
+
+    expect(result).toBe(
+      `<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111111"></head>`,
+    );
+  });
+
   it("renders canonical link when configured with href", async () => {
     const result = await container.renderToString(Head, {
       props: {
@@ -122,6 +150,20 @@ describe("Component Head", () => {
 
     expect(result).toBe(
       `<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | Example</title><meta name="description" content="Home page">${DEFAULT_ICONS_HTML}</head>`,
+    );
+  });
+
+  it("uses integration themeColor direct value fallback", async () => {
+    Object.assign(clientHeadConfig, {
+      themeColor: { content: "#000000" },
+    });
+
+    const result = await container.renderToString(Head, {
+      props: { title: "Home", description: DEFAULT_DESCRIPTION },
+    });
+
+    expect(result).toBe(
+      `<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.2.1">${DEFAULT_ICONS_HTML}<meta name="theme-color" content="#000000"></head>`,
     );
   });
 

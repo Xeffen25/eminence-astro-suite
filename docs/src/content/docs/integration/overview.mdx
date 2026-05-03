@@ -144,25 +144,25 @@ All fields are optional.
 The `humansTxt` option does **not** generate a `humans.txt` file. It only adds a `<link rel="author">` tag pointing to an existing URL. You are responsible for creating and hosting the `humans.txt` file yourself.
 </Aside>
 
-| option              | type                     | description                                                       |
-| ------------------- | ------------------------ | ----------------------------------------------------------------- |
-| `charset`           | `string`                 | Default charset for the `Charset` component.                      |
-| `viewport`          | `string`                 | Default viewport content string for the `Viewport` component.     |
-| `base`              | `object`                 | Props forwarded to the `Base` component.                          |
-| `colorScheme`       | `string`                 | Default color scheme for the `ColorScheme` component.             |
-| `titleTemplate`     | `string`                 | Title template string for the `Title` component.                  |
-| `appleItunesApp`    | `object`                 | Props forwarded to the `AppleItunesApp` component.                |
-| `generator`         | `boolean`                | Whether to render the `Generator` tag.                            |
-| `icons`             | `IconTag[]`              | Build-time icon tags merged over generated icon tags by `href`.   |
-| `manifest`          | `string \| URL \| false` | URL for the `<link rel="manifest">` tag. Pass `false` to opt out. |
-| `openGraphSiteName` | `string`                 | Site name for Open Graph tags.                                    |
-| `robots`            | `object`                 | Props forwarded to the `Robots` component.                        |
-| `themeColor`        | `object`                 | Props forwarded to the `ThemeColor` component.                    |
-| `humansTxt`         | `string \| URL \| false` | URL for the `<link rel="author">` tag. Pass `false` to opt out.   |
-| `verification`      | `object`                 | Props forwarded to the `Verification` component.                  |
-| `extend.link`       | `object[]`               | Additional free-form `<link>` tags for Head.                      |
-| `extend.meta`       | `object[]`               | Additional free-form `<meta>` tags for Head.                      |
-| `extend.custom`     | `string \| string[]`     | Raw HTML injected with `set:html` in Head.                        |
+| option              | type                                        | description                                                       |
+| ------------------- | ------------------------------------------- | ----------------------------------------------------------------- |
+| `charset`           | `string`                                    | Default charset for the `Charset` component.                      |
+| `viewport`          | `string`                                    | Default viewport content string for the `Viewport` component.     |
+| `base`              | `object`                                    | Props forwarded to the `Base` component.                          |
+| `colorScheme`       | `string`                                    | Default color scheme for the `ColorScheme` component.             |
+| `titleTemplate`     | `string`                                    | Title template string for the `Title` component.                  |
+| `appleItunesApp`    | `object`                                    | Props forwarded to the `AppleItunesApp` component.                |
+| `generator`         | `boolean`                                   | Whether to render the `Generator` tag.                            |
+| `icons`             | `IconTag[]`                                 | Build-time icon tags merged over generated icon tags by `href`.   |
+| `manifest`          | `string \| URL \| false`                    | URL for the `<link rel="manifest">` tag. Pass `false` to opt out. |
+| `openGraphSiteName` | `string`                                    | Site name for Open Graph tags.                                    |
+| `robots`            | `object`                                    | Props forwarded to the `Robots` component.                        |
+| `themeColor`        | `string \| { light: string; dark: string }` | Theme color defaults for `Head` and `ThemeColor`.                 |
+| `humansTxt`         | `string \| URL \| false`                    | URL for the `<link rel="author">` tag. Pass `false` to opt out.   |
+| `verification`      | `object`                                    | Props forwarded to the `Verification` component.                  |
+| `extend.link`       | `object[]`                                  | Additional free-form `<link>` tags for Head.                      |
+| `extend.meta`       | `object[]`                                  | Additional free-form `<meta>` tags for Head.                      |
+| `extend.custom`     | `string \| string[]`                        | Raw HTML injected with `set:html` in Head.                        |
 
 Use `extend.*` for shared configuration defaults. For one-off page tags, prefer inserting tags directly inside the `Head` component slot.
 

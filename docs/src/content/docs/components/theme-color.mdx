@@ -1,6 +1,6 @@
 ---
 title: ThemeColor
-description: Astro component that renders theme color meta tags for browser UI theming. Manages a single universal color value and scheme-specific light and dark values.
+description: Astro component that renders theme color meta tags for browser UI theming. Supports a single universal color value and scheme-specific light and dark values.
 head:
   - tag: title
     content: ThemeColor - Component
@@ -54,7 +54,7 @@ Input:
 // in astro.config.mjs integration config
 eminence({
   headTags: {
-    themeColor: { content: "#ffffff" },
+    themeColor: "#ffffff",
   },
 });
 ```
