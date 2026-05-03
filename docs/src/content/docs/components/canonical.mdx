@@ -6,17 +6,20 @@ head:
     content: Canonical - Component
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import CanonicalSource from "@package/components/Canonical.astro?raw";
+
 Canonical renders a `<link rel="canonical">` tag that identifies the primary URL for the current page. This helps search engines understand page versions and consolidate ranking signals. It is scoped to emitting the canonical link only and does not perform URL validation or canonicalization.
 
 ## Props
 
-| prop   | type            | default | required | description                                                                                                          |
-| ------ | --------------- | ------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
-| `href` | `string \| URL` | -       | No       | Explicit canonical URL. When omitted, derives from `Astro.site` and current pathname. When `false`, renders nothing. |
+| prop   | type            | default | required | description                                                                           |
+| ------ | --------------- | ------- | -------- | ------------------------------------------------------------------------------------- |
+| `href` | `string \| URL` | -       | No       | Explicit canonical URL. When omitted, derives from `Astro.site` and current pathname. |
 
-## Usage & Examples
+## Examples
 
-### Basic usage with explicit href
+### Basic
 
 Input:
 
@@ -30,7 +33,7 @@ Output:
 <link rel="canonical" href="https://example.com/docs/page" />
 ```
 
-### Basic usage with URL object
+### URL object
 
 Input:
 
@@ -44,9 +47,9 @@ Output:
 <link rel="canonical" href="https://example.com/docs/page" />
 ```
 
-### Auto usage
+### Automatic
 
-Derives canonical URL from `Astro.site` and the current page pathname.
+Derives canonical URL from `Astro.site` and the current page pathname. Renders nothing if `Astro.site` is not configured.
 
 Input:
 
@@ -54,7 +57,7 @@ Input:
 <Canonical />
 ```
 
-Output (assuming `Astro.site` is `https://example.com` and current pathname is `/docs/page`):
+Output (with `Astro.site` set to `https://example.com` and pathname `/docs/page`):
 
 ```html
 <link rel="canonical" href="https://example.com/docs/page" />
@@ -62,17 +65,17 @@ Output (assuming `Astro.site` is `https://example.com` and current pathname is `
 
 ## Decisions Made
 
-### Href can be a string or URL object
-
-Canonical accepts both string and URL object formats for the `href` prop. This provides flexibility for consumers who may have canonical URLs in different formats within their application.
-
 ### Auto-derivation from Astro.site and pathname
 
-When no `href` is provided, Canonical automatically constructs a canonical URL by combining `Astro.site` and the current page's pathname. This reduces boilerplate for most use cases where the canonical URL matches the site URL plus the current route.
+When no `href` is provided, Canonical constructs the canonical URL from `Astro.site` and the current pathname, removing the need to pass it on every page.
 
-### No rendering when href is undefined and site is unavailable
+### No rendering when href is omitted and site is unavailable
 
-If both an explicit `href` is not provided and `Astro.site` is not configured, Canonical renders nothing. This prevents invalid or incomplete canonical tags from being emitted.
+If `href` is not provided and `Astro.site` is not configured, Canonical renders nothing rather than emitting a tag with an incomplete or relative URL.
+
+## Source code
+
+<Code code={CanonicalSource} lang="astro" />
 
 ## Reference
 

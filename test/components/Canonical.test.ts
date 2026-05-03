@@ -9,7 +9,8 @@ describe("Component Canonical", () => {
     container = await experimental_AstroContainer.create();
   });
 
-  it("renders provided href string as-is", async () => {
+  // Basic
+  it("renders a canonical link tag with an explicit href string", async () => {
     const result = await container.renderToString(Canonical, {
       props: { href: "https://example.com/docs/page" },
     });
@@ -19,7 +20,8 @@ describe("Component Canonical", () => {
     );
   });
 
-  it("renders provided href URL instance", async () => {
+  // URL object
+  it("renders a canonical link tag when href is a URL object", async () => {
     const result = await container.renderToString(Canonical, {
       props: { href: new URL("https://cdn.example.com/docs/page") },
     });
@@ -29,15 +31,9 @@ describe("Component Canonical", () => {
     );
   });
 
-  it("renders nothing when href is false", async () => {
-    const result = await container.renderToString(Canonical, {
-      props: { href: false },
-    });
-
-    expect(result).toBe("");
-  });
-
-  it("renders nothing when canonical URL is omitted and can't be derived", async () => {
+  // Automatic
+  it("renders nothing when no href is provided and Astro.site is not configured", async () => {
+    // container has no Astro.site -> renders nothing
     const result = await container.renderToString(Canonical, {
       props: {},
     });

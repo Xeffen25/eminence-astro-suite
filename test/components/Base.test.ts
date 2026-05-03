@@ -12,7 +12,7 @@ describe("Component Base", () => {
   });
 
   // Basic
-  it("renders the Basic example", async () => {
+  it("renders a base tag with href only", async () => {
     const result = await container.renderToString(Base, {
       props: { href: "https://example.com" },
     });
@@ -21,7 +21,7 @@ describe("Component Base", () => {
   });
 
   // Automatic
-  it("renders the Automatic example", async () => {
+  it("renders a base tag using href from integration config", async () => {
     config.base = { href: "https://example.com" };
 
     const result = await container.renderToString(Base, {
@@ -32,7 +32,7 @@ describe("Component Base", () => {
   });
 
   // Complete
-  it("renders the Complete example", async () => {
+  it("renders a base tag with both href and target", async () => {
     const result = await container.renderToString(Base, {
       props: { href: "https://example.com", target: "_blank" },
     });

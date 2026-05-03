@@ -12,7 +12,7 @@ describe("Component AppleItunesApp", () => {
   });
 
   // Basic
-  it("renders the Basic example", async () => {
+  it("renders the meta tag with app-id only", async () => {
     const result = await container.renderToString(AppleItunesApp, {
       props: { id: "123456789" },
     });
@@ -23,7 +23,7 @@ describe("Component AppleItunesApp", () => {
   });
 
   // Automatic
-  it("renders the Automatic example", async () => {
+  it("renders the meta tag using id and argument from integration config", async () => {
     config.appleItunesApp = {
       id: "123456789",
       argument: "myapp://open",
@@ -39,7 +39,7 @@ describe("Component AppleItunesApp", () => {
   });
 
   // Complete
-  it("renders the Complete example", async () => {
+  it("renders the meta tag with both app-id and app-argument props", async () => {
     const result = await container.renderToString(AppleItunesApp, {
       props: { id: "123456789", argument: "myapp://open" },
     });
@@ -50,7 +50,7 @@ describe("Component AppleItunesApp", () => {
   });
 
   // Direct content
-  it("renders the Direct content example", async () => {
+  it("renders the meta tag verbatim from a raw content string", async () => {
     const result = await container.renderToString(AppleItunesApp, {
       props: { content: "app-id=123456789, app-argument=myapp://open" },
     });
