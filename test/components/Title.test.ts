@@ -1,5 +1,6 @@
 import { Title } from "@package/components";
 import { experimental_AstroContainer } from "astro/container";
+import config from "virtual:eminence-astro-suite/head-tags";
 import { beforeEach, describe, expect, it } from "vitest";
 
 describe("Component Title", () => {
@@ -7,8 +8,10 @@ describe("Component Title", () => {
 
   beforeEach(async () => {
     container = await experimental_AstroContainer.create();
+    config.titleTemplate = "%s";
   });
 
+  // Basic
   it("renders title tag with provided value", async () => {
     const result = await container.renderToString(Title, {
       props: { value: "Home" },
@@ -17,27 +20,33 @@ describe("Component Title", () => {
     expect(result).toBe("<title>Home</title>");
   });
 
-  it("applies template with prefix pattern", async () => {
+  // Automatic
+  it("renders title tag using integration config template", async () => {
+    config.titleTemplate = "%s | My Site";
+
     const result = await container.renderToString(Title, {
-      props: { value: "Home", template: "Prefix | %s" },
+      props: { value: "Home" },
     });
 
-    expect(result).toBe("<title>Prefix | Home</title>");
+    expect(result).toBe("<title>Home | My Site</title>");
   });
 
-  it("applies template with %s placeholder", async () => {
+  // Complete
+  it("renders title tag with explicit template", async () => {
     const result = await container.renderToString(Title, {
-      props: { value: "Home", template: "Prefix | %s | Suffix" },
+      props: { value: "Home", template: "%s | My Site" },
     });
 
-    expect(result).toBe("<title>Prefix | Home | Suffix</title>");
+    expect(result).toBe("<title>Home | My Site</title>");
   });
 
-  it("applies template with suffix pattern", async () => {
+  it("explicit template prop overrides integration config template", async () => {
+    config.titleTemplate = "%s | Config Site";
+
     const result = await container.renderToString(Title, {
-      props: { value: "Home", template: "%s | Suffix" },
+      props: { value: "Home", template: "%s | My Site" },
     });
 
-    expect(result).toBe("<title>Home | Suffix</title>");
+    expect(result).toBe("<title>Home | My Site</title>");
   });
 });

@@ -6,18 +6,21 @@ head:
     content: Title - Component
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import TitleSource from "@package/components/Title.astro?raw";
+
 Title renders the `<title>` tag for the document. It accepts a required page-specific value and an optional template containing a `%s` placeholder, which is replaced with `value` at render time.
 
 ## Props
 
-| prop       | type                         | default | required | description                                                                                             |
-| ---------- | ---------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------- |
-| `value`    | `string`                     | -       | Yes      | The page-specific title text inserted into the template.                                                |
-| `template` | `` `${string}%s${string}` `` | `"%s"`  | No       | Template string with a `%s` placeholder. Falls back to integration config, then plain `%s` passthrough. |
+| prop       | type                         | default | required | description                                                                                                                                                               |
+| ---------- | ---------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`    | `string`                     | -       | Yes      | The page-specific title text substituted into the template at the `%s` placeholder position.                                                                              |
+| `template` | `` `${string}%s${string}` `` | `"%s"`  | No       | Template string containing a `%s` placeholder that is replaced by `value`. Falls back to `headTags.titleTemplate` from integration config, then `"%s"` if neither is set. |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 Input:
 
@@ -31,23 +34,32 @@ Output:
 <title>Home</title>
 ```
 
-### Auto usage
+### Automatic
 
-Uses integration `head.titleTemplate` when `template` prop is not provided.
+Uses the integration `headTags.titleTemplate` value when `template` is not provided.
 
 Input:
+
+```js
+// in astro.config.mjs integration config
+eminence({
+  headTags: {
+    titleTemplate: "%s | My Site",
+  },
+});
+```
 
 ```astro
 <Title value="Home" />
 ```
 
-Output (when integration config has `head.titleTemplate: "%s | My Site"`):
+Output:
 
 ```html
 <title>Home | My Site</title>
 ```
 
-### Complete usage
+### Complete
 
 Input:
 
@@ -69,11 +81,15 @@ The placeholder convention is `%s`, a widely recognized pattern for string inter
 
 ### Integration config can define a site-wide template
 
-When `template` is omitted, the component falls back to `clientHeadConfig.titleTemplate` and then to `"%s"`. This allows a site-wide suffix or prefix to be configured once and applied consistently across all pages without per-page repetition.
+When `template` is omitted, the component falls back to `headTags.titleTemplate` from the integration config. If neither is set, the default is `"%s"`, which renders the value as-is. This allows a site-wide suffix or prefix to be configured once and applied consistently across all pages without per-page repetition.
 
 ### Value is always required
 
 Unlike most other head components, `value` is not optional. A title tag without content would produce an empty or incorrect document title, so the component requires it unconditionally.
+
+## Source code
+
+<Code code={TitleSource} lang="astro" />
 
 ## Reference
 
