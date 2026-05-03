@@ -9,7 +9,8 @@ describe("Component Description", () => {
     container = await experimental_AstroContainer.create();
   });
 
-  it("renders meta description tag with content", async () => {
+  // Basic example
+  it("renders the description meta tag for explicit content", async () => {
     const result = await container.renderToString(Description, {
       props: { content: "Learn how to build efficient web applications" },
     });

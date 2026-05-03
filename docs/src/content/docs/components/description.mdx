@@ -6,17 +6,20 @@ head:
     content: Description - Component
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import DescriptionSource from "@package/components/Description.astro?raw";
+
 Description renders a `<meta name="description">` tag in the document head. It is responsible for serializing the provided description text and does not generate, truncate, or validate SEO copy.
 
 ## Props
 
 | prop      | type     | default | required | description                                                                             |
 | --------- | -------- | ------- | -------- | --------------------------------------------------------------------------------------- |
-| `content` | `string` | -       | Yes      | Page-specific meta description content, ideally concise for search and social previews. |
+| `content` | `string` | -       | Yes      | Explicit page description text serialized directly to the meta tag `content` attribute. |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 Input:
 
@@ -33,54 +36,15 @@ Output:
 />
 ```
 
-### Auto usage
-
-Not supported. Description requires explicit `content`.
-
-Input:
-
-```astro
-<Description />
-```
-
-Output:
-
-```html
-<!-- No valid output: missing required content prop -->
-```
-
-### Complete usage
-
-Input:
-
-```astro
-<Description
-  content="A concise summary of the page content for users and crawlers."
-/>
-```
-
-Output:
-
-```html
-<meta
-  name="description"
-  content="A concise summary of the page content for users and crawlers."
-/>
-```
-
 ## Decisions Made
-
-### Content is required
-
-Description requires the `content` prop to avoid emitting empty or meaningless metadata. This makes intent explicit and keeps page metadata quality under consumer control.
 
 ### No automatic fallback
 
 The component does not read from integration config or page defaults. Requiring a direct value ensures each page can define a deliberate summary rather than inheriting potentially inaccurate text.
 
-### Output is a direct value mapping
+## Source code
 
-Description forwards `content` directly to the `meta` tag without transformations. Trimming, length control, and SEO wording decisions are intentionally left to the caller.
+<Code code={DescriptionSource} lang="astro" />
 
 ## Reference
 
