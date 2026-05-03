@@ -6,6 +6,9 @@ head:
     content: ThemeColor - Component
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import ThemeColorSource from "@package/components/ThemeColor.astro?raw";
+
 ThemeColor renders one or two `<meta name="theme-color">` tags to control browser chrome coloring. It is scoped to emitting those tags only and does not interact with CSS color schemes.
 
 ## Props
@@ -14,20 +17,20 @@ The component accepts two mutually exclusive modes.
 
 ### Single mode
 
-| prop      | type     | default | required             | description                                        |
-| --------- | -------- | ------- | -------------------- | -------------------------------------------------- |
-| `content` | `string` | -       | Yes (in single mode) | A single color value applied to all color schemes. |
+| prop      | type     | default               | required             | description                                        |
+| --------- | -------- | --------------------- | -------------------- | -------------------------------------------------- |
+| `content` | `string` | `headTags.themeColor` | Yes (in single mode) | A single color value applied to all color schemes. |
 
 ### Light and dark mode
 
-| prop    | type     | default | required                 | description                             |
-| ------- | -------- | ------- | ------------------------ | --------------------------------------- |
-| `light` | `string` | -       | Yes (in light/dark mode) | Color value for the light color scheme. |
-| `dark`  | `string` | -       | Yes (in light/dark mode) | Color value for the dark color scheme.  |
+| prop    | type     | default               | required                 | description                             |
+| ------- | -------- | --------------------- | ------------------------ | --------------------------------------- |
+| `light` | `string` | `headTags.themeColor` | Yes (in light/dark mode) | Color value for the light color scheme. |
+| `dark`  | `string` | `headTags.themeColor` | Yes (in light/dark mode) | Color value for the dark color scheme.  |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 Input:
 
@@ -41,23 +44,32 @@ Output:
 <meta name="theme-color" content="#ffffff" />
 ```
 
-### Auto usage
+### Automatic
 
-Uses integration `head.themeColor` when no props are provided.
+Uses the integration `headTags.themeColor` value when no props are provided.
 
 Input:
+
+```js
+// in astro.config.mjs integration config
+eminence({
+  headTags: {
+    themeColor: { content: "#ffffff" },
+  },
+});
+```
 
 ```astro
 <ThemeColor />
 ```
 
-Output (when integration config has `head.themeColor: { content: "#ffffff" }`):
+Output:
 
 ```html
 <meta name="theme-color" content="#ffffff" />
 ```
 
-### Complete usage
+### Complete
 
 Input:
 
@@ -90,13 +102,13 @@ The component accepts either a single `content` value or a `light`/`dark` pair, 
 
 When using scheme-specific values, both `light` and `dark` must be provided. This prevents a broken state where only one scheme has a custom color.
 
-### Integration config can define global defaults
-
-When no props are provided, the component falls back to `clientHeadConfig.themeColor`. This allows site-wide theme color values to be defined once in the integration and overridden per page.
-
 ### Renders nothing when no value can be resolved
 
 If no content or light/dark pair is available from props or integration config, the component emits no tag.
+
+## Source code
+
+<Code code={ThemeColorSource} lang="astro" />
 
 ## Reference
 
