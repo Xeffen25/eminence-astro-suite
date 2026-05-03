@@ -3,27 +3,17 @@
   AstroIntegration,
   AstroIntegrationLogger,
 } from "astro";
-import type { HeadTagsOptions } from "./virtual-config";
-
 import type { IconsOptions } from "./generate-icons";
-import {
-  generateIcons,
-  resolveHeadIconTagsFromIconsOptions,
-  type IconTag,
-} from "./generate-icons";
-import { validateHumansTxtInBuildOutput } from "./humans-txt";
-import type { WebManifestOptions } from "./manifest";
-import { generateManifest } from "./manifest";
-import type { RobotsTxtOptions } from "./robots-txt";
-import { generateRobotsTxt } from "./robots-txt";
-import type { SecurityTxtOptions } from "./security-txt";
-import { generateSecurityTxt } from "./security-txt";
-import type { SitemapOptions } from "./sitemap";
-import { createSitemapIntegration } from "./sitemap";
+import { generateIcons } from "./generate-icons";
+import { generateManifest, type WebManifestOptions } from "./manifest";
+import { generateRobotsTxt, type RobotsTxtOptions } from "./robots-txt";
+import { generateSecurityTxt, type SecurityTxtOptions } from "./security-txt";
+import { createSitemapIntegration, type SitemapOptions } from "./sitemap";
 import {
   RESOLVED_VIRTUAL_CONFIG_MODULE_ID,
   serializedVirtualConfigModule,
   VIRTUAL_CONFIG_MODULE_ID,
+  type HeadTagsOptions,
 } from "./virtual-config";
 
 export type IntegrationInput = {
@@ -46,9 +36,6 @@ export default function createIntegration(
   options: IntegrationInput = {},
 ): AstroIntegration {
   let config: AstroConfig;
-  let resolvedHeadIconTags: IconTag[] = resolveHeadIconTagsFromIconsOptions(
-    options.icons,
-  );
 
   return {
     name: "eminence-astro-suite",
@@ -67,26 +54,14 @@ export default function createIntegration(
               {
                 name: "eminence-astro-suite-virtual-config",
                 resolveId(id) {
-                  if (id === VIRTUAL_CONFIG_MODULE_ID) {
-                    return RESOLVED_VIRTUAL_CONFIG_MODULE_ID;
-                  }
-
-                  return undefined;
-                },
-                async buildStart() {
-                  resolvedHeadIconTags = resolveHeadIconTagsFromIconsOptions(
-                    options.icons,
-                  );
+                  return id === VIRTUAL_CONFIG_MODULE_ID
+                    ? RESOLVED_VIRTUAL_CONFIG_MODULE_ID
+                    : undefined;
                 },
                 load(id) {
-                  if (id === RESOLVED_VIRTUAL_CONFIG_MODULE_ID) {
-                    return serializedVirtualConfigModule(
-                      options,
-                      resolvedHeadIconTags,
-                    );
-                  }
-
-                  return undefined;
+                  return id === RESOLVED_VIRTUAL_CONFIG_MODULE_ID
+                    ? serializedVirtualConfigModule(options, config.site)
+                    : undefined;
                 },
               },
             ],
@@ -96,7 +71,7 @@ export default function createIntegration(
       "astro:config:done": ({ config: cfg }) => {
         config = cfg;
       },
-      "astro:build:done": async ({ dir, logger }) => {
+      "astro:build:done": async ({ dir, logger, assets }) => {
         try {
           if (options.icons !== false)
             await generateIcons({ config, dir, options, logger });
@@ -106,13 +81,13 @@ export default function createIntegration(
             await generateRobotsTxt({ config, dir, options, logger });
           if (options.securityTxt !== false)
             await generateSecurityTxt({ config, dir, options, logger });
-          if (options.headTags?.humansTxt !== false)
-            await validateHumansTxtInBuildOutput({
-              config,
-              dir,
-              options,
-              logger,
-            });
+          if (
+            options.headTags?.humansTxt === undefined &&
+            !assets.get("/humans.txt")
+          )
+            logger.warn(
+              "Recommendation: visit eminence-astro-suite.xeffen25.com/guides/humans-txt to learn how to create a humans.txt for your Astro site and why you should do it.",
+            );
         } catch (error) {
           const message =
             error instanceof Error ? error.message : String(error);

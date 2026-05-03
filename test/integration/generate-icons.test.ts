@@ -1,7 +1,7 @@
 import type { IntegrationRuntimeContext } from "@package/integration";
 import {
   generateIcons,
-  resolveHeadIconTagsFromIconsOptions,
+  resolveIconsOptions,
   resolveManifestIconsFromIconsOptions,
 } from "@package/integration/generate-icons";
 import type { AstroConfig } from "astro";
@@ -148,7 +148,7 @@ describe("Integration - Generate Icons", () => {
   });
 
   it("resolves head icon tags from file-keyed entries and skips false sizes", () => {
-    const tags = resolveHeadIconTagsFromIconsOptions({
+    const tags = resolveIconsOptions({
       source: "/icons/source.svg",
       "favicon.ico": {
         sizes: [16, 32, 48],
@@ -162,7 +162,7 @@ describe("Integration - Generate Icons", () => {
         size: false,
         tag: { rel: "icon" },
       },
-    });
+    }).tags;
 
     expect(tags).toEqual([
       {
@@ -182,7 +182,7 @@ describe("Integration - Generate Icons", () => {
   });
 
   it("preserves raw build-time icon tags so the component can resolve href collisions", () => {
-    const tags = resolveHeadIconTagsFromIconsOptions({
+    const tags = resolveIconsOptions({
       source: "/icons/source.svg",
       "icon-light.png": {
         size: 32,
@@ -192,7 +192,7 @@ describe("Integration - Generate Icons", () => {
         size: 32,
         tag: { rel: "icon", href: "/shared.png", media: "dark" },
       },
-    });
+    }).tags;
 
     expect(tags).toEqual([
       {

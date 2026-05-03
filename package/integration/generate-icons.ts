@@ -448,12 +448,6 @@ export const resolveIconsOptions = (
   };
 };
 
-export const resolveHeadIconTagsFromIconsOptions = (
-  icons: IconsOptions | false | undefined,
-): IconTag[] => {
-  return resolveIconsOptions(icons).tags;
-};
-
 export function resolveManifestIconsFromIconsOptions(
   icons: IconsOptions | false | undefined,
 ): ManifestIconItem[] {
