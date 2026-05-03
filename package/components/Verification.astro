@@ -31,9 +31,9 @@ type VerificationEntry = {
   content: string;
 };
 
-const { google, yandex, bing, others } = (
-  hasAnyProp(Astro.props) ? Astro.props : (config.verification ?? {})
-) as Props;
+const { google, yandex, bing, others } = hasAnyProp(Astro.props)
+  ? Astro.props
+  : (config.verification ?? {});
 ---
 
 {google && <meta name="google-site-verification" content={google} />}

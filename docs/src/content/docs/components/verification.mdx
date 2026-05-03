@@ -6,6 +6,9 @@ head:
     content: Verification - Component
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import VerificationSource from "@package/components/Verification.astro?raw";
+
 Verification renders `<meta>` tags that prove site ownership to search engines and webmaster tools. It is scoped to emitting those verification tags only and does not interact with crawling or indexing behavior directly.
 
 ## Props
@@ -17,9 +20,9 @@ Verification renders `<meta>` tags that prove site ownership to search engines a
 | `bing`   | `string`                              | -       | No       | Bing (and Yahoo) Webmaster Tools verification token. Renders as `<meta name="msvalidate.01">`.                          |
 | `others` | `{ name: string; content: string }[]` | -       | No       | Additional verification entries for other providers. Each entry renders a `<meta>` tag with the given name and content. |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 Input:
 
@@ -33,9 +36,9 @@ Output:
 <meta name="google-site-verification" content="abc123" />
 ```
 
-### Auto usage
+### Automatic
 
-Uses integration `head.verification` when no props are provided.
+Uses integration `headTags.verification` when no props are provided.
 
 Input:
 
@@ -43,7 +46,7 @@ Input:
 <Verification />
 ```
 
-Output (when integration config has `head.verification: { google: "abc123" }`):
+Output (when integration config has `headTags.verification: { google: "abc123" }`):
 
 ```html
 <meta name="google-site-verification" content="abc123" />
@@ -73,21 +76,17 @@ Output:
 
 ## Decisions Made
 
-### Yahoo's y_key is not supported
-
-The old `y_key` meta tag targeted Yahoo Site Explorer, which was discontinued in 2010. Since then, Yahoo search has been powered by Bing. The correct verification method for both Bing and Yahoo Webmaster Tools is `msvalidate.01`, so the component exposes a `bing` prop and renders that tag instead.
-
-### Only defined values are rendered
-
-Props that are `undefined` produce no output. This keeps the tag set minimal and avoids rendering empty or invalid verification entries.
-
 ### The others prop handles any additional provider
 
 Built-in props cover the most common search engines. Providers outside that set, such as Pinterest (`p:domain_verify`) or Naver (`naver-site-verification`), can be added through the `others` array without requiring component changes.
 
 ### Integration config can define global verification tokens
 
-When no props are provided, the component falls back to `clientHeadConfig.verification`. This allows tokens to be configured once in the integration and inherited across all pages.
+When no props are provided, the component falls back to `headTags.verification`. This allows tokens to be configured once in the integration and inherited across all pages.
+
+## Source code
+
+<Code code={VerificationSource} lang="astro" />
 
 ## Reference
 
