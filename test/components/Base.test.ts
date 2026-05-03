@@ -1,5 +1,6 @@
 import { Base } from "@package/components";
 import { experimental_AstroContainer } from "astro/container";
+import config from "virtual:eminence-astro-suite/head-tags";
 import { beforeEach, describe, expect, it } from "vitest";
 
 describe("Component Base", () => {
@@ -7,17 +8,11 @@ describe("Component Base", () => {
 
   beforeEach(async () => {
     container = await experimental_AstroContainer.create();
+    config.base = undefined;
   });
 
-  it("renders base tag with href and target", async () => {
-    const result = await container.renderToString(Base, {
-      props: { href: "https://example.com", target: "_blank" },
-    });
-
-    expect(result).toBe('<base href="https://example.com" target="_blank">');
-  });
-
-  it("renders base tag with only href", async () => {
+  // Basic
+  it("renders the Basic example", async () => {
     const result = await container.renderToString(Base, {
       props: { href: "https://example.com" },
     });
@@ -25,19 +20,23 @@ describe("Component Base", () => {
     expect(result).toBe('<base href="https://example.com">');
   });
 
-  it("renders base tag with only target", async () => {
-    const result = await container.renderToString(Base, {
-      props: { target: "_blank" },
-    });
+  // Automatic
+  it("renders the Automatic example", async () => {
+    config.base = { href: "https://example.com" };
 
-    expect(result).toBe('<base target="_blank">');
-  });
-
-  it("renders nothing when href is not provided", async () => {
     const result = await container.renderToString(Base, {
       props: {},
     });
 
-    expect(result).toBe("");
+    expect(result).toBe('<base href="https://example.com">');
+  });
+
+  // Complete
+  it("renders the Complete example", async () => {
+    const result = await container.renderToString(Base, {
+      props: { href: "https://example.com", target: "_blank" },
+    });
+
+    expect(result).toBe('<base href="https://example.com" target="_blank">');
   });
 });

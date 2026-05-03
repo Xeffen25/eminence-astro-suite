@@ -451,6 +451,48 @@ describe("Integration - Virtual Config", () => {
     });
   });
 
+  it("extracts base defaults into client head config", () => {
+    const options: IntegrationInput = {
+      headTags: {
+        base: {
+          href: "https://example.com",
+          target: "_blank",
+        },
+      },
+    };
+
+    const result = extractHeadTagsConfig(options);
+
+    expect(result).toMatchObject({
+      ...DEFAULT_HEAD_TAGS_OPTIONS,
+      base: {
+        href: "https://example.com",
+        target: "_blank",
+      },
+    });
+  });
+
+  it("serializes base defaults in virtual config module", () => {
+    const options: IntegrationInput = {
+      headTags: {
+        base: {
+          href: "https://example.com",
+        },
+      },
+    };
+
+    const result = parseSerializedModuleConfig(
+      serializedVirtualConfigModule(options),
+    );
+
+    expect(result).toMatchObject({
+      ...DEFAULT_HEAD_TAGS_OPTIONS,
+      base: {
+        href: "https://example.com",
+      },
+    });
+  });
+
   it("serializes extend defaults in virtual config module", () => {
     const options: IntegrationInput = {
       headTags: {

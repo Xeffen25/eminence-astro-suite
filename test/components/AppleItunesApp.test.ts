@@ -1,6 +1,6 @@
 import { AppleItunesApp } from "@package/components";
 import { experimental_AstroContainer } from "astro/container";
-import headTagsConfig from "virtual:eminence-astro-suite/head-tags";
+import config from "virtual:eminence-astro-suite/head-tags";
 import { beforeEach, describe, expect, it } from "vitest";
 
 describe("Component AppleItunesApp", () => {
@@ -8,7 +8,7 @@ describe("Component AppleItunesApp", () => {
 
   beforeEach(async () => {
     container = await experimental_AstroContainer.create();
-    headTagsConfig.appleItunesApp = undefined;
+    config.appleItunesApp = undefined;
   });
 
   // Basic
@@ -24,7 +24,7 @@ describe("Component AppleItunesApp", () => {
 
   // Automatic
   it("renders the Automatic example", async () => {
-    headTagsConfig.appleItunesApp = {
+    config.appleItunesApp = {
       id: "123456789",
       argument: "myapp://open",
     };

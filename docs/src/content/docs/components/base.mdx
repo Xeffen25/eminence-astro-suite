@@ -15,9 +15,9 @@ Base renders a `<base>` tag that sets the default base URL and browsing context 
 | `href`   | `string` | -       | No       | Base URL used for resolving all relative URLs in the document. |
 | `target` | `string` | -       | No       | Default browsing context for links and forms in the document.  |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 Input:
 
@@ -31,23 +31,35 @@ Output:
 <base href="https://example.com" />
 ```
 
-### Auto usage
+### Automatic
 
-Uses the integration `head.base` defaults when no props are provided.
+Uses the integration `head.base` configuration when no props are provided.
 
 Input:
 
+````js
+// in astro.config.mjs integration config
+eminence({
+  headTags: {
+	base: {
+	  href: "https://example.com",
+	  target: "_blank",
+	},
+  },
+});
+
+
 ```astro
 <Base />
-```
+````
 
 Output:
 
 ```html
-<base href="https://example.com" />
+<base href="https://example.com" target="_blank" />
 ```
 
-### Complete usage
+### Complete
 
 Input:
 
@@ -63,13 +75,9 @@ Output:
 
 ## Decisions Made
 
-### Props are optional with fallback to integration config
+### Optional props with fallback to integration config
 
-The `href` and `target` props are both optional. When either or both are not provided, Base attempts to use values from the integration's `head.base` configuration. This design allows global defaults to be set at the integration level while still permitting per-page overrides.
-
-### Component only renders when a value is available
-
-Base only renders the `<base>` tag if at least one of `href` or `target` has a value. An empty `<base>` tag provides no value to the document, so rendering is conditioned on the presence of meaningful content.
+If any prop is provided it overrides all the integration config values. If no props are provided, the component falls back to using the integration config values for `head.base.href` and `head.base.target` if they are set.
 
 ## Reference
 

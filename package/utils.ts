@@ -1,6 +1,7 @@
 export const toHref = (value: string | URL) =>
   typeof value === "string" ? value : value.toString();
 
+// A function to check if Astro props has any properties.
 export const hasAnyProp = (props: object): boolean =>
   Object.keys(props).length > 0;
 
