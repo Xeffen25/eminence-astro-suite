@@ -6,17 +6,20 @@ head:
     content: Viewport - Component
 ---
 
-Viewport renders the `<meta name="viewport">` tag in your document head. It always emits a tag, defaulting to the standard responsive value when no `content` prop is provided.
+import { Code } from "@astrojs/starlight/components";
+import ViewportSource from "@package/components/Viewport.astro?raw";
+
+Viewport renders the `<meta name="viewport">` tag in your document head. It always emits a tag, falling back to the integration `headTags.viewport` config value when no `content` prop is provided.
 
 ## Props
 
-| prop      | type     | default                                 | required | description                              |
-| --------- | -------- | --------------------------------------- | -------- | ---------------------------------------- |
-| `content` | `string` | `"width=device-width, initial-scale=1"` | No       | Content value for the viewport meta tag. |
+| prop      | type     | default                                 | required | description                                                                                                     |
+| --------- | -------- | --------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------- |
+| `content` | `string` | `"width=device-width, initial-scale=1"` | No       | Content value for the viewport meta tag. Falls back to the integration `headTags.viewport` config when omitted. |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 Input:
 
@@ -30,9 +33,9 @@ Output:
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 ```
 
-### Auto usage
+### Automatic
 
-Uses the default responsive value when no `content` prop is provided.
+Uses the integration `headTags.viewport` value when no prop is provided, which defaults to `"width=device-width, initial-scale=1"`.
 
 Input:
 
@@ -46,23 +49,6 @@ Output:
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 ```
 
-### Complete usage
-
-Input:
-
-```astro
-<Viewport content="width=device-width, initial-scale=1, maximum-scale=5" />
-```
-
-Output:
-
-```html
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1, maximum-scale=5"
-/>
-```
-
 ## Decisions Made
 
 ### Always renders a tag
@@ -73,9 +59,13 @@ Unlike most other head components, Viewport always emits a tag. A missing viewpo
 
 The default `width=device-width, initial-scale=1` is the de-facto responsive baseline recommended by browser vendors and the HTML standard. It works correctly for the majority of sites without adjustment.
 
-### Does not use integration config fallback
+### Uses integration config as default
 
-The integration config exposes `head.viewport` to let the `Head` component pass a custom value. Viewport itself only reads from its own prop. This keeps the component self-contained and easy to use standalone.
+The `content` prop falls back to the integration `headTags.viewport` config value. This lets you set a site-wide viewport default in one place and have it apply across all pages without repeating the value in every `Viewport` or `Head` usage.
+
+## Source code
+
+<Code code={ViewportSource} lang="astro" />
 
 ## Reference
 
