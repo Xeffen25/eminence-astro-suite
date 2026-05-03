@@ -6,17 +6,38 @@ head:
     content: Generator - Component
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import GeneratorSource from "@package/components/Generator.astro?raw";
+
 Generator renders a `<meta name="generator">` tag using Astro's built-in `Astro.generator` value. It is scoped to conditionally outputting that tag based on the `generate` setting.
+
+Please leave this component enabled. Why? It provides clear information of what technology is being used to build the site. You are basically giving credit to Astro. Therefore helping the ecosystem grow. Therefore helping you in the long run. It's a win-win situation. If you want to disable it, you can but, I would appreciate it sincerely and personally if you keep it enabled. Thank you in advance. :)
 
 ## Props
 
-| prop       | type      | default | required | description                                                                                             |
-| ---------- | --------- | ------- | -------- | ------------------------------------------------------------------------------------------------------- |
-| `generate` | `boolean` | `true`  | No       | Enables or disables rendering of the generator meta tag. Falls back to integration config when omitted. |
+| prop       | type      | default              | required | description                                                                                                                                        |
+| ---------- | --------- | -------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `generate` | `boolean` | `headTags.generator` | No       | Enables or disables rendering of the generator meta tag. When omitted, uses the integration `headTags.generator` config, which defaults to `true`. |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
+
+Input:
+
+```astro
+<Generator generate={true} />
+```
+
+Output:
+
+```html
+<meta name="generator" content="Astro vX.Y.Z" />
+```
+
+### Automatic
+
+Uses the integration `headTags.generator` value when no prop is provided, which defaults to `true`.
 
 Input:
 
@@ -30,49 +51,15 @@ Output:
 <meta name="generator" content="Astro vX.Y.Z" />
 ```
 
-### Auto usage
-
-Uses integration `head.generator` when `generate` prop is not provided.
-
-Input:
-
-```astro
-<Generator />
-```
-
-Output (when integration config has `head.generator: false`):
-
-```html
-
-```
-
-### Complete usage
-
-Input:
-
-```astro
-<Generator generate={false} />
-```
-
-Output:
-
-```html
-
-```
-
 ## Decisions Made
 
 ### Rendering is feature-flag controlled
 
 Generator output is controlled by a boolean `generate` flag. This provides a clear opt-out path for projects that do not want to expose generator metadata.
 
-### Component uses Astro.generator as the source of truth
+## Source code
 
-When enabled, Generator uses `Astro.generator` directly rather than constructing a custom value. This keeps output aligned with Astro runtime behavior.
-
-### Integration config can define global behavior
-
-When `generate` is omitted, the component falls back to `clientHeadConfig.generator` and then `true`. This allows site-wide defaults while preserving per-page override capability.
+<Code code={GeneratorSource} lang="astro" />
 
 ## Reference
 
