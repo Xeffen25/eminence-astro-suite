@@ -9,41 +9,63 @@ head:
 import { Code } from "@astrojs/starlight/components";
 import LanguageAlternatesSource from "@package/components/LanguageAlternates.astro?raw";
 
-LanguageAlternates renders one or more `<link rel="alternate">` tags with `hreflang` values for localized or regional URL variants.
+LanguageAlternates renders one or more `<link rel="alternate">` tags for localized or regional page variants. Each entry maps a `hreflang` value such as `es`, `en-US`, or `x-default` to an absolute alternate URL.
 
 ## Props
 
-| prop        | type                            | default | required | description                                                                                      |
-| ----------- | ------------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------ |
-| `languages` | `Record<string, string \| URL>` | -       | Yes      | Map of `hreflang` values (for example `es`, `fr`, `x-default`) to URL values rendered as `href`. |
+| prop        | type                            | default | required | description                                                                                                           |
+| ----------- | ------------------------------- | ------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
+| `languages` | `Record<string, string \| URL>` | -       | Yes      | Map of `hreflang` values to alternate URLs rendered as `href`. Accepts either URL strings or `URL` objects as values. |
 
-## Usage & Examples
+## Examples
 
-### Complete usage
+### Basic
 
-**Input**
+Input:
 
 ```astro
 <LanguageAlternates
   languages={{
     es: "https://example.com/es",
-    fr: new URL("https://example.com/fr"),
     "x-default": "https://example.com",
   }}
 />
 ```
 
-**Output**
+Output:
 
 ```html
 <link rel="alternate" hreflang="es" href="https://example.com/es" />
-<link rel="alternate" hreflang="fr" href="https://example.com/fr" />
+<link rel="alternate" hreflang="x-default" href="https://example.com" />
+```
+
+### Complete
+
+Input:
+
+```astro
+<LanguageAlternates
+  languages={{
+    es: "https://example.com/es",
+    "en-US": new URL("https://example.com/en-us"),
+    "x-default": "https://example.com",
+  }}
+/>
+```
+
+Output:
+
+```html
+<link rel="alternate" hreflang="es" href="https://example.com/es" />
+<link rel="alternate" hreflang="en-US" href="https://example.com/en-us" />
 <link rel="alternate" hreflang="x-default" href="https://example.com" />
 ```
 
 ## Decisions Made
 
-This component only handles language alternates. Feed alternates like RSS or Atom are intentionally outside this component's responsibility. This was made to keep concerns separated from feed discovery metadata and reduce prop-surface overlap between components.
+LanguageAlternates preserves the insertion order of the `languages` object when rendering tags. Define entries in the same order you want them emitted in the document head.
+
+This component only handles localized page alternates. Other `rel="alternate"` uses such as feed discovery remain outside its scope to keep the API focused on `hreflang` metadata.
 
 ## Source code
 
