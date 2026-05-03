@@ -68,6 +68,8 @@ Edge-case tests rules:
   - no-output conditions when applicable.
 - Keep edge-case names explicit about the bug they prevent.
 
+The virtual module "virtual:eminence-astro-suite/head-tags" is available for import in tests and should be named as `config` it shouldn't be named differently.
+
 ## Implementation rules
 
 - Preserve existing style and architecture conventions in the repository.
