@@ -17,6 +17,7 @@ describe("Component Extend", () => {
     container = await experimental_AstroContainer.create();
   });
 
+  // Basic example
   it("renders custom link and meta tags from props", async () => {
     const result = await container.renderToString(Extend, {
       props: {
@@ -36,6 +37,7 @@ describe("Component Extend", () => {
     );
   });
 
+  // Custom fragments example
   it("renders custom HTML fragments from props", async () => {
     const result = await container.renderToString(Extend, {
       props: {
@@ -51,6 +53,7 @@ describe("Component Extend", () => {
     );
   });
 
+  // Automatic example
   it("uses integration defaults when extend prop is omitted", async () => {
     Object.assign(clientHeadConfig, {
       extend: {
@@ -67,10 +70,27 @@ describe("Component Extend", () => {
     );
   });
 
-  it("prefers props over integration defaults", async () => {
+  // Complete example
+  it("renders link, meta, and custom together", async () => {
+    const result = await container.renderToString(Extend, {
+      props: {
+        link: [{ rel: "preconnect", href: "https://cdn.example.com" }],
+        meta: [{ property: "custom:token", content: "abc123" }],
+        custom: '<meta name="custom-inline" content="value">',
+      },
+    });
+
+    expect(result).toBe(
+      '<link rel="preconnect" href="https://cdn.example.com"><meta property="custom:token" content="abc123"><meta name="custom-inline" content="value">',
+    );
+  });
+
+  it("ignores all integration config when any prop is provided", async () => {
     Object.assign(clientHeadConfig, {
       extend: {
+        link: [{ rel: "dns-prefetch", href: "https://assets.example.com" }],
         meta: [{ property: "custom:source", content: "integration" }],
+        custom: '<meta name="custom-inline" content="from-config">',
       },
     });
 
@@ -80,6 +100,7 @@ describe("Component Extend", () => {
       },
     });
 
+    // Only the provided meta prop renders; link and custom from config are suppressed
     expect(result).toBe('<meta property="custom:source" content="props">');
   });
 });

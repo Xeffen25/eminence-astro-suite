@@ -1,0 +1,151 @@
+---
+title: Extend
+description: Astro component for injecting extra link tags, meta tags, and raw HTML fragments into the document head.
+head:
+  - tag: title
+    content: Extend - Component
+---
+
+import { Code } from "@astrojs/starlight/components";
+import ExtendSource from "@package/components/Extend.astro?raw";
+
+Extend injects additional `<link>` tags, `<meta>` tags, and raw HTML fragments into the document head. It is designed for one-off or advanced head customizations that are not covered by the other components in this suite.
+
+## Props
+
+| prop     | type                 | default | required | description                                                                                                                                                      |
+| -------- | -------------------- | ------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `link`   | `ExtendLinkTag[]`    | -       | No       | Array of `<link>` tag attribute objects to inject. Each object maps directly to HTML attributes on the tag. Supports an additional `prefetch` boolean attribute. |
+| `meta`   | `ExtendMetaTag[]`    | -       | No       | Array of `<meta>` tag attribute objects to inject. Each object must include at least `property` plus any additional HTML attributes.                             |
+| `custom` | `string \| string[]` | -       | No       | Raw HTML fragment or array of fragments injected verbatim with no escaping. Only use trusted or pre-sanitized content.                                           |
+
+When no props are provided at all, the entire `headTags.extend` integration config object is used as the source for all three. See the [Automatic example](#automatic) and [Decisions Made](#decisions-made).
+
+`ExtendLinkTag` and `ExtendMetaTag` are just objects representing the attributes for `<link>` and `<meta>` tags, respectively. Just pass objects with the desired attributes, and Extend handles the rendering. For example, `{ rel: "preconnect", href: "https://cdn.example.com" }`.
+
+## Examples
+
+### Basic
+
+Inject a `<link>` tag and a `<meta>` tag using the `link` and `meta` props.
+
+Input:
+
+```astro
+<Extend
+  link={[{ rel: "preconnect", href: "https://cdn.example.com" }]}
+  meta={[{ property: "custom:token", content: "abc123" }]}
+/>
+```
+
+Output:
+
+```html
+<link rel="preconnect" href="https://cdn.example.com" /><meta
+  property="custom:token"
+  content="abc123"
+/>
+```
+
+### Custom fragments
+
+Inject raw HTML using the `custom` prop. Accepts a single string or an array of strings, each injected verbatim.
+
+Input:
+
+```astro
+<Extend
+  custom={[
+    '<meta name="custom-a" content="1">',
+    '<script type="application/json">{"key":"value"}</script>',
+  ]}
+/>
+```
+
+Output:
+
+```html
+<meta name="custom-a" content="1" />
+<script type="application/json">
+  { "key": "value" }
+</script>
+```
+
+### Automatic
+
+When no props are provided at all, the entire `headTags.extend` integration config is used as the source for all three outputs.
+
+Input:
+
+```js
+// in astro.config.mjs integration config
+eminence({
+  headTags: {
+    extend: {
+      link: [{ rel: "dns-prefetch", href: "https://assets.example.com" }],
+      meta: [{ property: "custom:source", content: "integration" }],
+      custom: '<meta name="custom-inline" content="from-config">',
+    },
+  },
+});
+```
+
+```astro
+<Extend />
+```
+
+Output:
+
+```html
+<link rel="dns-prefetch" href="https://assets.example.com" /><meta
+  property="custom:source"
+  content="integration"
+/><meta name="custom-inline" content="from-config" />
+```
+
+### Complete
+
+All three props provided simultaneously.
+
+Input:
+
+```astro
+<Extend
+  link={[{ rel: "preconnect", href: "https://cdn.example.com" }]}
+  meta={[{ property: "custom:token", content: "abc123" }]}
+  custom='<meta name="custom-inline" content="value">'
+/>
+```
+
+Output:
+
+```html
+<link rel="preconnect" href="https://cdn.example.com" /><meta
+  property="custom:token"
+  content="abc123"
+/><meta name="custom-inline" content="value" />
+```
+
+## Decisions Made
+
+### Fallback is all-or-nothing
+
+If any prop is provided, the integration config is ignored entirely — all three resolve from props only, with unset props defaulting to empty. Only when no props are passed at all does `config.extend` supply the values for all three. This avoids partial merges where some tags come from props and others silently come from config.
+
+### Raw HTML is not escaped
+
+The `custom` prop is injected with Astro's `set:html` directive, bypassing HTML escaping. This is intentional to support arbitrary head markup such as inline scripts and structured data. Only pass content from trusted sources.
+
+### No output when all sources are absent
+
+When a prop is omitted and no corresponding integration config value exists, that slot renders nothing. Extend emits no output at all when all three sources are absent.
+
+## Source code
+
+<Code code={ExtendSource} lang="astro" />
+
+## Reference
+
+- [MDN: link element](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/link)
+- [MDN: meta element](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta)
+- [Astro: `set:html` directive](https://docs.astro.build/en/reference/directives-reference/#sethtml)

@@ -1,4 +1,5 @@
 ---
+import { hasAnyProp } from "@package/utils";
 import type { HTMLAttributes } from "astro/types";
 import config from "virtual:eminence-astro-suite/head-tags";
 
@@ -24,10 +25,10 @@ interface Props {
 }
 
 const {
-  link = config.extend?.link ?? [],
-  meta = config.extend?.meta ?? [],
-  custom = config.extend?.custom,
-}: Props = Astro.props;
+  link = [],
+  meta = [],
+  custom = [],
+}: Props = hasAnyProp(Astro.props) ? Astro.props : (config.extend ?? {});
 
 const customHtmlFragments =
   typeof custom === "string" ? [custom] : Array.isArray(custom) ? custom : [];
