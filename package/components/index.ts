@@ -204,17 +204,17 @@ export const Icons = _Icons;
 export type IconsProps = ComponentProps<typeof Icons>;
 
 /**
- * @summary Renders a single JSON-LD script tag from a pre-serialized string.
+ * @summary Renders a single JSON-LD script tag from a string or schema object.
  * @description
  * Outputs a `<script type="application/ld+json">` element in your `<head>`.
- * The `jsonLd` prop expects a JSON string, so schema objects can be built and
- * typed in app code (for example with `schema-dts`) before
- * `JSON.stringify(...)` is passed to this component.
+ * The `jsonLd` prop accepts either a JSON string or a plain schema object.
+ * Objects are serialized internally with `JSON.stringify(...)`, so typed schema
+ * objects (for example from `schema-dts`) can be passed directly.
  *
  * @example
  * <JsonLd jsonLd='{"@context":"https://schema.org","@type":"WebPage","name":"Home"}' />
  * @example
- * <JsonLd jsonLd={JSON.stringify(websiteSchema)} />
+ * <JsonLd jsonLd={websiteSchema} />
  * @see {@link https://eminence-astro-suite.xeffen25.com/components/json-ld JsonLd Component Documentation}
  */
 export const JsonLd = _JsonLd;

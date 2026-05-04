@@ -6,17 +6,22 @@ head:
     content: JsonLd - Component
 ---
 
-JsonLd renders a `<script type="application/ld+json">` tag in the document head from a pre-serialized JSON string. It is responsible for safely writing the JSON payload inline and does not validate schema structure.
+import { Code } from "@astrojs/starlight/components";
+import JsonLdSource from "@package/components/JsonLd.astro?raw";
+
+JsonLd renders a `<script type="application/ld+json">` tag in the document head from either a pre-serialized JSON string or a schema object. It is responsible for safely writing the JSON payload inline and does not validate schema structure.
+
+For practical, strongly typed patterns using `schema-dts`, see [JsonLd with schema-dts](/guides/json-ld-with-schema-dts).
 
 ## Props
 
-| prop     | type     | default | required | description                                                                                     |
-| -------- | -------- | ------- | -------- | ----------------------------------------------------------------------------------------------- |
-| `jsonLd` | `string` | -       | Yes      | Pre-serialized JSON-LD payload, typically produced by `JSON.stringify(...)` on a schema object. |
+| prop     | type                                | default | required | description                                                                                                                                               |
+| -------- | ----------------------------------- | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `jsonLd` | `Record<string, unknown> \| string` | -       | Yes      | JSON-LD payload as either a pre-serialized string or a plain object. Object values are serialized internally with `JSON.stringify(...)` before rendering. |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 Input:
 
@@ -34,23 +39,7 @@ Output:
 </script>
 ```
 
-### Auto usage
-
-Not supported. JsonLd requires an explicit serialized JSON string.
-
-Input:
-
-```astro
-<JsonLd />
-```
-
-Output:
-
-```html
-<!-- No valid output: missing required jsonLd prop -->
-```
-
-### Complete usage
+### Complete
 
 Input:
 
@@ -64,7 +53,7 @@ const websiteSchema = {
 };
 ---
 
-<JsonLd jsonLd={JSON.stringify(websiteSchema)} />
+<JsonLd jsonLd={websiteSchema} />
 ```
 
 Output:
@@ -82,17 +71,21 @@ Output:
 
 ## Decisions Made
 
-### Accepts pre-serialized JSON only
+### Accepts both object and string input
 
-JsonLd expects a string instead of an object. This keeps the component transport-focused and lets application code fully control schema composition and typing.
+JsonLd accepts either a JSON string or a plain object. Object inputs are serialized internally, while string inputs are passed through as-is before escaping.
 
 ### Escapes HTML-sensitive characters before injection
 
-Before writing the script content, the component escapes `<`, `>`, and `&` into unicode escapes. This reduces the risk of script-breakout behavior when inline JSON contains those characters.
+Before writing the script content, the component escapes `<`, `>`, and `&` into their Unicode escape sequences (`\u003c`, `\u003e`, `\u0026`). This prevents script-breakout when inline JSON contains those characters.
 
 ### Emits a single inline script tag
 
-The component always renders one `application/ld+json` script when valid input is provided. It does not split, merge, or reorder schema blocks.
+The component always renders one `application/ld+json` script when a value is provided. If multiple schema entities are needed, prefer a single payload with `@graph` so your page head can keep one JSON-LD script block.
+
+## Source code
+
+<Code code={JsonLdSource} lang="astro" />
 
 ## Reference
 

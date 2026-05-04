@@ -9,6 +9,7 @@ describe("Component JsonLd", () => {
     container = await experimental_AstroContainer.create();
   });
 
+  // Basic
   it("renders a JSON-LD script with the provided string", async () => {
     const result = await container.renderToString(JsonLd, {
       props: {
@@ -22,11 +23,34 @@ describe("Component JsonLd", () => {
     );
   });
 
-  it("escapes unsafe characters in JSON-LD content", async () => {
+  // Complete
+  it("renders a JSON-LD script from a plain object prop", async () => {
+    const websiteSchema = {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Example Site",
+      url: "https://example.com",
+    };
+
+    const result = await container.renderToString(JsonLd, {
+      props: { jsonLd: websiteSchema },
+    });
+
+    expect(result).toBe(
+      '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Example Site","url":"https://example.com"}</script>',
+    );
+  });
+
+  // Edge cases
+
+  it("escapes HTML-sensitive characters after object serialization", async () => {
     const result = await container.renderToString(JsonLd, {
       props: {
-        jsonLd:
-          '{"@context":"https://schema.org","@type":"WebPage","name":"<Unsafe & Value>"}',
+        jsonLd: {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "<Unsafe & Value>",
+        },
       },
     });
 

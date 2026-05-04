@@ -1,0 +1,149 @@
+---
+title: JsonLd with schema-dts
+description: Practical patterns for authoring useful, strongly typed JSON-LD payloads with schema-dts and rendering them with the JsonLd component.
+head:
+  - tag: title
+    content: JsonLd with schema-dts - Guide
+---
+
+This guide shows practical, production-style JSON-LD patterns using `schema-dts` for type-safe schema objects.
+
+## Install schema-dts
+
+```bash
+pnpm add schema-dts
+```
+
+## Pattern used in all examples
+
+```astro
+---
+import { JsonLd } from "eminence-astro-suite/components";
+import type { WithContext } from "schema-dts";
+---
+```
+
+Build a typed schema object as `WithContext<...>`, then pass it directly into `jsonLd`. The component accepts either objects or pre-serialized JSON strings.
+
+## Example 1: Organization + WebSite graph (homepage)
+
+Use this on your homepage so search engines understand your brand and site identity.
+
+```astro
+---
+import { JsonLd } from "eminence-astro-suite/components";
+import type { Organization, WebSite, WithContext } from "schema-dts";
+
+const organizationSchema: Organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Acme Studio",
+  url: "https://acme.example",
+  logo: "https://acme.example/logo.png",
+  sameAs: ["https://github.com/acme", "https://www.linkedin.com/company/acme"],
+};
+
+const websiteSchema: WebSite = {
+  "@type": "WebSite",
+  name: "Acme Studio",
+  url: "https://acme.example",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://acme.example/search?q={query}",
+    "query-input": "required name=query",
+  },
+};
+const graphSchema: WithContext<{ "@graph": [Organization, WebSite] }> = {
+  "@context": "https://schema.org",
+  "@graph": [organizationSchema, websiteSchema],
+};
+---
+
+<JsonLd jsonLd={graphSchema} />
+```
+
+## Example 2: Article/BlogPosting (content pages)
+
+Use this on articles so title, author, publish date, and image are machine-readable.
+
+```astro
+---
+import { JsonLd } from "eminence-astro-suite/components";
+import type { BlogPosting, WithContext } from "schema-dts";
+
+const articleSchema: WithContext<BlogPosting> = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: "How We Cut Build Times by 40%",
+  description: "A practical breakdown of profiling, caching, and CI tuning.",
+  datePublished: "2026-04-21",
+  dateModified: "2026-04-25",
+  author: {
+    "@type": "Person",
+    name: "Sam Rivera",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Acme Studio",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://acme.example/logo.png",
+    },
+  },
+  image: ["https://acme.example/images/build-times-cover.jpg"],
+  mainEntityOfPage: "https://acme.example/blog/cut-build-times",
+};
+---
+
+<JsonLd jsonLd={articleSchema} />
+```
+
+## Example 3: Product (commerce pages)
+
+Use this on product pages to expose offer, price, availability, and rating signals.
+
+```astro
+---
+import { JsonLd } from "eminence-astro-suite/components";
+import type { Product, WithContext } from "schema-dts";
+
+const productSchema: WithContext<Product> = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: "Noise-Canceling Headphones X200",
+  image: ["https://acme.example/images/x200.jpg"],
+  description: "Wireless over-ear headphones with adaptive ANC.",
+  sku: "X200-BLK",
+  brand: {
+    "@type": "Brand",
+    name: "Acme Audio",
+  },
+  offers: {
+    "@type": "Offer",
+    url: "https://acme.example/products/x200",
+    priceCurrency: "USD",
+    price: "199.00",
+    availability: "https://schema.org/InStock",
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.7",
+    reviewCount: "128",
+  },
+};
+---
+
+<JsonLd jsonLd={productSchema} />
+```
+
+## Tips
+
+- Prefer a single `JsonLd` block in your head. When multiple entities are needed, combine them with `@graph`.
+- Use canonical URLs in `url`, `mainEntityOfPage`, and `offers.url`.
+- Prefer generating values from your page/content data, not hardcoding.
+
+## Reference
+
+- [JsonLd component](/components/json-ld)
+- [schema-dts package](https://www.npmjs.com/package/schema-dts)
+- [Schema.org](https://schema.org/)

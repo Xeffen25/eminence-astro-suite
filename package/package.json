@@ -9,6 +9,7 @@
   "peerDependencies": {
     "@astrojs/sitemap": "catalog:peer",
     "astro": "catalog:peer",
+    "schema-dts": "catalog:peer",
     "sharp": "catalog:peer",
     "sharp-ico": "catalog:peer"
   },
@@ -17,6 +18,9 @@
       "optional": false
     },
     "@astrojs/sitemap": {
+      "optional": true
+    },
+    "schema-dts": {
       "optional": true
     },
     "sharp": {
@@ -29,6 +33,7 @@
   "devDependencies": {
     "@astrojs/sitemap": "catalog:",
     "astro": "catalog:",
+    "schema-dts": "catalog:",
     "sharp": "catalog:",
     "sharp-ico": "catalog:"
   }

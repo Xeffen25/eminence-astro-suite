@@ -13,6 +13,7 @@ catalog:
   "prettier": "^3.8.3"
   "prettier-plugin-astro": "^0.14.1"
   "prettier-plugin-organize-imports": "^4.3.0"
+  "schema-dts": "^1.1.5"
   "sharp": "^0.34.5"
   "sharp-ico": "^0.1.5"
   "typescript": "^5.9.3"
@@ -23,5 +24,6 @@ catalogs:
   peer:
     "@astrojs/sitemap": ">=3.0.0"
     "astro": ">=6.0.0"
+    "schema-dts": ">=1.1.0"
     "sharp": ">=0.34.0"
     "sharp-ico": ">=0.1.5"

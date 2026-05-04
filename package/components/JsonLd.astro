@@ -1,6 +1,6 @@
 ---
 interface Props {
-  jsonLd: string;
+  jsonLd: Record<string, unknown> | string;
 }
 
 const { jsonLd }: Props = Astro.props;
@@ -11,7 +11,10 @@ const ESCAPE_MAP: Record<string, string> = {
   "&": "\\u0026",
 };
 
-const escapedJsonLd = jsonLd.replace(
+const normalizedJsonLd =
+  typeof jsonLd === "string" ? jsonLd : JSON.stringify(jsonLd);
+
+const escapedJsonLd = normalizedJsonLd.replace(
   /[<>&]/g,
   (character) => ESCAPE_MAP[character],
 );
