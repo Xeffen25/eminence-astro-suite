@@ -4,28 +4,13 @@ import config from "virtual:eminence-astro-suite/head-tags";
 interface Props {
   /**
    * Absolute manifest URL rendered directly as the link href.
-   * @default `${Astro.site}/manifest.webmanifest`
+   * @default `headTags.manifest`
    * @example "https://example.com/manifest.webmanifest"
    */
   href?: string | URL;
 }
 
-const { href: propHref } = Astro.props;
-const configHref = config.manifest;
-const hrefValue = propHref !== undefined ? propHref : configHref;
-
-const href =
-  hrefValue === undefined || hrefValue === true
-    ? Astro.site !== undefined
-      ? new URL("/manifest.webmanifest", Astro.site)
-      : undefined
-    : hrefValue;
-
-if (href === undefined) {
-  console.error(
-    "[Eminence Astro Suite] Component Manifest did not resolve a href so it didn't render. Provide an `href` prop or set `Astro.site` so it can be resolved.",
-  );
-}
+const { href = config.manifest } = Astro.props;
 ---
 
 {href && <link rel="manifest" href={href} />}

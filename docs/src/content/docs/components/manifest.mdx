@@ -1,22 +1,25 @@
 ---
 title: Manifest
-description: Astro component that renders the web app manifest link tag. Manages explicit URLs, automatic site-based derivation, and opt-out behavior for PWA support.
+description: Astro component that renders the web app manifest link tag. Supports explicit URLs and integration-config fallback for PWA metadata.
 head:
   - tag: title
     content: Manifest - Component
 ---
 
-Manifest renders a `<link rel="manifest">` tag that points browsers to your web app manifest file. It is scoped to resolving and outputting the manifest URL and does not generate the manifest file itself.
+import { Code } from "@astrojs/starlight/components";
+import ManifestSource from "@package/components/Manifest.astro?raw";
+
+Manifest renders a `<link rel="manifest">` tag that points browsers to your web app manifest file. It only resolves and outputs the href for that tag and does not generate the manifest file itself.
 
 ## Props
 
-| prop   | type                       | default                                | required | description                                                                                                                                 |
-| ------ | -------------------------- | -------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `href` | `string \| URL \| boolean` | derived from `Astro.site` when omitted | No       | Absolute manifest URL. Pass `false` to suppress output. Pass `true` (or omit the prop) to derive `/manifest.webmanifest` from `Astro.site`. |
+| prop   | type            | default                         | required | description                                                                                                                           |
+| ------ | --------------- | ------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `href` | `string \| URL` | derived from integration config | No       | Absolute URL for the manifest file. When omitted, falls back to integration config (`headTags.manifest` resolved by the integration). |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 Input:
 
@@ -30,11 +33,22 @@ Output:
 <link rel="manifest" href="https://example.com/manifest.webmanifest" />
 ```
 
-### Auto usage
+### Automatic
 
-Derives the href from `Astro.site` by appending `/manifest.webmanifest`.
+Uses the integration-resolved default when `headTags.manifest` is enabled or a `manifest` config is provided.
 
 Input:
+
+```js
+// astro.config.mjs
+eminence({
+  headTags: {
+    manifest: true,
+  },
+});
+```
+
+or with explicit manifest config. See [Manifest Integration](./integration/manifest) for details on config options.
 
 ```astro
 <Manifest />
@@ -46,33 +60,19 @@ Output (assuming `Astro.site` is `https://example.com`):
 <link rel="manifest" href="https://example.com/manifest.webmanifest" />
 ```
 
-### Complete usage
-
-Input:
-
-```astro
-<Manifest href={new URL("https://cdn.example.com/app.webmanifest")} />
-```
-
-Output:
-
-```html
-<link rel="manifest" href="https://cdn.example.com/app.webmanifest" />
-```
-
 ## Decisions Made
 
-### Supports explicit opt-out with boolean false
+### Integration config resolves automatic defaults
 
-The `href` prop accepts `false` to explicitly disable output. This allows per-page suppression even when a default site URL could be derived.
+This component does not build manifest URLs itself. Automatic behavior is resolved upstream in the integration virtual config, then consumed here.
 
-### Uses Astro.site for automatic fallback
+### Renders nothing when no href is available
 
-When `href` is omitted or `true`, the component attempts to build the URL from `Astro.site` and `/manifest.webmanifest`. This keeps common setups zero-config.
+If neither the prop nor integration config provides a truthy href, the component emits no tag.
 
-### Renders nothing when no URL can be resolved
+## Source code
 
-If `href` is disabled or `Astro.site` is unavailable for derivation, the component emits no tag. This avoids invalid or broken manifest links in output.
+<Code code={ManifestSource} lang="astro" />
 
 ## Reference
 
