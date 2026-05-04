@@ -6,17 +6,20 @@ head:
     content: HumansTxt - Component
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import HumansTxtSource from "@package/components/HumansTxt.astro?raw";
+
 HumansTxt renders a `<link rel="author" type="text/plain">` tag that points to the project's `/humans.txt` file. It is scoped to resolving and outputting the href for that tag only and does not generate or validate the humans.txt file itself.
 
 ## Props
 
-| prop   | type                     | default                   | required | description                                                                                                                                                |
-| ------ | ------------------------ | ------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `href` | `string \| URL \| false` | derived from `Astro.site` | No       | Absolute URL for the humans.txt file. Pass `false` to suppress output. When omitted, falls back to integration config, then to `Astro.site + /humans.txt`. |
+| prop   | type            | default                   | required | description                                                                                                               |
+| ------ | --------------- | ------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `href` | `string \| URL` | derived from `Astro.site` | No       | Absolute URL for the humans.txt file. When omitted, falls back to integration config, then to `Astro.site + /humans.txt`. |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 Input:
 
@@ -30,11 +33,20 @@ Output:
 <link type="text/plain" rel="author" href="https://example.com/humans.txt" />
 ```
 
-### Auto usage
+### Automatic
 
-Derives the href from `Astro.site` by appending `/humans.txt`.
+Derives the href from `Astro.site` by appending `/humans.txt` if `headTags.humansTxt` is set to `true`.
 
 Input:
+
+```js
+// astro.config.mjs
+eminence({
+  headTags: {
+    humansTxt: true,
+  },
+});
+```
 
 ```astro
 <HumansTxt />
@@ -46,29 +58,7 @@ Output (assuming `Astro.site` is `https://example.com`):
 <link type="text/plain" rel="author" href="https://example.com/humans.txt" />
 ```
 
-### Complete usage
-
-Input:
-
-```astro
-<HumansTxt href={new URL("https://example.com/humans.txt")} />
-```
-
-Output:
-
-```html
-<link type="text/plain" rel="author" href="https://example.com/humans.txt" />
-```
-
 ## Decisions Made
-
-### Accepts string, URL, or false
-
-The `href` prop accepts a string, a URL object, or the literal `false`. Passing `false` is the explicit opt-out, suppressing the tag even when a site config or integration default exists.
-
-### Automatic derivation from Astro.site
-
-When no explicit `href` is given and the integration config does not supply a value, HumansTxt builds the URL by joining `/humans.txt` with `Astro.site`. This avoids boilerplate for projects following the conventional path.
 
 ### Renders nothing when no valid href can be resolved
 
@@ -76,7 +66,11 @@ If `href` is `false`, or if no explicit value or derivable site is available, th
 
 ### Integration config is checked before Astro.site
 
-The resolution order is: explicit prop → integration config → Astro.site derivation. This lets a project override the auto-derived URL at the integration level without touching every page.
+The resolution order is: explicit prop → integration config. This lets a project override the auto-derived URL at the integration level without touching every page.
+
+## Source code
+
+<Code code={HumansTxtSource} lang="astro" />
 
 ## Reference
 

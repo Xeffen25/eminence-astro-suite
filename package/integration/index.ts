@@ -81,13 +81,16 @@ export default function createIntegration(
             await generateRobotsTxt({ config, dir, options, logger });
           if (options.securityTxt !== false)
             await generateSecurityTxt({ config, dir, options, logger });
-          if (
-            options.headTags?.humansTxt === undefined &&
-            !assets.get("/humans.txt")
-          )
-            logger.warn(
-              "Recommendation: visit eminence-astro-suite.xeffen25.com/guides/humans-txt to learn how to create a humans.txt for your Astro site and why you should do it.",
-            );
+          if (options.headTags?.humansTxt === undefined) {
+            if (!assets.get("/humans.txt"))
+              logger.warn(
+                "Recommendation: visit eminence-astro-suite.xeffen25.com/guides/humans-txt to learn how to create a humans.txt for your Astro site and why you should do it.",
+              );
+            else
+              logger.warn(
+                "Recommendation: humans.txt was found. Set headTags.humansTxt to true to generate the HumansTxt tag, or set it to false to suppress this warning.",
+              );
+          }
         } catch (error) {
           const message =
             error instanceof Error ? error.message : String(error);

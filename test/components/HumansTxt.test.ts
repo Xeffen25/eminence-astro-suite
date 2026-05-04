@@ -9,17 +9,19 @@ describe("Component HumansTxt", () => {
     container = await experimental_AstroContainer.create();
   });
 
-  it("renders provided href string as-is", async () => {
+  // Basic usage
+  it("renders a humans.txt link tag with an explicit href string", async () => {
     const result = await container.renderToString(HumansTxt, {
-      props: { href: "https://cdn.example.com/custom-humans.txt" },
+      props: { href: "https://example.com/humans.txt" },
     });
 
     expect(result).toBe(
-      '<link rel="author" href="https://cdn.example.com/custom-humans.txt" type="text/plain">',
+      '<link rel="author" href="https://example.com/humans.txt" type="text/plain">',
     );
   });
 
-  it("renders provided href URL instance", async () => {
+  // Complete usage
+  it("renders a humans.txt link tag with a URL instance href", async () => {
     const result = await container.renderToString(HumansTxt, {
       props: { href: new URL("https://example.com/humans.txt") },
     });
@@ -27,5 +29,23 @@ describe("Component HumansTxt", () => {
     expect(result).toBe(
       '<link rel="author" href="https://example.com/humans.txt" type="text/plain">',
     );
+  });
+
+  // Edge cases
+
+  it("renders nothing when href is explicitly false", async () => {
+    const result = await container.renderToString(HumansTxt, {
+      props: { href: false },
+    });
+
+    expect(result).toBe("");
+  });
+
+  it("renders nothing when no prop and Astro.site is unavailable", async () => {
+    const result = await container.renderToString(HumansTxt, {
+      props: {},
+    });
+
+    expect(result).toBe("");
   });
 });

@@ -52,9 +52,7 @@ type DefaultedHeadTagsKeys =
   | "charset"
   | "viewport"
   | "titleTemplate"
-  | "generator"
-  | "manifest"
-  | "humansTxt";
+  | "generator";
 
 /**
  * The resolved shape of the `virtual:eminence-astro-suite/head-tags` virtual module.
@@ -71,9 +69,10 @@ export type ResolvedHeadTagsConfig = Omit<
   [K in DefaultedHeadTagsKeys]-?: NonNullable<HeadTagsOptions[K]>;
 } & {
   icons: IconTag[];
-  humansTxt: ComponentProps<typeof HumansTxt>["href"];
-  manifest: ComponentProps<typeof Manifest>["href"];
   themeColor?: ComponentProps<typeof ThemeColor>;
+} & {
+  humansTxt?: ComponentProps<typeof HumansTxt>["href"];
+  manifest?: ComponentProps<typeof Manifest>["href"];
 };
 
 const resolveDefaultHref = (path: string, site?: string): string => {
@@ -91,8 +90,8 @@ const resolveDefaultHref = (path: string, site?: string): string => {
 const resolveHumansTxtHref = (
   humansTxt: HeadTagsOptions["humansTxt"],
   site?: string,
-): ComponentProps<typeof HumansTxt>["href"] => {
-  if (humansTxt === undefined || humansTxt === false) {
+): ComponentProps<typeof HumansTxt>["href"] | undefined => {
+  if (!humansTxt) {
     return undefined;
   }
 
@@ -112,7 +111,7 @@ const resolveManifestHref = (
   integrationManifest: IntegrationInput["manifest"],
   site?: string,
 ): ComponentProps<typeof Manifest>["href"] => {
-  if (manifest === false) {
+  if (!manifest) {
     return undefined;
   }
 

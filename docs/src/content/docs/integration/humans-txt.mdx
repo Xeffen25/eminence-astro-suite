@@ -6,78 +6,21 @@ head:
     content: humans.txt - Integration
 ---
 
-The humans.txt integration feature validates that a `humans.txt` file is present in your build output after `astro build` completes. It does not generate the file — you are responsible for placing it in your `public/` directory so Astro copies it to the build output automatically.
+The humans.txt integration feature is a special case compared to the other integration features. This one only runs reminder checks when `headTags.humansTxt` is not set. It does not generate the file — you are responsible for placing `humans.txt` in `public/` so Astro copies it to the build output.
 
-If `head.humansTxt` is omitted from your integration config, a warning is logged recommending you add it. If a `humans.txt` file is not found in the build output, a warning is also logged.
+- If `headTags.humansTxt` is `undefined`, the integration checks whether `humans.txt` exists in the build output.
+- If the file is missing, it warns you to add a humans.txt file.
+- If the file exists, it recommends setting `headTags.humansTxt` to `true` (generate the tag) or `false` (suppress the warning).
 
-The `HumansTxt` component handles the `<link rel="author">` tag in your document head and is configured separately.
+This approach encourages authors to create a `humans.txt` file while giving them control over how the integration handles it. By default, it promotes best practices without enforcing them, allowing for flexibility based on individual project needs. I recommend adding a `humans.txt` to your site to provide authorship and site information in a standardized way, at least credit yourself or your team as the creator of the site!
 
 ## Options
 
-The humans.txt validation behavior is controlled by the `head.humansTxt` option on the integration. This option is shared with the `HumansTxt` component's default resolution.
+The reminder behavior is controlled by `headTags.humansTxt`.
 
-| option           | type                     | default | description                                                                                   |
-| ---------------- | ------------------------ | ------- | --------------------------------------------------------------------------------------------- |
-| `head.humansTxt` | `string \| URL \| false` | -       | URL for the humans.txt link tag. Pass `false` to opt out of the link tag and skip validation. |
-
-## Usage & Examples
-
-### Basic usage
-
-Place `humans.txt` in your `public/` directory and configure the integration with the URL.
-
-```txt
-// public/humans.txt
-/* TEAM */
-Developer: Jane Smith
-Contact: jane@example.com
-Location: Paris, France
-
-/* SITE */
-Last update: 2026-04-24
-Language: English
-```
-
-```ts
-// astro.config.mjs
-eminence({
-  head: {
-    humansTxt: "https://example.com/humans.txt",
-  },
-});
-```
-
-At build time, the integration confirms that `humans.txt` exists in the build output.
-
-### Explicit opt-out
-
-```ts
-eminence({
-  head: {
-    humansTxt: false,
-  },
-});
-```
-
-No validation is performed and no `<link rel="author">` tag is injected by the `HumansTxt` component.
-
-## Decisions Made
-
-### Validation only, no generation
-
-The integration does not write a `humans.txt` file. The file must be provided in `public/` so Astro includes it in the build output as a static asset. The integration only checks for its presence and warns if it is missing.
-
-### Warning on missing file, not error
-
-A missing `humans.txt` in the build output is treated as a warning rather than a fatal error. This avoids blocking the build for a non-critical file while still surfacing the issue.
-
-### Shares configuration with the `HumansTxt` component
-
-The `head.humansTxt` option controls both the link tag rendered by the `HumansTxt` component and the integration validation. Setting it to `false` disables both.
-
-### Setting `false` is the explicit opt-out
-
-Passing `head.humansTxt: false` disables both the link tag and the build-time validation. Omitting it entirely logs a recommendation warning.
+| option               | type                       | default     | description                                                                                                  |
+| -------------------- | -------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------ |
+| `headTags.humansTxt` | `string \| URL \| boolean` | `undefined` | `undefined` enables reminder checks. `true` generates the default tag. `false` suppresses reminder warnings. |
 
 ## Reference
 
