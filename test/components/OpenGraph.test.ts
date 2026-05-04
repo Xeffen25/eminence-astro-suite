@@ -8,16 +8,24 @@ describe("Component OpenGraph", () => {
   beforeEach(async () => {
     container = await experimental_AstroContainer.create();
   });
+  // Basic
+  it("renders og:type, og:title, og:url, and og:site_name for basic input", async () => {
+    const result = await container.renderToString(OpenGraph, {
+      props: {
+        title: "Home",
+        url: "https://example.com/",
+        siteName: "Example",
+      },
+    });
 
-  // ── Core tags ────────────────────────────────────────────────────────────
-
-  it("renders og:type=website with no type-driving object", async () => {
-    const result = await container.renderToString(OpenGraph, { props: {} });
-
-    expect(result).toBe('<meta property="og:type" content="website">');
+    expect(result).toBe(
+      '<meta property="og:type" content="website"><meta property="og:title" content="Home"><meta property="og:url" content="https://example.com/"><meta property="og:site_name" content="Example">',
+    );
   });
 
-  it("keeps og:url omitted when url is not provided and no site context is available", async () => {
+  // Automatic
+  it("omits og:url when url prop is absent and Astro.site is not configured", async () => {
+    // container has no Astro.site -> url is omitted
     const result = await container.renderToString(OpenGraph, {
       props: { title: "Home" },
     });
@@ -25,6 +33,44 @@ describe("Component OpenGraph", () => {
     expect(result).toBe(
       '<meta property="og:type" content="website"><meta property="og:title" content="Home">',
     );
+  });
+
+  // Complete
+  it("renders all fields and article namespace tags when fully specified", async () => {
+    const result = await container.renderToString(OpenGraph, {
+      props: {
+        title: "My Article",
+        url: "https://example.com/posts/1",
+        description: "Open Graph overview",
+        siteName: "Example",
+        locale: "en_US",
+        localeAlternate: ["es_ES", "fr_FR"],
+        image: {
+          src: "https://example.com/og.png",
+          width: 1200,
+          height: 630,
+          alt: "Banner",
+        },
+        article: {
+          publishedTime: "2026-01-01T00:00:00Z",
+          authors: ["https://example.com/author"],
+          section: "Tech",
+          tags: ["astro", "seo"],
+        },
+      },
+    });
+
+    expect(result).toBe(
+      '<meta property="og:type" content="article"><meta property="og:title" content="My Article"><meta property="og:url" content="https://example.com/posts/1"><meta property="og:description" content="Open Graph overview"><meta property="og:site_name" content="Example"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:image" content="https://example.com/og.png"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Banner"><meta property="article:published_time" content="2026-01-01T00:00:00Z"><meta property="article:author" content="https://example.com/author"><meta property="article:section" content="Tech"><meta property="article:tag" content="astro"><meta property="article:tag" content="seo">',
+    );
+  });
+
+  // ── Core tags ────────────────────────────────────────────────────────────
+
+  it("renders og:type=website with no type-driving object", async () => {
+    const result = await container.renderToString(OpenGraph, { props: {} });
+
+    expect(result).toBe('<meta property="og:type" content="website">');
   });
 
   it("renders core tags when title, url, description, and siteName are provided", async () => {
@@ -534,6 +580,33 @@ describe("Component OpenGraph", () => {
 
     expect(result).toBe(
       '<meta property="og:type" content="website"><meta property="product:sale_price:amount" content="19.99"><meta property="product:sale_price:currency" content="EUR"><meta property="product:sale_price_dates:start" content="2026-01-01"><meta property="product:sale_price_dates:end" content="2026-01-31">',
+    );
+  });
+
+  it("uses an explicit type prop instead of the inferred type", async () => {
+    const result = await container.renderToString(OpenGraph, {
+      props: {
+        type: "website",
+        article: { section: "Tech" },
+      },
+    });
+
+    expect(result).toBe(
+      '<meta property="og:type" content="website"><meta property="article:section" content="Tech">',
+    );
+  });
+
+  it("omits og:type when the type prop is false", async () => {
+    const result = await container.renderToString(OpenGraph, {
+      props: {
+        type: false,
+        title: "Home",
+        article: { section: "Tech" },
+      },
+    });
+
+    expect(result).toBe(
+      '<meta property="og:title" content="Home"><meta property="article:section" content="Tech">',
     );
   });
 

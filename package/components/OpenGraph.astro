@@ -18,6 +18,10 @@ import config from "virtual:eminence-astro-suite/head-tags";
 type BaseProps = {
   title: string;
   /**
+   * Overrides inferred `og:type`; set to `false` to omit the tag entirely.
+   */
+  type?: string | false;
+  /**
    * Defaults to the current page URL when `Astro.site` is configured.
    */
   url?: string | URL;
@@ -137,6 +141,7 @@ type Props = BaseProps & TypedVariant;
 
 const {
   title,
+  type,
   url,
   description,
   siteName = config.openGraphSiteName,
@@ -161,7 +166,7 @@ const inferredUrl = Astro.site
   : undefined;
 const resolvedUrl = url ? toHref(url) : inferredUrl;
 
-const ogType = (() => {
+const inferredType = (() => {
   // Canonical OG types take precedence; non-canonical namespaces keep website.
   if (article) return "article";
   if (book) return "book";
@@ -170,9 +175,10 @@ const ogType = (() => {
   if (videoType) return `video.${videoType.subtype}`;
   return "website";
 })();
+const resolvedType = type === undefined ? inferredType : type;
 ---
 
-<meta property="og:type" content={ogType} />
+{resolvedType !== false && <meta property="og:type" content={resolvedType} />}
 {title && <meta property="og:title" content={title} />}
 {resolvedUrl && <meta property="og:url" content={resolvedUrl} />}
 {description && <meta property="og:description" content={description} />}
