@@ -39,7 +39,206 @@ describe("Integration - WebManifest", () => {
     logger: logger as unknown as IntegrationRuntimeContext["logger"],
   });
 
-  it("writes a valid manifest.webmanifest with all fields", async () => {
+  // Basic
+  it("writes a manifest from the basic usage configuration", async () => {
+    await generateManifest(
+      createContext({
+        name: "My App",
+        start_url: "/",
+        display: "standalone",
+        icons: [
+          { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+          { src: "/icon.png", sizes: "512x512", type: "image/png" },
+        ],
+      }),
+    );
+
+    const raw = await readFile(
+      join(outputDir, "manifest.webmanifest"),
+      "utf-8",
+    );
+    const result = JSON.parse(raw);
+
+    expect(result).toEqual({
+      name: "My App",
+      start_url: "/",
+      display: "standalone",
+      icons: [
+        { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+        { src: "/icon.png", sizes: "512x512", type: "image/png" },
+      ],
+    });
+    expect(logger.info).toHaveBeenCalledWith(
+      `Generated "${WEB_MANIFEST_RELATIVE_PATH}"`,
+    );
+  });
+
+  // Automatic
+  it("auto-populates manifest icons from the default icon set when icons are omitted", async () => {
+    await generateManifest(
+      createContext(
+        {
+          name: "My App",
+          start_url: "/",
+          display: "standalone",
+        },
+        {
+          icons: {
+            source: "src/assets/logo.svg",
+          },
+        },
+      ),
+    );
+
+    const raw = await readFile(
+      join(outputDir, "manifest.webmanifest"),
+      "utf-8",
+    );
+    const result = JSON.parse(raw);
+
+    expect(result).toEqual({
+      name: "My App",
+      start_url: "/",
+      display: "standalone",
+      icons: [
+        { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
+        { src: "/icon.png", sizes: "512x512", type: "image/png" },
+      ],
+    });
+  });
+
+  // Docs: Customizing manifest icons from the icons integration
+  it("generates manifest icons with inferred metadata from icon definition", async () => {
+    await generateManifest(
+      createContext(
+        {
+          name: "My App",
+          start_url: "/",
+          display: "standalone",
+        },
+        {
+          icons: {
+            source: "src/assets/logo.svg",
+            "icon-192.png": false,
+            "icon.png": false,
+            "icon-192x192.png": {
+              size: 192,
+              tag: { rel: "icon" },
+              manifest: true,
+            },
+            "icon-512.png": {
+              size: 512,
+              tag: { rel: "icon" },
+              manifest: { purpose: "maskable" },
+            },
+            "badge.png": {
+              size: 96,
+              tag: { rel: "icon" },
+              manifest: { src: "/brand/badge.png", purpose: "monochrome" },
+            },
+          },
+        },
+      ),
+    );
+
+    const raw = await readFile(
+      join(outputDir, "manifest.webmanifest"),
+      "utf-8",
+    );
+    const result = JSON.parse(raw);
+
+    expect(result.icons).toEqual([
+      { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      {
+        src: "/icon-512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
+        src: "/brand/badge.png",
+        sizes: "96x96",
+        type: "image/png",
+        purpose: "monochrome",
+      },
+    ]);
+  });
+
+  // Docs: Customizing with manifest.icons override
+  it("overrides auto-populated icons by matching src when manifest.icons are provided", async () => {
+    await generateManifest(
+      createContext(
+        {
+          name: "My App",
+          start_url: "/",
+          display: "standalone",
+          icons: [
+            { src: "/icon-192x192.png", sizes: "200x200", type: "image/webp" },
+            { src: "/custom.png", sizes: "1024x1024", type: "image/png" },
+          ],
+        },
+        {
+          icons: {
+            source: "src/assets/logo.svg",
+            "icon-192.png": false,
+            "icon.png": false,
+            "icon-192x192.png": {
+              size: 192,
+              tag: { rel: "icon" },
+              manifest: true,
+            },
+            "icon-512.png": { size: 512, tag: { rel: "icon" }, manifest: true },
+          },
+        },
+      ),
+    );
+
+    const raw = await readFile(
+      join(outputDir, "manifest.webmanifest"),
+      "utf-8",
+    );
+    const result = JSON.parse(raw);
+
+    expect(result.icons).toEqual([
+      { src: "/icon-192x192.png", sizes: "200x200", type: "image/webp" },
+      { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
+      { src: "/custom.png", sizes: "1024x1024", type: "image/png" },
+    ]);
+  });
+
+  // Docs: Using short_name and display_override
+  it("writes a manifest with short_name and display_override", async () => {
+    await generateManifest(
+      createContext({
+        short_name: "App",
+        start_url: "/",
+        display_override: ["window-controls-overlay", "standalone"],
+        icons: [
+          { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+        ],
+      }),
+    );
+
+    const raw = await readFile(
+      join(outputDir, "manifest.webmanifest"),
+      "utf-8",
+    );
+    const result = JSON.parse(raw);
+
+    expect(result.short_name).toBe("App");
+    expect(result.display_override).toEqual([
+      "window-controls-overlay",
+      "standalone",
+    ]);
+    expect(result).not.toHaveProperty("name");
+    expect(result).not.toHaveProperty("display");
+    expect(logger.info).toHaveBeenCalledWith(
+      `Generated "${WEB_MANIFEST_RELATIVE_PATH}"`,
+    );
+  });
+
+  // Docs: Complete usage
+  it("writes a manifest from the complete usage configuration", async () => {
     await generateManifest(
       createContext({
         name: "My App",
@@ -47,12 +246,12 @@ describe("Integration - WebManifest", () => {
         start_url: "/",
         display: "standalone",
         icons: [
-          { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-          { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+          { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+          { src: "/icon.png", sizes: "512x512", type: "image/png" },
         ],
-        description: "A great app",
+        description: "A great web app",
         background_color: "#ffffff",
-        theme_color: "#000000",
+        theme_color: "#1a1a2e",
         scope: "/",
         orientation: "portrait",
         id: "my-app",
@@ -62,6 +261,7 @@ describe("Integration - WebManifest", () => {
             src: "/screenshots/home.png",
             sizes: "1280x720",
             type: "image/png",
+            form_factor: "wide",
           },
         ],
         shortcuts: [{ name: "New Note", url: "/notes/new" }],
@@ -70,7 +270,7 @@ describe("Integration - WebManifest", () => {
         file_handlers: [
           { action: "/open-file", accept: { "text/plain": [".txt"] } },
         ],
-        protocol_handlers: [{ protocol: "web+example", url: "/handle?url=%s" }],
+        protocol_handlers: [{ protocol: "web+myapp", url: "/handle?url=%s" }],
         share_target: {
           action: "/share",
           method: "POST",
@@ -94,9 +294,9 @@ describe("Integration - WebManifest", () => {
     expect(result.start_url).toBe("/");
     expect(result.display).toBe("standalone");
     expect(result.icons).toHaveLength(2);
-    expect(result.description).toBe("A great app");
+    expect(result.description).toBe("A great web app");
     expect(result.background_color).toBe("#ffffff");
-    expect(result.theme_color).toBe("#000000");
+    expect(result.theme_color).toBe("#1a1a2e");
     expect(result.scope).toBe("/");
     expect(result.orientation).toBe("portrait");
     expect(result.id).toBe("my-app");
@@ -119,191 +319,7 @@ describe("Integration - WebManifest", () => {
     );
   });
 
-  it("writes a minimal manifest using name and display", async () => {
-    await generateManifest(
-      createContext({
-        name: "Minimal App",
-        start_url: "/",
-        display: "standalone",
-        icons: [
-          { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-          { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
-        ],
-      }),
-    );
-
-    const raw = await readFile(
-      join(outputDir, "manifest.webmanifest"),
-      "utf-8",
-    );
-    const result = JSON.parse(raw);
-
-    expect(result.name).toBe("Minimal App");
-    expect(result.start_url).toBe("/");
-    expect(result.display).toBe("standalone");
-    expect(result.icons).toHaveLength(2);
-    expect(result).not.toHaveProperty("short_name");
-    expect(logger.info).toHaveBeenCalledWith(
-      `Generated "${WEB_MANIFEST_RELATIVE_PATH}"`,
-    );
-  });
-
-  it("writes a minimal manifest using short_name and display_override", async () => {
-    await generateManifest(
-      createContext({
-        short_name: "App",
-        start_url: "/",
-        display_override: ["window-controls-overlay", "standalone"],
-        icons: [
-          { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-          { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
-        ],
-      }),
-    );
-
-    const raw = await readFile(
-      join(outputDir, "manifest.webmanifest"),
-      "utf-8",
-    );
-    const result = JSON.parse(raw);
-
-    expect(result.short_name).toBe("App");
-    expect(result.display_override).toEqual([
-      "window-controls-overlay",
-      "standalone",
-    ]);
-    expect(result).not.toHaveProperty("name");
-    expect(result).not.toHaveProperty("display");
-    expect(logger.info).toHaveBeenCalledWith(
-      `Generated "${WEB_MANIFEST_RELATIVE_PATH}"`,
-    );
-  });
-
-  it("auto-populates manifest icons from keyed icon entries when icons are omitted", async () => {
-    await generateManifest(
-      createContext(
-        {
-          name: "Auto Icons App",
-          start_url: "/",
-          display: "standalone",
-        },
-        {
-          icons: {
-            source: "/assets/logo.png",
-            // Disable default manifest icons to isolate explicit entries
-            "favicon.ico": false,
-            "favicon.png": false,
-            "apple-touch-icon.png": false,
-            "icon-192.png": false,
-            "icon-192x192.png": {
-              size: 192,
-              tag: { rel: "icon" },
-              manifest: true,
-            },
-            "icon.png": { size: 512, tag: { rel: "icon" }, manifest: true },
-          },
-        },
-      ),
-    );
-
-    const raw = await readFile(
-      join(outputDir, "manifest.webmanifest"),
-      "utf-8",
-    );
-    const result = JSON.parse(raw);
-
-    expect(result.icons).toEqual([
-      { src: "/icon.png", sizes: "512x512", type: "image/png" },
-      { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
-    ]);
-  });
-
-  it("merges explicit manifest icons over auto-populated generated icons", async () => {
-    await generateManifest(
-      createContext(
-        {
-          name: "Explicit Icons App",
-          start_url: "/",
-          display: "standalone",
-          icons: [
-            { src: "/explicit.png", sizes: "1024x1024", type: "image/png" },
-          ],
-        },
-        {
-          icons: {
-            source: "/assets/logo.png",
-            // Disable default manifest icons to isolate explicit entries
-            "favicon.ico": false,
-            "favicon.png": false,
-            "apple-touch-icon.png": false,
-            "icon-192.png": false,
-            "icon.png": false,
-            "icon-192x192.png": {
-              size: 192,
-              tag: { rel: "icon" },
-              manifest: true,
-            },
-          },
-        },
-      ),
-    );
-
-    const raw = await readFile(
-      join(outputDir, "manifest.webmanifest"),
-      "utf-8",
-    );
-    const result = JSON.parse(raw);
-
-    expect(result.icons).toEqual([
-      { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
-      { src: "/explicit.png", sizes: "1024x1024", type: "image/png" },
-    ]);
-  });
-
-  it("overrides auto-populated generated icons when manifest icons share the same src", async () => {
-    await generateManifest(
-      createContext(
-        {
-          name: "Explicit Icons App",
-          start_url: "/",
-          display: "standalone",
-          icons: [
-            {
-              src: "/icon-192x192.png",
-              sizes: "200x200",
-              type: "image/custom",
-            },
-          ],
-        },
-        {
-          icons: {
-            source: "/assets/logo.png",
-            // Disable default manifest icons to isolate explicit entries
-            "favicon.ico": false,
-            "favicon.png": false,
-            "apple-touch-icon.png": false,
-            "icon-192.png": false,
-            "icon.png": false,
-            "icon-192x192.png": {
-              size: 192,
-              tag: { rel: "icon" },
-              manifest: true,
-            },
-          },
-        },
-      ),
-    );
-
-    const raw = await readFile(
-      join(outputDir, "manifest.webmanifest"),
-      "utf-8",
-    );
-    const result = JSON.parse(raw);
-
-    expect(result.icons).toEqual([
-      { src: "/icon-192x192.png", sizes: "200x200", type: "image/custom" },
-    ]);
-  });
+  // Edge cases
 
   it("logs info when manifest is false and file already exists", async () => {
     await writeFile(join(outputDir, "manifest.webmanifest"), "{}", "utf-8");
@@ -338,8 +354,8 @@ describe("Integration - WebManifest", () => {
       start_url: "/",
       display: "standalone",
       icons: [
-        { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-        { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+        { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+        { src: "/icon.png", sizes: "512x512", type: "image/png" },
       ],
     });
 
@@ -358,7 +374,7 @@ describe("Integration - WebManifest", () => {
         start_url: "/",
         display: "standalone",
         icons: [
-          { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+          { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
         ],
       }),
     );

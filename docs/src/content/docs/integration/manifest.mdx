@@ -6,9 +6,12 @@ head:
     content: manifest.webmanifest - Integration
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import ManifestSource from "@package/integration/manifest.ts?raw";
+
 The manifest feature generates a `/manifest.webmanifest` file in your build output during `astro build`. It is configured through the `manifest` option on the integration. The output is a JSON file serialized from the options you provide.
 
-Chromium PWA requirements (`name` or `short_name`, `display` or `display_override`, `start_url`, `icons`) are enforced as TypeScript compile-time constraints rather than runtime errors. Setting `prefer_related_applications: true` is a type error.
+Chromium PWA requirements (`name` or `short_name`, `display` or `display_override`, and `start_url`) are enforced as TypeScript compile-time constraints rather than runtime errors. Setting `prefer_related_applications: true` is a type error.
 
 If `manifest` is omitted from your integration config, a warning is logged recommending you add it. If `manifest: false` is set, no file is generated and no warning is logged.
 
@@ -25,7 +28,7 @@ If `manifest` is omitted from your integration config, a warning is logged recom
 | `start_url`                   | `string`                                  | -       | Yes      | URL loaded when the app is launched.                                                                                                                  |
 | `display`                     | `string`                                  | -       | Yes\*\*  | Display mode for the app. Common values: `"standalone"`, `"fullscreen"`, `"minimal-ui"`, `"browser"`. Required unless `display_override` is provided. |
 | `display_override`            | `string[]`                                | -       | Yes\*\*  | Ordered list of display mode candidates. Required unless `display` is provided.                                                                       |
-| `icons`                       | `WebManifestIconItem[]`                   | -       | No       | Icons to represent the app. If omitted and the icons integration is active, auto-populated from generated 192 and 512 icons.                          |
+| `icons`                       | `WebManifestIconItem[]`                   | -       | No       | Icons to represent the app. If omitted and the icons feature is active, auto-populated from generated 192 and 512 icons.                              |
 | `prefer_related_applications` | `false`                                   | -       | No       | Must be `false` or omitted. Setting `true` is a TypeScript error.                                                                                     |
 | `description`                 | `string`                                  | -       | No       | Short description of the app's purpose.                                                                                                               |
 | `background_color`            | `string`                                  | -       | No       | Background color for the splash screen before the stylesheet loads.                                                                                   |
@@ -125,9 +128,9 @@ If `manifest` is omitted from your integration config, a warning is logged recom
 | `type`             | `string` | No       | Module type. Use `"module"` for ES module service workers. |
 | `update_via_cache` | `string` | No       | Cache behavior for service worker updates.                 |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 ```ts
 // astro.config.mjs
@@ -160,7 +163,7 @@ Output at `/manifest.webmanifest`:
 
 ### Auto icons from the icons integration
 
-When the icons integration is configured, you can omit `icons` from `manifest` entirely. The 192×192 and 512×512 generated icons are automatically included.
+When the icons integration is configured, you can omit `icons` from `manifest` entirely. The default icon set includes `icon-192.png` (192x192) and `icon.png` (512x512), both marked for manifest inclusion, and are automatically added.
 
 ```ts
 eminence({
@@ -183,7 +186,7 @@ The generated `manifest.webmanifest` will include:
   "start_url": "/",
   "display": "standalone",
   "icons": [
-    { "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/icon.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
@@ -191,14 +194,18 @@ The generated `manifest.webmanifest` will include:
 
 ### Customizing manifest icons from the icons integration
 
-Manifest icon auto-population now scans the file-keyed `icons` entries. Any entry with `manifest: true` or a `ManifestIconOptions` object is added to `manifest.webmanifest` using its inferred path, inferred size metadata, and inferred MIME type.
+Manifest icon auto-population scans the file-keyed `icons` entries. Any entry with `manifest: true` or a `ManifestIconOptions` object is added to `manifest.webmanifest`. The `src` defaults to the file's public path, `sizes` and `type` are inferred from the icon definition, and `purpose` is taken from the manifest options.
+
+Set default entries to `false` to exclude them from the output when you want a focused result:
 
 ```ts
 eminence({
   icons: {
     source: "src/assets/logo.svg",
+    "icon-192.png": false,
+    "icon.png": false,
     "icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
-    "icon.png": {
+    "icon-512.png": {
       size: 512,
       tag: { rel: "icon" },
       manifest: { purpose: "maskable" },
@@ -221,37 +228,53 @@ Resulting `icons` array in `manifest.webmanifest`:
 
 ```json
 [
+  { "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
   {
-    "src": "/icon-maskable.png",
+    "src": "/icon-512.png",
     "sizes": "512x512",
     "type": "image/png",
     "purpose": "maskable"
   },
-  { "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
-  { "src": "/icon.png", "sizes": "512x512", "type": "image/png" },
-  { "src": "/badge.png", "purpose": "monochrome" }
+  {
+    "src": "/brand/badge.png",
+    "sizes": "96x96",
+    "type": "image/png",
+    "purpose": "monochrome"
+  }
 ]
 ```
 
-You can also provide `manifest.icons` directly. Those entries are merged over icons resolved from the integration using `src` as the key, so matching `src` values override generated metadata:
+You can also provide `manifest.icons` directly. Those entries are merged over icons resolved from the integration using `src` as the key, so matching `src` values override auto-populated metadata:
 
 ```ts
 eminence({
   icons: {
     source: "src/assets/logo.svg",
+    "icon-192.png": false,
+    "icon.png": false,
     "icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
-    "icon.png": { size: 512, tag: { rel: "icon" }, manifest: true },
+    "icon-512.png": { size: 512, tag: { rel: "icon" }, manifest: true },
   },
   manifest: {
     name: "My App",
     start_url: "/",
     display: "standalone",
     icons: [
-      { src: "/custom-192.png", sizes: "192x192", type: "image/png" },
-      { src: "/custom-512.png", sizes: "512x512", type: "image/png" },
+      { src: "/icon-192x192.png", sizes: "200x200", type: "image/webp" },
+      { src: "/custom.png", sizes: "1024x1024", type: "image/png" },
     ],
   },
 });
+```
+
+Resulting `icons` array in `manifest.webmanifest`:
+
+```json
+[
+  { "src": "/icon-192x192.png", "sizes": "200x200", "type": "image/webp" },
+  { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+  { "src": "/custom.png", "sizes": "1024x1024", "type": "image/png" }
+]
 ```
 
 ### Using `short_name` and `display_override`
@@ -267,7 +290,7 @@ eminence({
 });
 ```
 
-### Complete usage
+### Complete
 
 ```ts
 eminence({
@@ -310,6 +333,9 @@ eminence({
     launch_handler: {
       client_mode: "navigate-existing",
     },
+    note_taking: { new_note_shortcut: { url: "/notes/new" } },
+    scope_extensions: [{ origin: "https://example.com" }],
+    serviceworker: { src: "/sw.js" },
   },
 });
 ```
@@ -328,7 +354,7 @@ No file is generated and no warning is logged.
 
 ### PWA requirements are enforced by TypeScript, not at runtime
 
-Chromium's required manifest members — at least one of `name` or `short_name`, at least one of `display` or `display_override`, `start_url`, and `icons` — are modeled as TypeScript intersection and union types. Invalid configurations are caught at authoring time without runtime overhead or confusing build errors.
+Chromium's required manifest members — at least one of `name` or `short_name`, at least one of `display` or `display_override`, and `start_url` — are modeled as TypeScript intersection and union types. Invalid configurations are caught at authoring time without runtime overhead or confusing build errors.
 
 `prefer_related_applications` is typed as `false` only, making `true` a compile-time error. This reflects the Chromium requirement that the field must be absent or explicitly `false` for the app to be installable.
 
@@ -355,6 +381,10 @@ If `/manifest.webmanifest` is already present in the build output, the integrati
 ### Setting `false` is the explicit opt-out
 
 Passing `manifest: false` disables the feature cleanly. Omitting `manifest` logs a recommendation warning so new projects are nudged to make an intentional choice.
+
+## Source code
+
+<Code code={ManifestSource} lang="ts" title="manifest.ts" />
 
 ## Reference
 
