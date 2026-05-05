@@ -22,9 +22,11 @@ See the [`@astrojs/sitemap` documentation](https://docs.astro.build/en/guides/in
 
 ## Usage & Examples
 
-### Basic usage
+### Basic
 
-Enables sitemap generation with default options. Requires `site` to be set in your Astro config.
+Enables sitemap generation with explicit default options. Requires `site` to be set in your Astro config.
+
+Input:
 
 ```ts
 // astro.config.mjs
@@ -33,9 +35,31 @@ eminence({
 });
 ```
 
-### With options
+Output: `@astrojs/sitemap` is registered with default options and generates `sitemap-index.xml` in your build output.
+
+### Automatic
+
+Omitting `sitemap` entirely is equivalent to `sitemap: {}` — the feature is enabled with default options.
+
+Input:
 
 ```ts
+// astro.config.mjs
+eminence({
+  // sitemap not provided
+});
+```
+
+Output: Same as Basic — `@astrojs/sitemap` is registered with default options. If `@astrojs/sitemap` is not installed, the build fails with a peer dependency error.
+
+### Complete
+
+All available options provided explicitly.
+
+Input:
+
+```ts
+// astro.config.mjs
 eminence({
   sitemap: {
     filter: (page) => !page.includes("/private/"),
@@ -46,19 +70,20 @@ eminence({
 });
 ```
 
+Output: `@astrojs/sitemap` is registered with the provided options. Pages matching the filter are excluded from the generated sitemap.
+
 ### Explicit opt-out
 
+Input:
+
 ```ts
+// astro.config.mjs
 eminence({
   sitemap: false,
 });
 ```
 
-No sitemap integration is registered and no error is thrown if `@astrojs/sitemap` is not installed.
-
-### Omitting the option
-
-Omitting `sitemap` entirely is equivalent to `sitemap: {}` — the feature is enabled with default options. If `@astrojs/sitemap` is not installed, the build will fail with a peer dependency error.
+Output: No sitemap integration is registered. `@astrojs/sitemap` does not need to be installed.
 
 ## Decisions Made
 
