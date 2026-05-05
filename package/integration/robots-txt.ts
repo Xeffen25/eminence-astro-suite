@@ -127,9 +127,14 @@ const normalizeSitemapValue = (
 ): string => {
   const entry = assertNonEmptyString(value, "sitemap");
 
+  let parsed: URL | null = null;
   try {
-    const parsed = new URL(entry);
+    parsed = new URL(entry);
+  } catch {
+    // not an absolute URL; treat as a site-relative path
+  }
 
+  if (parsed !== null) {
     if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
       throw new Error(
         `Invalid sitemap value "${entry}": expected an http(s) URL or relative path.`,
@@ -137,15 +142,15 @@ const normalizeSitemapValue = (
     }
 
     return parsed.href;
-  } catch {
-    if (!site) {
-      throw new Error(
-        `Invalid sitemap value "${entry}": relative sitemap values require Astro site to be configured.`,
-      );
-    }
-
-    return new URL(entry, site).href;
   }
+
+  if (!site) {
+    throw new Error(
+      `Invalid sitemap value "${entry}": relative sitemap values require Astro site to be configured.`,
+    );
+  }
+
+  return new URL(entry, site).href;
 };
 
 const buildRobotsTxt = (
@@ -185,12 +190,6 @@ const buildRobotsTxt = (
     const crawlDelay = normalizeCrawlDelay(rule.crawlDelay);
     if (crawlDelay !== undefined) {
       lines.push(`Crawl-delay: ${crawlDelay}`);
-    }
-
-    if (lines.length === 0) {
-      throw new Error(
-        "Invalid robotsTxt rule: each rule must include at least one directive.",
-      );
     }
 
     return lines.join("\n");

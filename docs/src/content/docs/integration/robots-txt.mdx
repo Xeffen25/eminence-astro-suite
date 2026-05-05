@@ -6,6 +6,9 @@ head:
     content: robots.txt - Integration
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import RobotsTxtSource from "@package/integration/robots-txt.ts?raw";
+
 The robots.txt feature generates a `/robots.txt` file in your build output during `astro build`. It is configured through the `robotsTxt` option on the integration and does not affect the `<meta name="robots">` tag, which is handled by the `Robots` component.
 
 If a `robots.txt` file already exists in the build output, generation is skipped and a warning is logged. If `robotsTxt` is omitted from your integration config, a warning is logged recommending you add it.
@@ -14,10 +17,10 @@ If a `robots.txt` file already exists in the build output, generation is skipped
 
 ### `RobotsTxtOptions`
 
-| option    | type                               | default | required | description                                                             |
-| --------- | ---------------------------------- | ------- | -------- | ----------------------------------------------------------------------- |
-| `rules`   | `RobotsTxtRule \| RobotsTxtRule[]` | -       | Yes      | One or more crawl rules defining agent access.                          |
-| `sitemap` | `string \| string[]`               | -       | No       | Absolute URL(s) or site-relative path(s) to include as Sitemap entries. |
+| option    | type                               | default | required | description                                                                                                                                   |
+| --------- | ---------------------------------- | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `rules`   | `RobotsTxtRule \| RobotsTxtRule[]` | -       | Yes      | One or more crawl rules defining agent access.                                                                                                |
+| `sitemap` | `string \| string[]`               | -       | No       | Absolute http(s) URL(s) or site-relative path(s) to include as Sitemap entries. Relative paths require `site` to be set in your Astro config. |
 
 ### `RobotsTxtRule`
 
@@ -30,9 +33,11 @@ If a `robots.txt` file already exists in the build output, generation is skipped
 | `cleanParam` | `string \| string[]` | -       | No       | Query parameter(s) for the Clean-param directive.            |
 | `crawlDelay` | `number`             | -       | No       | Non-negative crawl delay in seconds.                         |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
+
+Input:
 
 ```ts
 // astro.config.mjs
@@ -46,7 +51,7 @@ eminence({
 });
 ```
 
-Output at `/robots.txt`:
+Output:
 
 ```txt
 User-agent: *
@@ -54,6 +59,8 @@ Disallow: /private/
 ```
 
 ### With multiple rules
+
+Input:
 
 ```ts
 eminence({
@@ -78,6 +85,8 @@ Allow: /
 
 ### With sitemap reference
 
+Input:
+
 ```ts
 eminence({
   robotsTxt: {
@@ -87,7 +96,7 @@ eminence({
 });
 ```
 
-Output (assuming `site` is `https://example.com`):
+Output at `/robots.txt`\*\* (assuming `site` is `https://example.com`):
 
 ```txt
 User-agent: *
@@ -97,13 +106,63 @@ Sitemap: https://example.com/sitemap-index.xml
 
 ### Explicit opt-out
 
+Input:
+
 ```ts
 eminence({
   robotsTxt: false,
 });
 ```
 
-No file is generated and no warning is logged.
+Output: No file is generated and no warning is logged.
+
+### Complete
+
+All options provided explicitly. Assumes `site` is `https://example.com` in your Astro config.
+
+Input:
+
+```ts
+// astro.config.mjs
+eminence({
+  robotsTxt: {
+    rules: [
+      {
+        agent: "*",
+        allow: "/",
+        disallow: "/private/",
+        noindex: "/drafts/",
+        cleanParam: "utm_source /",
+        crawlDelay: 2,
+      },
+      {
+        agent: ["Googlebot", "Bingbot"],
+        disallow: ["/tmp/", "/cache/"],
+      },
+    ],
+    sitemap: ["/sitemap.xml", "https://cdn.example.com/sitemap-news.xml"],
+  },
+});
+```
+
+Output at `/robots.txt`:
+
+```txt
+User-agent: *
+Allow: /
+Disallow: /private/
+Noindex: /drafts/
+Clean-param: utm_source /
+Crawl-delay: 2
+
+User-agent: Googlebot
+User-agent: Bingbot
+Disallow: /tmp/
+Disallow: /cache/
+
+Sitemap: https://example.com/sitemap.xml
+Sitemap: https://cdn.example.com/sitemap-news.xml
+```
 
 ## Decisions Made
 
@@ -122,6 +181,10 @@ Relative sitemap paths are resolved against `Astro.config.site`. If `site` is no
 ### Setting `false` is the explicit opt-out
 
 Passing `robotsTxt: false` disables the feature cleanly. Omitting `robotsTxt` logs a recommendation warning so new projects are nudged to make an intentional choice.
+
+## Source code
+
+<Code code={RobotsTxtSource} lang="ts" title="robots-txt.ts" />
 
 ## Reference
 

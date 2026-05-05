@@ -1,4 +1,4 @@
-import type { IntegrationRuntimeContext } from "@package/integration";
+﻿import type { IntegrationRuntimeContext } from "@package/integration";
 import {
   generateRobotsTxt,
   ROBOTS_TXT_RECOMMENDATION,
@@ -6,7 +6,7 @@ import {
 } from "@package/integration/robots-txt";
 import type { AstroConfig } from "astro";
 import { randomUUID } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -35,21 +35,80 @@ describe("Integration - RobotsTxt", () => {
     logger: logger as unknown as IntegrationRuntimeContext["logger"],
   });
 
-  it("writes robots.txt with directives and sitemap entries", async () => {
+  // Docs Example: Basic usage
+  it("generates robots.txt with a single rule and disallow directive", async () => {
+    await generateRobotsTxt(
+      createContext({
+        rules: {
+          agent: "*",
+          disallow: "/private/",
+        },
+      }),
+    );
+
+    const result = await readFile(join(outputDir, "robots.txt"), "utf-8");
+    expect(result).toBe("User-agent: *\nDisallow: /private/\n");
+    expect(logger.info).toHaveBeenCalledWith(
+      `Generated "${ROBOTS_TXT_RELATIVE_PATH}"`,
+    );
+  });
+
+  // Docs Example: With multiple rules
+  it("generates separate rule blocks for multiple rules", async () => {
+    await generateRobotsTxt(
+      createContext({
+        rules: [
+          { agent: "*", disallow: "/" },
+          { agent: "Googlebot", allow: "/" },
+        ],
+      }),
+    );
+
+    const result = await readFile(join(outputDir, "robots.txt"), "utf-8");
+    expect(result).toBe(
+      "User-agent: *\nDisallow: /\n\nUser-agent: Googlebot\nAllow: /\n",
+    );
+  });
+
+  // Docs Example: With sitemap reference
+  it("resolves relative sitemap path against Astro site URL", async () => {
+    await generateRobotsTxt(
+      createContext({
+        rules: { agent: "*" },
+        sitemap: "/sitemap-index.xml",
+      }),
+    );
+
+    const result = await readFile(join(outputDir, "robots.txt"), "utf-8");
+    expect(result).toBe(
+      "User-agent: *\n\nSitemap: https://example.com/sitemap-index.xml\n",
+    );
+  });
+
+  // Docs Example: Explicit opt-out
+  it("does not generate a file when robotsTxt is false", async () => {
+    await generateRobotsTxt(createContext(false));
+
+    await expect(access(join(outputDir, "robots.txt"))).rejects.toThrow();
+    expect(logger.warn).not.toHaveBeenCalled();
+  });
+
+  // Docs Example: Complete
+  it("generates robots.txt with all directives, multiple agents, and multiple sitemaps", async () => {
     await generateRobotsTxt(
       createContext({
         rules: [
           {
             agent: "*",
             allow: "/",
-            disallow: "/private",
-            noindex: "/drafts",
+            disallow: "/private/",
+            noindex: "/drafts/",
             cleanParam: "utm_source /",
             crawlDelay: 2,
           },
           {
             agent: ["Googlebot", "Bingbot"],
-            disallow: ["/tmp", "/cache"],
+            disallow: ["/tmp/", "/cache/"],
           },
         ],
         sitemap: ["/sitemap.xml", "https://cdn.example.com/sitemap-news.xml"],
@@ -61,31 +120,31 @@ describe("Integration - RobotsTxt", () => {
       [
         "User-agent: *",
         "Allow: /",
-        "Disallow: /private",
-        "Noindex: /drafts",
+        "Disallow: /private/",
+        "Noindex: /drafts/",
         "Clean-param: utm_source /",
         "Crawl-delay: 2",
         "",
         "User-agent: Googlebot",
         "User-agent: Bingbot",
-        "Disallow: /tmp",
-        "Disallow: /cache",
+        "Disallow: /tmp/",
+        "Disallow: /cache/",
         "",
         "Sitemap: https://example.com/sitemap.xml",
         "Sitemap: https://cdn.example.com/sitemap-news.xml",
         "",
       ].join("\n"),
     );
-
     expect(logger.info).toHaveBeenCalledWith(
       `Generated "${ROBOTS_TXT_RELATIVE_PATH}"`,
     );
   });
 
+  // Edge case: existing file is skipped and generation is disabled
   it("warns and disables generation when robots.txt already exists", async () => {
     await writeFile(join(outputDir, "robots.txt"), "existing", "utf-8");
     const context = createContext({
-      rules: { agent: "*", disallow: "/private" },
+      rules: { agent: "*", disallow: "/private/" },
     });
 
     await generateRobotsTxt(context);
@@ -96,17 +155,20 @@ describe("Integration - RobotsTxt", () => {
     );
   });
 
-  it("logs info when robotsTxt is false and robots.txt exists", async () => {
+  // Edge case: false + existing file logs info, not a warning
+  it("logs info (not a warning) when robotsTxt is false and robots.txt already exists", async () => {
     await writeFile(join(outputDir, "robots.txt"), "existing", "utf-8");
 
     await generateRobotsTxt(createContext(false));
 
+    expect(logger.warn).not.toHaveBeenCalled();
     expect(logger.info).toHaveBeenCalledWith(
       `No "${ROBOTS_TXT_RELATIVE_PATH}" file was generated nor modified because it already exists.`,
     );
   });
 
-  it("logs info when robotsTxt is false and no file exists", async () => {
+  // Edge case: false + no file logs info without touching filesystem
+  it("logs info when robotsTxt is false and no robots.txt file exists", async () => {
     await generateRobotsTxt(createContext(false));
 
     expect(logger.info).toHaveBeenCalledWith(
@@ -114,6 +176,7 @@ describe("Integration - RobotsTxt", () => {
     );
   });
 
+  // Edge case: omitted robotsTxt nudges user to add one
   it("warns with recommendation when robotsTxt is undefined", async () => {
     await generateRobotsTxt(createContext(undefined));
 
@@ -122,7 +185,8 @@ describe("Integration - RobotsTxt", () => {
     );
   });
 
-  it("logs an error before throwing when a directive path is invalid", async () => {
+  // Edge case: path validation error is logged before throwing
+  it("logs error then throws when a directive path does not start with /", async () => {
     await expect(
       generateRobotsTxt(
         createContext({
@@ -141,7 +205,8 @@ describe("Integration - RobotsTxt", () => {
     );
   });
 
-  it("throws when relative sitemap entries are used without Astro site", async () => {
+  // Edge case: relative sitemap without site configured throws
+  it("throws when relative sitemap entry is used without Astro site configured", async () => {
     const context = createContext(
       {
         rules: { agent: "*", allow: "/" },
@@ -156,6 +221,7 @@ describe("Integration - RobotsTxt", () => {
     );
   });
 
+  // Edge case: negative crawlDelay is rejected
   it("throws when crawlDelay is negative", async () => {
     await expect(
       generateRobotsTxt(
@@ -172,7 +238,8 @@ describe("Integration - RobotsTxt", () => {
     );
   });
 
-  it("throws when rules are missing or empty", async () => {
+  // Edge case: empty rules array is rejected
+  it("throws when rules array is empty", async () => {
     await expect(
       generateRobotsTxt(
         createContext({
