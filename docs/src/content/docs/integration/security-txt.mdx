@@ -6,6 +6,9 @@ head:
     content: security.txt - Integration
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import SecurityTxtSource from "@package/integration/security-txt.ts?raw";
+
 The security.txt feature generates a `/.well-known/security.txt` file in your build output during `astro build`. It is configured through the `securityTxt` option on the integration and follows the [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116) security disclosure standard.
 
 If `securityTxt` is omitted from your integration config, a warning is logged recommending you add it. If `securityTxt: false` is set, no file is generated and no warning is logged.
@@ -50,7 +53,7 @@ Output at `/.well-known/security.txt`:
 
 ```txt
 Contact: mailto:security@example.com
-Expires: 2027-04-24T00:00:00.000Z
+Expires: 2027-05-05T00:00:00.000Z
 ```
 
 ### With multiple contacts and policy
@@ -71,7 +74,7 @@ Output:
 ```txt
 Contact: mailto:security@example.com
 Contact: https://example.com/security
-Expires: 2026-10-24T00:00:00.000Z
+Expires: 2026-11-05T00:00:00.000Z
 Preferred-Languages: en, fr
 Policy: https://example.com/security-policy
 ```
@@ -85,6 +88,51 @@ eminence({
     expires: new Date("2027-01-01T00:00:00Z"),
   },
 });
+```
+
+Output:
+
+```txt
+Contact: mailto:security@example.com
+Expires: 2027-01-01T00:00:00.000Z
+```
+
+### Complete
+
+All options provided explicitly.
+
+**Input:**
+
+```ts
+// astro.config.mjs
+eminence({
+  securityTxt: {
+    contact: ["mailto:security@example.com", "https://example.com/security"],
+    expires: "1 year",
+    encryption: "https://example.com/pgp-key.asc",
+    acknowledgments: "https://example.com/thanks",
+    preferredLanguages: ["en", "fr"],
+    canonical: "https://example.com/.well-known/security.txt",
+    policy: "https://example.com/security-policy",
+    hiring: "https://example.com/security-jobs",
+    csaf: "https://example.com/.well-known/csaf/provider-metadata.json",
+  },
+});
+```
+
+**Output at `/.well-known/security.txt`:**
+
+```txt
+Contact: mailto:security@example.com
+Contact: https://example.com/security
+Expires: 2027-05-05T00:00:00.000Z
+Encryption: https://example.com/pgp-key.asc
+Acknowledgments: https://example.com/thanks
+Preferred-Languages: en, fr
+Canonical: https://example.com/.well-known/security.txt
+Policy: https://example.com/security-policy
+Hiring: https://example.com/security-jobs
+CSAF: https://example.com/.well-known/csaf/provider-metadata.json
 ```
 
 ### Explicit opt-out
@@ -115,9 +163,17 @@ You can pass a JavaScript `Date` object, an ISO 8601 date string, or a human-rea
 
 Multiple language tags are combined into a single `Preferred-Languages` line, matching the RFC 9116 format rather than emitting one line per tag.
 
+### Existing security.txt is never overwritten
+
+If a `/.well-known/security.txt` file already exists in the build output when `astro build` runs, generation is skipped and a warning is logged. The `securityTxt` option is also set to `false` internally to suppress any repeated attempt within the same build.
+
 ### Setting `false` is the explicit opt-out
 
-Passing `securityTxt: false` disables the feature cleanly. Omitting `securityTxt` logs a recommendation warning so new projects are nudged to make an intentional choice.
+Passing `securityTxt: false` disables the feature completely with no output. Omitting `securityTxt` logs a recommendation warning so new projects are nudged to make an intentional choice.
+
+## Source code
+
+<Code code={SecurityTxtSource} lang="ts" title="security-txt.ts" />
 
 ## Reference
 

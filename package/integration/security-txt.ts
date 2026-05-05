@@ -215,20 +215,8 @@ export async function generateSecurityTxt({
   logger,
 }: IntegrationRuntimeContext): Promise<void> {
   const input = options.securityTxt;
-  const outputPath = join(fileURLToPath(dir), ".well-known", "security.txt");
-  const outputExists = await exists(outputPath);
 
   if (input === false) {
-    if (outputExists) {
-      logger.info(
-        `No "${SECURITY_TXT_RELATIVE_PATH}" file was generated nor modified because it already exists.`,
-      );
-    } else {
-      logger.info(
-        `No "${SECURITY_TXT_RELATIVE_PATH}" file exists and no file was generated.`,
-      );
-    }
-
     return;
   }
 
@@ -239,14 +227,9 @@ export async function generateSecurityTxt({
     return;
   }
 
-  if (typeof input !== "object" || input === null) {
-    logger.error(
-      "Invalid securityTxt configuration: expected an object with Contact and Expires fields.",
-    );
-    throw new Error("Invalid securityTxt configuration: expected an object.");
-  }
+  const outputPath = join(fileURLToPath(dir), ".well-known", "security.txt");
 
-  if (outputExists) {
+  if (await exists(outputPath)) {
     logger.warn(
       `Could not generate "${SECURITY_TXT_RELATIVE_PATH}" because it already exists. Disabling securityTxt generation for this build.`,
     );

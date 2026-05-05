@@ -38,20 +38,96 @@ describe("Integration - SecurityTxt", () => {
     logger: logger as unknown as IntegrationRuntimeContext["logger"],
   });
 
-  it("writes a valid security.txt with required and optional fields", async () => {
+  // --- Docs examples ---
+
+  // Docs: Basic usage
+  it("generates a minimal security.txt from a single contact and duration", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-05-05T00:00:00.000Z"));
+
+    await generateSecurityTxt(
+      createContext({
+        contact: "mailto:security@example.com",
+        expires: "1 year",
+      }),
+    );
+
+    const result = await readFile(
+      join(outputDir, ".well-known", "security.txt"),
+      "utf-8",
+    );
+    expect(result).toBe(
+      "Contact: mailto:security@example.com\nExpires: 2027-05-05T00:00:00.000Z\n",
+    );
+    expect(logger.info).toHaveBeenCalledWith(
+      `Generated "${SECURITY_TXT_RELATIVE_PATH}"`,
+    );
+  });
+
+  // Docs: With multiple contacts and policy
+  it("outputs multiple contacts, preferred languages, and policy in field order", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-05-05T00:00:00.000Z"));
+
     await generateSecurityTxt(
       createContext({
         contact: [
-          "mailto:test@test.com",
-          "https://example.com/security-contact",
+          "mailto:security@example.com",
+          "https://example.com/security",
         ],
-        expires: "2026-04-03T16:55:00.000Z",
-        encryption: "https://example.com/pgp-key.txt",
-        acknowledgments: "https://example.com/hall-of-fame.html",
-        preferredLanguages: ["en", "es", "ru"],
+        expires: "6 months",
+        policy: "https://example.com/security-policy",
+        preferredLanguages: ["en", "fr"],
+      }),
+    );
+
+    const result = await readFile(
+      join(outputDir, ".well-known", "security.txt"),
+      "utf-8",
+    );
+    expect(result).toBe(
+      "Contact: mailto:security@example.com\n" +
+        "Contact: https://example.com/security\n" +
+        "Expires: 2026-11-05T00:00:00.000Z\n" +
+        "Preferred-Languages: en, fr\n" +
+        "Policy: https://example.com/security-policy\n",
+    );
+  });
+
+  // Docs: With explicit Date expiry
+  it("accepts a Date instance for the expires field", async () => {
+    await generateSecurityTxt(
+      createContext({
+        contact: "mailto:security@example.com",
+        expires: new Date("2027-01-01T00:00:00.000Z"),
+      }),
+    );
+
+    const result = await readFile(
+      join(outputDir, ".well-known", "security.txt"),
+      "utf-8",
+    );
+    expect(result).toContain("Expires: 2027-01-01T00:00:00.000Z");
+  });
+
+  // Docs: Complete
+  it("outputs all fields in correct declaration order", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-05-05T00:00:00.000Z"));
+
+    await generateSecurityTxt(
+      createContext({
+        contact: [
+          "mailto:security@example.com",
+          "https://example.com/security",
+        ],
+        expires: "1 year",
+        encryption: "https://example.com/pgp-key.asc",
+        acknowledgments: "https://example.com/thanks",
+        preferredLanguages: ["en", "fr"],
         canonical: "https://example.com/.well-known/security.txt",
-        policy: "https://example.com/security-policy.html",
-        hiring: "https://example.com/jobs.html",
+        policy: "https://example.com/security-policy",
+        hiring: "https://example.com/security-jobs",
         csaf: "https://example.com/.well-known/csaf/provider-metadata.json",
       }),
     );
@@ -60,98 +136,33 @@ describe("Integration - SecurityTxt", () => {
       join(outputDir, ".well-known", "security.txt"),
       "utf-8",
     );
-
-    expect(result).toContain("Contact: mailto:test@test.com");
-    expect(result).toContain("Contact: https://example.com/security-contact");
-    expect(result).toContain("Expires: 2026-04-03T16:55:00.000Z");
-    expect(result).toContain("Encryption: https://example.com/pgp-key.txt");
-    expect(result).toContain(
-      "Acknowledgments: https://example.com/hall-of-fame.html",
-    );
-    expect(result).toContain("Preferred-Languages: en, es, ru");
-    expect(result).toContain(
-      "Canonical: https://example.com/.well-known/security.txt",
-    );
-    expect(result).toContain(
-      "Policy: https://example.com/security-policy.html",
-    );
-    expect(result).toContain("Hiring: https://example.com/jobs.html");
-    expect(result).toContain(
-      "CSAF: https://example.com/.well-known/csaf/provider-metadata.json",
-    );
-    expect(logger.info).toHaveBeenCalledWith(
-      `Generated "${SECURITY_TXT_RELATIVE_PATH}"`,
+    expect(result).toBe(
+      "Contact: mailto:security@example.com\n" +
+        "Contact: https://example.com/security\n" +
+        "Expires: 2027-05-05T00:00:00.000Z\n" +
+        "Encryption: https://example.com/pgp-key.asc\n" +
+        "Acknowledgments: https://example.com/thanks\n" +
+        "Preferred-Languages: en, fr\n" +
+        "Canonical: https://example.com/.well-known/security.txt\n" +
+        "Policy: https://example.com/security-policy\n" +
+        "Hiring: https://example.com/security-jobs\n" +
+        "CSAF: https://example.com/.well-known/csaf/provider-metadata.json\n",
     );
   });
 
-  it("supports Expires durations in days and normalizes to ISO 8601", async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-03-27T00:00:00.000Z"));
+  // Docs: Explicit opt-out
+  it("returns without creating a file or logging when securityTxt is false", async () => {
+    await generateSecurityTxt(createContext(false));
 
-    await generateSecurityTxt(
-      createContext({
-        contact: "mailto:test@test.com",
-        expires: "7 days",
-      }),
-    );
-
-    const result = await readFile(
-      join(outputDir, ".well-known", "security.txt"),
-      "utf-8",
-    );
-    expect(result).toContain("Expires: 2026-04-03T00:00:00.000Z");
+    await expect(
+      readFile(join(outputDir, ".well-known", "security.txt"), "utf-8"),
+    ).rejects.toThrow();
+    expect(logger.info).not.toHaveBeenCalled();
+    expect(logger.warn).not.toHaveBeenCalled();
+    expect(logger.error).not.toHaveBeenCalled();
   });
 
-  it("rolls months into the next year when needed", async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-12-15T00:00:00.000Z"));
-
-    await generateSecurityTxt(
-      createContext({
-        contact: "mailto:test@test.com",
-        expires: "1 month",
-      }),
-    );
-
-    const result = await readFile(
-      join(outputDir, ".well-known", "security.txt"),
-      "utf-8",
-    );
-    expect(result).toContain("Expires: 2027-01-15T00:00:00.000Z");
-  });
-
-  it("rolls days into the next month when needed", async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-01-30T00:00:00.000Z"));
-
-    await generateSecurityTxt(
-      createContext({
-        contact: "mailto:test@test.com",
-        expires: "5 days",
-      }),
-    );
-
-    const result = await readFile(
-      join(outputDir, ".well-known", "security.txt"),
-      "utf-8",
-    );
-    expect(result).toContain("Expires: 2026-02-04T00:00:00.000Z");
-  });
-
-  it("accepts Date instances for Expires", async () => {
-    await generateSecurityTxt(
-      createContext({
-        contact: "mailto:test@test.com",
-        expires: new Date("2030-01-01T00:00:00.000Z"),
-      }),
-    );
-
-    const result = await readFile(
-      join(outputDir, ".well-known", "security.txt"),
-      "utf-8",
-    );
-    expect(result).toContain("Expires: 2030-01-01T00:00:00.000Z");
-  });
+  // --- Edge cases ---
 
   it("warns and disables generation when security.txt already exists", async () => {
     await mkdir(join(outputDir, ".well-known"), { recursive: true });
@@ -167,32 +178,8 @@ describe("Integration - SecurityTxt", () => {
 
     await expect(generateSecurityTxt(context)).resolves.toBeUndefined();
     expect(context.options.securityTxt).toBe(false);
-
     expect(logger.warn).toHaveBeenCalledWith(
       `Could not generate "${SECURITY_TXT_RELATIVE_PATH}" because it already exists. Disabling securityTxt generation for this build.`,
-    );
-  });
-
-  it("logs info when securityTxt is false and file already exists", async () => {
-    await mkdir(join(outputDir, ".well-known"), { recursive: true });
-    await writeFile(
-      join(outputDir, ".well-known", "security.txt"),
-      "existing",
-      "utf-8",
-    );
-
-    await generateSecurityTxt(createContext(false));
-
-    expect(logger.info).toHaveBeenCalledWith(
-      `No "${SECURITY_TXT_RELATIVE_PATH}" file was generated nor modified because it already exists.`,
-    );
-  });
-
-  it("logs info when securityTxt is false and no file exists", async () => {
-    await generateSecurityTxt(createContext(false));
-
-    expect(logger.info).toHaveBeenCalledWith(
-      `No "${SECURITY_TXT_RELATIVE_PATH}" file exists and no file was generated.`,
     );
   });
 
@@ -219,7 +206,7 @@ describe("Integration - SecurityTxt", () => {
     );
   });
 
-  it("rejects invalid Contact and invalid URL fields", async () => {
+  it("rejects bare email address as Contact and http:// URL for encryption field", async () => {
     await expect(
       generateSecurityTxt(
         createContext({
@@ -249,5 +236,59 @@ describe("Integration - SecurityTxt", () => {
         }),
       ),
     ).rejects.toThrow("Invalid Expires value");
+  });
+
+  it("normalizes day-based duration to ISO 8601", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-03-27T00:00:00.000Z"));
+
+    await generateSecurityTxt(
+      createContext({
+        contact: "mailto:test@test.com",
+        expires: "7 days",
+      }),
+    );
+
+    const result = await readFile(
+      join(outputDir, ".well-known", "security.txt"),
+      "utf-8",
+    );
+    expect(result).toContain("Expires: 2026-04-03T00:00:00.000Z");
+  });
+
+  it("rolls day additions across month boundaries", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-01-30T00:00:00.000Z"));
+
+    await generateSecurityTxt(
+      createContext({
+        contact: "mailto:test@test.com",
+        expires: "5 days",
+      }),
+    );
+
+    const result = await readFile(
+      join(outputDir, ".well-known", "security.txt"),
+      "utf-8",
+    );
+    expect(result).toContain("Expires: 2026-02-04T00:00:00.000Z");
+  });
+
+  it("rolls month additions across year boundaries", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-12-15T00:00:00.000Z"));
+
+    await generateSecurityTxt(
+      createContext({
+        contact: "mailto:test@test.com",
+        expires: "1 month",
+      }),
+    );
+
+    const result = await readFile(
+      join(outputDir, ".well-known", "security.txt"),
+      "utf-8",
+    );
+    expect(result).toContain("Expires: 2027-01-15T00:00:00.000Z");
   });
 });
