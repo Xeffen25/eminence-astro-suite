@@ -190,6 +190,11 @@ describe("Integration - WebManifest", () => {
         {
           icons: {
             source: "/assets/logo.png",
+            // Disable default manifest icons to isolate explicit entries
+            "favicon.ico": false,
+            "favicon.png": false,
+            "apple-touch-icon.png": false,
+            "icon-192.png": false,
             "icon-192x192.png": {
               size: 192,
               tag: { rel: "icon" },
@@ -208,8 +213,8 @@ describe("Integration - WebManifest", () => {
     const result = JSON.parse(raw);
 
     expect(result.icons).toEqual([
-      { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
       { src: "/icon.png", sizes: "512x512", type: "image/png" },
+      { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
     ]);
   });
 
@@ -227,6 +232,12 @@ describe("Integration - WebManifest", () => {
         {
           icons: {
             source: "/assets/logo.png",
+            // Disable default manifest icons to isolate explicit entries
+            "favicon.ico": false,
+            "favicon.png": false,
+            "apple-touch-icon.png": false,
+            "icon-192.png": false,
+            "icon.png": false,
             "icon-192x192.png": {
               size: 192,
               tag: { rel: "icon" },
@@ -267,6 +278,12 @@ describe("Integration - WebManifest", () => {
         {
           icons: {
             source: "/assets/logo.png",
+            // Disable default manifest icons to isolate explicit entries
+            "favicon.ico": false,
+            "favicon.png": false,
+            "apple-touch-icon.png": false,
+            "icon-192.png": false,
+            "icon.png": false,
             "icon-192x192.png": {
               size: 192,
               tag: { rel: "icon" },

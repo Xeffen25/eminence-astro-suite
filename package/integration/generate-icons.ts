@@ -81,11 +81,21 @@ type IconDefinition =
 export type IconsOptions = {
   source: string;
 } & {
-  [filename: `${string}.ico`]: IcoIconDefinition;
+  [filename: `${string}.ico`]: IcoIconDefinition | false;
 } & {
-  [filename: `${string}.svg`]: SvgIconDefinition;
+  [filename: `${string}.svg`]: SvgIconDefinition | false;
 } & {
-  [filename: `${string}.${RasterSupportedExtensions}`]: RasterIconDefinition;
+  [filename: `${string}.${RasterSupportedExtensions}`]:
+    | RasterIconDefinition
+    | false;
+};
+
+export const DEFAULT_ICONS: Record<string, IconDefinition> = {
+  "favicon.ico": { sizes: [16, 32, 48], tag: { rel: "icon" } },
+  "favicon.png": { size: 32, tag: { rel: "icon" } },
+  "apple-touch-icon.png": { size: 180, tag: { rel: "apple-touch-icon" } },
+  "icon-192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
+  "icon.png": { size: 512, tag: { rel: "icon" }, manifest: true },
 };
 
 interface BaseGenerationTask {
@@ -383,9 +393,16 @@ const resolveGenerationTask = (
 const getIconDefinitions = (
   icons: IconsOptions,
 ): Array<[IconFileName, IconDefinition]> => {
-  return Object.entries(icons).filter(
+  const userEntries = Object.fromEntries(
+    Object.entries(icons).filter(([key]) => key !== "source"),
+  ) as Record<string, IconDefinition | false>;
+  const merged: Record<string, IconDefinition | false> = {
+    ...DEFAULT_ICONS,
+    ...userEntries,
+  };
+  return Object.entries(merged).filter(
     (entry): entry is [IconFileName, IconDefinition] =>
-      entry[0] !== "source" && hasSupportedExtension(entry[0]),
+      entry[1] !== false && hasSupportedExtension(entry[0]),
   );
 };
 
@@ -397,8 +414,13 @@ export const resolveIconsOptions = (
   }
 
   const explicitDefinitions = getIconDefinitions(icons);
-  const explicitFileNames = new Set(
+  const resolvedFileNames = new Set(
     explicitDefinitions.map(([fileName]) => fileName),
+  );
+  const userDisabledFileNames = new Set(
+    Object.entries(icons)
+      .filter(([key, val]) => key !== "source" && val === false)
+      .map(([key]) => key),
   );
   const tags: IconTag[] = [];
   const manifestIcons: ManifestIconItem[] = [];
@@ -425,7 +447,11 @@ export const resolveIconsOptions = (
     }
   }
 
-  if (isSvg(icons.source) && !explicitFileNames.has("favicon.svg")) {
+  if (
+    isSvg(icons.source) &&
+    !resolvedFileNames.has("favicon.svg") &&
+    !userDisabledFileNames.has("favicon.svg")
+  ) {
     tags.unshift({
       rel: "icon",
       href: "/favicon.svg",

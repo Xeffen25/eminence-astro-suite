@@ -98,33 +98,17 @@ describe("Integration - Generate Icons", () => {
       createContext({
         icons: {
           source,
-          "favicon.ico": {
-            sizes: [16, 32, 48],
-            tag: { rel: "icon" },
-          },
-          "favicon.png": {
-            size: 32,
-            tag: { rel: "icon" },
-          },
-          "apple-touch-icon.png": {
-            size: 180,
-            tag: { rel: "apple-touch-icon" },
-          },
-          "icon-192x192.png": {
-            size: 192,
-            tag: { rel: "icon" },
-            manifest: true,
-          },
         },
       }),
     );
 
+    // Default files are all generated from the PNG source
     expect(existsSync(join(outputDir, "favicon.ico"))).toBe(true);
     expect(existsSync(join(outputDir, "favicon.png"))).toBe(true);
     expect(existsSync(join(outputDir, "apple-touch-icon.png"))).toBe(true);
-    expect(existsSync(join(outputDir, "icon-192x192.png"))).toBe(true);
-    expect(existsSync(join(outputDir, "favicon-48x48.png"))).toBe(false);
-    expect(existsSync(join(outputDir, "icon.png"))).toBe(false);
+    expect(existsSync(join(outputDir, "icon-192.png"))).toBe(true);
+    expect(existsSync(join(outputDir, "icon.png"))).toBe(true);
+    // SVG is not auto-copied for a PNG source
     expect(existsSync(join(outputDir, "favicon.svg"))).toBe(false);
   });
 
@@ -150,18 +134,13 @@ describe("Integration - Generate Icons", () => {
   it("resolves head icon tags from file-keyed entries and skips false sizes", () => {
     const tags = resolveIconsOptions({
       source: "/icons/source.svg",
-      "favicon.ico": {
-        sizes: [16, 32, 48],
-        tag: { rel: "icon" },
-      },
-      "apple-touch-icon.png": {
-        size: 180,
-        tag: { rel: "apple-touch-icon" },
-      },
-      "icon-192x192.png": {
-        size: false,
-        tag: { rel: "icon" },
-      },
+      // Disable all defaults to isolate the behavior under test
+      "favicon.ico": false,
+      "favicon.png": false,
+      "apple-touch-icon.png": { size: 180, tag: { rel: "apple-touch-icon" } },
+      "icon-192.png": false,
+      "icon.png": false,
+      "icon-192x192.png": { size: false, tag: { rel: "icon" } },
     }).tags;
 
     expect(tags).toEqual([
@@ -171,7 +150,6 @@ describe("Integration - Generate Icons", () => {
         sizes: "any",
         type: "image/svg+xml",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       {
         rel: "apple-touch-icon",
         href: "/apple-touch-icon.png",
@@ -184,6 +162,12 @@ describe("Integration - Generate Icons", () => {
   it("preserves raw build-time icon tags so the component can resolve href collisions", () => {
     const tags = resolveIconsOptions({
       source: "/icons/source.svg",
+      // Disable all defaults to isolate the behavior under test
+      "favicon.ico": false,
+      "favicon.png": false,
+      "apple-touch-icon.png": false,
+      "icon-192.png": false,
+      "icon.png": false,
       "icon-light.png": {
         size: 32,
         tag: { rel: "icon", href: "/shared.png", media: "light" },
@@ -221,7 +205,17 @@ describe("Integration - Generate Icons", () => {
   it("resolves manifest icons from keyed entries marked for manifest output", () => {
     const manifestIcons = resolveManifestIconsFromIconsOptions({
       source: "/icons/source.png",
-      "favicon.ico": {
+      // Disable defaults to test only the explicit manifest entries
+      "favicon.ico": false,
+      "favicon.png": false,
+      "apple-touch-icon.png": false,
+      "icon-192.png": false,
+      "icon.png": {
+        size: 512,
+        tag: { rel: "icon" },
+        manifest: { purpose: "maskable" },
+      },
+      "favicon-custom.ico": {
         sizes: [16, 32, 48],
         tag: { rel: "icon" },
         manifest: true,
@@ -231,11 +225,6 @@ describe("Integration - Generate Icons", () => {
         tag: { rel: "icon" },
         manifest: true,
       },
-      "icon.png": {
-        size: 512,
-        tag: { rel: "icon" },
-        manifest: { purpose: "maskable" },
-      },
       "disabled.png": {
         size: false,
         tag: { rel: "icon" },
@@ -244,20 +233,30 @@ describe("Integration - Generate Icons", () => {
     });
 
     expect(manifestIcons).toEqual([
-      { src: "/favicon.ico", sizes: "16x16 32x32 48x48", type: "image/x-icon" },
-      { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
       {
         src: "/icon.png",
         sizes: "512x512",
         type: "image/png",
         purpose: "maskable",
       },
+      {
+        src: "/favicon-custom.ico",
+        sizes: "16x16 32x32 48x48",
+        type: "image/x-icon",
+      },
+      { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
     ]);
   });
 
   it("uses per-entry manifest overrides when provided", () => {
     const manifestIcons = resolveManifestIconsFromIconsOptions({
       source: "/icons/source.png",
+      // Disable defaults to isolate the explicit manifest override
+      "favicon.ico": false,
+      "favicon.png": false,
+      "apple-touch-icon.png": false,
+      "icon-192.png": false,
+      "icon.png": false,
       "badge.png": {
         size: 96,
         tag: { rel: "icon" },

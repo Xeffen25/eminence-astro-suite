@@ -1,7 +1,13 @@
 ---
-title: Icons - Component
+title: Icons
 description: Astro component that renders resolved icon link tags. Manages build-time resolution, late-bound overrides, and href deduplication for favicon and app icons.
+head:
+  - tag: title
+    content: Icons - Component
 ---
+
+import { Code } from "@astrojs/starlight/components";
+import IconsSource from "@package/components/Icons.astro?raw";
 
 Icons renders icon-related `<link>` tags from the build-time configuration resolved by the integration. The component is intentionally thin: file names, MIME types, and inferred `sizes` are computed before the virtual module is serialized, and the component only renders the resolved tags.
 
@@ -9,21 +15,21 @@ When you pass the `icons` prop, it merges over the integration-provided tags for
 
 ## Props
 
-| prop    | type        | default                                | required | description                                                                                                                      |
-| ------- | ----------- | -------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `icons` | `IconTag[]` | integration-resolved icon tags or `[]` | No       | Late-bound icon overrides. Entries are keyed by `href`; runtime entries replace matching build-time entries and append new ones. |
+| prop    | type                               | default | required | description                                                                                                                                                                                      |
+| ------- | ---------------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `icons` | `Record<string, IconTag \| false>` | `{}`    | No       | Per-href overrides. Each key is the tag's `href`. An `IconTag` value replaces a matching build-time entry or adds a new one. `false` removes a matching build-time tag from the rendered output. |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
-Input (`.astro`):
+Input:
 
 ```astro
 <Icons />
 ```
 
-Output (`.html`):
+Output:
 
 ```html
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -35,59 +41,76 @@ Output (`.html`):
 />
 ```
 
-### Auto usage
+### Automatic
 
-With an SVG integration source and no explicit `favicon.svg` entry, the integration auto-adds a copied SVG favicon tag to the resolved output.
+When the integration is configured with an SVG source and no explicit `favicon.svg` entry, all five default icons are generated and a copied SVG favicon tag is automatically prepended. These are the defaults produced when only `source` is set:
 
-Input (`.astro`):
+- `favicon.ico` — multi-size ICO (16, 32, 48)
+- `favicon.png` — 32×32 raster favicon
+- `apple-touch-icon.png` — 180×180 Apple touch icon
+- `icon-192.png` — 192×192 manifest icon
+- `icon.png` — 512×512 manifest icon
+
+Input:
 
 ```astro
 <Icons />
 ```
 
-Output (`.html`):
+Output:
 
 ```html
 <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="icon" href="/icon-192x192.png" sizes="192x192" type="image/png" />
+<link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
+<link
+  rel="apple-touch-icon"
+  href="/apple-touch-icon.png"
+  sizes="180x180"
+  type="image/png"
+/>
+<link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png" />
+<link rel="icon" href="/icon.png" sizes="512x512" type="image/png" />
 ```
 
-### Complete usage
+### Complete
 
-Input (`.astro`):
+Input:
 
 ```astro
 <Icons
-  icons={[
-    {
+  icons={{
+    "/favicon.ico": false,
+    "/campaign.png": {
       rel: "icon",
-      href: "/campaign-dark.png",
+      href: "/campaign.png",
       sizes: "32x32",
       type: "image/png",
       media: "dark",
     },
-    {
-      rel: "preload",
-      href: "/campaign-mask.svg",
-      as: "image",
-      type: "image/svg+xml",
-    },
-  ]}
+  }}
 />
 ```
 
-Output (`.html`):
+Output:
+
+Assuming the integration resolved `favicon.ico`, `favicon.svg`, and `apple-touch-icon.png` into `config.icons`:
 
 ```html
+<link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
+<link
+  rel="apple-touch-icon"
+  href="/apple-touch-icon.png"
+  sizes="180x180"
+  type="image/png"
+/>
 <link
   rel="icon"
-  href="/campaign-dark.png"
+  href="/campaign.png"
   sizes="32x32"
   type="image/png"
   media="(prefers-color-scheme: dark)"
 />
-<link rel="preload" href="/campaign-mask.svg" as="image" type="image/svg+xml" />
 ```
 
 ## Decisions Made
@@ -98,7 +121,7 @@ The integration resolves `href`, `type`, and inferred `sizes` before `Icons` ren
 
 ### The runtime prop merges by `href`
 
-Passing `icons` merges over the build-time defaults for that render. Because the build config is keyed by filename, the runtime component uses final `href` values as the override boundary and lets later entries win.
+The `icons` prop is a `Record` keyed by each tag's `href`. An `IconTag` value replaces the matching build-time entry (or appends a new one); `false` removes the matching build-time entry entirely. Entries not mentioned in the prop are passed through unchanged.
 
 ### Light and dark media values expand automatically
 
@@ -106,7 +129,11 @@ When a tag uses `media: "light"` or `media: "dark"`, the component expands that 
 
 ### Deduplication is runtime-only and `href`-based
 
-Build-time resolution preserves the raw tag array. `Icons` performs the final dedupe step by `href`, first across the config tags and then across runtime overrides, so later entries replace earlier ones predictably.
+Build-time resolution preserves the raw tag array. `Icons` loads all config tags into an `href`-keyed map, then applies the `icons` prop entries — replacing or deleting matching hrefs — so the final render order follows insertion order with prop modifications layered on top.
+
+## Source code
+
+<Code code={IconsSource} lang="astro" />
 
 ## Reference
 

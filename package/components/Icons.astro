@@ -7,7 +7,12 @@ interface Props {
    * Late-bound `<link>` tag overrides.
    * These are merged over the build-time resolved icon tags from the virtual module.
    */
-  icons?: IconTag[];
+  /**
+   * Per-href overrides keyed by the tag's `href` value.
+   * An `IconTag` value replaces the matching build-time tag or adds a new one.
+   * `false` removes the matching build-time tag from the rendered output.
+   */
+  icons?: Record<string, IconTag | false>;
 }
 
 const { icons: overrideIcons } = Astro.props;
@@ -18,8 +23,12 @@ for (const iconTag of config.icons ?? []) {
   iconTagsMap.set(iconTag.href, iconTag);
 }
 
-for (const iconTag of overrideIcons ?? []) {
-  iconTagsMap.set(iconTag.href, iconTag);
+for (const [href, iconTag] of Object.entries(overrideIcons ?? {})) {
+  if (iconTag === false) {
+    iconTagsMap.delete(href);
+  } else {
+    iconTagsMap.set(href, { ...iconTag, href });
+  }
 }
 
 const iconTagsToRender = Array.from(iconTagsMap.values());
