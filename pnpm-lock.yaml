@@ -42,6 +42,9 @@ catalogs:
     prettier-plugin-organize-imports:
       specifier: ^4.3.0
       version: 4.3.0
+    schema-dts:
+      specifier: ^1.1.5
+      version: 1.1.5
     sharp:
       specifier: ^0.34.5
       version: 0.34.5
@@ -125,6 +128,9 @@ importers:
       astro:
         specifier: "catalog:"
         version: 6.2.1(@types/node@24.12.2)(rollup@4.60.3)(typescript@5.9.3)(yaml@2.8.4)
+      schema-dts:
+        specifier: "catalog:"
+        version: 1.1.5
       sharp:
         specifier: "catalog:"
         version: 0.34.5
@@ -4740,6 +4746,12 @@ packages:
       }
     engines: { node: ">=v12.22.7" }
 
+  schema-dts@1.1.5:
+    resolution:
+      {
+        integrity: sha512-RJr9EaCmsLzBX2NDiO5Z3ux2BVosNZN5jo0gWgsyKvxKIUL5R3swNvoorulAeL9kLB0iTSX7V6aokhla2m7xbg==,
+      }
+
   semver@7.7.4:
     resolution:
       {
@@ -9061,6 +9073,8 @@ snapshots:
     dependencies:
       xmlchars: 2.2.0
     optional: true
+
+  schema-dts@1.1.5: {}
 
   semver@7.7.4: {}
 

@@ -69,13 +69,13 @@ describe("Component Head", () => {
         canonical: new URL("https://example.com/"),
         colorScheme: "light dark",
         humansTxt: new URL("https://example.com/humans.txt"),
-        icons: [
-          {
+        icons: {
+          "https://example.com/icon.svg": {
             rel: "icon",
             href: "https://example.com/icon.svg",
             type: "image/svg+xml",
           },
-        ],
+        },
         jsonLd:
           '{"@context":"https://schema.org","@type":"WebSite","name":"Example"}',
         languageAlternates: {
