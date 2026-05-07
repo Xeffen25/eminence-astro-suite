@@ -46,10 +46,12 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Create Release PR or Publish
+        id: changesets
         uses: changesets/action@v1
         with:
           version: pnpm changeset:version
-          publish: pnpm -r --filter ./package publish --access public --tag beta --no-git-checks
+          publish: pnpm changeset publish --tag beta
+          createGithubReleases: true
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
         env:
