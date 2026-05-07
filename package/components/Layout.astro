@@ -1,0 +1,17 @@
+---
+import { Head, type HeadProps } from ".";
+
+interface Props extends HeadProps {}
+---
+
+<!doctype html>
+<html>
+  <Head {...Astro.props}>
+    <slot name="head" />
+  </Head>
+  <body>
+    <slot name="body-start" />
+    <slot />
+    <slot name="body-end" />
+  </body>
+</html>

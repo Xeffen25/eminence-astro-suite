@@ -11,6 +11,7 @@ import _HumansTxt from "./HumansTxt.astro";
 import _Icons from "./Icons.astro";
 import _JsonLd from "./JsonLd.astro";
 import _LanguageAlternates from "./LanguageAlternates.astro";
+import _Layout from "./Layout.astro";
 import _Manifest from "./Manifest.astro";
 import _OpenGraph from "./OpenGraph.astro";
 import _Robots from "./Robots.astro";
@@ -232,6 +233,28 @@ export type JsonLdProps = ComponentProps<typeof JsonLd>;
  */
 export const LanguageAlternates = _LanguageAlternates;
 export type LanguageAlternatesProps = ComponentProps<typeof LanguageAlternates>;
+
+/**
+ * @summary Renders a full document layout using the `Head` component.
+ * @description
+ * Outputs `<html>` and `<body>`, while forwarding required head metadata to `Head`.
+ * Supports named `head`, `body-start`, and `body-end` slots, plus the default body content slot.
+ *
+ * @example
+ * <Layout title="Home" description="Welcome">
+ *   <h1>Page</h1>
+ * </Layout>
+ * @example
+ * <Layout title="Home" description="Welcome">
+ *   <meta slot="head" name="robots" content="index, follow" />
+ *   <div slot="body-start">Banner</div>
+ *   <main>Content</main>
+ *   <script slot="body-end" src="/app.js"></script>
+ * </Layout>
+ * @see {@link https://eminence-astro-suite.xeffen25.com/components/layout Layout Component Documentation}
+ */
+export const Layout = _Layout;
+export type LayoutProps = ComponentProps<typeof Layout>;
 
 /**
  * @summary Renders a `<link rel="manifest">` tag for web app metadata.
