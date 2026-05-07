@@ -5,5 +5,5 @@
     "eminence-astro-suite": "1.0.0",
     "eminence-astro-suite-docs-website": "0.0.0"
   },
-  "changesets": ["cyan-dodos-pump"]
+  "changesets": ["cyan-dodos-pump", "silent-steaks-pull"]
 }
