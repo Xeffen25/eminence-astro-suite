@@ -2,7 +2,8 @@
   "mode": "pre",
   "tag": "beta",
   "initialVersions": {
-    "eminence-astro-suite": "1.0.0"
+    "eminence-astro-suite": "1.0.0",
+    "eminence-astro-suite-docs-website": "0.0.0"
   },
-  "changesets": []
+  "changesets": ["cyan-dodos-pump"]
 }
