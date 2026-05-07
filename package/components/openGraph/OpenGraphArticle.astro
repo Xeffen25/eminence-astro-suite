@@ -1,23 +1,4 @@
 ---
-/**
- * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-article}
- * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-article.mdx}
- * ---
- * @summary Renders Open Graph article namespace meta tags.
- * @description
- * Outputs `article:*` meta tags for pages of type `og:type="article"`. Inferred
- * automatically when an `article` object is passed to the parent `OpenGraph`
- * component. Supports published time, modification time, expiration time, one or
- * more author profile URLs, a section label, and one or more tags.
- *
- * @example
- * <OpenGraphArticle publishedTime="2026-01-01T00:00:00Z" authors={["https://example.com/author"]} />
- * @example
- * <OpenGraphArticle section="Technology" tags={["astro", "seo"]} />
- *
- * @see {@link https://ogp.me/#type_article Open Graph article type}
- */
-
 interface Props {
   /**
    * ISO 8601 date/time string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ssZ`).

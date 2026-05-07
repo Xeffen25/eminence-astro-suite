@@ -1,0 +1,48 @@
+---
+title: When You Should Add a manifest.webmanifest
+description: Recommendation guide for deciding whether your site should ship a web app manifest.
+head:
+  - tag: title
+    content: When You Should Add a manifest.webmanifest
+---
+
+A `manifest.webmanifest` is most useful when your site behaves like an app people come back to frequently. It is not required for every website.
+
+## Add a manifest when
+
+- The site is app-like and task-oriented.
+- People use it daily or weekly.
+- You want installability behavior (home screen/app launcher presence) to be meaningful.
+- You maintain icon, name, and start URL metadata intentionally.
+
+Examples:
+
+- Dashboards, client portals, admin tools, and internal systems.
+- Productive tools (project planners, note systems, calculators people reuse often).
+- Consumer web apps with repeat usage.
+
+## Skip a manifest when
+
+- The site is mostly informational and rarely revisited.
+- There is no app-like workflow to resume.
+- Installability would not improve the user experience.
+- Install prompts would be noise for users rather than a useful action.
+
+When a site is not truly app-like, install UI can become friction: users are asked to install something they are unlikely to use regularly, which adds one more prompt they need to dismiss.
+
+Examples:
+
+- Simple brochure websites.
+- Landing pages and one-off campaign pages.
+- A typical restaurant site where users check menu/location occasionally, not as a frequent app workflow.
+
+## Practical rule
+
+If most users would not reasonably pin your site and use it regularly (weekly or daily), skip the manifest for now. Add it once your product actually has repeat, app-style usage.
+
+In short: do not ask users to make an install decision when there is no clear ongoing value, because that extra "No" moment makes the experience feel pushy instead of helpful.
+
+## Related docs
+
+- [manifest.webmanifest integration](/integration/manifest)
+- [MDN: Web App Manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest)

@@ -6,67 +6,79 @@ head:
     content: Head - Component
 ---
 
-Head renders a `<head>` element containing the full set of supported SEO and metadata tags for your page. It coordinates all sub-components — charset, viewport, title, canonical, Open Graph, and more — in a single, opinionated unit. Integration config supplies site-wide defaults; props passed directly to `Head` override them per page.
+import { Code } from "@astrojs/starlight/components";
+import HeadSource from "@package/components/Head.astro?raw";
+
+Head renders a full `<head>` element for a page by composing all metadata sub-components in a fixed order. Integration config provides defaults for most optional tags, while direct props take precedence for that render.
 
 ## Props
 
-| prop                 | type                                                     | default                                 | required | description                                                    |
-| -------------------- | -------------------------------------------------------- | --------------------------------------- | -------- | -------------------------------------------------------------- |
-| `title`              | `string`                                                 | -                                       | Yes      | Page title passed to the `Title` component.                    |
-| `titleTemplate`      | `` `${string}%s${string}` ``                             | integration config                      | No       | Template with `%s` placeholder for the title.                  |
-| `charset`            | `string \| false`                                        | `"utf-8"`                               | No       | Character set value. Pass `false` to suppress the tag.         |
-| `viewport`           | `string \| false`                                        | `"width=device-width, initial-scale=1"` | No       | Viewport content value. Pass `false` to suppress.              |
-| `base`               | `ComponentProps<typeof Base> \| false`                   | integration config                      | No       | Props for the `Base` component. Pass `false` to suppress.      |
-| `canonical`          | `string \| URL \| false`                                 | derived from `Astro.site`               | No       | Canonical URL. Pass `false` to suppress.                       |
-| `description`        | `string`                                                 | -                                       | No       | Page meta description. Omit to suppress.                       |
-| `colorScheme`        | `string \| false`                                        | integration config                      | No       | Color scheme hint. Pass `false` to suppress.                   |
-| `generator`          | `boolean`                                                | `true`                                  | No       | Enables or disables the generator meta tag.                    |
-| `humansTxt`          | `string \| URL \| false`                                 | integration config                      | No       | Humans.txt href. Pass `false` to suppress.                     |
-| `icons`              | `ComponentProps<typeof Icons> \| false`                  | integration config                      | No       | Icon configuration. Pass `false` to suppress.                  |
-| `jsonLd`             | `string`                                                 | -                                       | No       | Pre-serialized JSON-LD string. Omit to suppress.               |
-| `languageAlternates` | `Record<string, string \| URL>`                          | -                                       | No       | Map of language codes to alternate URLs.                       |
-| `manifest`           | `string \| URL \| false`                                 | derived from `Astro.site`               | No       | Web app manifest URL. Pass `false` to suppress.                |
-| `openGraph`          | `ComponentProps<typeof OpenGraph>`                       | -                                       | No       | Open Graph metadata. Omit to suppress.                         |
-| `robots`             | `ComponentProps<typeof Robots>`                          | integration config                      | No       | Robots directive props or raw content.                         |
-| `themeColor`         | `string \| { light: string; dark: string } \| false`     | integration config                      | No       | Theme color value(s). Pass `false` to suppress.                |
-| `verification`       | `ComponentProps<typeof Verification> \| false`           | integration config                      | No       | Site verification tokens. Pass `false` to suppress.            |
-| `appleItunesApp`     | `ComponentProps<typeof AppleItunesApp> \| false`         | integration config                      | No       | Apple iTunes Smart App Banner props. Pass `false` to suppress. |
-| `extend.link`        | `Array<HTMLAttributes<"link"> & { prefetch?: boolean }>` | integration config                      | No       | Free-form `<link>` tags to append after the slot.              |
-| `extend.meta`        | `Array<HTMLAttributes<"meta"> & { property: string }>`   | integration config                      | No       | Free-form `<meta>` tags to append after the slot.              |
-| `extend.custom`      | `string \| string[]`                                     | integration config                      | No       | Raw HTML fragment(s) injected with `set:html`.                 |
+| prop                 | type                                                 | default                                 | required | description                                                                                                    |
+| -------------------- | ---------------------------------------------------- | --------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
+| `title`              | `string`                                             | -                                       | Yes      | Required page title text. It is always rendered through `Title`.                                               |
+| `description`        | `string`                                             | -                                       | Yes      | Required `<meta name="description">` content for the page.                                                     |
+| `titleTemplate`      | `` `${string}%s${string}` ``                         | integration config                      | No       | Optional `%s` template for `title`; when omitted, integration config is used, then `"%s"`.                     |
+| `charset`            | `string \| false`                                    | `"utf-8"`                               | No       | Character set for `<meta charset>`. Pass `false` to suppress.                                                  |
+| `viewport`           | `string \| false`                                    | `"width=device-width, initial-scale=1"` | No       | Value for `<meta name="viewport">`. Pass `false` to suppress.                                                  |
+| `base`               | `ComponentProps<typeof Base> \| false`               | integration config                      | No       | Props for `<base>`. Pass `false` to disable even when integration config provides it.                          |
+| `appleItunesApp`     | `ComponentProps<typeof AppleItunesApp> \| false`     | integration config                      | No       | Props for the Apple Smart App Banner meta tag. Pass `false` to suppress.                                       |
+| `extend`             | `ComponentProps<typeof Extend>`                      | integration config                      | No       | Additional `link`, `meta`, and `custom` tags inserted after the slot and before built-in tags that follow.     |
+| `canonical`          | `string \| URL \| false`                             | derived from `Astro.site`               | No       | Canonical URL rendered as `<link rel="canonical">`. Accepts `string` or `URL`. Pass `false` to suppress.       |
+| `colorScheme`        | `string \| false`                                    | integration config                      | No       | Value for `<meta name="color-scheme">`. Pass `false` to suppress.                                              |
+| `generator`          | `boolean`                                            | `true`                                  | No       | Controls `<meta name="generator">`. Use `false` to suppress.                                                   |
+| `humansTxt`          | `string \| URL \| false`                             | derived from `Astro.site`               | No       | URL for `<link rel="author" type="text/plain">`. Accepts `string` or `URL`. Pass `false` to suppress.          |
+| `icons`              | `IconTag[] \| false`                                 | integration config                      | No       | Optional icon override array merged by `href` over integration icons. Pass `false` to suppress all icon links. |
+| `jsonLd`             | `string`                                             | -                                       | No       | Pre-serialized JSON-LD inserted as `<script type="application/ld+json">`. Omit to suppress.                    |
+| `languageAlternates` | `Record<string, string \| URL>`                      | -                                       | No       | `hreflang` alternate links keyed by language code; values can be `string` or `URL`.                            |
+| `manifest`           | `string \| URL \| false`                             | derived from `Astro.site`               | No       | Manifest URL rendered as `<link rel="manifest">`. Accepts `string` or `URL`. Pass `false` to suppress.         |
+| `openGraph`          | `ComponentProps<typeof OpenGraph>`                   | -                                       | No       | Open Graph metadata props. Omit to suppress all `og:*` tags.                                                   |
+| `robots`             | `ComponentProps<typeof Robots>`                      | integration config                      | No       | Robots directives object or explicit `content` string passed to `Robots`.                                      |
+| `themeColor`         | `string \| { light: string; dark: string } \| false` | integration config                      | No       | Theme color as either one `string` (`content`) or `{ light, dark }` pair. Pass `false` to suppress.            |
+| `verification`       | `ComponentProps<typeof Verification> \| false`       | integration config                      | No       | Search-console verification token props. Pass `false` to suppress.                                             |
 
-## Usage & Examples
+## Examples
 
-### Basic usage
+### Basic
 
 Input:
 
 ```astro
-<Head title="Home" />
+<Head title="Home" description="Home page" />
 ```
 
-Output (abbreviated):
+Output:
 
 ```html
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Home</title>
-  <meta name="generator" content="Astro vX.Y.Z" />
+  <meta name="description" content="Home page" />
+  <meta name="generator" content="Astro v6.1.1" />
 </head>
 ```
 
-### Auto usage
+### Automatic
 
-Uses integration `head.*` defaults for all omitted props. No props beyond `title` are required.
+Uses integration `head.*` defaults for omitted optional props.
 
 Input:
 
-```astro
-<Head title="Home" />
+```js
+// in astro.config.mjs integration config
+eminence({
+  headTags: {
+    titleTemplate: "%s | My Site",
+    colorScheme: "dark",
+  },
+});
 ```
 
-Output (when integration sets `head.titleTemplate: "%s | My Site"` and `head.colorScheme: "dark"`):
+```astro
+<Head title="Home" description="Home page" />
+```
+
+Output:
 
 ```html
 <head>
@@ -74,11 +86,12 @@ Output (when integration sets `head.titleTemplate: "%s | My Site"` and `head.col
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Home | My Site</title>
   <meta name="color-scheme" content="dark" />
-  <meta name="generator" content="Astro vX.Y.Z" />
+  <meta name="description" content="Home page" />
+  <meta name="generator" content="Astro v6.1.1" />
 </head>
 ```
 
-### Complete usage
+### Complete
 
 Input:
 
@@ -87,77 +100,115 @@ Input:
   title="Home"
   titleTemplate="%s | Example"
   description="Welcome to Example"
-  canonical="https://example.com/"
+  base={{ href: "https://example.com", target: "_blank" }}
+  appleItunesApp={{ id: "1234567890", argument: "https://example.com/app" }}
+  canonical={new URL("https://example.com/")}
   colorScheme="light dark"
+  humansTxt={new URL("https://example.com/humans.txt")}
+  manifest="https://example.com/manifest.webmanifest"
+  themeColor={{ light: "#ffffff", dark: "#111111" }}
   openGraph={{
     title: "Home",
     url: "https://example.com/",
     siteName: "Example",
   }}
+  robots={{ content: "index, follow" }}
   verification={{ google: "abc123" }}
+  icons={[
+    {
+      rel: "icon",
+      href: "https://example.com/icon.svg",
+      type: "image/svg+xml",
+    },
+  ]}
+  jsonLd='{"@context":"https://schema.org","@type":"WebSite","name":"Example"}'
+  languageAlternates={{
+    en: "https://example.com/",
+    es: new URL("https://example.com/es/"),
+  }}
   extend={{
     link: [
       { rel: "preconnect", href: "https://cdn.example.com", prefetch: true },
     ],
     meta: [{ property: "custom:token", content: "abc123" }],
+    custom: '<meta name="custom-inline" content="1">',
   }}
 />
 ```
 
-Output (abbreviated):
+Output:
 
 ```html
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <base href="https://example.com" target="_blank" />
   <title>Home | Example</title>
+  <link rel="preconnect" href="https://cdn.example.com" prefetch="true" />
+  <meta property="custom:token" content="abc123" />
+  <meta name="custom-inline" content="1" />
+  <meta
+    name="apple-itunes-app"
+    content="app-id=1234567890, app-argument=https://example.com/app"
+  />
   <link rel="canonical" href="https://example.com/" />
   <meta name="color-scheme" content="light dark" />
   <meta name="description" content="Welcome to Example" />
-  <meta name="generator" content="Astro vX.Y.Z" />
+  <meta name="generator" content="Astro v6.1.1" />
+  <link rel="author" href="https://example.com/humans.txt" type="text/plain" />
+  <link rel="icon" href="https://example.com/icon.svg" type="image/svg+xml" />
+  <script type="application/ld+json">
+    { "@context": "https://schema.org", "@type": "WebSite", "name": "Example" }
+  </script>
+  <link rel="alternate" hreflang="en" href="https://example.com/" />
+  <link rel="alternate" hreflang="es" href="https://example.com/es/" />
+  <link rel="manifest" href="https://example.com/manifest.webmanifest" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Home" />
   <meta property="og:url" content="https://example.com/" />
   <meta property="og:site_name" content="Example" />
+  <meta name="robots" content="index, follow" />
+  <meta
+    name="theme-color"
+    media="(prefers-color-scheme: light)"
+    content="#ffffff"
+  />
+  <meta
+    name="theme-color"
+    media="(prefers-color-scheme: dark)"
+    content="#111111"
+  />
   <meta name="google-site-verification" content="abc123" />
-  <link rel="preconnect" href="https://cdn.example.com" prefetch />
-  <meta property="custom:token" content="abc123" />
 </head>
 ```
 
 ## Decisions Made
 
-### Tag order follows Capo.js convention
+### `title` and `description` are intentionally required
 
-Head renders sub-components in the order recommended by [Capo.js](https://rviscomi.github.io/capo.js/): charset and viewport first, then title, then meta and link tags, and finally scripts. This ordering maximizes browser rendering performance by ensuring critical resources are discovered early.
+`Head` always renders `Title` and `Description`, so both values are required at the component boundary to avoid accidental pages without core metadata.
 
-### title is the only required prop
+### Explicit `false` beats integration fallbacks
 
-All other props either have sensible defaults, fall back to integration config, or suppress output when omitted. Requiring only `title` keeps per-page usage minimal while making the document title non-negotiable.
+For optional props that support `false`, passing `false` suppresses that tag even when integration config would otherwise produce output.
 
-### Pass false to suppress any optional tag
+### Fallback precedence is `props` then integration config
 
-Optional sub-components that default to rendering (such as `charset`, `viewport`, `generator`, `humansTxt`, and `manifest`) accept `false` as an explicit opt-out. This provides a clear, type-safe way to disable any tag on a specific page without affecting site-wide defaults.
+Child components that support integration defaults resolve values only when the relevant prop is omitted. Passing an object prop (including `{}`) marks that prop as provided and stops fallback for that child.
 
-### Integration config provides site-wide defaults
+### Slot and `extend` order is fixed
 
-Most props fall back to values from `clientHeadConfig`, which is serialized from the integration options at build time. This lets you configure defaults once and override per page only when needed.
+The default slot renders immediately after `<title>`, then `extend` tags are appended. Built-in tags that follow (`appleItunesApp`, `canonical`, `description`, and so on) are rendered afterward.
 
-### Default slot allows custom head tags
+### `extend.custom` is unescaped HTML
 
-Head exposes a default `<slot />` placed after the `<title>` tag so consumers can inject additional link or meta tags while preserving Capo.js ordering for the built-in tags. This is the same slot the `Layout` component uses to forward its `head` slot.
+`extend.custom` uses `set:html` and is injected as-is. Only trusted or pre-sanitized content should be passed.
 
-### Prefer slot tags over extend for one-off additions
+## Source code
 
-For page-specific tags, place them directly in the `Head` slot. This keeps metadata close to the page where it is used and avoids global config sprawl. Use `extend.link` and `extend.meta` when you need configuration-driven tags shared across many pages.
-
-### extend.custom uses unescaped set:html
-
-`extend.custom` is injected with Astro's `set:html` directive and is not escaped. Only pass trusted or manually sanitized HTML. Unsanitized input can introduce Cross Site Scripting (XSS) vulnerabilities.
+<Code code={HeadSource} lang="astro" />
 
 ## Reference
 
 - [MDN: head element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/head)
-- [Capo.js: ordering head elements](https://rviscomi.github.io/capo.js/)
-- [web.dev: optimize the order of resources in the head](https://web.dev/articles/optimizing-resource-loading-with-priority-hints)
 - [Astro directives reference: set:html](https://docs.astro.build/en/reference/directives-reference/#sethtml)

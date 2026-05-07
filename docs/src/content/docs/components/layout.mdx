@@ -1,0 +1,163 @@
+---
+title: Layout
+description: Astro layout component that renders a full document shell and delegates head metadata rendering to the Head component.
+head:
+  - tag: title
+    content: Layout - Component
+---
+
+import { Code } from "@astrojs/starlight/components";
+import LayoutSource from "@package/components/Layout.astro?raw";
+
+Layout renders a complete HTML document scaffold (`<html>` and `<body>`) and uses `Head` for metadata. It provides three named slots (`head`, `body-start`, `body-end`) and the default slot for main body content.
+
+## Props
+
+| prop                | type                                                          | default        | required | description                                                                          |
+| ------------------- | ------------------------------------------------------------- | -------------- | -------- | ------------------------------------------------------------------------------------ |
+| `title`             | `ComponentProps<typeof Head>["title"]`                        | -              | Yes      | Page title forwarded directly to `Head`.                                             |
+| `description`       | `ComponentProps<typeof Head>["description"]`                  | -              | Yes      | Page description forwarded directly to `Head`.                                       |
+| `...otherHeadProps` | `Omit<ComponentProps<typeof Head>, "title" \| "description">` | same as `Head` | No       | Any other `Head` prop can be passed directly to `Layout` and is forwarded unchanged. |
+
+## Examples
+
+### Basic
+
+Input:
+
+```astro
+<Layout title="Home" description="Home page">
+  <main>Welcome</main>
+</Layout>
+```
+
+Output:
+
+```html
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home</title>
+    <meta name="description" content="Home page" />
+    <meta name="generator" content="Astro v6.1.1" />
+  </head>
+  <body>
+    <main>Welcome</main>
+  </body>
+</html>
+```
+
+### Automatic
+
+Uses integration `head.*` defaults through `Head` for omitted optional metadata.
+
+Input:
+
+```js
+// in astro.config.mjs integration config
+eminence({
+  headTags: {
+    titleTemplate: "%s | My Site",
+    colorScheme: "dark",
+  },
+});
+```
+
+```astro
+<Layout title="Home" description="Home page">
+  <main>Welcome</main>
+</Layout>
+```
+
+Output:
+
+```html
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home | My Site</title>
+    <meta name="color-scheme" content="dark" />
+    <meta name="description" content="Home page" />
+    <meta name="generator" content="Astro v6.1.1" />
+  </head>
+  <body>
+    <main>Welcome</main>
+  </body>
+</html>
+```
+
+### Complete
+
+Input:
+
+```astro
+<Layout
+  title="Home"
+  titleTemplate="%s | Example"
+  description="Welcome to Example"
+  canonical="https://example.com/"
+  themeColor={{ light: "#ffffff", dark: "#111111" }}
+>
+  <meta slot="head" name="robots" content="index, follow" />
+  <div slot="body-start">Banner</div>
+  <main>Welcome</main>
+  <script slot="body-end" src="/app.js"></script>
+</Layout>
+```
+
+Output:
+
+```html
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home | Example</title>
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://example.com/" />
+    <meta name="description" content="Welcome to Example" />
+    <meta name="generator" content="Astro v6.1.1" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#ffffff"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#111111"
+    />
+  </head>
+  <body>
+    <div>Banner</div>
+    <main>Welcome</main>
+    <script src="/app.js"></script>
+  </body>
+</html>
+```
+
+## Decisions Made
+
+### Layout delegates metadata behavior entirely to `Head`
+
+`Layout` does not reimplement head-tag logic. All metadata defaults, fallbacks, and suppression behavior are defined by `Head` and forwarded via direct props.
+
+### Slot placement is deterministic
+
+The `head` slot is rendered inside `Head` where custom page-level tags belong. In the body, `body-start` renders before the default slot and `body-end` renders after it.
+
+### Layout only owns slot composition
+
+The component intentionally keeps surface area small: it forwards all received props to `Head` and controls fixed slot placement in the body.
+
+## Source code
+
+<Code code={LayoutSource} lang="astro" />
+
+## Reference
+
+- [MDN: html element](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/html)
+- [MDN: body element](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/body)
+- [MDN: slot element](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/slot)

@@ -84,7 +84,7 @@ export default function createIntegration(
           if (options.headTags?.humansTxt === undefined) {
             if (!assets.get("/humans.txt"))
               logger.warn(
-                "Recommendation: visit eminence-astro-suite.xeffen25.com/guides/humans-txt to learn how to create a humans.txt for your Astro site and why you should do it.",
+                "Recommendation: visit eminence-astro-suite.xeffen25.com/recommendations/why-you-should-add-a-humans-txt to learn why adding a humans.txt is useful and when to include it.",
               );
             else
               logger.warn(

@@ -1,23 +1,4 @@
 ---
-/**
- * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-image}
- * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-image.mdx}
- * ---
- * @summary Renders Open Graph image structured property meta tags.
- * @description
- * Outputs `og:image` and related structured property tags for social sharing
- * image previews. Accepts an Astro `ImageMetadata` import or a plain URL string
- * or instance. Width, height, and MIME type are inferred from imported metadata;
- * for plain paths the MIME type is inferred from the file extension.
- *
- * @example
- * <OpenGraphImage src="/image.png" width={1200} height={630} alt="Banner" />
- * @example
- * <OpenGraphImage src={importedImage} alt="Banner" />
- *
- * @see {@link https://ogp.me/#structured Open Graph structured properties}
- */
-
 import type { ImageMetadata } from "astro";
 
 import { inferImageMimeType, toHref } from "../../utils";

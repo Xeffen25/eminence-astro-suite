@@ -1,10 +1,41 @@
 {
   "name": "eminence-astro-suite",
-  "version": "0.0.1",
+  "version": "1.0.0-beta.0",
+  "description": "Astro components and integration for managing page head, metadata, social sharing, icons, and SEO outputs.",
+  "license": "MIT",
+  "author": "Xeffen25",
+  "homepage": "https://eminence-astro-suite.xeffen25.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xeffen25/eminence-astro-suite.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xeffen25/eminence-astro-suite/issues"
+  },
+  "keywords": [
+    "astro-component",
+    "astro-integration",
+    "seo",
+    "optimization",
+    "metadata",
+    "head",
+    "open-graph",
+    "robots-txt",
+    "sitemap"
+  ],
   "type": "module",
+  "files": [
+    "components",
+    "integration",
+    "utils.ts",
+    "virtual.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
-    "./integration": "./integration.ts",
-    "./components": "./components.ts"
+    "./integration": "./integration/index.ts",
+    "./components": "./components/index.ts"
   },
   "peerDependencies": {
     "@astrojs/sitemap": "catalog:peer",
