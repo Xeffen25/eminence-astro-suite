@@ -1,0 +1,34 @@
+---
+title: Why You Should Add a security.txt
+description: Recommendation guide for publishing a security.txt disclosure policy endpoint.
+head:
+  - tag: title
+    content: Why You Should Add a security.txt
+---
+
+A `security.txt` file provides a standardized way for security researchers to contact you and report vulnerabilities responsibly.
+
+## Why it matters
+
+- Creates a clear disclosure path for bug reports.
+- Reduces report loss caused by unclear contact points.
+- Signals operational maturity and security awareness.
+- Aligns with RFC 9116 conventions used across the web.
+
+## Minimum useful setup
+
+- At least one `Contact` value (`mailto:` or `https://`).
+- A realistic `Expires` value you can maintain.
+- Optional `Policy` URL if you have a disclosure policy page.
+
+## Operational guidance
+
+- Keep contacts monitored.
+- Rotate `Expires` before it lapses.
+- Avoid publishing stale or unmonitored addresses.
+
+## Related docs
+
+- [security.txt integration](/integration/security-txt)
+- [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116)
+- [securitytxt.org](https://securitytxt.org/)

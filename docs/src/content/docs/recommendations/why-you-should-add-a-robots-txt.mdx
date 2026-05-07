@@ -1,0 +1,36 @@
+---
+title: Why You Should Add a robots.txt
+description: Recommendation guide for shipping a robots.txt file with explicit crawler directives.
+head:
+  - tag: title
+    content: Why You Should Add a robots.txt
+---
+
+A `robots.txt` file gives crawlers explicit crawl guidance. Even when you follow default behavior (effectively allowing normal crawling), having a file makes your indexing policy intentional and visible.
+
+## Why it matters
+
+- Declares crawler rules in a standard location.
+- Reduces accidental crawling of private or low-value paths.
+- Helps search engines discover your sitemap when listed.
+- Makes your crawl policy explicit for operators and teams.
+- Makes absence of a sitemap explicit too, when you intentionally do not have one.
+
+You should add `robots.txt` even if your rules are minimal. Explicit policy is better than implicit assumptions.
+
+## Good baseline
+
+- Start with `User-agent: *`.
+- Disallow clearly non-public areas (`/admin/`, `/private/`, staging paths).
+- Add a sitemap URL when available.
+- If you do not have a sitemap yet, leave it out intentionally and add it later when one exists.
+
+## Important boundary
+
+`robots.txt` controls crawler behavior, not access control. Sensitive data must still be protected with authentication and authorization.
+
+## Related docs
+
+- [robots.txt integration](/integration/robots-txt)
+- [Google: robots.txt specification](https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt)
+- [RFC 9309](https://www.rfc-editor.org/rfc/rfc9309)

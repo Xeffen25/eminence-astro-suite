@@ -21,7 +21,7 @@ export type RobotsTxtOptions = {
 };
 
 export const ROBOTS_TXT_RECOMMENDATION =
-  "Recommendation: follow todo.com/later-create-article to learn why adding a robots.txt is important.";
+  "Recommendation: follow eminence-astro-suite.xeffen25.com/recommendations/why-you-should-add-a-robots-txt to learn why adding a robots.txt is important.";
 
 export const ROBOTS_TXT_RELATIVE_PATH = "/robots.txt";
 

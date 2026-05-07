@@ -34,6 +34,10 @@ export default defineConfig({
           label: "Policies",
           autogenerate: { directory: "policies" },
         },
+        {
+          label: "Recommendations",
+          autogenerate: { directory: "recommendations" },
+        },
       ],
     }),
   ],

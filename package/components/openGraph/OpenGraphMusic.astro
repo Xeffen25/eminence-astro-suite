@@ -1,24 +1,4 @@
 ---
-/**
- * [ 🌐 Website ] {@link https://todo.dev/components/open-graph-music}
- * [ 📝 Edit Docs ] {@link https://todo.dev/Xeffen25/eminence-astro-suite/src/content/components/open-graph-music.mdx}
- * ---
- * @summary Renders Open Graph music namespace meta tags.
- * @description
- * Outputs `music:*` meta tags for music pages. The `subtype` determines
- * `og:type` in the parent: `music.song`, `music.album`, `music.playlist`, or
- * `music.radio_station`. Each subtype supports a relevant subset of music
- * metadata fields. Inferred automatically when a `music` object is passed to
- * the parent `OpenGraph` component.
- *
- * @example
- * <OpenGraphMusic subtype="song" duration={214} musicians={["https://example.com/artist"]} />
- * @example
- * <OpenGraphMusic subtype="album" musicians={["https://example.com/artist"]} releaseDate="2026-01-01" />
- *
- * @see {@link https://ogp.me/#type_music Open Graph music type}
- */
-
 interface Props {
   /**
    * Controls parent `og:type` as `music.<subtype>`.

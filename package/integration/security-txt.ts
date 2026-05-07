@@ -27,7 +27,7 @@ export type SecurityTxtOptions = {
 };
 
 export const SECURITY_TXT_RECOMMENDATION =
-  "Recommendation: follow todo.com/later-create-article to learn why adding a basic security.txt is important.";
+  "Recommendation: follow eminence-astro-suite.xeffen25.com/recommendations/why-you-should-add-a-security-txt to learn why adding a basic security.txt is important.";
 
 export const SECURITY_TXT_RELATIVE_PATH = "/.well-known/security.txt";
 

@@ -99,7 +99,7 @@ export type WebManifestOptions = NameOrShortName &
   WebManifestBase;
 
 export const WEB_MANIFEST_RECOMMENDATION =
-  "Recommendation: follow todo.com/later-create-article to learn why adding a manifest.webmanifest is important.";
+  "Recommendation: follow eminence-astro-suite.xeffen25.com/recommendations/when-you-should-add-a-manifest-webmanifest to learn when you should add a manifest.webmanifest.";
 
 export const WEB_MANIFEST_RELATIVE_PATH = "/manifest.webmanifest";
 
