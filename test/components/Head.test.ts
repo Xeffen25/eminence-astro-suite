@@ -6,6 +6,9 @@ import { beforeEach, describe, expect, it } from "vitest";
 const DEFAULT_DESCRIPTION = "Home page";
 const DEFAULT_HEAD_TAGS_CONFIG = { ...config };
 
+const normalizeGeneratorVersion = (html: string) =>
+  html.replace(/Astro v\d+\.\d+\.\d+/g, "Astro v<version>");
+
 const resetClientHeadConfig = () => {
   Object.assign(config, DEFAULT_HEAD_TAGS_CONFIG);
 };
@@ -24,8 +27,8 @@ describe("Component Head", () => {
       props: { title: "Home", description: DEFAULT_DESCRIPTION },
     });
 
-    expect(result).toBe(
-      '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1"></head>',
+    expect(normalizeGeneratorVersion(result)).toBe(
+      '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v<version>"></head>',
     );
   });
 
@@ -43,8 +46,8 @@ describe("Component Head", () => {
       },
     });
 
-    expect(result).toBe(
-      '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | My Site</title><meta name="color-scheme" content="dark"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1"></head>',
+    expect(normalizeGeneratorVersion(result)).toBe(
+      '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home | My Site</title><meta name="color-scheme" content="dark"><meta name="description" content="Home page"><meta name="generator" content="Astro v<version>"></head>',
     );
   });
 
@@ -109,8 +112,8 @@ describe("Component Head", () => {
       },
     });
 
-    expect(result).toBe(
-      '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="https://example.com" target="_blank"><title>Home | Example</title><link rel="preconnect" href="https://cdn.example.com" prefetch="true"><meta property="custom:token" content="abc123"><meta name="custom-inline" content="1"><meta name="apple-itunes-app" content="app-id=1234567890, app-argument=https://example.com/app"><link rel="canonical" href="https://example.com/"><meta name="color-scheme" content="light dark"><meta name="description" content="Welcome to Example"><meta name="generator" content="Astro v6.1.1"><link rel="author" href="https://example.com/humans.txt" type="text/plain"><link rel="icon" href="https://example.com/icon.svg" type="image/svg+xml"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Example"}</script><link rel="alternate" hreflang="en" href="https://example.com/"><link rel="alternate" hreflang="es" href="https://example.com/es/"><link rel="manifest" href="https://example.com/manifest.webmanifest"><meta property="og:type" content="website"><meta property="og:title" content="Home"><meta property="og:url" content="https://example.com/"><meta property="og:site_name" content="Example"><meta name="robots" content="index, follow"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111111"><meta name="google-site-verification" content="abc123"></head>',
+    expect(normalizeGeneratorVersion(result)).toBe(
+      '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="https://example.com" target="_blank"><title>Home | Example</title><link rel="preconnect" href="https://cdn.example.com" prefetch="true"><meta property="custom:token" content="abc123"><meta name="custom-inline" content="1"><meta name="apple-itunes-app" content="app-id=1234567890, app-argument=https://example.com/app"><link rel="canonical" href="https://example.com/"><meta name="color-scheme" content="light dark"><meta name="description" content="Welcome to Example"><meta name="generator" content="Astro v<version>"><link rel="author" href="https://example.com/humans.txt" type="text/plain"><link rel="icon" href="https://example.com/icon.svg" type="image/svg+xml"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Example"}</script><link rel="alternate" hreflang="en" href="https://example.com/"><link rel="alternate" hreflang="es" href="https://example.com/es/"><link rel="manifest" href="https://example.com/manifest.webmanifest"><meta property="og:type" content="website"><meta property="og:title" content="Home"><meta property="og:url" content="https://example.com/"><meta property="og:site_name" content="Example"><meta name="robots" content="index, follow"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111111"><meta name="google-site-verification" content="abc123"></head>',
     );
   });
 
@@ -171,8 +174,8 @@ describe("Component Head", () => {
       },
     });
 
-    expect(result).toBe(
-      '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111111"></head>',
+    expect(normalizeGeneratorVersion(result)).toBe(
+      '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="description" content="Home page"><meta name="generator" content="Astro v<version>"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111111"></head>',
     );
   });
 
@@ -203,8 +206,8 @@ describe("Component Head", () => {
       },
     });
 
-    expect(result).toBe(
-      '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="slot-meta" content="slot"><link rel="preconnect" href="https://cdn.example.com" prefetch="true"><meta property="custom:source" content="props"><meta name="description" content="Home page"><meta name="generator" content="Astro v6.1.1"></head>',
+    expect(normalizeGeneratorVersion(result)).toBe(
+      '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home</title><meta name="slot-meta" content="slot"><link rel="preconnect" href="https://cdn.example.com" prefetch="true"><meta property="custom:source" content="props"><meta name="description" content="Home page"><meta name="generator" content="Astro v<version>"></head>',
     );
   });
 });
