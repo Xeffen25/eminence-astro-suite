@@ -1,5 +1,11 @@
 # eminence-astro-suite
 
+## 1.0.0-beta.1
+
+### Patch Changes
+
+- [`80e71dc`](https://github.com/Xeffen25/eminence-astro-suite/commit/80e71dc87d2230ec41faaeacd8084949accefb0b) Thanks [@Xeffen25](https://github.com/Xeffen25)! - improvements to components
+
 ## 1.0.0-beta.0
 
 ### Major Changes
