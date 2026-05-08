@@ -3,18 +3,30 @@
   AstroIntegration,
   AstroIntegrationLogger,
 } from "astro";
-import type { IconsOptions } from "./generate-icons";
-import { generateIcons } from "./generate-icons";
-import { generateManifest, type WebManifestOptions } from "./manifest";
-import { generateRobotsTxt, type RobotsTxtOptions } from "./robots-txt";
-import { generateSecurityTxt, type SecurityTxtOptions } from "./security-txt";
-import { createSitemapIntegration, type SitemapOptions } from "./sitemap";
+import type { IconsOptions } from "./integration/generate-icons";
+import { generateIcons } from "./integration/generate-icons";
+import {
+  generateManifest,
+  type WebManifestOptions,
+} from "./integration/manifest";
+import {
+  generateRobotsTxt,
+  type RobotsTxtOptions,
+} from "./integration/robots-txt";
+import {
+  generateSecurityTxt,
+  type SecurityTxtOptions,
+} from "./integration/security-txt";
+import {
+  createSitemapIntegration,
+  type SitemapOptions,
+} from "./integration/sitemap";
 import {
   RESOLVED_VIRTUAL_CONFIG_MODULE_ID,
   serializedVirtualConfigModule,
   VIRTUAL_CONFIG_MODULE_ID,
   type HeadTagsOptions,
-} from "./virtual-config";
+} from "./integration/virtual-config";
 
 export type IntegrationInput = {
   headTags?: HeadTagsOptions;

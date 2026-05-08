@@ -4,7 +4,7 @@ import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ResizeOptions } from "sharp";
-import type { IntegrationRuntimeContext } from ".";
+import type { IntegrationRuntimeContext } from "..";
 import { inferImageMimeType, isSvg } from "../utils";
 
 const require = createRequire(fileURLToPath(import.meta.url));

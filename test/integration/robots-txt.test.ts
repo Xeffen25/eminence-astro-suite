@@ -1,4 +1,4 @@
-﻿import type { IntegrationRuntimeContext } from "@package/integration";
+﻿import type { IntegrationRuntimeContext } from "@package/index";
 import {
   generateRobotsTxt,
   ROBOTS_TXT_RECOMMENDATION,

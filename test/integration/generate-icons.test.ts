@@ -1,4 +1,4 @@
-import type { IntegrationRuntimeContext } from "@package/integration";
+import type { IntegrationRuntimeContext } from "@package/index";
 import {
   generateIcons,
   resolveIconsOptions,

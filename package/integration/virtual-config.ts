@@ -1,5 +1,5 @@
 import type { ComponentProps } from "astro/types";
-import type { IntegrationInput } from ".";
+import type { IntegrationInput } from "..";
 import {
   AppleItunesApp,
   Base,
