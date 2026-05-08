@@ -40,12 +40,15 @@ export default function createIntegration(
   return {
     name: "eminence-astro-suite",
     hooks: {
-      "astro:config:setup": async ({ updateConfig }) => {
+      "astro:config:setup": async ({ updateConfig, logger }) => {
         if (options.sitemap !== false) {
           const sitemapIntegration = await createSitemapIntegration(
             options.sitemap ?? {},
+            logger,
           );
-          updateConfig({ integrations: [sitemapIntegration] });
+          if (sitemapIntegration) {
+            updateConfig({ integrations: [sitemapIntegration] });
+          }
         }
 
         updateConfig({
