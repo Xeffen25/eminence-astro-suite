@@ -51,7 +51,7 @@ Then add the integration to your Astro config:
 ```ts
 // astro.config.mjs
 import { defineConfig } from "astro/config";
-import eminence from "eminence-astro-suite/integration";
+import eminence from "eminence-astro-suite";
 
 export default defineConfig({
   integrations: [
@@ -69,7 +69,7 @@ export default defineConfig({
 ```
 
 > [!WARNING]
-> The components require the integration to be present in your Astro config. Using components without registering `eminence-astro-suite/integration` will fail.
+> The components require the integration to be present in your Astro config. Using components without registering `eminence-astro-suite` will fail.
 
 ## Usage
 
@@ -153,7 +153,7 @@ If you installed with `astro add`, your config is set up automatically. Manual s
 ```ts
 // astro.config.mjs
 import { defineConfig } from "astro/config";
-import eminence from "eminence-astro-suite/integration";
+import eminence from "eminence-astro-suite";
 
 export default defineConfig({
   integrations: [

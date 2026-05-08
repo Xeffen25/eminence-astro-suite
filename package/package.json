@@ -26,6 +26,7 @@
   "type": "module",
   "files": [
     "components",
+    "index.ts",
     "integration",
     "utils.ts",
     "virtual.d.ts"
@@ -34,7 +35,7 @@
     "access": "public"
   },
   "exports": {
-    "./integration": "./integration/index.ts",
+    ".": "./index.ts",
     "./components": "./components/index.ts"
   },
   "peerDependencies": {
