@@ -1,5 +1,11 @@
 # eminence-astro-suite
 
+## 1.0.0-beta.3
+
+### Patch Changes
+
+- [`d6a99c5`](https://github.com/Xeffen25/eminence-astro-suite/commit/d6a99c5852e6ffc6410ee0761bf463a2e4c61fd0) Thanks [@Xeffen25](https://github.com/Xeffen25)! - fix index
+
 ## 1.0.0-beta.2
 
 ### Patch Changes
