@@ -1,10 +1,13 @@
 import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ResizeOptions } from "sharp";
 import type { IntegrationRuntimeContext } from ".";
 import { inferImageMimeType, isSvg } from "../utils";
+
+const require = createRequire(fileURLToPath(import.meta.url));
 
 export const SUPPORTED_EXTENSIONS = [
   "png",
@@ -78,6 +81,8 @@ type IconDefinition =
   | SvgIconDefinition
   | RasterIconDefinition;
 
+type IconDefinitionInput = IconDefinition | false;
+
 export type IconsOptions = {
   source: string;
 } & {
@@ -88,14 +93,6 @@ export type IconsOptions = {
   [filename: `${string}.${RasterSupportedExtensions}`]:
     | RasterIconDefinition
     | false;
-};
-
-export const DEFAULT_ICONS: Record<string, IconDefinition> = {
-  "favicon.ico": { sizes: [16, 32, 48], tag: { rel: "icon" } },
-  "favicon.png": { size: 32, tag: { rel: "icon" } },
-  "apple-touch-icon.png": { size: 180, tag: { rel: "apple-touch-icon" } },
-  "icon-192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
-  "icon.png": { size: 512, tag: { rel: "icon" }, manifest: true },
 };
 
 interface BaseGenerationTask {
@@ -138,6 +135,32 @@ const ICON_SOURCE_UNDEFINED_WARNING =
   "No icons were generated because options.icons.source is not defined. Set it to false to explicitly disable icon generation or provide a valid source path to generate icons.";
 
 const SUPPORTED_EXTENSION_SET = new Set<string>(SUPPORTED_EXTENSIONS);
+
+const DEFAULT_ICON_DEFINITIONS: Readonly<Record<IconFileName, IconDefinition>> =
+  {
+    "favicon.ico": {
+      sizes: [16, 32, 48],
+      tag: { rel: "icon" },
+    },
+    "favicon.png": {
+      size: 32,
+      tag: { rel: "icon" },
+    },
+    "apple-touch-icon.png": {
+      size: 180,
+      tag: { rel: "apple-touch-icon" },
+    },
+    "icon-192.png": {
+      size: 192,
+      tag: { rel: "icon" },
+      manifest: true,
+    },
+    "icon.png": {
+      size: 512,
+      tag: { rel: "icon" },
+      manifest: true,
+    },
+  };
 
 const hasSupportedExtension = (value: string): value is IconFileName => {
   const extension = value.split(".").pop()?.toLowerCase();
@@ -393,16 +416,23 @@ const resolveGenerationTask = (
 const getIconDefinitions = (
   icons: IconsOptions,
 ): Array<[IconFileName, IconDefinition]> => {
-  const userEntries = Object.fromEntries(
-    Object.entries(icons).filter(([key]) => key !== "source"),
-  ) as Record<string, IconDefinition | false>;
-  const merged: Record<string, IconDefinition | false> = {
-    ...DEFAULT_ICONS,
-    ...userEntries,
-  };
-  return Object.entries(merged).filter(
+  const definitions = new Map<IconFileName, IconDefinitionInput>(
+    Object.entries(DEFAULT_ICON_DEFINITIONS) as Array<
+      [IconFileName, IconDefinitionInput]
+    >,
+  );
+
+  for (const [fileName, definition] of Object.entries(icons)) {
+    if (fileName === "source" || !hasSupportedExtension(fileName)) {
+      continue;
+    }
+
+    definitions.set(fileName, definition as IconDefinitionInput);
+  }
+
+  return Array.from(definitions.entries()).filter(
     (entry): entry is [IconFileName, IconDefinition] =>
-      entry[1] !== false && hasSupportedExtension(entry[0]),
+      entry[1] !== false && typeof entry[1] === "object" && entry[1] !== null,
   );
 };
 
@@ -414,13 +444,8 @@ export const resolveIconsOptions = (
   }
 
   const explicitDefinitions = getIconDefinitions(icons);
-  const resolvedFileNames = new Set(
+  const explicitFileNames = new Set(
     explicitDefinitions.map(([fileName]) => fileName),
-  );
-  const userDisabledFileNames = new Set(
-    Object.entries(icons)
-      .filter(([key, val]) => key !== "source" && val === false)
-      .map(([key]) => key),
   );
   const tags: IconTag[] = [];
   const manifestIcons: ManifestIconItem[] = [];
@@ -447,11 +472,7 @@ export const resolveIconsOptions = (
     }
   }
 
-  if (
-    isSvg(icons.source) &&
-    !resolvedFileNames.has("favicon.svg") &&
-    !userDisabledFileNames.has("favicon.svg")
-  ) {
+  if (isSvg(icons.source) && !explicitFileNames.has("favicon.svg")) {
     tags.unshift({
       rel: "icon",
       href: "/favicon.svg",
@@ -510,9 +531,9 @@ function getErrorMessage(error: unknown): string {
 
 async function loadSharp(logger: IntegrationRuntimeContext["logger"]) {
   try {
-    const sharpModuleId = "sharp";
-    const module = await import(sharpModuleId);
-    return module.default;
+    type SharpModule = typeof import("sharp");
+    const module = require("sharp") as SharpModule | { default: SharpModule };
+    return "default" in module ? module.default : module;
   } catch (error) {
     logger.error(
       `Icon generation skipped because optional dependency \"sharp\" could not be loaded: ${getErrorMessage(error)}. Install it with \"pnpm add sharp\" (or \"npm install sharp\").`,
@@ -523,9 +544,13 @@ async function loadSharp(logger: IntegrationRuntimeContext["logger"]) {
 
 async function loadSharpsToIco(logger: IntegrationRuntimeContext["logger"]) {
   try {
-    const sharpIcoModuleId = "sharp-ico";
-    const module = await import(sharpIcoModuleId);
-    return module.sharpsToIco;
+    type SharpIcoModule = typeof import("sharp-ico");
+    const module = require("sharp-ico") as
+      | SharpIcoModule
+      | { default: Pick<SharpIcoModule, "sharpsToIco"> };
+    return "default" in module
+      ? module.default.sharpsToIco
+      : module.sharpsToIco;
   } catch (error) {
     logger.error(
       `favicon.ico was not generated because optional dependency \"sharp-ico\" could not be loaded: ${getErrorMessage(error)}. Install it with \"pnpm add sharp-ico\" (or \"npm install sharp-ico\").`,
