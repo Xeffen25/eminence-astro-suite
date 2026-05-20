@@ -7,10 +7,10 @@
   "homepage": "https://eminence-astro-suite.xeffen25.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/xeffen25/eminence-astro-suite.git"
+    "url": "git+https://github.com/Xeffen25/eminence-astro-suite.git"
   },
   "bugs": {
-    "url": "https://github.com/xeffen25/eminence-astro-suite/issues"
+    "url": "https://github.com/Xeffen25/eminence-astro-suite/issues"
   },
   "keywords": [
     "astro-component",
