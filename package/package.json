@@ -1,6 +1,6 @@
 {
   "name": "eminence-astro-suite",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "Astro components and integration for managing page head, metadata, social sharing, icons, and SEO outputs.",
   "license": "MIT",
   "author": "Xeffen25",
