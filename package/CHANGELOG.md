@@ -1,5 +1,11 @@
 # eminence-astro-suite
 
+## 1.0.0-beta.4
+
+### Patch Changes
+
+- [`3563984`](https://github.com/Xeffen25/eminence-astro-suite/commit/356398406521d86548e4caba34cd10cbf27423c2) Thanks [@Xeffen25](https://github.com/Xeffen25)! - fix dependency optimizer not working for astro components
+
 ## 1.0.0-beta.3
 
 ### Patch Changes
