@@ -80,6 +80,10 @@ export default function createIntegration(
                 },
               },
             ],
+            optimizeDeps: { exclude: ["eminence-astro-suite/components"] },
+            ssr: {
+              optimizeDeps: { exclude: ["eminence-astro-suite/components"] },
+            },
           },
         });
       },
