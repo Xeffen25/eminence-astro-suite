@@ -131,6 +131,19 @@ describe("Integration - Generate Icons", () => {
     expect(existsSync(join(outputDir, "favicon.svg"))).toBe(true);
   });
 
+  it("includes default favicon.ico sizes in head icon tags", () => {
+    const tags = resolveIconsOptions({
+      source: "/icons/source.png",
+    }).tags;
+
+    expect(tags).toContainEqual({
+      rel: "icon",
+      href: "/favicon.ico",
+      sizes: "16x16 32x32 48x48",
+      type: "image/x-icon",
+    });
+  });
+
   it("resolves head icon tags from file-keyed entries and skips false sizes", () => {
     const tags = resolveIconsOptions({
       source: "/icons/source.svg",

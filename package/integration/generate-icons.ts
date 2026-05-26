@@ -259,7 +259,7 @@ const resolveTagSizes = (
   definition: IconDefinition,
 ): string | undefined => {
   if (isIcoDefinition(fileName, definition)) {
-    return definition.tag?.sizes;
+    return definition.tag?.sizes ?? inferIcoManifestSizes(definition.sizes);
   }
 
   if (isSvgDefinition(fileName, definition)) {
