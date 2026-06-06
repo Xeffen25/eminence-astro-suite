@@ -1,5 +1,11 @@
 # eminence-astro-suite
 
+## 1.0.0-beta.5
+
+### Patch Changes
+
+- [`75f8a8d`](https://github.com/Xeffen25/eminence-astro-suite/commit/75f8a8d63dfe6b39c81a16c34156cb436a6d359b) Thanks [@Xeffen25](https://github.com/Xeffen25)! - favicon.ico sizes tag
+
 ## 1.0.0-beta.4
 
 ### Patch Changes
