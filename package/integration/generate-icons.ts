@@ -140,24 +140,24 @@ const DEFAULT_ICON_DEFINITIONS: Readonly<Record<IconFileName, IconDefinition>> =
   {
     "favicon.ico": {
       sizes: [16, 32, 48],
-      tag: { rel: "icon" },
+      tag: { rel: "icon", sizes: "16x16 32x32 48x48" },
     },
     "favicon.png": {
       size: 32,
-      tag: { rel: "icon" },
+      tag: { rel: "icon", sizes: "32x32" },
     },
     "apple-touch-icon.png": {
       size: 180,
-      tag: { rel: "apple-touch-icon" },
+      tag: { rel: "apple-touch-icon", sizes: "180x180" },
     },
     "icon-192.png": {
       size: 192,
-      tag: { rel: "icon" },
+      tag: { rel: "icon", sizes: "192x192" },
       manifest: true,
     },
     "icon.png": {
       size: 512,
-      tag: { rel: "icon" },
+      tag: { rel: "icon", sizes: "512x512" },
       manifest: true,
     },
   };
