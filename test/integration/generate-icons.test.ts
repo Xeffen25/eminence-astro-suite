@@ -131,6 +131,50 @@ describe("Integration - Generate Icons", () => {
     expect(existsSync(join(outputDir, "favicon.svg"))).toBe(true);
   });
 
+  it("orders default tags with favicon.ico first, png by size, and favicon.svg last", () => {
+    const tags = resolveIconsOptions({
+      source: "/icons/source.svg",
+    }).tags;
+
+    expect(tags).toEqual([
+      {
+        rel: "icon",
+        href: "/favicon.ico",
+        sizes: "any",
+        type: "image/x-icon",
+      },
+      {
+        rel: "icon",
+        href: "/favicon.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        rel: "apple-touch-icon",
+        href: "/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+      {
+        rel: "icon",
+        href: "/icon-192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        rel: "icon",
+        href: "/icon.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+      {
+        rel: "icon",
+        href: "/favicon.svg",
+        type: "image/svg+xml",
+      },
+    ]);
+  });
+
   it("resolves head icon tags from file-keyed entries and skips false sizes", () => {
     const tags = resolveIconsOptions({
       source: "/icons/source.svg",
@@ -145,16 +189,15 @@ describe("Integration - Generate Icons", () => {
 
     expect(tags).toEqual([
       {
-        rel: "icon",
-        href: "/favicon.svg",
-        sizes: "any",
-        type: "image/svg+xml",
-      },
-      {
         rel: "apple-touch-icon",
         href: "/apple-touch-icon.png",
         sizes: "180x180",
         type: "image/png",
+      },
+      {
+        rel: "icon",
+        href: "/favicon.svg",
+        type: "image/svg+xml",
       },
     ]);
   });
@@ -181,9 +224,10 @@ describe("Integration - Generate Icons", () => {
     expect(tags).toEqual([
       {
         rel: "icon",
-        href: "/favicon.svg",
-        sizes: "any",
-        type: "image/svg+xml",
+        href: "/icon-dark.png",
+        sizes: "32x32",
+        type: "image/png",
+        media: "dark",
       },
       {
         rel: "icon",
@@ -194,10 +238,8 @@ describe("Integration - Generate Icons", () => {
       },
       {
         rel: "icon",
-        href: "/icon-dark.png",
-        sizes: "32x32",
-        type: "image/png",
-        media: "dark",
+        href: "/favicon.svg",
+        type: "image/svg+xml",
       },
     ]);
   });

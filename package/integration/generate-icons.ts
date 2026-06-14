@@ -140,7 +140,7 @@ const DEFAULT_ICON_DEFINITIONS: Readonly<Record<IconFileName, IconDefinition>> =
   {
     "favicon.ico": {
       sizes: [16, 32, 48],
-      tag: { rel: "icon", sizes: "16x16 32x32 48x48" },
+      tag: { rel: "icon", sizes: "any" },
     },
     "favicon.png": {
       size: 32,
@@ -203,6 +203,68 @@ const isRasterDefinition = (
 
 const normalizeHref = (fileName: string): string =>
   fileName.startsWith("/") ? fileName : `/${fileName}`;
+
+const getHrefExtension = (href: string): string => {
+  const normalizedHref = href.split("?")[0]?.split("#")[0] ?? href;
+  return normalizedHref.split(".").pop()?.toLowerCase() ?? "";
+};
+
+const inferPrimarySquareSize = (sizes?: string): number => {
+  if (sizes === undefined) {
+    return Number.POSITIVE_INFINITY;
+  }
+
+  const [firstSize] = sizes.trim().split(/\s+/);
+  const [width, height] = (firstSize ?? "").split("x");
+  const parsedWidth = Number(width);
+  const parsedHeight = Number(height);
+
+  if (
+    Number.isFinite(parsedWidth) &&
+    Number.isFinite(parsedHeight) &&
+    parsedWidth > 0 &&
+    parsedHeight > 0
+  ) {
+    return Math.min(parsedWidth, parsedHeight);
+  }
+
+  return Number.POSITIVE_INFINITY;
+};
+
+const sortGeneratedTags = (tags: IconTag[]): IconTag[] => {
+  return [...tags].sort((a, b) => {
+    const aHref = a.href;
+    const bHref = b.href;
+
+    const aIsFaviconIco = aHref.endsWith("/favicon.ico");
+    const bIsFaviconIco = bHref.endsWith("/favicon.ico");
+    if (aIsFaviconIco !== bIsFaviconIco) {
+      return aIsFaviconIco ? -1 : 1;
+    }
+
+    const aIsFaviconSvg = aHref.endsWith("/favicon.svg");
+    const bIsFaviconSvg = bHref.endsWith("/favicon.svg");
+    if (aIsFaviconSvg !== bIsFaviconSvg) {
+      return aIsFaviconSvg ? 1 : -1;
+    }
+
+    const aIsPng = getHrefExtension(aHref) === "png";
+    const bIsPng = getHrefExtension(bHref) === "png";
+    if (aIsPng !== bIsPng) {
+      return aIsPng ? -1 : 1;
+    }
+
+    if (aIsPng && bIsPng) {
+      const sizeDifference =
+        inferPrimarySquareSize(a.sizes) - inferPrimarySquareSize(b.sizes);
+      if (sizeDifference !== 0) {
+        return sizeDifference;
+      }
+    }
+
+    return aHref.localeCompare(bHref);
+  });
+};
 
 const inferRasterSizes = (size: number): string => `${size}x${size}`;
 
@@ -473,14 +535,13 @@ export const resolveIconsOptions = (
   }
 
   if (isSvg(icons.source) && !explicitFileNames.has("favicon.svg")) {
-    tags.unshift({
+    tags.push({
       rel: "icon",
       href: "/favicon.svg",
-      sizes: "any",
       type: inferImageMimeType("favicon.svg"),
     });
 
-    generationTasks.unshift({
+    generationTasks.push({
       kind: "copy",
       fileName: "favicon.svg",
       href: "/favicon.svg",
@@ -489,7 +550,7 @@ export const resolveIconsOptions = (
   }
 
   return {
-    tags,
+    tags: sortGeneratedTags(tags),
     manifestIcons,
     generationTasks,
   };
