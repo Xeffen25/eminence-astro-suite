@@ -1,5 +1,11 @@
 # eminence-astro-suite
 
+## 1.0.0-beta.6
+
+### Patch Changes
+
+- [`ae4b1dd`](https://github.com/Xeffen25/eminence-astro-suite/commit/ae4b1dd1c5578db0ff8ea67552e5f77c98ab176e) Thanks [@Xeffen25](https://github.com/Xeffen25)! - fix favicons order and attributes
+
 ## 1.0.0-beta.5
 
 ### Patch Changes
