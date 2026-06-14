@@ -7,7 +7,8 @@
   "homepage": "https://eminence-astro-suite.xeffen25.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Xeffen25/eminence-astro-suite.git"
+    "url": "git+https://github.com/Xeffen25/eminence-astro-suite.git",
+    "directory": "package"
   },
   "bugs": {
     "url": "https://github.com/Xeffen25/eminence-astro-suite/issues"
