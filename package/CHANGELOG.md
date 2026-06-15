@@ -1,5 +1,13 @@
 # eminence-astro-suite
 
+## 1.0.0-beta.7
+
+### Patch Changes
+
+- [`4615ea6`](https://github.com/Xeffen25/eminence-astro-suite/commit/4615ea627dbdf41bbfb05d023f336bc5c5f7774b) Thanks [@Xeffen25](https://github.com/Xeffen25)! - add README to package for npm display
+
+- [`ab98dbf`](https://github.com/Xeffen25/eminence-astro-suite/commit/ab98dbf1b149df71fa6b90dfc7ff5527303e422f) Thanks [@Xeffen25](https://github.com/Xeffen25)! - add skill ai info
+
 ## 1.0.0-beta.6
 
 ### Patch Changes
