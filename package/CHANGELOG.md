@@ -1,5 +1,11 @@
 # eminence-astro-suite
 
+## 1.0.0-beta.9
+
+### Patch Changes
+
+- [`28b80b6`](https://github.com/Xeffen25/eminence-astro-suite/commit/28b80b6e3c93dac31b80bdf2f9e11431d918a47e) Thanks [@Xeffen25](https://github.com/Xeffen25)! - correct favicon sorting logic in generated tags
+
 ## 1.0.0-beta.8
 
 ### Patch Changes
