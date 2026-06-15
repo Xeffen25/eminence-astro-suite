@@ -1,5 +1,11 @@
 # eminence-astro-suite
 
+## 1.0.0-beta.8
+
+### Patch Changes
+
+- [`acb8fee`](https://github.com/Xeffen25/eminence-astro-suite/commit/acb8fee4998451b2af661fe228b097717b5869d5) Thanks [@Xeffen25](https://github.com/Xeffen25)! - fix favicon.ico taking preference over other favicons
+
 ## 1.0.0-beta.7
 
 ### Patch Changes
