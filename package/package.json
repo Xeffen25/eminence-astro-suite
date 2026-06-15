@@ -29,6 +29,8 @@
     "components",
     "index.ts",
     "integration",
+    "skills/eminence-astro-suite",
+    "README.md",
     "utils.ts",
     "virtual.d.ts"
   ],
