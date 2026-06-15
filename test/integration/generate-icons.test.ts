@@ -131,7 +131,7 @@ describe("Integration - Generate Icons", () => {
     expect(existsSync(join(outputDir, "favicon.svg"))).toBe(true);
   });
 
-  it("orders default tags with favicon.svg first, png by size, and favicon.ico last", () => {
+  it("orders default tags with favicon.svg first and png icons by size", () => {
     const tags = resolveIconsOptions({
       source: "/icons/source.svg",
     }).tags;
@@ -166,11 +166,6 @@ describe("Integration - Generate Icons", () => {
         href: "/icon.png",
         sizes: "512x512",
         type: "image/png",
-      },
-      {
-        rel: "alternate icon",
-        href: "/favicon.ico",
-        type: "image/x-icon",
       },
     ]);
   });

@@ -48,7 +48,6 @@ describe("Component Icons", () => {
           sizes: "any",
           type: "image/svg+xml",
         },
-        { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
         {
           rel: "icon",
           href: "/favicon.png",
@@ -80,7 +79,6 @@ describe("Component Icons", () => {
 
     expect(result).toBe(
       '<link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml">' +
-        '<link rel="icon" href="/favicon.ico" type="image/x-icon">' +
         '<link rel="icon" href="/favicon.png" sizes="32x32" type="image/png">' +
         '<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png">' +
         '<link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png">' +

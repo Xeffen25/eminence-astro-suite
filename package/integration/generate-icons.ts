@@ -140,7 +140,6 @@ const DEFAULT_ICON_DEFINITIONS: Readonly<Record<IconFileName, IconDefinition>> =
   {
     "favicon.ico": {
       sizes: [16, 32, 48],
-      tag: { rel: "alternate icon" },
     },
     "favicon.png": {
       size: 32,
