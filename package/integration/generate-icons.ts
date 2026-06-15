@@ -140,7 +140,7 @@ const DEFAULT_ICON_DEFINITIONS: Readonly<Record<IconFileName, IconDefinition>> =
   {
     "favicon.ico": {
       sizes: [16, 32, 48],
-      tag: { rel: "icon", sizes: "any" },
+      tag: { rel: "alternate icon" },
     },
     "favicon.png": {
       size: 32,
@@ -538,6 +538,7 @@ export const resolveIconsOptions = (
     tags.push({
       rel: "icon",
       href: "/favicon.svg",
+      sizes: "any",
       type: inferImageMimeType("favicon.svg"),
     });
 

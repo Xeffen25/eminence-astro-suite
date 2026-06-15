@@ -138,9 +138,8 @@ describe("Integration - Generate Icons", () => {
 
     expect(tags).toEqual([
       {
-        rel: "icon",
+        rel: "alternate icon",
         href: "/favicon.ico",
-        sizes: "any",
         type: "image/x-icon",
       },
       {
@@ -170,6 +169,7 @@ describe("Integration - Generate Icons", () => {
       {
         rel: "icon",
         href: "/favicon.svg",
+        sizes: "any",
         type: "image/svg+xml",
       },
     ]);
@@ -197,6 +197,7 @@ describe("Integration - Generate Icons", () => {
       {
         rel: "icon",
         href: "/favicon.svg",
+        sizes: "any",
         type: "image/svg+xml",
       },
     ]);
@@ -239,6 +240,7 @@ describe("Integration - Generate Icons", () => {
       {
         rel: "icon",
         href: "/favicon.svg",
+        sizes: "any",
         type: "image/svg+xml",
       },
     ]);
