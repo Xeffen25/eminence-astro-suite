@@ -6,6 +6,7 @@
     "eminence-astro-suite-docs-website": "0.0.0"
   },
   "changesets": [
+    "bumpy-pumas-share",
     "cyan-dodos-pump",
     "fair-cloths-decide",
     "gold-buses-find",
