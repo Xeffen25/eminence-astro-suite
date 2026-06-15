@@ -131,16 +131,17 @@ describe("Integration - Generate Icons", () => {
     expect(existsSync(join(outputDir, "favicon.svg"))).toBe(true);
   });
 
-  it("orders default tags with favicon.ico first, png by size, and favicon.svg last", () => {
+  it("orders default tags with favicon.svg first, png by size, and favicon.ico last", () => {
     const tags = resolveIconsOptions({
       source: "/icons/source.svg",
     }).tags;
 
     expect(tags).toEqual([
       {
-        rel: "alternate icon",
-        href: "/favicon.ico",
-        type: "image/x-icon",
+        rel: "icon",
+        href: "/favicon.svg",
+        sizes: "any",
+        type: "image/svg+xml",
       },
       {
         rel: "icon",
@@ -167,10 +168,9 @@ describe("Integration - Generate Icons", () => {
         type: "image/png",
       },
       {
-        rel: "icon",
-        href: "/favicon.svg",
-        sizes: "any",
-        type: "image/svg+xml",
+        rel: "alternate icon",
+        href: "/favicon.ico",
+        type: "image/x-icon",
       },
     ]);
   });
@@ -189,16 +189,16 @@ describe("Integration - Generate Icons", () => {
 
     expect(tags).toEqual([
       {
-        rel: "apple-touch-icon",
-        href: "/apple-touch-icon.png",
-        sizes: "180x180",
-        type: "image/png",
-      },
-      {
         rel: "icon",
         href: "/favicon.svg",
         sizes: "any",
         type: "image/svg+xml",
+      },
+      {
+        rel: "apple-touch-icon",
+        href: "/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
       },
     ]);
   });
@@ -225,6 +225,12 @@ describe("Integration - Generate Icons", () => {
     expect(tags).toEqual([
       {
         rel: "icon",
+        href: "/favicon.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+      },
+      {
+        rel: "icon",
         href: "/icon-dark.png",
         sizes: "32x32",
         type: "image/png",
@@ -236,12 +242,6 @@ describe("Integration - Generate Icons", () => {
         sizes: "32x32",
         type: "image/png",
         media: "light",
-      },
-      {
-        rel: "icon",
-        href: "/favicon.svg",
-        sizes: "any",
-        type: "image/svg+xml",
       },
     ]);
   });

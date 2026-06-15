@@ -236,16 +236,16 @@ const sortGeneratedTags = (tags: IconTag[]): IconTag[] => {
     const aHref = a.href;
     const bHref = b.href;
 
-    const aIsFaviconIco = aHref.endsWith("/favicon.ico");
-    const bIsFaviconIco = bHref.endsWith("/favicon.ico");
-    if (aIsFaviconIco !== bIsFaviconIco) {
-      return aIsFaviconIco ? -1 : 1;
-    }
-
     const aIsFaviconSvg = aHref.endsWith("/favicon.svg");
     const bIsFaviconSvg = bHref.endsWith("/favicon.svg");
     if (aIsFaviconSvg !== bIsFaviconSvg) {
-      return aIsFaviconSvg ? 1 : -1;
+      return aIsFaviconSvg ? -1 : 1;
+    }
+
+    const aIsFaviconIco = aHref.endsWith("/favicon.ico");
+    const bIsFaviconIco = bHref.endsWith("/favicon.ico");
+    if (aIsFaviconIco !== bIsFaviconIco) {
+      return aIsFaviconIco ? 1 : -1;
     }
 
     const aIsPng = getHrefExtension(aHref) === "png";
