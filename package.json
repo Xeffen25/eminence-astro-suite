@@ -23,8 +23,9 @@
   "lint-staged": {
     "*": "prettier --write"
   },
+  "packageManager": "pnpm@11.9.0",
   "engines": {
-    "pnpm": "11"
+    "pnpm": "11.9.0"
   },
   "devDependencies": {
     "@astrojs/check": "catalog:",
@@ -49,7 +50,7 @@
     },
     "packageManager": {
       "name": "pnpm",
-      "version": "11",
+      "version": "11.9.0",
       "onFail": "download"
     }
   }
