@@ -71,9 +71,7 @@ export default {
   viewport: "width=device-width, initial-scale=1",
   titleTemplate: "%s",
   generator: true,
-  icons: [
-    /* IconTag[] from icons option + headTags.icons */
-  ],
+  icons: [/* IconTag[] from icons option + headTags.icons */],
   // ...everything else from headTags, when set
 };
 ```

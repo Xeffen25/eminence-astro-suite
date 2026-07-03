@@ -49,10 +49,7 @@ export type HeadTagsOptions = {
 };
 
 type DefaultedHeadTagsKeys =
-  | "charset"
-  | "viewport"
-  | "titleTemplate"
-  | "generator";
+  "charset" | "viewport" | "titleTemplate" | "generator";
 
 /**
  * The resolved shape of the `virtual:eminence-astro-suite/head-tags` virtual module.

@@ -64,8 +64,7 @@ export type WebManifestServiceWorker = {
 };
 
 type NameOrShortName =
-  | { name: string; short_name?: string }
-  | { short_name: string; name?: never };
+  { name: string; short_name?: string } | { short_name: string; name?: never };
 
 type DisplayOrDisplayOverride =
   | { display: string; display_override?: string[] }

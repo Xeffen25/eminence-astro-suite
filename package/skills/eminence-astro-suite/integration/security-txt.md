@@ -36,12 +36,7 @@ type SecurityTxtOptions = {
 };
 
 type SecurityTxtExpiresUnit =
-  | "day"
-  | "days"
-  | "month"
-  | "months"
-  | "year"
-  | "years";
+  "day" | "days" | "month" | "months" | "year" | "years";
 
 type SecurityTxtExpiresDuration = `${number} ${SecurityTxtExpiresUnit}`;
 ```

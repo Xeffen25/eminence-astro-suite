@@ -5,12 +5,7 @@ import { fileURLToPath } from "node:url";
 import type { IntegrationRuntimeContext } from "..";
 
 export type SecurityTxtExpiresUnit =
-  | "day"
-  | "days"
-  | "month"
-  | "months"
-  | "year"
-  | "years";
+  "day" | "days" | "month" | "months" | "year" | "years";
 
 export type SecurityTxtExpiresDuration = `${number} ${SecurityTxtExpiresUnit}`;
 

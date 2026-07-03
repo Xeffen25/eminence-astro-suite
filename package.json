@@ -8,12 +8,12 @@
     "dev": "pnpm --filter ./docs dev",
     "build": "pnpm --filter ./docs build",
     "preview": "pnpm --filter ./docs preview",
-    "format:fix": "prettier . --write",
+    "format": "prettier . --write",
     "format:check": "prettier . --check",
     "test": "vitest run",
     "test:watch": "vitest",
     "check": "pnpm format:check && pnpm astro check && pnpm test",
-    "all": "pnpm format:fix && pnpm astro check && pnpm test",
+    "all": "pnpm format && pnpm astro check && pnpm test",
     "changeset": "changeset",
     "changeset:status": "changeset status",
     "changeset:version": "changeset version",
@@ -22,6 +22,9 @@
   },
   "lint-staged": {
     "*": "prettier --write"
+  },
+  "engines": {
+    "pnpm": "11"
   },
   "devDependencies": {
     "@astrojs/check": "catalog:",
@@ -37,5 +40,17 @@
     "sharp-ico": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.18.0",
+      "onFail": "download"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11",
+      "onFail": "download"
+    }
   }
 }

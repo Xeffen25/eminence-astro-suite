@@ -7,12 +7,7 @@ interface Props {
    * When omitted, the value falls back to the integration config.
    */
   content?:
-    | "normal"
-    | "light"
-    | "dark"
-    | "light dark"
-    | "dark light"
-    | "only light";
+    "normal" | "light" | "dark" | "light dark" | "dark light" | "only light";
 }
 
 const { content = config.colorScheme } = Astro.props;

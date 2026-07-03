@@ -77,9 +77,7 @@ export interface RasterIconDefinition extends BaseIconDefinition {
 }
 
 type IconDefinition =
-  | IcoIconDefinition
-  | SvgIconDefinition
-  | RasterIconDefinition;
+  IcoIconDefinition | SvgIconDefinition | RasterIconDefinition;
 
 type IconDefinitionInput = IconDefinition | false;
 
@@ -91,8 +89,7 @@ export type IconsOptions = {
   [filename: `${string}.svg`]: SvgIconDefinition | false;
 } & {
   [filename: `${string}.${RasterSupportedExtensions}`]:
-    | RasterIconDefinition
-    | false;
+    RasterIconDefinition | false;
 };
 
 interface BaseGenerationTask {
@@ -119,9 +116,7 @@ export interface RasterGenerationTask extends BaseGenerationTask {
 }
 
 export type IconGenerationTask =
-  | CopyIconTask
-  | IcoGenerationTask
-  | RasterGenerationTask;
+  CopyIconTask | IcoGenerationTask | RasterGenerationTask;
 
 export interface ResolvedIconsOptions {
   tags: IconTag[];
@@ -415,7 +410,7 @@ const resolveManifestIcon = (
 
 const normalizeSharpFormat = (
   extension: RasterSupportedExtensions,
-): keyof import("sharp").FormatEnum => {
+): keyof import("sharp").FormatEnum | "avif" => {
   if (extension === "jpg") {
     return "jpeg";
   }
@@ -592,7 +587,7 @@ function getErrorMessage(error: unknown): string {
 
 async function loadSharp(logger: IntegrationRuntimeContext["logger"]) {
   try {
-    type SharpModule = typeof import("sharp");
+    type SharpModule = import("sharp").SharpConstructor;
     const module = require("sharp") as SharpModule | { default: SharpModule };
     return "default" in module ? module.default : module;
   } catch (error) {
@@ -607,8 +602,7 @@ async function loadSharpsToIco(logger: IntegrationRuntimeContext["logger"]) {
   try {
     type SharpIcoModule = typeof import("sharp-ico");
     const module = require("sharp-ico") as
-      | SharpIcoModule
-      | { default: Pick<SharpIcoModule, "sharpsToIco"> };
+      SharpIcoModule | { default: Pick<SharpIcoModule, "sharpsToIco"> };
     return "default" in module
       ? module.default.sharpsToIco
       : module.sharpsToIco;

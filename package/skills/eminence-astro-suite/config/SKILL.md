@@ -15,24 +15,12 @@ export default defineConfig({
   site: "https://example.com",
   integrations: [
     eminence({
-      headTags: {
-        /* ... */
-      },
-      icons: {
-        /* ... */
-      },
-      manifest: {
-        /* ... */
-      },
-      robotsTxt: {
-        /* ... */
-      },
-      securityTxt: {
-        /* ... */
-      },
-      sitemap: {
-        /* ... */
-      },
+      headTags: {/* ... */},
+      icons: {/* ... */},
+      manifest: {/* ... */},
+      robotsTxt: {/* ... */},
+      securityTxt: {/* ... */},
+      sitemap: {/* ... */},
     }),
   ],
 });
