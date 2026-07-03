@@ -1,5 +1,11 @@
 # eminence-astro-suite
 
+## 1.0.0-beta.11
+
+### Patch Changes
+
+- [`4409abd`](https://github.com/Xeffen25/eminence-astro-suite/commit/4409abdf925875077e04901f57a5e6447f34cff2) Thanks [@Xeffen25](https://github.com/Xeffen25)! - update dependencies and config
+
 ## 1.0.0-beta.10
 
 ### Patch Changes
