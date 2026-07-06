@@ -1,6 +1,7 @@
 ---
 name: config
 description: Full `IntegrationInput` reference for the `eminence()` integration factory.
+disable-model-invocation: true
 ---
 
 # Configuring `eminence()`
@@ -15,12 +16,24 @@ export default defineConfig({
   site: "https://example.com",
   integrations: [
     eminence({
-      headTags: {/* ... */},
-      icons: {/* ... */},
-      manifest: {/* ... */},
-      robotsTxt: {/* ... */},
-      securityTxt: {/* ... */},
-      sitemap: {/* ... */},
+      headTags: {
+        /* ... */
+      },
+      icons: {
+        /* ... */
+      },
+      manifest: {
+        /* ... */
+      },
+      robotsTxt: {
+        /* ... */
+      },
+      securityTxt: {
+        /* ... */
+      },
+      sitemap: {
+        /* ... */
+      },
     }),
   ],
 });

@@ -1,6 +1,7 @@
 ---
 name: eminence-integration
 description: Overview of the seven integration features provided by `eminence-astro-suite`.
+disable-model-invocation: true
 ---
 
 # Integration features overview
