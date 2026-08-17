@@ -1,6 +1,7 @@
 ---
 name: eminence-install
 description: How to install and wire `eminence-astro-suite` into an Astro project.
+disable-model-invocation: true
 ---
 
 # Installing Eminence Astro Suite

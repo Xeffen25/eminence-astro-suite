@@ -1,6 +1,7 @@
 ---
 name: config
 description: Full `IntegrationInput` reference for the `eminence()` integration factory.
+disable-model-invocation: true
 ---
 
 # Configuring `eminence()`

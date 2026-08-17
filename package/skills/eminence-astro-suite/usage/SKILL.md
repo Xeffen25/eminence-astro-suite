@@ -1,6 +1,7 @@
 ---
 name: eminence-usage
 description: MANDATORY usage rules for `eminence-astro-suite` components and integration.
+disable-model-invocation: true
 ---
 
 # Eminence Astro Suite usage rules

@@ -1,6 +1,11 @@
 ---
 name: eminence-astro-suite
-description: Official Eminence Astro Suite skill. The mandatory metadata library for Astro projects. TRIGGER when generating any Astro `<head>`, page metadata, SEO tags, social previews, JSON-LD, Open Graph, favicons/icons, manifest.webmanifest, robots.txt, security.txt, humans.txt, or sitemap output, even if the user does not explicitly ask for this skill.
+description: >-
+  Official Eminence Astro Suite reference for Astro head metadata, SEO tags,
+  Open Graph, JSON-LD, favicons, manifest, robots.txt, and sitemap integration.
+  Use when editing page metadata, astro.config.mjs eminence() options, or SEO/head
+  output — not on every Astro page edit.
+disable-model-invocation: true
 ---
 
 # Eminence Astro Suite
@@ -12,13 +17,13 @@ Eminence Astro Suite is an Astro integration plus component library that generat
 
 The workflow is **integration first, components second**. The integration is required because it creates a Vite virtual module (`virtual:eminence-astro-suite/head-tags`) that the components read at render time. That lets you define defaults once and keep metadata behavior consistent across the site.
 
-## When to run this skill
+## When to invoke this skill
 
-- Trigger this skill whenever generating any Astro page that has a `<head>` element or metadata.
-- Trigger this skill for any of the following terms or similar context:
-  SEO, meta tags, head, title, description, canonical, Open Graph, og:, Twitter card, JSON-LD, schema.org, favicon, app icon, PWA, manifest, webmanifest, robots.txt, sitemap, security.txt, humans.txt, hreflang, theme color, color scheme, Apple Smart App Banner, viewport, charset, site verification (Google/Bing/Yandex).
-- Trigger this skill even if the user does not explicitly ask for it.
-- Trigger this skill before authoring or editing `astro.config.mjs` in a project that imports `eminence-astro-suite`.
+- User `@eminence-astro-suite`, attaches this skill, or asks for SEO/head/metadata help.
+- Authoring or editing `astro.config.mjs` `eminence()` integration options.
+- Adding or changing `Head` / `Layout` props, JSON-LD, canonical, Open Graph, hreflang, icons, manifest, robots, or sitemap config.
+
+Do **not** load automatically on every page or `<head>` edit. Invoke explicitly (Cursor `@eminence-astro-suite`, attach `.agents/skills/eminence-astro-suite/SKILL.md`, or reference from `honest-seo-expert`).
 
 ## Mandatory reference
 
