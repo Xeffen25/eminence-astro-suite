@@ -51,6 +51,28 @@ describe("Component Head", () => {
     );
   });
 
+  it("forwards imported ImageMetadata through openGraph", async () => {
+    const result = await container.renderToString(Head, {
+      props: {
+        title: "Home",
+        description: DEFAULT_DESCRIPTION,
+        openGraph: {
+          title: "Home",
+          image: {
+            src: "/_astro/social.hash.webp",
+            width: 1200,
+            height: 630,
+            format: "webp",
+          },
+        },
+      },
+    });
+
+    expect(normalizeGeneratorVersion(result)).toContain(
+      '<meta property="og:image" content="/_astro/social.hash.webp"><meta property="og:image:type" content="image/webp"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">',
+    );
+  });
+
   // Docs example: Complete
   it("renders all optional head features when complete props are provided", async () => {
     const result = await container.renderToString(Head, {

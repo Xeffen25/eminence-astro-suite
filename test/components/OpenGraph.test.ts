@@ -167,11 +167,27 @@ describe("Component OpenGraph", () => {
       format: "png",
     };
     const result = await container.renderToString(OpenGraph, {
-      props: { image: { src: imageMetadata } },
+      props: { image: imageMetadata },
     });
 
     expect(result).toBe(
       '<meta property="og:type" content="website"><meta property="og:image" content="/_astro/og.abc123.png"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">',
+    );
+  });
+
+  it("accepts imported ImageMetadata in the structured image form", async () => {
+    const imageMetadata = {
+      src: "/_astro/og.abc123.avif",
+      width: 1200,
+      height: 630,
+      format: "avif",
+    };
+    const result = await container.renderToString(OpenGraph, {
+      props: { image: { src: imageMetadata, alt: "Banner" } },
+    });
+
+    expect(result).toBe(
+      '<meta property="og:type" content="website"><meta property="og:image" content="/_astro/og.abc123.avif"><meta property="og:image:type" content="image/avif"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Banner">',
     );
   });
 

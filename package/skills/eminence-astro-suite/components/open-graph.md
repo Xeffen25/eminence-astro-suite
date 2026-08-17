@@ -13,26 +13,26 @@ import {
 
 ## Top-level props
 
-| Prop              | Type                      | Default                                 | Required | Description                                                        |
-| ----------------- | ------------------------- | --------------------------------------- | -------- | ------------------------------------------------------------------ |
-| `title`           | `string`                  | —                                       | **yes**  | `og:title`.                                                        |
-| `type`            | `string \| false`         | inferred (see below)                    | no       | Override the inferred type, or `false` to omit `og:type` entirely. |
-| `url`             | `string \| URL`           | derived from `Astro.url` + `Astro.site` | no       | `og:url`.                                                          |
-| `description`     | `string`                  | —                                       | no       | `og:description`.                                                  |
-| `siteName`        | `string`                  | `headTags.openGraphSiteName`            | no       | `og:site_name`.                                                    |
-| `locale`          | `string`                  | —                                       | no       | `og:locale` (e.g. `"en_US"`).                                      |
-| `localeAlternate` | `string[]`                | `[]`                                    | no       | One `og:locale:alternate` per entry.                               |
-| `image`           | `OpenGraphImageProps`     | —                                       | no       | Image metadata.                                                    |
-| `audio`           | `OpenGraphAudioProps`     | —                                       | no       | Audio metadata.                                                    |
-| `video`           | `OpenGraphVideoProps`     | —                                       | no       | Video metadata.                                                    |
-| `article`         | `OpenGraphArticleProps`   | —                                       | no       | Article metadata (type-driving).                                   |
-| `book`            | `OpenGraphBookProps`      | —                                       | no       | Book metadata (type-driving).                                      |
-| `profile`         | `OpenGraphProfileProps`   | —                                       | no       | Profile metadata (type-driving).                                   |
-| `music`           | `OpenGraphMusicProps`     | —                                       | no       | Music metadata (type-driving).                                     |
-| `videoType`       | `OpenGraphVideoTypeProps` | —                                       | no       | Video sub-type metadata (type-driving).                            |
-| `business`        | `OpenGraphBusinessProps`  | —                                       | no       | Business namespace tags (does not change `og:type`).               |
-| `place`           | `OpenGraphPlaceProps`     | —                                       | no       | Place namespace tags (does not change `og:type`).                  |
-| `product`         | `OpenGraphProductProps`   | —                                       | no       | Product namespace tags (does not change `og:type`).                |
+| Prop              | Type                                   | Default                                 | Required | Description                                                        |
+| ----------------- | -------------------------------------- | --------------------------------------- | -------- | ------------------------------------------------------------------ |
+| `title`           | `string`                               | —                                       | **yes**  | `og:title`.                                                        |
+| `type`            | `string \| false`                      | inferred (see below)                    | no       | Override the inferred type, or `false` to omit `og:type` entirely. |
+| `url`             | `string \| URL`                        | derived from `Astro.url` + `Astro.site` | no       | `og:url`.                                                          |
+| `description`     | `string`                               | —                                       | no       | `og:description`.                                                  |
+| `siteName`        | `string`                               | `headTags.openGraphSiteName`            | no       | `og:site_name`.                                                    |
+| `locale`          | `string`                               | —                                       | no       | `og:locale` (e.g. `"en_US"`).                                      |
+| `localeAlternate` | `string[]`                             | `[]`                                    | no       | One `og:locale:alternate` per entry.                               |
+| `image`           | `ImageMetadata \| OpenGraphImageProps` | —                                       | no       | Imported Astro image or structured image metadata.                 |
+| `audio`           | `OpenGraphAudioProps`                  | —                                       | no       | Audio metadata.                                                    |
+| `video`           | `OpenGraphVideoProps`                  | —                                       | no       | Video metadata.                                                    |
+| `article`         | `OpenGraphArticleProps`                | —                                       | no       | Article metadata (type-driving).                                   |
+| `book`            | `OpenGraphBookProps`                   | —                                       | no       | Book metadata (type-driving).                                      |
+| `profile`         | `OpenGraphProfileProps`                | —                                       | no       | Profile metadata (type-driving).                                   |
+| `music`           | `OpenGraphMusicProps`                  | —                                       | no       | Music metadata (type-driving).                                     |
+| `videoType`       | `OpenGraphVideoTypeProps`              | —                                       | no       | Video sub-type metadata (type-driving).                            |
+| `business`        | `OpenGraphBusinessProps`               | —                                       | no       | Business namespace tags (does not change `og:type`).               |
+| `place`           | `OpenGraphPlaceProps`                  | —                                       | no       | Place namespace tags (does not change `og:type`).                  |
+| `product`         | `OpenGraphProductProps`                | —                                       | no       | Product namespace tags (does not change `og:type`).                |
 
 ## `og:type` inference
 
@@ -60,9 +60,9 @@ When `url` is omitted, the component computes `new URL(Astro.url.pathname + Astr
 
 ```ts
 type OpenGraphImageProps = {
-  src: string;
-  secureUrl?: string;
-  type?: string; // inferred from src extension when omitted
+  src: ImageMetadata | string | URL;
+  secureUrl?: string | URL;
+  type?: string; // inferred from imported metadata or src extension
   width?: number;
   height?: number;
   alt?: string;
@@ -82,6 +82,20 @@ type OpenGraphVideoProps = {
   height?: number;
 };
 ```
+
+An imported image can be passed directly and supplies its generated URL, width,
+height, and format automatically:
+
+```astro
+---
+import socialImage from "../assets/social.png";
+---
+
+<OpenGraph title="Home" image={socialImage} />
+```
+
+Use `image={{ src: socialImage, alt: "Home page" }}` when additional image
+metadata or explicit overrides are needed.
 
 ## Type-driving sub-shapes
 

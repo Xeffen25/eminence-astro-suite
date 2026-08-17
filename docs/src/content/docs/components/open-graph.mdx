@@ -13,28 +13,46 @@ OpenGraph renders a complete set of Open Graph meta tags with a type-safe API. I
 
 ## Props
 
-| prop              | type                                        | default                                               | required | description                                                                                                           |
-| ----------------- | ------------------------------------------- | ----------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
-| `title`           | `string`                                    | -                                                     | Yes      | Main Open Graph title rendered as `og:title`.                                                                         |
-| `type`            | `string \| false`                           | inferred from the type-driving object or `website`    | No       | Overrides the inferred `og:type` value when set to a string, or omits the `og:type` tag entirely when set to `false`. |
-| `url`             | `string \| URL`                             | derived from current request when `Astro.site` exists | No       | Canonical page URL rendered as `og:url`.                                                                              |
-| `description`     | `string`                                    | -                                                     | No       | Description rendered as `og:description`.                                                                             |
-| `siteName`        | `string`                                    | integration `head.openGraph.siteName`                 | No       | Site label rendered as `og:site_name`.                                                                                |
-| `locale`          | `string`                                    | -                                                     | No       | Open Graph locale value rendered as `og:locale` (for example `en_US`).                                                |
-| `localeAlternate` | `string[]`                                  | `[]`                                                  | No       | Alternate locale values, each rendered as `og:locale:alternate`.                                                      |
-| `image`           | `ComponentProps<typeof OpenGraphImage>`     | -                                                     | No       | Structured image metadata rendered as `og:image` tags.                                                                |
-| `audio`           | `ComponentProps<typeof OpenGraphAudio>`     | -                                                     | No       | Structured audio metadata rendered as `og:audio` tags.                                                                |
-| `video`           | `ComponentProps<typeof OpenGraphVideo>`     | -                                                     | No       | Structured video metadata rendered as `og:video` tags.                                                                |
-| `article`         | `ComponentProps<typeof OpenGraphArticle>`   | -                                                     | No       | Type-driving article object; sets `og:type=article`.                                                                  |
-| `book`            | `ComponentProps<typeof OpenGraphBook>`      | -                                                     | No       | Type-driving book object; sets `og:type=book`.                                                                        |
-| `business`        | `ComponentProps<typeof OpenGraphBusiness>`  | -                                                     | No       | Business namespace tags; keeps `og:type=website`.                                                                     |
-| `music`           | `ComponentProps<typeof OpenGraphMusic>`     | -                                                     | No       | Type-driving music object; sets `og:type=music.<subtype>`.                                                            |
-| `place`           | `ComponentProps<typeof OpenGraphPlace>`     | -                                                     | No       | Place namespace tags; keeps `og:type=website`.                                                                        |
-| `product`         | `ComponentProps<typeof OpenGraphProduct>`   | -                                                     | No       | Product namespace tags; keeps `og:type=website`.                                                                      |
-| `profile`         | `ComponentProps<typeof OpenGraphProfile>`   | -                                                     | No       | Type-driving profile object; sets `og:type=profile`.                                                                  |
-| `videoType`       | `ComponentProps<typeof OpenGraphVideoType>` | -                                                     | No       | Type-driving video object; sets `og:type=video.<subtype>`.                                                            |
+| prop              | type                                                     | default                                               | required | description                                                                                                           |
+| ----------------- | -------------------------------------------------------- | ----------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
+| `title`           | `string`                                                 | -                                                     | Yes      | Main Open Graph title rendered as `og:title`.                                                                         |
+| `type`            | `string \| false`                                        | inferred from the type-driving object or `website`    | No       | Overrides the inferred `og:type` value when set to a string, or omits the `og:type` tag entirely when set to `false`. |
+| `url`             | `string \| URL`                                          | derived from current request when `Astro.site` exists | No       | Canonical page URL rendered as `og:url`.                                                                              |
+| `description`     | `string`                                                 | -                                                     | No       | Description rendered as `og:description`.                                                                             |
+| `siteName`        | `string`                                                 | integration `head.openGraph.siteName`                 | No       | Site label rendered as `og:site_name`.                                                                                |
+| `locale`          | `string`                                                 | -                                                     | No       | Open Graph locale value rendered as `og:locale` (for example `en_US`).                                                |
+| `localeAlternate` | `string[]`                                               | `[]`                                                  | No       | Alternate locale values, each rendered as `og:locale:alternate`.                                                      |
+| `image`           | `ImageMetadata \| ComponentProps<typeof OpenGraphImage>` | -                                                     | No       | Imported Astro image or structured image metadata rendered as `og:image` tags.                                        |
+| `audio`           | `ComponentProps<typeof OpenGraphAudio>`                  | -                                                     | No       | Structured audio metadata rendered as `og:audio` tags.                                                                |
+| `video`           | `ComponentProps<typeof OpenGraphVideo>`                  | -                                                     | No       | Structured video metadata rendered as `og:video` tags.                                                                |
+| `article`         | `ComponentProps<typeof OpenGraphArticle>`                | -                                                     | No       | Type-driving article object; sets `og:type=article`.                                                                  |
+| `book`            | `ComponentProps<typeof OpenGraphBook>`                   | -                                                     | No       | Type-driving book object; sets `og:type=book`.                                                                        |
+| `business`        | `ComponentProps<typeof OpenGraphBusiness>`               | -                                                     | No       | Business namespace tags; keeps `og:type=website`.                                                                     |
+| `music`           | `ComponentProps<typeof OpenGraphMusic>`                  | -                                                     | No       | Type-driving music object; sets `og:type=music.<subtype>`.                                                            |
+| `place`           | `ComponentProps<typeof OpenGraphPlace>`                  | -                                                     | No       | Place namespace tags; keeps `og:type=website`.                                                                        |
+| `product`         | `ComponentProps<typeof OpenGraphProduct>`                | -                                                     | No       | Product namespace tags; keeps `og:type=website`.                                                                      |
+| `profile`         | `ComponentProps<typeof OpenGraphProfile>`                | -                                                     | No       | Type-driving profile object; sets `og:type=profile`.                                                                  |
+| `videoType`       | `ComponentProps<typeof OpenGraphVideoType>`              | -                                                     | No       | Type-driving video object; sets `og:type=video.<subtype>`.                                                            |
 
 ## Examples
+
+### Imported image
+
+Pass an imported local image directly. Its generated URL, width, height, and format are used for the related `og:image:*` tags automatically.
+
+```astro
+---
+import socialImage from "../assets/social.png";
+---
+
+<OpenGraph title="Home" image={socialImage} />
+```
+
+Use the structured form when you also need fields such as `alt`, `secureUrl`, or explicit overrides:
+
+```astro
+<OpenGraph title="Home" image={{ src: socialImage, alt: "Home page" }} />
+```
 
 ### Basic
 
