@@ -1,6 +1,6 @@
 ---
 title: Icons
-description: Astro component that renders resolved icon link tags. Manages build-time resolution, late-bound overrides, and href deduplication for favicon and app icons.
+description: Astro component that renders detected public icon links with per-href runtime overrides.
 head:
   - tag: title
     content: Icons - Component
@@ -9,78 +9,20 @@ head:
 import { Code } from "@astrojs/starlight/components";
 import IconsSource from "@package/components/Icons.astro?raw";
 
-Icons renders icon-related `<link>` tags from the build-time configuration resolved by the integration. The component is intentionally thin: file names, MIME types, and inferred `sizes` are computed before the virtual module is serialized, and the component only renders the resolved tags.
-
-When you pass the `icons` prop, it merges over the integration-provided tags for that render. Matching entries are deduplicated by `href`, with later runtime entries overriding earlier build-time entries.
+`Icons` renders tags detected for `public/favicon.svg`, `public/favicon.png`, and `public/apple-touch-icon.png`. It does not render a tag for `public/favicon.ico`; browsers discover that fallback path automatically.
 
 ## Props
 
-| prop    | type                               | default | required | description                                                                                                                                                                                      |
-| ------- | ---------------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `icons` | `Record<string, IconTag \| false>` | `{}`    | No       | Per-href overrides. Each key is the tag's `href`. An `IconTag` value replaces a matching build-time entry or adds a new one. `false` removes a matching build-time tag from the rendered output. |
-
-## Examples
-
-### Basic
-
-Input:
+| prop    | type                               | default | required | description                                                                                               |
+| ------- | ---------------------------------- | ------- | -------- | --------------------------------------------------------------------------------------------------------- |
+| `icons` | `Record<string, IconTag \| false>` | `{}`    | No       | Per-href overrides. A value replaces or adds an entry; `false` removes the matching detected public icon. |
 
 ```astro
 <Icons />
-```
 
-Output:
-
-```html
-<link rel="icon" href="/favicon.ico" type="image/x-icon" />
-<link
-  rel="apple-touch-icon"
-  href="/apple-touch-icon.png"
-  sizes="180x180"
-  type="image/png"
-/>
-```
-
-### Automatic
-
-When the integration is configured with an SVG source and no explicit `favicon.svg` entry, all five default icons are generated and a copied SVG favicon tag is automatically prepended. These are the defaults produced when only `source` is set:
-
-- `favicon.ico` — multi-size ICO (16, 32, 48)
-- `favicon.png` — 32×32 raster favicon
-- `apple-touch-icon.png` — 180×180 Apple touch icon
-- `icon-192.png` — 192×192 manifest icon
-- `icon.png` — 512×512 manifest icon
-
-Input:
-
-```astro
-<Icons />
-```
-
-Output:
-
-```html
-<link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
-<link rel="icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
-<link
-  rel="apple-touch-icon"
-  href="/apple-touch-icon.png"
-  sizes="180x180"
-  type="image/png"
-/>
-<link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png" />
-<link rel="icon" href="/icon.png" sizes="512x512" type="image/png" />
-```
-
-### Complete
-
-Input:
-
-```astro
 <Icons
   icons={{
-    "/favicon.ico": false,
+    "/favicon.png": false,
     "/campaign.png": {
       rel: "icon",
       href: "/campaign.png",
@@ -92,52 +34,8 @@ Input:
 />
 ```
 
-Output:
-
-Assuming the integration resolved `favicon.ico`, `favicon.svg`, and `apple-touch-icon.png` into `config.icons`:
-
-```html
-<link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
-<link
-  rel="apple-touch-icon"
-  href="/apple-touch-icon.png"
-  sizes="180x180"
-  type="image/png"
-/>
-<link
-  rel="icon"
-  href="/campaign.png"
-  sizes="32x32"
-  type="image/png"
-  media="(prefers-color-scheme: dark)"
-/>
-```
-
-## Decisions Made
-
-### Build-time resolution owns inference
-
-The integration resolves `href`, `type`, and inferred `sizes` before `Icons` renders. This avoids repeating file-extension logic in every page render and keeps the component surface small.
-
-### The runtime prop merges by `href`
-
-The `icons` prop is a `Record` keyed by each tag's `href`. An `IconTag` value replaces the matching build-time entry (or appends a new one); `false` removes the matching build-time entry entirely. Entries not mentioned in the prop are passed through unchanged.
-
-### Light and dark media values expand automatically
-
-When a tag uses `media: "light"` or `media: "dark"`, the component expands that shorthand into the matching `prefers-color-scheme` query. Other custom media strings are passed through unchanged.
-
-### Deduplication is runtime-only and `href`-based
-
-Build-time resolution preserves the raw tag array. `Icons` loads all config tags into an `href`-keyed map, then applies the `icons` prop entries — replacing or deleting matching hrefs — so the final render order follows insertion order with prop modifications layered on top.
+Runtime entries merge by `href`. The map key wins over an `href` inside its value. `media: "light"` and `media: "dark"` expand to the matching `prefers-color-scheme` media query.
 
 ## Source code
 
 <Code code={IconsSource} lang="astro" />
-
-## Reference
-
-- [MDN: `<link>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link)
-- [MDN: `rel` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel)
-- [MDN: `sizes` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#sizes)
-- [web.dev: Icons and Browser Colors](https://web.dev/icons-and-browser-colors/)

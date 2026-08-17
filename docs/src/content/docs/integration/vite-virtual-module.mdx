@@ -68,7 +68,7 @@ type TagInput = {
   colorScheme?: string;
   generator?: boolean;
   humansTxt?: string | URL | boolean;
-  icons?: IconsOptions | false;
+  icons?: IconTag[];
   manifest?: string | boolean;
   openGraphSiteName?: string;
   robots?: ComponentProps<typeof Robots>;
@@ -90,7 +90,7 @@ type ResolvedTagConfig = {
   viewport: string; // default: "width=device-width, initial-scale=1"
   titleTemplate: string; // default: "%s"
   generator: boolean; // default: true
-  icons: IconsOptions | false; // default: {}
+  icons: IconTag[]; // detected public icons merged with headTags.icons
   manifest: string | boolean; // default: false
   humansTxt: string | URL | boolean; // default: "/humans.txt"
   extend?: {
@@ -111,7 +111,7 @@ When you configure the integration:
 ```ts
 // astro.config.mjs
 eminence({
-  head: {
+  headTags: {
     charset: "UTF-8",
     viewport: "width=device-width, initial-scale=1",
     titleTemplate: "%s | My Site",
@@ -121,7 +121,7 @@ eminence({
 
 The integration:
 
-1. Extracts only the `head` field
+1. Extracts only the `headTags` field
 2. Filters it to client-safe fields
 3. Serializes it as a JSON object
 4. Creates a JavaScript module that exports this object as the default export

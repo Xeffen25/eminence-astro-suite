@@ -17,7 +17,7 @@ export default defineConfig({
   integrations: [
     eminence({
       headTags: {/* ... */},
-      icons: {/* ... */},
+      icons: true,
       manifest: {/* ... */},
       robotsTxt: {/* ... */},
       securityTxt: {/* ... */},
@@ -32,7 +32,7 @@ export default defineConfig({
 | Option        | Type                          | Default        | Description                                                                                                                                                   |
 | ------------- | ----------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `headTags`    | `HeadTagsOptions`             | `{}`           | Site-wide defaults consumed by components via the virtual module. See the table below.                                                                        |
-| `icons`       | `IconsOptions \| false`       | `undefined`    | Build-time favicon and app icon generation. `false` disables. See [./integration/icons.md](../integration/icons.md).                                          |
+| `icons`       | `boolean`                     | `true`         | Detect supported icon files in Astro's `publicDir`. `false` disables. See [./integration/icons.md](../integration/icons.md).                                  |
 | `manifest`    | `WebManifestOptions \| false` | `undefined`    | `manifest.webmanifest` generation. `false` disables. See [./integration/manifest.md](../integration/manifest.md).                                             |
 | `robotsTxt`   | `RobotsTxtOptions \| false`   | `undefined`    | `robots.txt` generation. `false` disables and silences the recommendation. See [./integration/robots-txt.md](../integration/robots-txt.md).                   |
 | `securityTxt` | `SecurityTxtOptions \| false` | `undefined`    | `.well-known/security.txt` generation. `false` disables and silences the recommendation. See [./integration/security-txt.md](../integration/security-txt.md). |
@@ -44,7 +44,7 @@ Rules:
   - **Omitting** `robotsTxt` / `securityTxt` / `manifest` triggers a recommendation warning at build time.
   - Passing **`false`** silences the warning and explicitly disables the feature.
   - Omitting `sitemap` is equivalent to `sitemap: {}` (enabled with defaults).
-  - Omitting `icons` skips icon generation without a warning.
+  - Omitting `icons` enables public icon discovery and the `favicon.ico` recommendation.
 
 ## `headTags` sub-options
 
@@ -60,7 +60,7 @@ Rules:
 | `colorScheme`       | `"normal" \| "light" \| "dark" \| "light dark" \| "dark light" \| "only light"`                     | [`ColorScheme`](../components/color-scheme.md)        | —                                       | Default color scheme.                                                                         |
 | `generator`         | `boolean`                                                                                           | [`Generator`](../components/generator.md)             | `true`                                  | Emit the generator meta tag.                                                                  |
 | `humansTxt`         | `string \| URL \| boolean`                                                                          | [`HumansTxt`](../components/humans-txt.md)            | `undefined`                             | See [./integration/humans-txt.md](../integration/humans-txt.md) for the three-state behavior. |
-| `icons`             | `IconTag[]`                                                                                         | [`Icons`](../components/icons.md)                     | merged from generated icons             | Extra/override `<link>` tags merged over build-generated ones by `href`.                      |
+| `icons`             | `IconTag[]`                                                                                         | [`Icons`](../components/icons.md)                     | merged over detected public icons       | Extra/override `<link>` tags merged over detected ones by `href`.                             |
 | `manifest`          | `string \| URL \| boolean`                                                                          | [`Manifest`](../components/manifest.md)               | derived when `manifest` option is set   | Manifest URL. `true` derives from `Astro.site`.                                               |
 | `openGraphSiteName` | `string`                                                                                            | [`OpenGraph`](../components/open-graph.md)            | —                                       | Default `og:site_name`.                                                                       |
 | `robots`            | `RobotsProps`                                                                                       | [`Robots`](../components/robots.md)                   | —                                       | Default robots directives.                                                                    |
@@ -79,7 +79,7 @@ eminence({
     openGraphSiteName: "Example",
     themeColor: { light: "#ffffff", dark: "#0b0b0b" },
   },
-  icons: { source: "src/assets/logo.svg" },
+  icons: true,
   manifest: {
     name: "Example",
     short_name: "Example",

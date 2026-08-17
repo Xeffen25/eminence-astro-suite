@@ -37,11 +37,11 @@ The integration is required because it creates a Vite virtual module used by the
 
    The integration handles these responsibilities for you:
    - Global metadata defaults (for example site name) to keep pages DRY.
-   - Icon generation from an SVG source or a 512x512 icon.
-   - `humans.txt` reminder and generation flow.
+   - Discovery of existing public favicons and Apple touch icons.
+   - `humans.txt` validation and recommendation flow.
    - `robots.txt` generation.
    - `security.txt` generation.
-   - `sitemap.xml` generation using Astro's original sitemap integration.
+   - Sitemap generation using Astro's official sitemap integration.
 
 3. Use metadata components from `eminence-astro-suite/components`.
 
@@ -68,11 +68,11 @@ This enforces good practices, reduces repeated configuration, and prevents fragm
 
 Beyond page tags, the integration automates key metadata files:
 
-- icon generation (favicons and manifest-oriented icon sets)
-- `humans.txt`
+- public icon discovery (favicons and Apple touch icons)
+- `humans.txt` validation and recommendations
 - `security.txt`
 - `robots.txt`
-- `sitemap.xml` (using `@astrojs/sitemap` under the hood)
+- sitemap files (using `@astrojs/sitemap` under the hood)
 
 ## Scope and relevance
 

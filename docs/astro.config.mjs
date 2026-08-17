@@ -4,6 +4,7 @@ import { defineConfig } from "astro/config";
 import { fileURLToPath } from "node:url";
 
 import cloudflare from "@astrojs/cloudflare";
+import eminence from "../package/index";
 
 const packageDir = fileURLToPath(new URL("../package", import.meta.url));
 
@@ -22,6 +23,13 @@ export default defineConfig({
     prerenderEnvironment: "node",
   }),
   integrations: [
+    eminence({
+      icons: true,
+      manifest: false,
+      robotsTxt: false,
+      securityTxt: false,
+      sitemap: false,
+    }),
     starlight({
       title: "Eminence Astro Suite",
       social: [

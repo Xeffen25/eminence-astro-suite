@@ -18,10 +18,15 @@ describe("Component Icons", () => {
   });
 
   // Basic
-  it("renders build-time icon tags when no prop is provided", async () => {
+  it("renders detected icon tags when no prop is provided", async () => {
     Object.assign(config, {
       icons: [
-        { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+        {
+          rel: "icon",
+          href: "/favicon.svg",
+          sizes: "any",
+          type: "image/svg+xml",
+        },
         {
           rel: "apple-touch-icon",
           href: "/apple-touch-icon.png",
@@ -34,12 +39,12 @@ describe("Component Icons", () => {
     const result = await container.renderToString(Icons, { props: {} });
 
     expect(result).toBe(
-      '<link rel="icon" href="/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png">',
+      '<link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png">',
     );
   });
 
   // Automatic
-  it("renders all default icon tags including auto-copied SVG favicon from SVG source", async () => {
+  it("renders all supported detected public icon tags", async () => {
     Object.assign(config, {
       icons: [
         {
@@ -60,18 +65,6 @@ describe("Component Icons", () => {
           sizes: "180x180",
           type: "image/png",
         },
-        {
-          rel: "icon",
-          href: "/icon-192.png",
-          sizes: "192x192",
-          type: "image/png",
-        },
-        {
-          rel: "icon",
-          href: "/icon.png",
-          sizes: "512x512",
-          type: "image/png",
-        },
       ],
     });
 
@@ -80,9 +73,7 @@ describe("Component Icons", () => {
     expect(result).toBe(
       '<link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml">' +
         '<link rel="icon" href="/favicon.png" sizes="32x32" type="image/png">' +
-        '<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png">' +
-        '<link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png">' +
-        '<link rel="icon" href="/icon.png" sizes="512x512" type="image/png">',
+        '<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" type="image/png">',
     );
   });
 
@@ -90,12 +81,17 @@ describe("Component Icons", () => {
   it("disables a config tag via false and appends a new tag with media expansion", async () => {
     Object.assign(config, {
       icons: [
-        { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
         {
           rel: "icon",
           href: "/favicon.svg",
           sizes: "any",
           type: "image/svg+xml",
+        },
+        {
+          rel: "icon",
+          href: "/favicon.png",
+          sizes: "32x32",
+          type: "image/png",
         },
         {
           rel: "apple-touch-icon",
@@ -109,7 +105,7 @@ describe("Component Icons", () => {
     const result = await container.renderToString(Icons, {
       props: {
         icons: {
-          "/favicon.ico": false,
+          "/favicon.png": false,
           "/campaign.png": {
             rel: "icon",
             href: "/campaign.png",
@@ -127,14 +123,14 @@ describe("Component Icons", () => {
   });
 
   // Edge case: no icons in config or props produces no output
-  it("renders nothing when no build-time or runtime icon tags are provided", async () => {
+  it("renders nothing when no detected or runtime icon tags are provided", async () => {
     const result = await container.renderToString(Icons, { props: {} });
 
     expect(result).toBe("");
   });
 
-  // Edge case: runtime icon with matching href replaces build-time icon
-  it("Record entry replaces build-time icon with matching href", async () => {
+  // Edge case: runtime icon with matching href replaces detected icon
+  it("Record entry replaces detected icon with matching href", async () => {
     Object.assign(config, {
       icons: [
         {
@@ -164,8 +160,8 @@ describe("Component Icons", () => {
     );
   });
 
-  // Edge case: duplicate href in build-time config preserves last entry
-  it("uses last entry when build-time icons have duplicate href", async () => {
+  // Edge case: duplicate href in detected config preserves last entry
+  it("uses last entry when detected icons have duplicate href", async () => {
     Object.assign(config, {
       icons: [
         { rel: "icon", href: "/shared.png", sizes: "16x16", type: "image/png" },

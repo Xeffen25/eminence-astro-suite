@@ -54,7 +54,7 @@ To keep the google token while adding yandex, you must either set both at the in
 
 `<Icons />` is the one component that merges per-href:
 
-- Build-generated tags (from `icons` integration option) come first.
+- Tags detected from Astro's `publicDir` come first.
 - `headTags.icons` entries replace by `href`.
 - `<Icons icons={...} />` runtime entries replace by `href`; `false` removes.
 
@@ -108,7 +108,7 @@ See [./humans-txt.md](./humans-txt.md) for the full three-state behavior.
 
 ### `icons`
 
-`headTags.icons` is merged over the build-generated `IconTag[]` by `href`. The merged result is what `<Icons />` renders by default. See [./icons.md](./icons.md).
+`headTags.icons` is merged over the detected public `IconTag[]` by `href`. The merged result is what `<Icons />` renders by default. See [./icons.md](./icons.md).
 
 ## Cross-references
 

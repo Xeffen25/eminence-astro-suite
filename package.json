@@ -37,8 +37,6 @@
     "prettier": "catalog:",
     "prettier-plugin-astro": "catalog:",
     "prettier-plugin-organize-imports": "catalog:",
-    "sharp": "catalog:",
-    "sharp-ico": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },

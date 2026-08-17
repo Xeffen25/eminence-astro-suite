@@ -3,12 +3,15 @@
   AstroIntegration,
   AstroIntegrationLogger,
 } from "astro";
-import type { IconsOptions } from "./integration/generate-icons";
-import { generateIcons } from "./integration/generate-icons";
 import {
   generateManifest,
   type WebManifestOptions,
 } from "./integration/manifest";
+import {
+  detectPublicIcons,
+  FAVICON_ICO_RECOMMENDATION,
+  type IconTag,
+} from "./integration/public-icons";
 import {
   generateRobotsTxt,
   type RobotsTxtOptions,
@@ -30,7 +33,7 @@ import {
 
 export type IntegrationInput = {
   headTags?: HeadTagsOptions;
-  icons?: IconsOptions | false;
+  icons?: boolean;
   manifest?: WebManifestOptions | false;
   robotsTxt?: RobotsTxtOptions | false;
   securityTxt?: SecurityTxtOptions | false;
@@ -48,6 +51,7 @@ export default function createIntegration(
   options: IntegrationInput = {},
 ): AstroIntegration {
   let config: AstroConfig;
+  let detectedIconTags: IconTag[] = [];
 
   return {
     name: "eminence-astro-suite",
@@ -75,7 +79,11 @@ export default function createIntegration(
                 },
                 load(id) {
                   return id === RESOLVED_VIRTUAL_CONFIG_MODULE_ID
-                    ? serializedVirtualConfigModule(options, config.site)
+                    ? serializedVirtualConfigModule(
+                        options,
+                        config.site,
+                        detectedIconTags,
+                      )
                     : undefined;
                 },
               },
@@ -87,13 +95,18 @@ export default function createIntegration(
           },
         });
       },
-      "astro:config:done": ({ config: cfg }) => {
+      "astro:config:done": ({ config: cfg, logger }) => {
         config = cfg;
+        if (options.icons !== false) {
+          const detectedIcons = detectPublicIcons(config.publicDir);
+          detectedIconTags = detectedIcons.tags;
+          if (!detectedIcons.hasFaviconIco) {
+            logger.warn(FAVICON_ICO_RECOMMENDATION);
+          }
+        }
       },
       "astro:build:done": async ({ dir, logger, assets }) => {
         try {
-          if (options.icons !== false)
-            await generateIcons({ config, dir, options, logger });
           if (options.manifest !== false)
             await generateManifest({ config, dir, options, logger });
           if (options.robotsTxt !== false)

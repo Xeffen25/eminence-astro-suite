@@ -11,7 +11,7 @@ Internet Explorer 11 / Windows 8–10 Start screen tile configuration.
 **Use instead:**
 
 - [Web app manifest](../integration/manifest.md) for installable metadata, including tile icons.
-- [Icon generation](../integration/icons.md) for the favicon/apple-touch-icon set.
+- [Public icon discovery](../integration/icons.md) for the favicon/apple-touch-icon set.
 
 ## Cross-references
 

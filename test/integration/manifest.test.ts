@@ -31,11 +31,10 @@ describe("Integration - WebManifest", () => {
 
   const createContext = (
     manifest: IntegrationRuntimeContext["options"]["manifest"],
-    extraOptions: Partial<IntegrationRuntimeContext["options"]> = {},
   ): IntegrationRuntimeContext => ({
     config: { outDir: outDirUrl } as unknown as AstroConfig,
     dir: outDirUrl,
-    options: { manifest, ...extraOptions },
+    options: { manifest },
     logger: logger as unknown as IntegrationRuntimeContext["logger"],
   });
 
@@ -73,21 +72,13 @@ describe("Integration - WebManifest", () => {
     );
   });
 
-  // Automatic
-  it("auto-populates manifest icons from the default icon set when icons are omitted", async () => {
+  it("does not infer installable-app icons from favicon files", async () => {
     await generateManifest(
-      createContext(
-        {
-          name: "My App",
-          start_url: "/",
-          display: "standalone",
-        },
-        {
-          icons: {
-            source: "src/assets/logo.svg",
-          },
-        },
-      ),
+      createContext({
+        name: "My App",
+        start_url: "/",
+        display: "standalone",
+      }),
     );
 
     const raw = await readFile(
@@ -96,114 +87,7 @@ describe("Integration - WebManifest", () => {
     );
     const result = JSON.parse(raw);
 
-    expect(result).toEqual({
-      name: "My App",
-      start_url: "/",
-      display: "standalone",
-      icons: [
-        { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
-        { src: "/icon.png", sizes: "512x512", type: "image/png" },
-      ],
-    });
-  });
-
-  // Docs: Customizing manifest icons from the icons integration
-  it("generates manifest icons with inferred metadata from icon definition", async () => {
-    await generateManifest(
-      createContext(
-        {
-          name: "My App",
-          start_url: "/",
-          display: "standalone",
-        },
-        {
-          icons: {
-            source: "src/assets/logo.svg",
-            "icon-192.png": false,
-            "icon.png": false,
-            "icon-192x192.png": {
-              size: 192,
-              tag: { rel: "icon" },
-              manifest: true,
-            },
-            "icon-512.png": {
-              size: 512,
-              tag: { rel: "icon" },
-              manifest: { purpose: "maskable" },
-            },
-            "badge.png": {
-              size: 96,
-              tag: { rel: "icon" },
-              manifest: { src: "/brand/badge.png", purpose: "monochrome" },
-            },
-          },
-        },
-      ),
-    );
-
-    const raw = await readFile(
-      join(outputDir, "manifest.webmanifest"),
-      "utf-8",
-    );
-    const result = JSON.parse(raw);
-
-    expect(result.icons).toEqual([
-      { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
-      {
-        src: "/icon-512.png",
-        sizes: "512x512",
-        type: "image/png",
-        purpose: "maskable",
-      },
-      {
-        src: "/brand/badge.png",
-        sizes: "96x96",
-        type: "image/png",
-        purpose: "monochrome",
-      },
-    ]);
-  });
-
-  // Docs: Customizing with manifest.icons override
-  it("overrides auto-populated icons by matching src when manifest.icons are provided", async () => {
-    await generateManifest(
-      createContext(
-        {
-          name: "My App",
-          start_url: "/",
-          display: "standalone",
-          icons: [
-            { src: "/icon-192x192.png", sizes: "200x200", type: "image/webp" },
-            { src: "/custom.png", sizes: "1024x1024", type: "image/png" },
-          ],
-        },
-        {
-          icons: {
-            source: "src/assets/logo.svg",
-            "icon-192.png": false,
-            "icon.png": false,
-            "icon-192x192.png": {
-              size: 192,
-              tag: { rel: "icon" },
-              manifest: true,
-            },
-            "icon-512.png": { size: 512, tag: { rel: "icon" }, manifest: true },
-          },
-        },
-      ),
-    );
-
-    const raw = await readFile(
-      join(outputDir, "manifest.webmanifest"),
-      "utf-8",
-    );
-    const result = JSON.parse(raw);
-
-    expect(result.icons).toEqual([
-      { src: "/icon-192x192.png", sizes: "200x200", type: "image/webp" },
-      { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
-      { src: "/custom.png", sizes: "1024x1024", type: "image/png" },
-    ]);
+    expect(result).not.toHaveProperty("icons");
   });
 
   // Docs: Using short_name and display_override

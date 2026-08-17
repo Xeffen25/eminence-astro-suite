@@ -1,16 +1,16 @@
 ---
-import type { IconTag } from "../integration/generate-icons";
+import type { IconTag } from "../integration/public-icons";
 import config from "virtual:eminence-astro-suite/head-tags";
 
 interface Props {
   /**
    * Late-bound `<link>` tag overrides.
-   * These are merged over the build-time resolved icon tags from the virtual module.
+   * These are merged over detected public icon tags from the virtual module.
    */
   /**
    * Per-href overrides keyed by the tag's `href` value.
-   * An `IconTag` value replaces the matching build-time tag or adds a new one.
-   * `false` removes the matching build-time tag from the rendered output.
+   * An `IconTag` value replaces the matching detected tag or adds a new one.
+   * `false` removes the matching detected tag from the rendered output.
    */
   icons?: Record<string, IconTag | false>;
 }

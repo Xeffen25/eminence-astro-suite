@@ -3,7 +3,6 @@ import { access, mkdir, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { IntegrationRuntimeContext } from "..";
-import { resolveManifestIconsFromIconsOptions } from "./generate-icons";
 
 export type WebManifestIconItem = {
   src: string;
@@ -102,38 +101,6 @@ export const WEB_MANIFEST_RECOMMENDATION =
 
 export const WEB_MANIFEST_RELATIVE_PATH = "/manifest.webmanifest";
 
-const resolveManifestInput = (
-  input: WebManifestOptions,
-  options: IntegrationRuntimeContext["options"],
-): WebManifestOptions => {
-  const autoIcons = resolveManifestIconsFromIconsOptions(options.icons);
-  if (autoIcons.length === 0 && input.icons === undefined) {
-    return input;
-  }
-
-  if (input.icons === undefined) {
-    return {
-      ...input,
-      icons: autoIcons,
-    };
-  }
-
-  const iconsBySrc = new Map<string, WebManifestIconItem>();
-
-  for (const icon of autoIcons) {
-    iconsBySrc.set(icon.src, icon);
-  }
-
-  for (const icon of input.icons) {
-    iconsBySrc.set(icon.src, icon);
-  }
-
-  return {
-    ...input,
-    icons: Array.from(iconsBySrc.values()),
-  };
-};
-
 const buildManifest = (options: WebManifestOptions): string => {
   return `${JSON.stringify(options, null, 2)}\n`;
 };
@@ -204,8 +171,7 @@ export async function generateManifest({
   }
 
   try {
-    const normalizedInput = resolveManifestInput(input, options);
-    const content = buildManifest(normalizedInput);
+    const content = buildManifest(input);
     await mkdir(dirname(outputPath), { recursive: true });
     await writeFile(outputPath, content, "utf-8");
     logger.info(`Generated "${WEB_MANIFEST_RELATIVE_PATH}"`);

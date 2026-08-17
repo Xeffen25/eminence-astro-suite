@@ -1,6 +1,6 @@
 ---
 title: manifest.webmanifest
-description: Astro integration feature that generates a /manifest.webmanifest file at build time. Manages Chromium PWA requirements, TypeScript-enforced fields, and build-time file output.
+description: Generate a typed web app manifest during Astro builds.
 head:
   - tag: title
     content: manifest.webmanifest - Integration
@@ -9,386 +9,77 @@ head:
 import { Code } from "@astrojs/starlight/components";
 import ManifestSource from "@package/integration/manifest.ts?raw";
 
-The manifest feature generates a `/manifest.webmanifest` file in your build output during `astro build`. It is configured through the `manifest` option on the integration. The output is a JSON file serialized from the options you provide.
+The `manifest` feature writes `/manifest.webmanifest` into the build output during `astro build`. The JSON output contains the options you provide.
 
-Chromium PWA requirements (`name` or `short_name`, `display` or `display_override`, and `start_url`) are enforced as TypeScript compile-time constraints rather than runtime errors. Setting `prefer_related_applications: true` is a type error.
+If `manifest` is omitted, Eminence logs a recommendation. Set `manifest: false` to disable generation and silence it.
 
-If `manifest` is omitted from your integration config, a warning is logged recommending you add it. If `manifest: false` is set, no file is generated and no warning is logged.
+## Required fields
+
+The TypeScript type requires:
+
+- `name` or `short_name`
+- `display` or `display_override`
+- `start_url`
+
+`prefer_related_applications`, when present, may only be `false`.
+
+## Icons
+
+Manifest icons are explicit. Public favicon discovery does not add entries because 32×32 favicons and 180×180 Apple touch icons are not substitutes for installable application icons.
+
+Place appropriately sized files in `public/` and list them in `manifest.icons`:
+
+```ts
+eminence({
+  manifest: {
+    name: "Example",
+    short_name: "Example",
+    start_url: "/",
+    display: "standalone",
+    icons: [
+      { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      {
+        src: "/icon-512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "any maskable",
+      },
+    ],
+  },
+});
+```
 
 ## Options
 
-### `WebManifestOptions`
-
-`WebManifestOptions` is a TypeScript intersection type. At least one of `name` or `short_name` is required, and at least one of `display` or `display_override` is required. Setting both `name: never` and `short_name: never` is a compile error.
-
-| option                        | type                                      | default | required | description                                                                                                                                           |
-| ----------------------------- | ----------------------------------------- | ------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `name`                        | `string`                                  | -       | Yes\*    | Full name of the web application. Required unless `short_name` is provided.                                                                           |
-| `short_name`                  | `string`                                  | -       | Yes\*    | Short name for use in contexts where `name` is too long. Required unless `name` is provided.                                                          |
-| `start_url`                   | `string`                                  | -       | Yes      | URL loaded when the app is launched.                                                                                                                  |
-| `display`                     | `string`                                  | -       | Yes\*\*  | Display mode for the app. Common values: `"standalone"`, `"fullscreen"`, `"minimal-ui"`, `"browser"`. Required unless `display_override` is provided. |
-| `display_override`            | `string[]`                                | -       | Yes\*\*  | Ordered list of display mode candidates. Required unless `display` is provided.                                                                       |
-| `icons`                       | `WebManifestIconItem[]`                   | -       | No       | Icons to represent the app. If omitted and the icons feature is active, auto-populated from generated 192 and 512 icons.                              |
-| `prefer_related_applications` | `false`                                   | -       | No       | Must be `false` or omitted. Setting `true` is a TypeScript error.                                                                                     |
-| `description`                 | `string`                                  | -       | No       | Short description of the app's purpose.                                                                                                               |
-| `background_color`            | `string`                                  | -       | No       | Background color for the splash screen before the stylesheet loads.                                                                                   |
-| `theme_color`                 | `string`                                  | -       | No       | Default theme color for the OS title bar or browser chrome.                                                                                           |
-| `scope`                       | `string`                                  | -       | No       | Navigation scope for the app. URLs outside the scope open in the browser.                                                                             |
-| `orientation`                 | `string`                                  | -       | No       | Default screen orientation. Common values: `"portrait"`, `"landscape"`, `"any"`.                                                                      |
-| `id`                          | `string`                                  | -       | No       | Unique string identity for the app across installs and updates.                                                                                       |
-| `categories`                  | `string[]`                                | -       | No       | App store categories the app belongs to.                                                                                                              |
-| `screenshots`                 | `WebManifestScreenshotItem[]`             | -       | No       | Screenshots shown in app stores or install prompts.                                                                                                   |
-| `shortcuts`                   | `WebManifestShortcutItem[]`               | -       | No       | App shortcuts exposed through OS context menus or long-press actions.                                                                                 |
-| `related_applications`        | `WebManifestRelatedApplication[]`         | -       | No       | Native app alternatives to this web app.                                                                                                              |
-| `file_handlers`               | `WebManifestFileHandler[]`                | -       | No       | File types the app can open as a registered file handler.                                                                                             |
-| `protocol_handlers`           | `WebManifestProtocolHandler[]`            | -       | No       | Custom URL protocols the app handles.                                                                                                                 |
-| `share_target`                | `WebManifestShareTarget`                  | -       | No       | Configuration for receiving shared content from the OS share sheet.                                                                                   |
-| `launch_handler`              | `WebManifestLaunchHandler`                | -       | No       | Controls the client behavior when the app is launched.                                                                                                |
-| `note_taking`                 | `{ new_note_shortcut?: { url: string } }` | -       | No       | Configuration for note-taking shortcut integration.                                                                                                   |
-| `scope_extensions`            | `Array<{ origin: string }>`               | -       | No       | Additional origins that extend the app's navigation scope.                                                                                            |
-| `serviceworker`               | `WebManifestServiceWorker`                | -       | No       | Service worker registration metadata.                                                                                                                 |
-
-\* At least one of `name` or `short_name` is required by TypeScript.
-
-\*\* At least one of `display` or `display_override` is required by TypeScript.
-
-### `WebManifestIconItem`
-
-| field     | type     | required | description                                                                                                   |
-| --------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------- |
-| `src`     | `string` | Yes      | Path to the icon image file.                                                                                  |
-| `sizes`   | `string` | No       | One or more sizes as space-separated `<width>x<height>` values, for example `"192x192"`, or `"any"` for SVGs. |
-| `type`    | `string` | No       | MIME type of the icon, for example `"image/png"` or `"image/svg+xml"`.                                        |
-| `purpose` | `string` | No       | One or more space-separated purpose keywords: `"any"`, `"maskable"`, `"monochrome"`.                          |
-
-### `WebManifestScreenshotItem`
-
-| field         | type     | required | description                                                 |
-| ------------- | -------- | -------- | ----------------------------------------------------------- |
-| `src`         | `string` | Yes      | Path to the screenshot image.                               |
-| `sizes`       | `string` | No       | Dimensions in `<width>x<height>` format.                    |
-| `type`        | `string` | No       | MIME type of the screenshot.                                |
-| `label`       | `string` | No       | Accessible label for the screenshot.                        |
-| `form_factor` | `string` | No       | Display context hint. Common values: `"narrow"`, `"wide"`.  |
-| `platform`    | `string` | No       | Target platform hint, for example `"windows"`, `"android"`. |
-
-### `WebManifestShortcutItem`
-
-| field         | type                    | required | description                                  |
-| ------------- | ----------------------- | -------- | -------------------------------------------- |
-| `name`        | `string`                | Yes      | Name displayed for the shortcut.             |
-| `url`         | `string`                | Yes      | URL activated when the shortcut is selected. |
-| `short_name`  | `string`                | No       | Abbreviated name for constrained display.    |
-| `description` | `string`                | No       | Description of what the shortcut does.       |
-| `icons`       | `WebManifestIconItem[]` | No       | Icons to represent the shortcut.             |
-
-### `WebManifestRelatedApplication`
-
-| field      | type     | required | description                            |
-| ---------- | -------- | -------- | -------------------------------------- |
-| `platform` | `string` | Yes      | Platform the related app is hosted on. |
-| `url`      | `string` | No       | URL to the related app's store page.   |
-| `id`       | `string` | No       | App identifier on the platform.        |
-
-### `WebManifestFileHandler`
-
-| field    | type                       | required | description                                   |
-| -------- | -------------------------- | -------- | --------------------------------------------- |
-| `action` | `string`                   | Yes      | URL that handles file open requests.          |
-| `accept` | `Record<string, string[]>` | Yes      | Map of MIME type to accepted file extensions. |
-
-### `WebManifestProtocolHandler`
-
-| field      | type     | required | description                                                   |
-| ---------- | -------- | -------- | ------------------------------------------------------------- |
-| `protocol` | `string` | Yes      | The custom protocol to handle, for example `"web+example"`.   |
-| `url`      | `string` | Yes      | URL template with `%s` substituted for the full protocol URL. |
-
-### `WebManifestShareTarget`
-
-| field     | type                     | required | description                                             |
-| --------- | ------------------------ | -------- | ------------------------------------------------------- |
-| `action`  | `string`                 | Yes      | URL that receives the shared data.                      |
-| `method`  | `string`                 | No       | HTTP method, `"GET"` or `"POST"`. Defaults to `"GET"`.  |
-| `enctype` | `string`                 | No       | Encoding type for `POST` requests.                      |
-| `params`  | `Record<string, string>` | No       | Mapping of share data fields to URL or form parameters. |
-
-### `WebManifestLaunchHandler`
-
-| field         | type                 | required | description                                                                        |
-| ------------- | -------------------- | -------- | ---------------------------------------------------------------------------------- |
-| `client_mode` | `string \| string[]` | No       | How the browser client handles an app launch. Common value: `"navigate-existing"`. |
-
-### `WebManifestServiceWorker`
-
-| field              | type     | required | description                                                |
-| ------------------ | -------- | -------- | ---------------------------------------------------------- |
-| `src`              | `string` | Yes      | Path to the service worker script.                         |
-| `scope`            | `string` | No       | Scope of the service worker.                               |
-| `type`             | `string` | No       | Module type. Use `"module"` for ES module service workers. |
-| `update_via_cache` | `string` | No       | Cache behavior for service worker updates.                 |
-
-## Examples
-
-### Basic
-
-```ts
-// astro.config.mjs
-eminence({
-  manifest: {
-    name: "My App",
-    start_url: "/",
-    display: "standalone",
-    icons: [
-      { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
-      { src: "/icon.png", sizes: "512x512", type: "image/png" },
-    ],
-  },
-});
-```
-
-Output at `/manifest.webmanifest`:
-
-```json
-{
-  "name": "My App",
-  "start_url": "/",
-  "display": "standalone",
-  "icons": [
-    { "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icon.png", "sizes": "512x512", "type": "image/png" }
-  ]
-}
-```
-
-### Auto icons from the icons integration
-
-When the icons integration is configured, you can omit `icons` from `manifest` entirely. The default icon set includes `icon-192.png` (192x192) and `icon.png` (512x512), both marked for manifest inclusion, and are automatically added.
-
-```ts
-eminence({
-  icons: {
-    source: "src/assets/logo.svg",
-  },
-  manifest: {
-    name: "My App",
-    start_url: "/",
-    display: "standalone",
-  },
-});
-```
-
-The generated `manifest.webmanifest` will include:
-
-```json
-{
-  "name": "My App",
-  "start_url": "/",
-  "display": "standalone",
-  "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icon.png", "sizes": "512x512", "type": "image/png" }
-  ]
-}
-```
-
-### Customizing manifest icons from the icons integration
-
-Manifest icon auto-population scans the file-keyed `icons` entries. Any entry with `manifest: true` or a `ManifestIconOptions` object is added to `manifest.webmanifest`. The `src` defaults to the file's public path, `sizes` and `type` are inferred from the icon definition, and `purpose` is taken from the manifest options.
-
-Set default entries to `false` to exclude them from the output when you want a focused result:
-
-```ts
-eminence({
-  icons: {
-    source: "src/assets/logo.svg",
-    "icon-192.png": false,
-    "icon.png": false,
-    "icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
-    "icon-512.png": {
-      size: 512,
-      tag: { rel: "icon" },
-      manifest: { purpose: "maskable" },
-    },
-    "badge.png": {
-      size: 96,
-      tag: { rel: "icon" },
-      manifest: { src: "/brand/badge.png", purpose: "monochrome" },
-    },
-  },
-  manifest: {
-    name: "My App",
-    start_url: "/",
-    display: "standalone",
-  },
-});
-```
-
-Resulting `icons` array in `manifest.webmanifest`:
-
-```json
-[
-  { "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
-  {
-    "src": "/icon-512.png",
-    "sizes": "512x512",
-    "type": "image/png",
-    "purpose": "maskable"
-  },
-  {
-    "src": "/brand/badge.png",
-    "sizes": "96x96",
-    "type": "image/png",
-    "purpose": "monochrome"
-  }
-]
-```
-
-You can also provide `manifest.icons` directly. Those entries are merged over icons resolved from the integration using `src` as the key, so matching `src` values override auto-populated metadata:
-
-```ts
-eminence({
-  icons: {
-    source: "src/assets/logo.svg",
-    "icon-192.png": false,
-    "icon.png": false,
-    "icon-192x192.png": { size: 192, tag: { rel: "icon" }, manifest: true },
-    "icon-512.png": { size: 512, tag: { rel: "icon" }, manifest: true },
-  },
-  manifest: {
-    name: "My App",
-    start_url: "/",
-    display: "standalone",
-    icons: [
-      { src: "/icon-192x192.png", sizes: "200x200", type: "image/webp" },
-      { src: "/custom.png", sizes: "1024x1024", type: "image/png" },
-    ],
-  },
-});
-```
-
-Resulting `icons` array in `manifest.webmanifest`:
-
-```json
-[
-  { "src": "/icon-192x192.png", "sizes": "200x200", "type": "image/webp" },
-  { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
-  { "src": "/custom.png", "sizes": "1024x1024", "type": "image/png" }
-]
-```
-
-### Using `short_name` and `display_override`
-
-```ts
-eminence({
-  manifest: {
-    short_name: "App",
-    start_url: "/",
-    display_override: ["window-controls-overlay", "standalone"],
-    icons: [{ src: "/icon-192x192.png", sizes: "192x192", type: "image/png" }],
-  },
-});
-```
-
-### Complete
-
-```ts
-eminence({
-  manifest: {
-    name: "My App",
-    short_name: "App",
-    start_url: "/",
-    display: "standalone",
-    icons: [
-      { src: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
-      { src: "/icon.png", sizes: "512x512", type: "image/png" },
-    ],
-    description: "A great web app",
-    background_color: "#ffffff",
-    theme_color: "#1a1a2e",
-    scope: "/",
-    orientation: "portrait",
-    id: "my-app",
-    categories: ["productivity"],
-    screenshots: [
-      {
-        src: "/screenshots/home.png",
-        sizes: "1280x720",
-        type: "image/png",
-        form_factor: "wide",
-      },
-    ],
-    shortcuts: [{ name: "New Note", url: "/notes/new" }],
-    related_applications: [{ platform: "play", id: "com.example.app" }],
-    prefer_related_applications: false,
-    file_handlers: [
-      { action: "/open-file", accept: { "text/plain": [".txt"] } },
-    ],
-    protocol_handlers: [{ protocol: "web+myapp", url: "/handle?url=%s" }],
-    share_target: {
-      action: "/share",
-      method: "POST",
-      enctype: "multipart/form-data",
-    },
-    launch_handler: {
-      client_mode: "navigate-existing",
-    },
-    note_taking: { new_note_shortcut: { url: "/notes/new" } },
-    scope_extensions: [{ origin: "https://example.com" }],
-    serviceworker: { src: "/sw.js" },
-  },
-});
-```
-
-### Explicit opt-out
-
-```ts
-eminence({
-  manifest: false,
-});
-```
-
-No file is generated and no warning is logged.
-
-## Decisions Made
-
-### PWA requirements are enforced by TypeScript, not at runtime
-
-Chromium's required manifest members — at least one of `name` or `short_name`, at least one of `display` or `display_override`, and `start_url` — are modeled as TypeScript intersection and union types. Invalid configurations are caught at authoring time without runtime overhead or confusing build errors.
-
-`prefer_related_applications` is typed as `false` only, making `true` a compile-time error. This reflects the Chromium requirement that the field must be absent or explicitly `false` for the app to be installable.
-
-### `icons` is optional when the icons integration is active
-
-When `icons` is omitted from `manifest`, the integration scans the configured file-keyed `icons` entries and automatically injects any files marked with `manifest: true` or a `ManifestIconOptions` object. This avoids requiring you to repeat file paths that the integration already knows about.
-
-`manifest.icons` is merged over generated manifest icons. Generated entries are added first, then explicit `manifest.icons` entries override by matching `src`.
-
-### Auto icon population is controlled per icon entry
-
-Rather than adding separate manifest-icon config to the manifest options, the icons integration owns the source of truth for which generated files contribute to the manifest. Each keyed icon entry can carry optional manifest metadata (`sizes`, `type`, `purpose`, `src`) or a simple `manifest: true` opt-in.
-
-This keeps manifest icon paths and generation paths in sync automatically when overrides change.
-
-### Icons not marked for manifest are excluded
-
-Icons that do not set `manifest` do not produce manifest entries. This keeps favicon-only assets, Apple touch icons, and other auxiliary files out of `manifest.webmanifest` unless you explicitly opt them in.
-
-### File is not overwritten if it already exists
-
-If `/manifest.webmanifest` is already present in the build output, the integration logs a warning and disables further generation for that build. This preserves hand-crafted or CMS-generated manifests without silently clobbering them.
-
-### Setting `false` is the explicit opt-out
-
-Passing `manifest: false` disables the feature cleanly. Omitting `manifest` logs a recommendation warning so new projects are nudged to make an intentional choice.
+| option                        | type                                      | required | description                                                   |
+| ----------------------------- | ----------------------------------------- | -------- | ------------------------------------------------------------- |
+| `name`                        | `string`                                  | Yes\*    | Full application name; optional when `short_name` is present. |
+| `short_name`                  | `string`                                  | Yes\*    | Compact name; optional when `name` is present.                |
+| `start_url`                   | `string`                                  | Yes      | URL loaded when the application launches.                     |
+| `display`                     | `string`                                  | Yes\*    | Display mode; optional with `display_override`.               |
+| `display_override`            | `string[]`                                | Yes\*    | Ordered display candidates; optional with `display`.          |
+| `icons`                       | `WebManifestIconItem[]`                   | No       | Explicit installable-application icons.                       |
+| `description`                 | `string`                                  | No       | Application description.                                      |
+| `background_color`            | `string`                                  | No       | Splash-screen background color.                               |
+| `theme_color`                 | `string`                                  | No       | Default browser or OS chrome color.                           |
+| `scope`                       | `string`                                  | No       | Navigation scope.                                             |
+| `orientation`                 | `string`                                  | No       | Preferred screen orientation.                                 |
+| `id`                          | `string`                                  | No       | Stable application identity.                                  |
+| `categories`                  | `string[]`                                | No       | Application categories.                                       |
+| `screenshots`                 | `WebManifestScreenshotItem[]`             | No       | Install and store screenshots.                                |
+| `shortcuts`                   | `WebManifestShortcutItem[]`               | No       | OS shortcut menu entries.                                     |
+| `related_applications`        | `WebManifestRelatedApplication[]`         | No       | Related native applications.                                  |
+| `prefer_related_applications` | `false`                                   | No       | May only be false.                                            |
+| `file_handlers`               | `WebManifestFileHandler[]`                | No       | File associations.                                            |
+| `protocol_handlers`           | `WebManifestProtocolHandler[]`            | No       | Custom protocol handlers.                                     |
+| `share_target`                | `WebManifestShareTarget`                  | No       | OS share target.                                              |
+| `launch_handler`              | `WebManifestLaunchHandler`                | No       | Launch behavior.                                              |
+| `note_taking`                 | `{ new_note_shortcut?: { url: string } }` | No       | Note-taking integration.                                      |
+| `scope_extensions`            | `Array<{ origin: string }>`               | No       | Additional navigation origins.                                |
+| `serviceworker`               | `WebManifestServiceWorker`                | No       | Service worker metadata.                                      |
+
+If a manifest already exists in the output directory, Eminence leaves it untouched and logs a warning.
 
 ## Source code
 
-<Code code={ManifestSource} lang="ts" title="manifest.ts" />
-
-## Reference
-
-- [MDN: Web app manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest)
-- [MDN: Web app manifest — icons member](https://developer.mozilla.org/en-US/docs/Web/Manifest/Reference/icons)
-- [W3C: Web App Manifest specification](https://www.w3.org/TR/appmanifest/)
-- [web.dev: Add a web app manifest](https://web.dev/add-manifest/)
+<Code code={ManifestSource} lang="ts" />

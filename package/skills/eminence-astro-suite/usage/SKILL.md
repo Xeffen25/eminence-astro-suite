@@ -84,7 +84,7 @@ Set `site` in `astro.config.mjs` whenever the project has a public URL.
 
 ## 8. Required vs optional output files
 
-- The integration generates `manifest.webmanifest`, favicons, `robots.txt`, `security.txt`, and `sitemap.xml` (via `@astrojs/sitemap`).
+- The integration generates `manifest.webmanifest`, `robots.txt`, `security.txt`, and sitemap files (via `@astrojs/sitemap`). Favicons are detected in `public/`, not generated.
 - It does **not** generate `humans.txt` — you author that file in `public/`. The integration only adds the discovery link tag and emits a build-time recommendation if the file is missing.
 - See per-feature pages in [../integration/](../integration/) for the full behavior.
 
@@ -113,7 +113,7 @@ Before reaching for any of the following, read [../policies/unsupported-tags.md]
 - `apple-mobile-web-app-*` meta tags → use the manifest instead.
 - `meta name="author"` → use visible bylines and JSON-LD `author`.
 - `meta name="application-name"` → use manifest `name` / `short_name`.
-- `browserconfig.xml` → use the manifest plus the generated icon set.
+- `browserconfig.xml` → use the manifest plus explicitly authored public icons.
 - Feed discovery `<link rel="alternate" type="application/rss+xml">` → out of scope; add manually.
 - A separate `twitter:` namespace → not generated; modern Twitter/X reads Open Graph.
 

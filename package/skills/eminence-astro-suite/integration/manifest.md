@@ -1,22 +1,25 @@
 # `manifest` — `manifest.webmanifest` generation
 
-Generates `dist/manifest.webmanifest` from a typed `WebManifestOptions` object. Auto-merges icons emitted by the [`icons`](./icons.md) feature.
+Generates `dist/manifest.webmanifest` from a typed `WebManifestOptions` object. Manifest icons are explicit and independent from favicon discovery.
 
 ## Minimal usage
 
 ```ts title="astro.config.mjs"
 eminence({
-  icons: { source: "src/assets/logo.svg" },
   manifest: {
     name: "Example",
     short_name: "Example",
     start_url: "/",
     display: "standalone",
+    icons: [
+      { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
   },
 });
 ```
 
-This produces a manifest whose `icons` array is auto-populated with `icon-192.png` and `icon.png` from the icon generator.
+The icon files must already exist in `public/` or otherwise be served by the application.
 
 ## Required fields (discriminated)
 
@@ -41,7 +44,7 @@ Always required:
 
 | Field                         | Type                                      | Description                                                          |
 | ----------------------------- | ----------------------------------------- | -------------------------------------------------------------------- |
-| `icons`                       | `WebManifestIconItem[]`                   | Explicit icons. Merged over auto-generated icons by `src`.           |
+| `icons`                       | `WebManifestIconItem[]`                   | Explicit installable-application icons.                              |
 | `description`                 | `string`                                  | App purpose.                                                         |
 | `background_color`            | `string`                                  | Splash screen background.                                            |
 | `theme_color`                 | `string`                                  | Default OS/browser chrome color.                                     |
@@ -165,7 +168,7 @@ eminence({
 
 ## Cross-references
 
-- Icons feeding the manifest: [./icons.md](./icons.md).
+- Public favicon discovery: [./icons.md](./icons.md).
 - Link tag component: [../components/manifest.md](../components/manifest.md).
 - When to add a manifest at all: [../recommendations/manifest.md](../recommendations/manifest.md).
 - Why `apple-mobile-web-app-*` tags are not emitted alongside: [../policies/unsupported-tags.md](../policies/unsupported-tags.md).

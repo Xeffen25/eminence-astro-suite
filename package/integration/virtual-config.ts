@@ -1,6 +1,6 @@
 import type { ComponentProps } from "astro/types";
 import type { IntegrationInput } from "..";
-import {
+import type {
   AppleItunesApp,
   Base,
   Charset,
@@ -17,7 +17,7 @@ import {
   Viewport,
 } from "../components";
 import type { ThemeColorValue } from "../components/ThemeColor.astro";
-import { resolveIconsOptions, type IconTag } from "./generate-icons";
+import type { IconTag } from "./public-icons";
 
 export const VIRTUAL_CONFIG_MODULE_ID =
   "virtual:eminence-astro-suite/head-tags";
@@ -26,7 +26,7 @@ const HUMANS_TXT_PATH = "/humans.txt";
 const MANIFEST_PATH = "/manifest.webmanifest";
 
 /**
- * The user-facing head tag options accepted by the `head` field in `IntegrationInput`.
+ * The user-facing head tag options accepted by the `headTags` field in `IntegrationInput`.
  * All fields are optional — users only need to specify what they want to override.
  * This type mirrors the prop surface of the individual tag components.
  */
@@ -132,11 +132,11 @@ const resolveManifestHref = (
 
 const resolveIcons = (
   icons: HeadTagsOptions["icons"],
-  integrationIcons: IntegrationInput["icons"],
+  detectedIcons: IconTag[],
 ): IconTag[] => {
   const iconTagsByHref = new Map<string, IconTag>();
 
-  for (const iconTag of resolveIconsOptions(integrationIcons).tags) {
+  for (const iconTag of detectedIcons) {
     iconTagsByHref.set(iconTag.href, iconTag);
   }
 
@@ -168,6 +168,7 @@ const resolveThemeColor = (
 export const serializedVirtualConfigModule = (
   options: IntegrationInput,
   site: string | undefined,
+  detectedIcons: IconTag[] = [],
 ): string => {
   const { headTags } = options;
   const tagConfig = {
@@ -178,7 +179,7 @@ export const serializedVirtualConfigModule = (
     extend: headTags?.extend,
     generator: headTags?.generator ?? true,
     humansTxt: resolveHumansTxtHref(headTags?.humansTxt, site),
-    icons: resolveIcons(headTags?.icons, options.icons),
+    icons: resolveIcons(headTags?.icons, detectedIcons),
     manifest: resolveManifestHref(headTags?.manifest, options.manifest, site),
     openGraphSiteName: headTags?.openGraphSiteName,
     robots: headTags?.robots,

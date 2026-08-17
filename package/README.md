@@ -4,7 +4,7 @@ Astro components and integration for managing your page head, metadata, social s
 
 ## Installation
 
-This integration configures your Astro project with head metadata components and build-time outputs like `robots.txt`, `security.txt`, sitemap support, and icons.
+This integration configures your Astro project with head metadata components, public icon discovery, and build-time outputs like `robots.txt`, `security.txt`, and sitemap support.
 
 If you are not using this integration in your Astro config, the components will fail because they rely on the integration runtime configuration.
 
@@ -56,12 +56,15 @@ import eminence from "eminence-astro-suite";
 export default defineConfig({
   integrations: [
     eminence({
-      head: {
+      headTags: {
         titleTemplate: "%s | My Site",
       },
-      icons: {},
-      robotsTxt: {},
-      securityTxt: {},
+      icons: true,
+      robotsTxt: {
+        rules: [{ agent: "*", allow: "/" }],
+        sitemap: "/sitemap-index.xml",
+      },
+      securityTxt: false,
       sitemap: {},
     }),
   ],
@@ -158,13 +161,16 @@ import eminence from "eminence-astro-suite";
 export default defineConfig({
   integrations: [
     eminence({
-      head: {
+      headTags: {
         titleTemplate: "%s | My Site",
       },
-      // Set any of these to false to disable
-      icons: {},
-      robotsTxt: {},
-      securityTxt: {},
+      // Detect supported files in public/. Set to false to disable.
+      icons: true,
+      robotsTxt: {
+        rules: [{ agent: "*", allow: "/" }],
+        sitemap: "/sitemap-index.xml",
+      },
+      securityTxt: false,
       sitemap: {},
     }),
   ],

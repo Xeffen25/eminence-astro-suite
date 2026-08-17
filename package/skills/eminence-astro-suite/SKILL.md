@@ -74,7 +74,7 @@ Tags managed by `Head`:
 All integration features are configured through the single options object passed to `eminence()` in `astro.config.mjs`. See [./integration/SKILL.md](./integration/SKILL.md) for the overview.
 
 - [headTags](./integration/head-tags.md) — Global defaults distributed to components via the Vite virtual module.
-- [icons](./integration/icons.md) — Build-time favicon and app icon generation.
+- [icons](./integration/icons.md) — Public favicon and Apple touch icon discovery.
 - [manifest](./integration/manifest.md) — `manifest.webmanifest` generation.
 - [robotsTxt](./integration/robots-txt.md) — `robots.txt` generation.
 - [securityTxt](./integration/security-txt.md) — `.well-known/security.txt` generation (RFC 9116).

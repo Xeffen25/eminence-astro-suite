@@ -44,9 +44,7 @@
   "peerDependencies": {
     "@astrojs/sitemap": "catalog:peer",
     "astro": "catalog:peer",
-    "schema-dts": "catalog:peer",
-    "sharp": "catalog:peer",
-    "sharp-ico": "catalog:peer"
+    "schema-dts": "catalog:peer"
   },
   "peerDependenciesMeta": {
     "astro": {
@@ -57,19 +55,11 @@
     },
     "schema-dts": {
       "optional": true
-    },
-    "sharp": {
-      "optional": true
-    },
-    "sharp-ico": {
-      "optional": true
     }
   },
   "devDependencies": {
     "@astrojs/sitemap": "catalog:",
     "astro": "catalog:",
-    "schema-dts": "catalog:",
-    "sharp": "catalog:",
-    "sharp-ico": "catalog:"
+    "schema-dts": "catalog:"
   }
 }

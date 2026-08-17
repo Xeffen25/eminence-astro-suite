@@ -19,8 +19,6 @@ Install only the ones whose features you use.
 | Peer               | Needed for                                                                           | Install command             |
 | ------------------ | ------------------------------------------------------------------------------------ | --------------------------- |
 | `@astrojs/sitemap` | The `sitemap` integration option (registered automatically unless `sitemap: false`). | `pnpm add @astrojs/sitemap` |
-| `sharp`            | The `icons` option (raster generation).                                              | `pnpm add sharp`            |
-| `sharp-ico`        | The `icons` option (`.ico` generation).                                              | `pnpm add sharp-ico`        |
 | `schema-dts`       | Type-safe JSON-LD authoring (used inside your code, not by the suite directly).      | `pnpm add -D schema-dts`    |
 
 ## Install the package
