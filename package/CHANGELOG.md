@@ -1,5 +1,15 @@
 # eminence-astro-suite
 
+## 1.0.0-beta.12
+
+### Minor Changes
+
+- [`774c4c2`](https://github.com/Xeffen25/eminence-astro-suite/commit/774c4c26db65e9919d01309ab6ad374ce93893a1) Thanks [@Xeffen25](https://github.com/Xeffen25)! - Replace generated icon assets with automatic discovery of favicon.svg, favicon.png, and apple-touch-icon.png in Astro's public directory. Recommend favicon.ico as an untagged conventional fallback, remove Sharp dependencies, and require manifest icons to be configured explicitly.
+
+- [`0dd53f9`](https://github.com/Xeffen25/eminence-astro-suite/commit/0dd53f9628d79eab8908775f86f7d417acb8efce) Thanks [@Xeffen25](https://github.com/Xeffen25)! - Add an opt-in TypeScript Capo.js middleware that reorders HTML head elements for both prerendered and server-rendered routes.
+
+- [`38867eb`](https://github.com/Xeffen25/eminence-astro-suite/commit/38867eb3f4f8ecc19da78a36fa44842e506797ae) Thanks [@Xeffen25](https://github.com/Xeffen25)! - Allow imported Astro `ImageMetadata` values to be passed directly to the OpenGraph `image` prop, automatically emitting the generated source, dimensions, and MIME type.
+
 ## 1.0.0-beta.11
 
 ### Patch Changes
