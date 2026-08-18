@@ -32,6 +32,7 @@ import {
 } from "./integration/virtual-config";
 
 export type IntegrationInput = {
+  capojs?: "typescript" | false;
   headTags?: HeadTagsOptions;
   icons?: boolean;
   manifest?: WebManifestOptions | false;
@@ -56,7 +57,17 @@ export default function createIntegration(
   return {
     name: "eminence-astro-suite",
     hooks: {
-      "astro:config:setup": async ({ updateConfig, logger }) => {
+      "astro:config:setup": async ({ addMiddleware, updateConfig, logger }) => {
+        if (options.capojs === "typescript") {
+          addMiddleware({
+            entrypoint: new URL(
+              "./integration/capojs-middleware.ts",
+              import.meta.url,
+            ),
+            order: "pre",
+          });
+        }
+
         if (options.sitemap !== false) {
           const sitemapIntegration = await createSitemapIntegration(
             options.sitemap ?? {},

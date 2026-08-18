@@ -16,6 +16,7 @@ export default defineConfig({
   site: "https://example.com",
   integrations: [
     eminence({
+      capojs: "typescript",
       headTags: {/* ... */},
       icons: true,
       manifest: {/* ... */},
@@ -31,6 +32,7 @@ export default defineConfig({
 
 | Option        | Type                          | Default        | Description                                                                                                                                                   |
 | ------------- | ----------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `capojs`      | `"typescript" \| false`       | `undefined`    | Opt-in final HTML head ordering middleware. See [./integration/capojs.md](../integration/capojs.md).                                                          |
 | `headTags`    | `HeadTagsOptions`             | `{}`           | Site-wide defaults consumed by components via the virtual module. See the table below.                                                                        |
 | `icons`       | `boolean`                     | `true`         | Detect supported icon files in Astro's `publicDir`. `false` disables. See [./integration/icons.md](../integration/icons.md).                                  |
 | `manifest`    | `WebManifestOptions \| false` | `undefined`    | `manifest.webmanifest` generation. `false` disables. See [./integration/manifest.md](../integration/manifest.md).                                             |
@@ -45,6 +47,7 @@ Rules:
   - Passing **`false`** silences the warning and explicitly disables the feature.
   - Omitting `sitemap` is equivalent to `sitemap: {}` (enabled with defaults).
   - Omitting `icons` enables public icon discovery and the `favicon.ico` recommendation.
+  - Omitting `capojs` leaves the middleware disabled; use `capojs: "typescript"` to enable it.
 
 ## `headTags` sub-options
 

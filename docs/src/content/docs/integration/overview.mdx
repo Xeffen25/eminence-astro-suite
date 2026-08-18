@@ -11,7 +11,7 @@ head:
 
 import { Aside, Badge, Card, CardGrid } from "@astrojs/starlight/components";
 
-The `eminence` integration is configured through a single options object. Each key maps to file generation, public icon discovery, or global head tag defaults. Features can be disabled by passing `false`. Omitting a feature key logs a recommendation warning where applicable.
+The `eminence` integration is configured through a single options object. Each key maps to file generation, public icon discovery, response middleware, or global head tag defaults. Features can be disabled by passing `false`. Omitting a feature key logs a recommendation warning where applicable.
 
 ```ts
 // astro.config.mjs
@@ -22,6 +22,8 @@ export default defineConfig({
   site: "https://example.com",
   integrations: [
     eminence({
+      // Opt-in final head ordering
+      capojs: "typescript",
       // Global head tag defaults (virtual config module)
       headTags: { ... },
       // Detect supported icons in public/
@@ -35,6 +37,14 @@ export default defineConfig({
   ],
 });
 ```
+
+---
+
+## Head Ordering Middleware
+
+### `capojs`
+
+`capojs: "typescript"` registers middleware that performs a stable reorder of direct `<head>` children using the [Capo.js priority rules](https://rviscomi.github.io/capo.js/user/rules/). It works while Astro prerenders static pages and on each HTML request for server-rendered pages. The default is disabled; omit the option or pass `false` to register no middleware. See [Capo.js](/integration/capojs) for behavior and performance considerations.
 
 ---
 
@@ -178,12 +188,6 @@ The following features are planned and not yet released.
     Internationalization support for multi-language sites. Will provide locale-aware head tag defaults, alternate link management, and integration with Astro's built-in i18n routing.
 
   </Card>
-  <Card title="Capo.js Middleware">
-    <Badge text="Coming Soon" variant="caution" />
-
-    An Astro middleware that reorders `<head>` tags at runtime following the [capo.js](https://rviscomi.github.io/capo.js/) priority rules. Ensures optimal resource loading order without manual tag ordering in your templates.
-
-  </Card>
 </CardGrid>
 
 ---
@@ -199,6 +203,7 @@ export default defineConfig({
   site: "https://example.com",
   integrations: [
     eminence({
+      capojs: "typescript",
       headTags: {
         charset: "UTF-8",
         viewport: "width=device-width, initial-scale=1",

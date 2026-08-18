@@ -78,7 +78,7 @@ export default {
 
 ## Server-only options are stripped
 
-`robotsTxt`, `securityTxt`, `sitemap`, and the full `manifest` object are **not** serialized into the virtual module — they are build-time concerns. Only client-safe head tag configuration is shipped to components.
+`capojs`, `robotsTxt`, `securityTxt`, `sitemap`, and the full `manifest` object are **not** serialized into the virtual module — they are server/build concerns. Only client-safe head tag configuration is shipped to components.
 
 ## Special resolution rules
 

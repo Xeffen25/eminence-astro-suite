@@ -1,0 +1,48 @@
+---
+title: Capo.js
+description: Opt-in TypeScript middleware that reorders head elements using Capo.js priority rules for prerendered and server-rendered Astro pages.
+head:
+  - tag: title
+    content: Capo.js - Integration
+---
+
+import { Aside, Code } from "@astrojs/starlight/components";
+import CapoSource from "@package/integration/capojs.ts?raw";
+
+The `capojs` option installs middleware that reorders direct children of `<head>` using the [Capo.js priority rules](https://rviscomi.github.io/capo.js/user/rules/). It is disabled by default and does not affect a project unless explicitly enabled.
+
+## Configuration
+
+```ts
+eminence({
+  capojs: "typescript",
+});
+```
+
+| Value          | Behavior                                         |
+| -------------- | ------------------------------------------------ |
+| `"typescript"` | Register the TypeScript response middleware.     |
+| `false`        | Do not register middleware.                      |
+| omitted        | Do not register middleware. This is the default. |
+
+The middleware uses stable priority groups: elements with the same priority keep their original relative order. Original element markup, comments, whitespace, `<head>` attributes, and the rest of the document are preserved.
+
+## Build and runtime behavior
+
+Astro runs middleware while rendering prerendered pages, so static output is reordered during the build. In server-rendered mode, the middleware runs on each matching request.
+
+Only body-bearing responses with an uncompressed UTF-8 `text/html` body are transformed. `HEAD`, non-HTML, compressed, and explicitly non-UTF-8 responses are returned untouched. Entity headers that become stale after a transformation, including `Content-Length` and `ETag`, are removed.
+
+<Aside type="caution">
+  The TypeScript implementation buffers the complete HTML response before
+  returning it. For SSG this is a build-time cost. For SSR it adds parsing,
+  sorting, allocation, and response latency on every HTML request. Benchmark
+  representative pages on the intended adapter before enabling it in a
+  latency-sensitive production service.
+</Aside>
+
+Manual semantic ordering in templates avoids response-time work and remains the fastest option when the full final `<head>` is under your control. Middleware is useful when Astro, integrations, or components inject tags at different stages and you need one final ordering pass.
+
+## Source code
+
+<Code code={CapoSource} lang="ts" />

@@ -177,6 +177,14 @@ export default defineConfig({
 });
 ```
 
+Final `<head>` ordering is available as an explicit opt-in:
+
+```ts
+eminence({ capojs: "typescript" });
+```
+
+It applies Capo.js priority rules during prerendering and on server-rendered HTML responses. It is disabled when omitted or set to `false`; benchmark it before enabling on SSR because the TypeScript implementation buffers each HTML response.
+
 ## Components
 
 - AppleItunesApp

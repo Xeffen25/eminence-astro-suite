@@ -24,6 +24,7 @@ export default defineConfig({
   }),
   integrations: [
     eminence({
+      capojs: "typescript",
       icons: true,
       manifest: false,
       robotsTxt: false,

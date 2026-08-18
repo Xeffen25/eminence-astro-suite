@@ -1,6 +1,6 @@
 ---
 name: eminence-integration
-description: Overview of the seven integration features provided by `eminence-astro-suite`.
+description: Overview of the eight integration features provided by `eminence-astro-suite`.
 disable-model-invocation: true
 ---
 
@@ -8,17 +8,18 @@ disable-model-invocation: true
 
 The `eminence()` integration runs in three Astro hooks:
 
-- `astro:config:setup` — registers the Vite virtual module (`virtual:eminence-astro-suite/head-tags`) and the `@astrojs/sitemap` integration.
+- `astro:config:setup` — registers the Vite virtual module (`virtual:eminence-astro-suite/head-tags`), optional Capo.js middleware, and the `@astrojs/sitemap` integration.
 - `astro:config:done` — detects supported icons in Astro's `publicDir` and recommends a fallback `favicon.ico` when absent.
 - `astro:build:done` — writes generated output files (manifest, robots.txt, security.txt) and validates `humans.txt`.
 
-The seven configurable features are summarized below. Read the linked page before configuring each one.
+The eight configurable features are summarized below. Read the linked page before configuring each one.
 
 ## Features
 
 | Feature               | Option key           | What it does                                                                                                | Read                                   |
 | --------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------- | -------------------------------------- |
 | Global head defaults  | `headTags`           | Serializes a config object into the Vite virtual module that every tag component imports.                   | [./head-tags.md](./head-tags.md)       |
+| Capo.js head ordering | `capojs`             | Optionally registers TypeScript middleware that stably reorders the final HTML head.                        | [./capojs.md](./capojs.md)             |
 | Public icon discovery | `icons`              | Detects supported files in Astro's `publicDir` and exposes their head tags without generating assets.       | [./icons.md](./icons.md)               |
 | Manifest              | `manifest`           | Writes `dist/manifest.webmanifest` from a typed PWA config.                                                 | [./manifest.md](./manifest.md)         |
 | robots.txt            | `robotsTxt`          | Writes `dist/robots.txt` with crawler rules and sitemap pointers.                                           | [./robots-txt.md](./robots-txt.md)     |

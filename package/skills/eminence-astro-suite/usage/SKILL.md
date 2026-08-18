@@ -100,6 +100,8 @@ Order is fixed and intentional:
 
 Do not try to reorder by composing sub-components manually unless you have a specific reason.
 
+If integrations or Astro inject additional head elements after component rendering, the optional `capojs: "typescript"` middleware can reorder the final HTML. It buffers each matching response, so prefer the component order alone when it is sufficient and benchmark the middleware for SSR workloads.
+
 ## 11. JSON-LD safety
 
 [`JsonLd`](../components/json-ld.md) accepts either a serialized string or a plain object and escapes `<`, `>`, `&` as `\u003c`, `\u003e`, `\u0026` to prevent HTML injection. Prefer passing an object (or a `schema-dts` typed value) — never hand-construct a string that mixes user data with raw HTML.

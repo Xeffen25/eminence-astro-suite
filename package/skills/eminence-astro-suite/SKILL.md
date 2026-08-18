@@ -2,7 +2,8 @@
 name: eminence-astro-suite
 description: >-
   Official Eminence Astro Suite reference for Astro head metadata, SEO tags,
-  Open Graph, JSON-LD, favicons, manifest, robots.txt, and sitemap integration.
+  Open Graph, JSON-LD, favicons, Capo.js head ordering, manifest, robots.txt,
+  and sitemap integration.
   Use when editing page metadata, astro.config.mjs eminence() options, or SEO/head
   output — not on every Astro page edit.
 disable-model-invocation: true
@@ -13,7 +14,7 @@ disable-model-invocation: true
 Eminence Astro Suite is an Astro integration plus component library that generates complete metadata for Astro sites in one place:
 
 - metadata tags (`<head>` content), and
-- metadata-related files (`manifest.webmanifest`, `robots.txt`, `security.txt`, favicons, `sitemap.xml`).
+- metadata-related files (`manifest.webmanifest`, `robots.txt`, `security.txt`, `sitemap.xml`) plus public icon discovery and optional head ordering.
 
 The workflow is **integration first, components second**. The integration is required because it creates a Vite virtual module (`virtual:eminence-astro-suite/head-tags`) that the components read at render time. That lets you define defaults once and keep metadata behavior consistent across the site.
 
@@ -32,7 +33,7 @@ Do **not** load automatically on every page or `<head>` edit. Invoke explicitly 
 | Installing the package        | [./install/SKILL.md](./install/SKILL.md)         | Use only if `eminence-astro-suite` is not already installed in the project.                                                       |
 | Using the components          | [./usage/SKILL.md](./usage/SKILL.md)             | MANDATORY. Read this before writing any component code.                                                                           |
 | Configuring the integration   | [./config/SKILL.md](./config/SKILL.md)           | MANDATORY. Read this before editing `astro.config.mjs`.                                                                           |
-| Integration features overview | [./integration/SKILL.md](./integration/SKILL.md) | MANDATORY before configuring `icons`, `manifest`, `robotsTxt`, `securityTxt`, `sitemap`, or `headTags`.                           |
+| Integration features overview | [./integration/SKILL.md](./integration/SKILL.md) | MANDATORY before configuring `capojs`, `icons`, `manifest`, `robotsTxt`, `securityTxt`, `sitemap`, or `headTags`.                 |
 | Per-component docs            | [./components/](./components/)                   | MANDATORY. Read the matching component doc before using it. Always read multiple candidate docs before deciding which one to use. |
 | Policies (what we exclude)    | [./policies/](./policies/)                       | MANDATORY before reaching for any tag or output file not listed in this skill.                                                    |
 | Recommendations               | [./recommendations/](./recommendations/)         | Use to decide whether to add an optional output (manifest, humans.txt, robots.txt, security.txt).                                 |
@@ -74,6 +75,7 @@ Tags managed by `Head`:
 All integration features are configured through the single options object passed to `eminence()` in `astro.config.mjs`. See [./integration/SKILL.md](./integration/SKILL.md) for the overview.
 
 - [headTags](./integration/head-tags.md) — Global defaults distributed to components via the Vite virtual module.
+- [capojs](./integration/capojs.md) — Opt-in TypeScript middleware for final head ordering.
 - [icons](./integration/icons.md) — Public favicon and Apple touch icon discovery.
 - [manifest](./integration/manifest.md) — `manifest.webmanifest` generation.
 - [robotsTxt](./integration/robots-txt.md) — `robots.txt` generation.

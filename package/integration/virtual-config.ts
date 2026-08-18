@@ -56,8 +56,9 @@ type DefaultedHeadTagsKeys =
  * Differs from `TagInput` in two ways:
  *  1. Fields with known defaults are required and non-nullable — they are always
  *     present in the module, even when the user did not configure them.
- *  2. Only client-safe fields are included. Server-only build options (robotsTxt,
- *     securityTxt, sitemap, etc.) are never serialized into the virtual module.
+ *  2. Only client-safe fields are included. Server/build options (capojs,
+ *     robotsTxt, securityTxt, sitemap, etc.) are never serialized into the
+ *     virtual module.
  */
 export type ResolvedHeadTagsConfig = Omit<
   HeadTagsOptions,
